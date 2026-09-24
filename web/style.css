@@ -24,6 +24,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .kpis { margin-left: auto; display: flex; gap: 24px; font: 400 12px var(--mono); color: var(--soft); white-space: nowrap; }
 .kpis b { font-weight: 500; color: var(--ink); font-size: 13px; margin-left: 6px; font-variant-numeric: tabular-nums; }
 .kpis .c b { color: var(--volt); } .kpis .s b { color: var(--flare); }
+.kpis b.cv { color: var(--volt); } .kpis b.sv { color: var(--flare); }
+.box.desk .v { font-size: 13.5px; }
+.box.desk .tx { margin-top: 8px; }
 .top .how { font-size: 13px; color: var(--ink2); text-decoration: none; border: 1px solid var(--line2); border-radius: 999px; padding: 5px 12px; white-space: nowrap; }
 .top .how:hover { color: var(--ink); border-color: var(--dim); }
 @keyframes breathe { 50% { opacity: .45; } }

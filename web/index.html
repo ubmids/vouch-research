@@ -55,6 +55,7 @@
       <li><p><b>Claim.</b> Each claim quotes the company's SEC filing and puts part of the bond at stake. The words stay off-chain; their hash goes on-chain.</p></li>
       <li><p><b>Check.</b> Anyone can challenge within the window. The check is deterministic: is this quote in this filing, with every figure exactly as filed? A near-match with a changed number is still a lie.</p></li>
       <li><p><b>Settle.</b> A wrong claim loses its stake: half to whoever caught it, half to a pool that backs readers. A right one keeps its stake and takes the challenger's deposit.</p></li>
+      <li><p><b>Gate.</b> Other contracts can ask Vouch whether a claim is cleared. The AgentDesk here lets an AI agent trade only on research that survived the check; everything else reverts on-chain.</p></li>
     </ol>
     <div class="addr" id="addr"></div>
   </div>

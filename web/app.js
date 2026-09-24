@@ -21,7 +21,8 @@ function boot() {
   $("#kpis").innerHTML =
     `<span>claims<b>${cs.length}</b></span><span class="c">cleared<b>${cleared}</b></span>` +
     `<span class="s">slashed<b>${cs.length - cleared}</b></span><span class="opt">at stake<b>${money(staked)} USDG</b></span>` +
-    `<span class="opt">lost by wrong claims<b>${money(slashed)}</b></span><span>reader pool<b>${money(F.reader_pool)}</b></span>`;
+    `<span class="opt">lost by wrong claims<b>${money(slashed)}</b></span><span>reader pool<b>${money(F.reader_pool)}</b></span>` +
+    (cs[0] && cs[0].desk ? `<span class="opt">agent acted<b class="cv">${cs.filter((c) => c.desk.acted).length}</b> refused<b class="sv">${cs.filter((c) => !c.desk.acted).length}</b></span>` : "");
   const tape = cs.slice().reverse().map((c) =>
     `<span><b>${esc(c.ticker)}</b>${esc(c.value)} <span class="${c.verdict[0]}">${c.verdict === "cleared" ? "CLEARED" : "SLASHED −" + c.stake}</span></span>`).join("");
   $("#tape").innerHTML = tape + tape;          // two copies, so the loop is seamless
@@ -158,6 +159,11 @@ function select(id, scroll) {
       <div class="row"><span>claim as written</span><span class="${claimRule ? "no" : "ok"}">${claimRule ? esc(r.split(":")[0]) : "period, date, direction hold"}</span><b class="${claimRule ? "no" : bad ? "" : "ok"}">${claimRule ? "✕" : bad ? "·" : "✓"}</b></div>
     </div></div>
     ${stakeOut}
+    ${c.desk ? `<div class="box desk"><div class="k"><span>The trading agent</span><span>AgentDesk.open("${esc(c.ticker)}", 100 USDG, [${c.id}])</span></div>
+      <div class="v">${c.desk.acted
+        ? `<span class="good">Acted.</span> The desk asked Vouch whether claim #${c.id} is cleared, and it is, so the agent's position opened.`
+        : `<span class="bad">Refused on-chain: ${esc(c.desk.error || "reverted")}.</span> The agent tried to trade on this claim; the desk asked Vouch, and a claim that failed the check cannot back a trade.`}
+      <div class="tx">${txLink(c.desk.tx, c.desk.acted ? "trade" : "refused trade")}</div></div></div>` : ""}
     <div class="tx">${txLink(c.tx_post, "posted")}${txLink(c.tx_judge, bad ? "slashed" : "cleared")}</div>
     <div class="hash">on-chain hash ${esc(c.hash)}</div>
     <div class="verify"><button id="rehash">Verify it yourself</button><span id="rehashOut">Recompute the hash from the words shown, in your browser.</span></div>`;

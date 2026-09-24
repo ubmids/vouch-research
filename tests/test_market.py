@@ -58,3 +58,13 @@ def test_the_chain_holds_the_hash_of_exactly_the_published_words(chain):
     for f in r["claims"]:
         on_chain = chain.market.functions.claim(f["id"]).call()
         assert "0x" + on_chain[4].hex() == f["hash"]
+
+
+def test_the_trading_agent_acts_only_on_cleared_research(chain):
+    from vouchrh.market import run
+    r = run(chain, tickers=("TSLA",), per_ticker=2, log=lambda *_: None)
+    for f in r["claims"]:
+        assert f["desk"]["acted"] == (f["verdict"] == "cleared"), f
+        if not f["desk"]["acted"]:
+            assert f["desk"]["error"] == "NotCleared"
+            assert chain.w3.eth.get_transaction_receipt(f["desk"]["tx"]).status == 0   # refused on-chain

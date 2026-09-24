@@ -45,7 +45,8 @@ def _wallet(chain: Chain, name: str, index: int):
 
 
 def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD, bond: int = 500 * USD,
-        seed: int = 7, fund_wei: int | None = None, log=print, with_model: bool = False) -> dict:
+        seed: int = 7, fund_wei: int | None = None, log=print, with_model: bool = False,
+        token: str | None = None, trade: int = 100 * USD) -> dict:
     rng = random.Random(seed)
     # On a public chain the market lives at one address, so its record builds
     # up round after round. The addresses are public and live in the repo.
@@ -55,7 +56,7 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
         deployed = chain.attach(Deployed(**json.loads(record.read_text())))
         log(f"  market at {deployed.market} (existing)")
     else:
-        deployed = chain.deploy()
+        deployed = chain.deploy(min_stake=min(10 * USD, stake), challenge_bond=max(1, stake // 5), token=token)
         if chain.chain_id != 31337:
             record.parent.mkdir(exist_ok=True)
             record.write_text(json.dumps(asdict(deployed), indent=1))
@@ -103,11 +104,24 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
                 })
                 log(f"  #{cid:<3} {t:5} {agent.name:12} {c.value:>16}  {'SLASH ' if verdict.fraudulent else 'clear '} {verdict.reason}")
 
+    # The trading agent: it acts on research only through the desk, which asks
+    # Vouch whether each claim it cites is cleared. It tries every claim.
+    trader = _wallet(chain, "trading agent", 90)
+    if chain.w3.eth.get_balance(trader.address) < (fund_wei or 3 * 10**14):
+        chain.fund(trader.address, fund_wei if fund_wei is not None else (10**16 if chain.chain_id == 31337 else 3 * 10**14))
+    chain.give(trader.address, trade * sum(1 for f in feed if f["verdict"] == "cleared"))
+    chain.send(trader, chain.usdg.functions.approve(chain.desk.address, 2**256 - 1))
+    for f in feed:
+        f["desk"] = chain.act(trader, f["ticker"], trade, [f["id"]])
+    acted = sum(f["desk"]["acted"] for f in feed)
+    log(f"  trading agent: acted on {acted} claims, refused {len(feed) - acted}")
+
     standings = [{"analyst": a.name, "kind": a.kind, "address": acct.address, "bonded": chain.bonded(acct.address) / USD,
                   "cleared": sum(1 for f in feed if f["analyst"] == a.name and f["verdict"] == "cleared"),
                   "slashed": sum(1 for f in feed if f["analyst"] == a.name and f["verdict"] == "slashed")}
                  for a, acct in analysts]
     return {"chain_id": chain.chain_id, "contracts": asdict(deployed), "generated": int(time.time()),
+            "trader": trader.address,
             "reader_pool": chain.reader_pool() / USD, "standings": standings, "claims": feed}
 
 
@@ -117,9 +131,14 @@ def main(argv=None):
     ap.add_argument("--key", required=True, help="the verifier's private key (it also deploys)")
     ap.add_argument("--per-ticker", type=int, default=2)
     ap.add_argument("--model", action="store_true", help="add the local language-model analyst (Ollama)")
+    ap.add_argument("--token", help="bond in this ERC-20 (e.g. Paxos USDG) instead of deploying the test stand-in")
+    ap.add_argument("--bond", type=float, default=500, help="each analyst's bond, in token units")
+    ap.add_argument("--stake", type=float, default=25, help="stake per claim, in token units")
+    ap.add_argument("--trade", type=float, default=100, help="the trading agent's size per position")
     ap.add_argument("--out", default=str(Path(__file__).resolve().parents[2] / "feed" / "feed.json"))
     args = ap.parse_args(argv)
-    result = run(Chain(args.rpc, args.key), per_ticker=args.per_ticker, with_model=args.model)
+    result = run(Chain(args.rpc, args.key), per_ticker=args.per_ticker, with_model=args.model, token=args.token,
+                 bond=int(args.bond * USD), stake=int(args.stake * USD), trade=int(args.trade * USD))
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(result, indent=1))
     print(f"-> {args.out}  ({len(result['claims'])} claims, reader pool {result['reader_pool']} tUSDG)")

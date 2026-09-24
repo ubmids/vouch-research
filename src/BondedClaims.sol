@@ -111,6 +111,8 @@ contract BondedClaims {
         if (freeBond(msg.sender) < atStake) revert NotEnoughFreeBond();
         locked[msg.sender] += atStake;
         id = _claims.length;
+        // casting to uint64 is safe: block timestamps fit in 64 bits for the next 500 billion years
+        // forge-lint: disable-next-line(unsafe-typecast)
         _claims.push(Claim(msg.sender, uint64(block.timestamp), Status.Pending, atStake, claimHash, filing, ticker, address(0)));
         emit Posted(id, msg.sender, ticker, filing, claimHash, atStake);
     }
@@ -209,6 +211,12 @@ contract BondedClaims {
 
     function claim(uint256 id) external view returns (Claim memory) {
         return _claims[id];
+    }
+
+    /// @notice For other contracts: did this claim survive the check? Pending
+    /// and challenged claims are not cleared; only a settled truth is.
+    function isCleared(uint256 id) external view returns (bool) {
+        return id < _claims.length && _claims[id].status == Status.Cleared;
     }
 
     function claimCount() external view returns (uint256) {
