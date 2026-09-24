@@ -1,129 +1,125 @@
 # Vouch, demo script
 
-Target 2:45, hard ceiling 3:00. Judges often stop at ninety seconds, so the
-caught lie has to be on screen before the first minute is out.
+Target 2:45, hard ceiling 3:00. The page is built to be the demo: the
+"Follow one claim" story at the top is the video's spine, so you mostly read
+the headline and press Next. Judges often stop at ninety seconds; by then they
+have seen an AI caught and a trade refused.
 
-Record at 1920x1080, browser full screen, no face cam, no music. One voice:
-yours, unhurried. Everything on screen is real: real 10-Qs, real claims, real
-transactions. Before recording, run `bash scripts/testnet.sh` so the feed shows
-Robinhood Chain testnet transactions with explorer links, not the local devnet.
+Record at 1920x1080, browser full screen at https://vouch-feed.vercel.app, no
+face cam, no music. One voice: yours, unhurried. Everything on screen is real:
+Tesla's actual 10-Q, a claim a language model actually wrote, transactions on
+Robinhood Chain testnet.
 
-For Colosseum, which asks for a pitch video and a demo video: the pitch is
-slides 1 to 4 and 6 to 9 of `docs/slides.pdf` read over, 2 minutes; the demo
-is this script.
-
----
-
-## 0:00 to 0:20, the lie
-
-**On screen:** slide 2, the two sentences, red $1.47 billion over green $1.37
-billion.
-
-**Say:**
-
-> This is a sentence from Tesla's last quarterly filing. And this is the same
-> sentence as an AI summary wrote it. One digit is different. They read exactly
-> the same, and nobody pays for the difference.
->
-> Vouch makes being wrong about a stock cost money.
+For Colosseum, which asks for a pitch video and a demo video: the pitch is the
+deck (`docs/slides.pdf`) read over in about 2 minutes; the demo is this script.
 
 ---
 
-## 0:20 to 1:05, it gets caught
+## 0:00 to 0:15, the hook
 
-**On screen:** vouch-feed.vercel.app. It opens on a slashed claim. Let the
-inspector sit for a beat.
+**On screen:** the page as it loads, story on step 1.
 
 **Say:**
 
-> This is the feed. Every row is a claim about one of the stock tokens on
-> Robinhood Chain: Tesla, Amazon, Palantir, Netflix, AMD, each checked against
-> the company's real 10-Q from the SEC.
->
-> This analyst claimed capital expenditures of eight point two nine billion. Its
-> quote is ninety-nine point five percent identical to the filing. Any fuzzy
-> citation check passes that. But the filing says eight point two eight, and
-> Vouch requires every figure to match exactly. So the stake is gone: half to
-> whoever caught it, half to a pool that backs readers. Here is the transaction.
-
-**Point at:** the diff (red in the quote, green in the filing), the similarity
-bar sitting past the 95% line, "figures: differ from the filing", the money
-flow, the explorer link. Click the link and show the transaction on the
-Robinhood Chain explorer for two seconds, then come back.
+> AI now writes a lot of the research people trade on. It's fast, it's fluent,
+> and sometimes it's wrong about the numbers. Vouch makes being wrong cost money.
+> Let me follow one claim.
 
 ---
 
-## 1:05 to 1:35, every way research goes wrong
+## 0:15 to 1:15, one wrong claim, five steps
 
-**On screen:** click a Misreader row, then a Fabricator row, then a Diligent
-row.
+Press **Next** after each line. Let each step's headline sit for a beat.
 
-**Say:**
+**Step 1, "An AI read Tesla's quarterly report and wrote this."**
 
-> A misreader quotes the right sentence and claims the wrong number from it.
-> Slashed. A fabricator writes a sentence the filing never contained; the
-> closest passage in the whole document is a quarter similar. Slashed. And an
-> analyst that quotes the filing word for word keeps its stake.
+> This is Qwen, an open AI model running on my laptop. It read Tesla's latest
+> quarterly report and wrote: depreciation for Q3 2026 was 1.37 billion.
 
-Then click Qwen's claim #6, marked "Right number, wrong quarter":
+**Step 2, "It put 25 USDG of its own money behind that sentence."**
 
-> And this one is a language model, running locally on an open model. Its quote
-> is real, word for word. But it told readers the figure was for Q3, and the
-> quarter ended in June. When we first ran it, its quotes were real ten times out
-> of ten and half its summaries still got the period wrong. So Vouch checks the
-> claim as written, not just the quote. The model pays like anyone else.
+> Every claim on Vouch has money behind it. Twenty-five dollars, locked in a
+> contract on Robinhood Chain. True, it comes back. Wrong, it's gone.
+
+**Step 3, "Vouch checked it against the actual filing."**
+
+> Here's the claim, and here's the sentence from the filing. The number is
+> right. But the filing's quarter ended in June. That's Q2, not Q3. The quote
+> was real, word for word. The claim built on it wasn't.
+
+**Step 4, "Wrong, so it paid."**
+
+> So it lost the stake. Half to whoever caught it, half to a pool that protects
+> readers. No moderator decided that. The check is mechanical, so anyone can
+> re-run it and get the same answer.
+
+Click the **"the slash on Robinhood Chain testnet"** link, show the transaction
+on the explorer for two seconds, come back.
+
+**Step 5, "A trading agent wanted to act on it. The contract said no."**
+
+> And this is who it's for. A trading agent wanted to act on that claim. It
+> trades through a desk that asks Vouch first, and the desk refused, on-chain.
+> In this round it traded on all eighteen true claims and none of the
+> thirty-two wrong ones.
 
 ---
 
-## 1:35 to 1:55, agents that refuse
+## 1:15 to 1:35, the same sentence, told right
 
-**On screen:** still on claim #6, point at "The trading agent" box and click its
-"refused trade" link: a reverted transaction on the Robinhood Chain explorer.
+**On screen:** click **"The same sentence, told right"**, then Next through
+steps 3 to 5 quickly.
 
 **Say:**
 
-> This is who it's for. A trading agent tried to act on that claim. It trades
-> through a desk that asks Vouch first, and the desk refused, on-chain. It acted
-> on every cleared claim and refused all the others. Any agent can ask the same
-> question before it acts: through the contract, an API, or an MCP tool.
+> Same filing, same sentence, another analyst. This time the claim matches the
+> filing exactly. It keeps its money, and the trading agent acts on it.
 
 ---
 
-## 1:55 to 2:15, the mechanism
+## 1:35 to 1:55, check one yourself
 
-**On screen:** scroll to "How it works" and the analyst leaderboard.
+**On screen:** click **"Check a claim"** (top right). Click **"The AI's wrong
+quarter"**, then **Check it**. Then click **"A true claim"**, **Check it**.
 
 **Say:**
 
-> Analysts bond a stablecoin before they can publish. Each claim puts part of
-> that bond at stake and commits its words by hash, so it cannot be edited
-> after it is checked. Claims are optimistic: anyone can challenge within the
-> window, and because the check is deterministic, every dispute has one right
-> answer. A challenger who is wrong loses their deposit to the analyst, so
-> challenging is not free either.
->
-> After one round the leaderboard says it all: the analyst that told the truth
-> still has everything it bonded. The ones that didn't have half.
+> Anyone can run the same check. This goes to Tesla's real 10-Q at the SEC,
+> right now. Wrong quarter: slashed. The true version: cleared. Any AI agent can
+> call this before it acts, through the contract, an API, or an MCP tool.
+
+---
+
+## 1:55 to 2:15, the whole round
+
+**On screen:** close the dialog, click **"Skip to all 50 claims"**, scroll the
+table briefly, then scroll to **The scoreboard**.
+
+**Say:**
+
+> Fifty claims across Tesla, Amazon, Palantir, Netflix and AMD, every one with
+> its verdict in plain words. And the scoreboard: the analyst that told the
+> truth kept everything. The ones that bent the numbers lost half. The AI got
+> two wrong and paid for both.
 
 ---
 
 ## 2:15 to 2:40, why this is a business
 
-**On screen:** slide 7, then slide 8.
+**On screen:** deck slides 7 and 9 (For AI agents, Who pays).
 
 **Say:**
 
-> Venues and trading agents that list tokenised stocks need facts they can rely
-> on, and more of that research will be written by models every month. Vouch is
-> the layer where being right is worth something and being wrong costs
-> something. Next is mainnet on Robinhood Chain with USDG as the bond, and the
-> check itself moving on-chain in Stylus.
+> People are building AI agents that read research and trade on it. Those
+> agents are only as safe as what they read. Vouch is the check they run first,
+> and the place where being right is worth something. Next: mainnet on
+> Robinhood Chain with USDG as the bond.
 
 ---
 
 ## 2:40 to 2:50, close
 
-**On screen:** slide 9.
+**On screen:** the story's end card, "That's Vouch."
 
 **Say:**
 
@@ -135,10 +131,10 @@ Cut.
 
 ## Things to get right
 
-- The explorer click proves it is on a real chain. Do it once, fast.
-- Say the similarity number out loud. "Ninety-nine point five percent, and
-  still a lie" is the line people remember.
-- Do not call it an oracle. It checks claims against filings; it does not
-  report prices.
-- Show the trust assumption if asked: one verifier key records outcomes today,
-  and the check is open for anyone to re-run.
+- Hit the explorer link once in step 4. It proves this is a real chain.
+- Say "the quote was real, word for word" in step 3. That's the surprise: the
+  AI didn't make up a sentence, it got the period wrong.
+- Don't call it an oracle. It checks claims against filings; it doesn't report
+  prices.
+- If a judge asks what's trusted: one verifier key records dispute outcomes
+  today, and the check is open for anyone to re-run.
