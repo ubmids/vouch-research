@@ -17,6 +17,11 @@ KEY0 = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
 def chain():
     if not os.path.exists(ANVIL):
         pytest.skip("anvil not installed")
+    # The Python side loads Foundry's artifacts; build them if a clean (or a
+    # tool such as Slither) removed them, so the test never runs stale code.
+    root = os.path.join(os.path.dirname(__file__), "..")
+    forge = shutil.which("forge") or os.path.expanduser("~/.foundry/bin/forge")
+    subprocess.run([forge, "build"], cwd=root, check=True, capture_output=True)
     s = socket.socket(); s.bind(("127.0.0.1", 0)); port = s.getsockname()[1]; s.close()
     proc = subprocess.Popen([ANVIL, "--silent", "--port", str(port)])
     try:
