@@ -1,11 +1,11 @@
 {
  "chain_id": 46630,
  "contracts": {
-  "usdg": "0x02a6210216810D1Ae99892bBdF850173C799bE49",
-  "market": "0xCfBe9690d1A5EaD0e9Fb44bE990c5f5efE65cF8c",
-  "desk": "0x9F86868EB34Be4EBdFE2e1dC55A0300196eA13Dc"
+  "usdg": "0x993FE01a767D0a9Da09b8C3FA2d04529f43861dB",
+  "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
+  "desk": "0x6170c08ACF845C48032c9fAc118E62101cf29745"
  },
- "generated": 1790270671,
+ "generated": 1790271918,
  "trader": "0x29BC85932D3Db1dD9dA48599e800cc0E00307d46",
  "reader_pool": 400.0,
  "standings": [
@@ -70,12 +70,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "8b544119aed0b1e129e812c3e2b0d7b080e1df2d19a743691f0d2631bc703a9b",
-   "tx_judge": "9386f760f827d392cdf7b2e06ab7d85b03c04ff13f45bc02a8ae47aca2b03d62",
+   "tx_post": "0bfa471e0b9fc1c6fb1d7f3093123a24c2557c9943cb9b37b631558303c12680",
+   "tx_judge": "f3e6e780550591ed02970fd83c3b17a5c326c8b061ffbdadb27c10bbd7251b7d",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "7bd03ab2a0e5e1b275e4c40302bb916069a7c352532387db820ffef99335bec9"
+    "tx": "89570cf5c72da8b6178df4daf79199ffcdca62cff41a3790fe7b5c860cd8772e"
    }
   },
   {
@@ -97,12 +97,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "03c4201b955946a4b5867dbb076fc8d600774190df29bd5d0a64356ee6c434cb",
-   "tx_judge": "1fe2937216106dfc631a57e16d549c605cff75f02f4eb858ae99ca581f0206a7",
+   "tx_post": "7a5b589098731f8e4f581c3069b59211c2be0306e43446f83f8731628e9a5f89",
+   "tx_judge": "a85b629dc884c0255abe5c083cad5ac6cf528d28ecbf5727f717b6a2f33ab7e1",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "bd888b6ea9ffe8186c8a33408e9533b3d675891d4045b09e03edcadcb154c498"
+    "tx": "6c8b82fe12176ad0d50cff5c5df4faabc9b2356876b9d032a01e019288c38c9f"
    }
   },
   {
@@ -124,12 +124,12 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "1c68629986d0b8ed0b44d30193dc1629ea236747ad09da273a1eb75646cc4313",
-   "tx_judge": "82eded5d73a592197d1f2e24be44568f767d6e68893379dd98c2d5ce57538f7f",
+   "tx_post": "fc51a86923cb43c2d7f17912027837e04339d0920e3b3aa649fbf274ee78a5b4",
+   "tx_judge": "af89f67bdbe0abc2b022e75e0daa09d20cc99b947eac5fe5c22e341fe10c3b06",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "32a25670a6c2c389a62bdd5bb5df2201a48c5fc7d361c00f3202483f3d13e457"
+    "tx": "62a49da15eaab89d22922bd9b4fdced02dde1ffe8ffe24d96ca158b25ed0e874"
    }
   },
   {
@@ -151,12 +151,12 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.995,
-   "tx_post": "7a34edd225dcde5e7ebc42a9c7ece9e17e17e4e5985219fddc1e36dd1e6fa73f",
-   "tx_judge": "49e0f0c8faca42d1c9a76f867b27f297b3d2b4b9325ddb15f531782e4b493bea",
+   "tx_post": "791ce8841c06f64a0ef97389096825fc4adf21da058f6e95b7b4fc50ef89a37b",
+   "tx_judge": "e47fd755e02ee0ca2a4e27c5095ef94d0d4b37d259c17ef3cca95b633c7fa6a0",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "b5dfff0b874ebb1a044d910dff49fb778708dd4bf3a1cebb00b64317c7c10f41"
+    "tx": "95f5e4a363b8d98c8dab02e202798b414de731f24a80ce0f235ba0bf9492f36a"
    }
   },
   {
@@ -178,12 +178,12 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3113,
-   "tx_post": "f218b3e8eeb01f22aaae9f5b5c59152aed3ab406a3436c19c05dc1ea8515ca4e",
-   "tx_judge": "7a5a677d1cb3d47360a9d97bfefad53e90dfce44346910558863ace239acb7d0",
+   "tx_post": "155af7df5a61fdd04b5b378142c8ec9802b94e049575214278675efb1b85b594",
+   "tx_judge": "c684ab3f28547657cf5c73bc7cd86c5418f1d7154e7b328edefc64efb299074f",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "45248b9354297ef7a6e5f21b4d1f2841057df81c209f6a6b90305bb2a9f8b45a"
+    "tx": "c97e5a828f0e52252f300befb505a50435c1b826e26469021ddf68a3dc7dbaa7"
    }
   },
   {
@@ -205,12 +205,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "a03c1752f174b863ea4189ee32bbabaf4293260dab99e100b7d05f2a5e12c29b",
-   "tx_judge": "c158171931f0b35d83fa95b967ace9b7ecf3cd384c0e7133688645339d6ff215",
+   "tx_post": "06d6c077b174ffbd79dba19c039f704e46584f960de8de54697f25be6490f6b3",
+   "tx_judge": "6cb2ef0a2b792c9994d5bdc1b42d738f1042c51d1a7e14b65b27275ccc162b09",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "f06ea1d56ebff61137833050bb874a5839084ec8523883e59220c7a662e49f81"
+    "tx": "1c7d3bb2361aa5db763a4b019cecdec619734d87ebe7d66df5b0fbc577ea90a9"
    }
   },
   {
@@ -232,12 +232,12 @@
    "reason": "wrong quarter: the period ended in June, the claim says Q3 2026",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "1f85dd10d6fb222479958c3c38d3f743a3cdfca8470d4bd535ac357aca66cfb1",
-   "tx_judge": "43436d97f0da755d1ef2e58e99bdc11c9ef5b3b5711e1e9b7def4941c0c901d9",
+   "tx_post": "df2733d75b40dd886b0b1fa4e3fbf2c74e572beb921aa2f84d1a86291126603d",
+   "tx_judge": "bed0273dfe767314c80bdad33187044bfcda94f68b6853ef9c1e2b33a1912892",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "283a9acd8493eb75fc34788917a8e3fb22ebefcc1caba641d838d276f8a4cc9c"
+    "tx": "885779d54f221e655c1c2242fef7361383d11eaaf123cd6aea2f7fbd5b9698d9"
    }
   },
   {
@@ -259,12 +259,12 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "19b5f7df2037c10e99c9c6c7e06d5128cbcaa80477e7e456dc38e1b5bbca4724",
-   "tx_judge": "419ec1532e3ed832d3b15c22e692bf954f89b25a5f3afeee6b214f8d5c1b9575",
+   "tx_post": "1fd6eb7eec9fc49f38c055776d03a93b2646008a63e5c1cefbb0461beb3f95fc",
+   "tx_judge": "448d919377c90100804856e85b26a56a703aa717fcc7c460488d618cbf87e8ef",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "e48376b58603cb9a72f80a24bf8c010c72bbe3b23a945b06a56c4ad88106cbc9"
+    "tx": "f10c11b4e02b6ff1fa4a51c8b1e36714701a19496d9da6acd2e58621e0d2fe7c"
    }
   },
   {
@@ -286,12 +286,12 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9919,
-   "tx_post": "0e3d9aa9b480d8ea7eac74cc552acbdb1d47067242178ad86f4b18c3dc806e95",
-   "tx_judge": "ce3282b78cfba3a1a6a0ce1a13de08c657f1b0f176e828f739e42078d67f724a",
+   "tx_post": "383347762c6f146559da55ba71fbebbef5edfefa0507f344a192558e739950ba",
+   "tx_judge": "417931dd2b64cff6d69973244563901c1744faa4c390993c0dcd157a38c7c5f3",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "76f4391ae8bd053b570b1fb20e0db9ef2003935f01de256fe689daf7eb0a5bbf"
+    "tx": "aaed61dcdb3ae74fa8b20d8e5f49f5e13241be052d016c34d5558a05390a1730"
    }
   },
   {
@@ -313,12 +313,12 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.2812,
-   "tx_post": "e798b336b72b8f071329a0e29c18a7c41513fa1aa71ebcc0b716c77e928ce039",
-   "tx_judge": "9e380b77c291c4156fdbe37a455d53f08ea436a6f96bae99a7b01de9afcc0064",
+   "tx_post": "f7471080e2b1da07380ec475091bd85b6012be3215e3e9386e28070eb50ec6c8",
+   "tx_judge": "f55a0207420a419503b06b611b51a082d35d5d52672e232e1c0ce7f2f3076678",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "fb973417ecc95ef44b2f57a9fdd8c671210cfcc06d154a9aae825681d96d41e8"
+    "tx": "5e68627f99fe391acffa07449931c84c17cd6374f923450d8f153ecbbc206017"
    }
   },
   {
@@ -340,12 +340,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "583eb1a7713756b1fc64b8390e191adb66e3b89a73512ff93ca6eb6fa3fd6108",
-   "tx_judge": "8fad190d8a17ad498c3b04f8047d347eb40cc030a17146a38b661b9ee5606692",
+   "tx_post": "cc716a00d7f7d47778ace8a907def7b383a601df1d9cfd383060a2ce52599ca2",
+   "tx_judge": "3f4ad186af9583a31991d90cb8937cc9496d6528c73c12174632401ca39d469d",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "cb5fb6ea44009ef22d288d813ef6b22c636c6ddb566bd4ac8b7bef0d12eb7814"
+    "tx": "b34358ba0a7f199bead244f86935438718fca2597fc045f1ee6f816fb536b31c"
    }
   },
   {
@@ -367,12 +367,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "3b094119b794383b990388ac2c17aef3b228dcb3790dcf2940b8b57e0d5f2b60",
-   "tx_judge": "1f6f30d1ce2b552927d8b7845751c40f1b659b8530696df4d9c3583532ccd842",
+   "tx_post": "4384c8b59321acd857229b1a9c7269f66d5cc04e468c18dcc0c2b12efaee0fc7",
+   "tx_judge": "3b1911d3aff73651f610351c7144f9db919f2295a9e75eb5fc620f28f4106e33",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "1bff4875370d91d0cc83a5e7e649f36f1b768fd7f0e63025bc2120640d96731f"
+    "tx": "053d41aa3e1e43aecd04fb5cce161161fd9935643b029c0b47e5436c4c84b052"
    }
   },
   {
@@ -394,12 +394,12 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "84221328ab3278f284d9c2a9d12c7d5d62fffe1900b8b6bd6a1629c09e03f9fe",
-   "tx_judge": "3b28fb3ccbe4580994b04cba1fb2590dbcb5dd1d77e764d5c374fb25fa907e89",
+   "tx_post": "826ab276ec75066f81701addc11ee3c06ff9900b028c753645ccc7c97060f5f2",
+   "tx_judge": "b716c0b01700ca12af64e7e17800a3fdab007efad797709301f7ee160e67ae80",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "9af1a00963751f5fa9151c0959c0620623d4fa2a2b57b6720d346a80fda6e2e2"
+    "tx": "bc75856eeec83f1907d8168cb9d59c73c34ed3aef50cc71d214be4a154b7c1be"
    }
   },
   {
@@ -421,12 +421,12 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9932,
-   "tx_post": "f837db0d9a0576a8710c11204afdf04d1d0d459a6eaff5f3d47393998be36a7a",
-   "tx_judge": "26cdd3c9290f0b922ee65f4268952847386d42f473b18bd13e7f392a9c71a54d",
+   "tx_post": "925e570f03379521dedf889ecc685d332acf2592fa57a72522632efd5440feda",
+   "tx_judge": "aeb4b44c147d3aebed533c5d61e728c1612e4d9814b402e0f91178d1c329425f",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "bf6f707baf9158914bb28576c784fde02ec4e64b37bd2f1133679b6c9aa86000"
+    "tx": "2e7247989ba477849d0d59c4f32684b4fdc7a7caebe6d7132716733f2c00bb44"
    }
   },
   {
@@ -448,12 +448,12 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3232,
-   "tx_post": "86d3694a102a9a105ce3a922c29ded7b6079ad8ddbe71f53dd753136610de10f",
-   "tx_judge": "9c517bb6599d4c19069a6bc645ae6772cba5c270982feddbb3245ad6585d57c4",
+   "tx_post": "68cfaea7fa585d1199c0adf29a5f01d3e006fd94590f89a8d695025d8fdea5a7",
+   "tx_judge": "8313336a548f95753c5101ef8c63e37a673e205cdc22bfcd71507247b6019e2c",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "23a3909f7a4dd3bbde829ddf84f5f4d6a612d0bd19ad466c82ddb433dbed7a5a"
+    "tx": "8c02f5209f0f8e7342c56db89ede3ff7476aa0b2fae77d2a1d10d2920d704c37"
    }
   },
   {
@@ -475,12 +475,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "9eb52e23122a699e4bdf792b8f1efd28ab6ab1400a773cba24e9c332e3e622ac",
-   "tx_judge": "e5f3df0f26aab3b7129745621ee51c62c52c2a969ba5aaf147b41413fc10550c",
+   "tx_post": "03db7127e8b454b2656f9a6809e4e74769bde7c4dbb2f7e35cef9ce10f1c0248",
+   "tx_judge": "8b404e9b1a10b63385dfebb3bdd99e3c058740c8a59594140b33067fb0e2fa18",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "50f67e15b8af6eb8c8e97b8dae178bfb403adebb7ccb68fa8d11e6ce04ca7eb0"
+    "tx": "af7c3b6444d19ac2c83116947a19984cdf38f50045366cef15ee3debb29d27a5"
    }
   },
   {
@@ -502,12 +502,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "93d4dfbbe7b86a12c79e94d8be978c102df06f0568d73cfc30e6431a3d157d65",
-   "tx_judge": "2df8ab34d4d298963443e2560443125d151517ba4184164ffdb8837cfb350811",
+   "tx_post": "e3658cf6856f890348a577409d3f5b1f525bfc62eb3319adc88eff691d64d7b1",
+   "tx_judge": "c162acfd334a1d839947415dad371b82d4487de800cb2d1dbc73d1d3d1c92226",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "b15b943d127296203d199b9041f7249517cc416de61cc1ff2209ccecdb347384"
+    "tx": "0f6d22130819d67cf6d05b61488713340aba974159e33b4cdf57d28c4580819d"
    }
   },
   {
@@ -529,12 +529,12 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "9238e6e87e16f324578ac50afe3971cfb32f4c270fa3d3d1534f17c3e59986f0",
-   "tx_judge": "e099672c44d0e636a28b2ee1ef422db53a00fee1232847ce96b3a18c51d12b2a",
+   "tx_post": "266fbb87620f95db2f7b0c1efc66b4528f31b3cf57fe66412628a2fe108580be",
+   "tx_judge": "edec37801b5e8863490016f889c7dce686f422cd29028bfdf1b6cc201dbb8731",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "a27be079b7d07c8dc5231c7e2004b1a9690aaf355fb81092325923d2afc5684a"
+    "tx": "31163322a152618de6c6d2bd8df25e82b20a26183010ca3d14166687f5f1e49c"
    }
   },
   {
@@ -556,12 +556,12 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9954,
-   "tx_post": "584fdec46fef8611ec17d2d4fd59d64fc27d576d639cf323c25b32c3fb88caea",
-   "tx_judge": "fa64a969e9a8d456bbc5dcca5b5d1f3df20f2f77af4ce759eebc9357389a657b",
+   "tx_post": "2e2a62ccc7784c4e182df5e1ed69c26fd779e2f4024e50a9ef2433c2335fd2a5",
+   "tx_judge": "2e4b0d38d990657b62076d2bde4917c7c32f09efdcc066d9af04b5e60f612d74",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "fc3826a7a3f6a6e836e063bc024eec613f861d4a1924a4fba859bd0d54467709"
+    "tx": "7a0586279176fb7de54766a50a91095ef6e4a6adc0bc94edc6cf3b1c37fdb341"
    }
   },
   {
@@ -583,12 +583,12 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3552,
-   "tx_post": "5cf33756a66112e40c7229305c4bfd011a69770b575d06c7f83820b39f7f12ec",
-   "tx_judge": "a6697cdc85264c798b688f8d64e36dc8604ffde4ced109b06e25a14796ffcb76",
+   "tx_post": "20ad1d7bf2752ce51470a72e561001946810dc05f36570fad5ee4ca9adcd625a",
+   "tx_judge": "a3530e85728865c876f8c8fa4f7e5dc61da424089b6bb9745126b4b1c3a4dcb8",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "c9ee01e86d063d5aed5e286febe4aab1376e1256ea30dcf1875ad548ce7c9b7d"
+    "tx": "621ae4aaa21bff2ae43b29d8edb56497d803bf4ff51dd9f8678d04c811df5bba"
    }
   },
   {
@@ -610,12 +610,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "95a90ddadd983485a8353f42952285e6ced7482500c98895094570924b5fc00b",
-   "tx_judge": "fef78e537e1f06a00b11b757defb3d8b334a10a737d21449df9b92d84d1d4a6f",
+   "tx_post": "8f3e1062f3361a20cb9ed24633f69041b13848532db8249ab71ef876b732466b",
+   "tx_judge": "5650b239730f0d0e0cbe3f062b3c669374bda63d08712c01d17e88e57962d678",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "90ef4a7fdfba23a9b330067c6dd1e1fc7c58bd96624bafb8f5054d3258560cf8"
+    "tx": "e39e0863e2b45043c5d6c139d0fd418c7a5dcc302864b552737ded3fa124cec8"
    }
   },
   {
@@ -637,12 +637,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "4e78ba9f77a407feebb5c29fe70da9701134fa063fd180209e67cedca1a89a38",
-   "tx_judge": "0e3557eeb3b64a925b4daa4c312713d0f113aec333d723ed1a07aaa0c26656ee",
+   "tx_post": "a95e57f27371be8564689c97479a6275e60f12a4001d34a9d6dfb7438e743560",
+   "tx_judge": "47d903b51d9032bf78c56a3a91010123c0aa9e82231610239ce692830a423aa3",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "8e2ef86ffe3e8920f80c3213fa8323d06a4a93671e7a86e13cff592aebdf9361"
+    "tx": "5e07ea16941e9630999136fe91252e2b54ed53714cd6e2f0c409cc0a31df2f21"
    }
   },
   {
@@ -664,12 +664,12 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "f1e61b2a583e675ed87800baab6bbcdd6f63d226cef6f70cb2277e07ee4b4f06",
-   "tx_judge": "ebdc73f4dd9cb4f614d7804ba5c2d4edd5bdaf90c12f4ba7fa16c7d6dae32c45",
+   "tx_post": "abda8cbf940ffe6fd771bf621d2c605130c1ce46fb8c6576f821bd550e18b31a",
+   "tx_judge": "27ec96c56607ba98aa362039a6968ef1cddc0daacaa66f0d344934d51c4b277a",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "0efbd415df5b6a07b3d57176d419ebcbecf6db7d23ef0613d385a0eee2b235a3"
+    "tx": "32c384735f5f47d54e594ca0afc3ac7d47fe200653fe10da29886d3acf3ff33f"
    }
   },
   {
@@ -691,12 +691,12 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.996,
-   "tx_post": "960c018298c0b9cd3001360fab7d8081fa96a82cf20e6194ce22121d36d035f9",
-   "tx_judge": "118313d80fb9d638840c9e30b8887f88d2a6d49859d694aa10f40255ed344432",
+   "tx_post": "150d0c7d424302f4a34dea272161d437c4d82acda84f3f4e4d56876b24ff00bc",
+   "tx_judge": "34614942a6b1af9e2088b6df2c50ee4bbafc1226264ba0341f555d782c88a24a",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "7d8d47dd53f405c10a1e886180b6f1364d5b681845404cae9f977c1a0628d802"
+    "tx": "042b05f4d5bd7a015a29b8fca7260dd5ffa5d0af7f4f749eac43ceb09f78fc8d"
    }
   },
   {
@@ -718,12 +718,12 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.5404,
-   "tx_post": "d79f56deb393ac22e5d8c8a5c86f49625eebdfaf997b9240ca7dcd477bcd0427",
-   "tx_judge": "4eef58ea396f1ce68bd9ef577b2cd167e6c174e33dd0f02033dcfaac8c112078",
+   "tx_post": "4c19f3d4cb31f53b098ea17c15ce59099bb826e6a090bb436bba639cc43bc8a7",
+   "tx_judge": "9461e6684e169a565b89a6416ed285d6230aa1a2927c3018137d930c7487cdc0",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "fc0db3d3fdba5cfc584eb4591764463fc895b1290e300ffca7112d721627fc80"
+    "tx": "00dd711863e44423a00d4658b9e739a9f8435b98236e0e52f32ff6a632e5adf7"
    }
   },
   {
@@ -745,12 +745,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "15cb8024d770d4908f545ecbab1f9b6dd60e28249c8533a42c0139d06fc0bfc8",
-   "tx_judge": "618e1b52665df0f2ba20d1c0fb985672ad4d0570e5c306d44871e9592bb2fb59",
+   "tx_post": "d3906cb9398938493d2fbe8bc4ca8ddf64c8431bcf590425adaf34ee306f3e1f",
+   "tx_judge": "dc96c91400d5a4f4fece1208f883c229fcf1906c0ff0a2ab0fb20d1b79918a05",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "4dc97af0143c5d59b54fef20318af94e0e847f3fd3012ebf7d21f56817c73ca3"
+    "tx": "4b1d9c34ee20b08cbdc05d69cb040f3207c3bb874c17661d93ea11999ef1f5c6"
    }
   },
   {
@@ -772,12 +772,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "cd9c1712961c73758313c18dfea683d1d32eb0f18a6dbd5ca98367e826aecfbf",
-   "tx_judge": "732cc14d637eb155783ab4d5acfb20670660847956b6ea0f230b6530950e79bc",
+   "tx_post": "4d9056728f981f849c506020d3a61b9f65711d2d2c0ee44c9bb4e36e66be74bb",
+   "tx_judge": "bb2b7a4c366e9ab56d294fcf850ddf8b98d74f22c9b78a7224008d6b233f73a7",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "fde120af9a989c09197c0b53d70faf6e69bb794f65c52524c51bc92d4d2f31fa"
+    "tx": "d9c580e6e6761e3401c610689450d35a6dab41534378cac3ebb7fc4c0a9dab2a"
    }
   },
   {
@@ -799,12 +799,12 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "8f2fd70fdf588e85913df7f151529f2db69e76f4afc8dd82ecc4d7719efcd95d",
-   "tx_judge": "e3d565c6d494125e1fb074a9187304e9293b684e0d26ff8b50fb20cd19e37ce3",
+   "tx_post": "6509af38ed85b87a0d4e512cef6c7292a4188be2d7f794029a1d31d5b978e577",
+   "tx_judge": "e77da0cae21746fdf3d3fbacd1edbb770dd0afc41d602efed5e6b1645362329f",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "be94b6992f78940687e890a4b5dedfb0c2efb087552f4d5af55684181042172f"
+    "tx": "a5ea65852cc8f9480b1fbeed2a530e086ccf2d59e02abcfcedb8c00d4a4118e7"
    }
   },
   {
@@ -826,12 +826,12 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9955,
-   "tx_post": "18278eff5279014a3e4243ac1fd762d881c64e9cd206a49ddd72db06bc4863be",
-   "tx_judge": "d8964e54dc06dc6db368f8600deb291ede481143bc5f7837328ae3d0ede9f4b4",
+   "tx_post": "3db23e816abae308d5289a91b2c35272e36e9f5c561387c034fa76a25dbccf15",
+   "tx_judge": "eb768f7bb4f41b62fb6d8893064e180410968f46fd83460d0cd559e8e7550b55",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "a7da045b6919a99aadbf453b41de5112fa184b84fc0538f0566287aa726f977c"
+    "tx": "99069472de6cafd4689b394a8307b6bfc8834a726c3a013fdf0208d54815b52d"
    }
   },
   {
@@ -853,12 +853,12 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3776,
-   "tx_post": "946396fcf86fb44ad1110af5b100fa76c599b08c2c9c8c2f86eba90ec297a66a",
-   "tx_judge": "b6d263be2ff2f59b10d32a8a97c5ce7709c9aca0776198193a29a28501304f74",
+   "tx_post": "6693daf6aa8743c155f9a895f60272d5089817b14db5f94d79cfb8b9da8ec95a",
+   "tx_judge": "4ebf12e9b17f2d15663a695c3b76d21dbb907805847857491305ecf957a57d26",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "c16ec0f5c95d7fdb0c902ebc69690e669f55d0377b6e6404f7314a2d612e03a0"
+    "tx": "a1d6bc5ab2755dd442722fb613374dca71e809f3621dea04d173e3e04f306815"
    }
   },
   {
@@ -880,12 +880,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "705f6627451a9d7834a83f6bb2875582212fcfcacc964a539a1ddf6217598d68",
-   "tx_judge": "d520a9767d2932aacc49fb2fc5d9d1dd5e422a1161868dcc60e3963bd9633d20",
+   "tx_post": "0da069c5cacaacb9d6cf48913083000ecd5d91b12821b143e94e5eb856f71b2f",
+   "tx_judge": "90e91a184f0d1acc3d7c298420ef980e4a08d85f59a0152e24d9065bc90d489e",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "b01c8a46cab06852ad26135c33de203b6faf4a0e5f99eb457c48183903fc949c"
+    "tx": "e3e2453d9c780a78401079e5878670d84f2d5e2912909357dda7f2ab7ec09021"
    }
   },
   {
@@ -907,12 +907,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "c2659b1a22cb9f7d8dcbd79db2d05632032d6584a12949d8226157bec8c74a60",
-   "tx_judge": "46bfbb54b4b2c5d6780ba65499761485b0e6308f1a7a9e12b767d87884f29e90",
+   "tx_post": "a97845c553fbc65d26472945cba6fcd332247678a54c72f3e9b42938a5b64965",
+   "tx_judge": "5022e6a7edb6c9bb36d64783b16abf31b34e23cb565a723c629db64362480923",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "5eceeb954a97c6e6035aec5f6b6ad1c50e013ae491a62532a6991ab6a62ab9d4"
+    "tx": "93c1dea7a0a1376c9319ea82b7955fb16df76eee56c87a959e3b9521c4ffe9dc"
    }
   },
   {
@@ -934,12 +934,12 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "02622800f12042954f8349b22c588eb669dc6da75f77d4489dc39f97210fd087",
-   "tx_judge": "80883d1bbcf328eb97b20d06592f881688e82a6e59f206c3d3f4d6a4c8e74a45",
+   "tx_post": "924327c1c865f23ff6d3adf23fb8fc0882e0f896d6e1461e2761e5fd0fc10689",
+   "tx_judge": "86fa1e9fdc93ccdd0c846e6fb0fd494aff2c9e7fdbcf783b3798138ba61b65cf",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "2cee2dbd2c196ffe642f71899aa5a78e95fe6779f47ee6c12f753d0023cf07e5"
+    "tx": "90d2ee8bb9a6154dd2ab229890a981f06bac77fb77d9a0b18c1a8d0e431f3feb"
    }
   },
   {
@@ -961,12 +961,12 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9954,
-   "tx_post": "61ec9834499310de00952178ab2a498ca58447b272fef570e748d838b70d3c05",
-   "tx_judge": "8c2036b30f7db3f99be3a44b81d1f1a24f5e2a44fbef8ee7d16480f3560d88d9",
+   "tx_post": "4f72eeb45189b514b12d893ea66b6977c07583ec0061b87bf5577dec02cc854e",
+   "tx_judge": "577a62b617f27d9ffe4d6c0929a41c208e9cfa0f0b6785f42cabc6cf8d386bc3",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "bd410d63c98d7f8ed52f1fe9ce535ea70aacabfe911cd2310a90238e27b94e28"
+    "tx": "e715e5dbcb8f87c1966d61f306453c5222736aa6df0b0d702123ad06c5340f65"
    }
   },
   {
@@ -988,12 +988,12 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.243,
-   "tx_post": "476b5f9914f5b55a24ac1e94429b233f691ad7333d2f092ffa1ce4ea3d111065",
-   "tx_judge": "b4ec9086c0366211da8160eabb64b895de7ed77d2283b560f5bbc2d13dbee911",
+   "tx_post": "0ca84073f9f56ddf19033050a240b39049d2ff564eaa14b3a6e0050ce2fbcb53",
+   "tx_judge": "999b011494451f0afab9213ac4583c614146b54bb14f447536f68740da5fa792",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "f0e868c5408c5a4b0bcfbda6a88dc4d913bba9699e9ecefb1ffa9ef01b011ab1"
+    "tx": "474e0ada8e0380aa7d801d2f615b7ce4cda8e92b479fec026758150117a97921"
    }
   },
   {
@@ -1015,12 +1015,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "d885c47a1541cc47432335e2a548d0b3d8ae3e469ed7856ef57c76ed57105949",
-   "tx_judge": "e1d93c3f3ab261ce3b75d16f50f9b76724d0e07cc4ec815d4e2edd08ae7c362f",
+   "tx_post": "0c929dc19d19810dbb2d4bbce81e610bf2e2f77fac89e47e2b0160da6dea82ae",
+   "tx_judge": "76767a877b597d17699568385882d7dad7d4a69375106bc302e89ea2c2e6f649",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "b0d9bbfd90b50300d57e271730c62457a8ce22fa96c5786059574e9b888f14f0"
+    "tx": "d783a3d99c00311f046d983744ffdb968a631d80f92da537facf4f19f2b9662a"
    }
   },
   {
@@ -1042,12 +1042,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "99a37e8e3d7a5e457e08766f63e149ae48279b1b76eba8640dd642a055e21f48",
-   "tx_judge": "b9d03c6242c1afe5e0a41b332230613050796ff64488cf8433d5c4c0b9eda7c9",
+   "tx_post": "49d5b3e4220d4f8b394ac25078fb755eaebf96e5c9bcf08a9122a0cc6b081c01",
+   "tx_judge": "2bfa2eaecbd5f904d8d14a827aaef6adcf32f3f64e11b90c08461acde65b2fa2",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "d51265b2d60d4ca521e56b853381feb12872d34bb19414bfc2209a94cceb4d9f"
+    "tx": "0b56c26d9ff6150886507065d883151e063c8809a70be847e4f9f4e17330baff"
    }
   },
   {
@@ -1069,12 +1069,12 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "7f328bbff0c5c39f38d405488cc11ad1c14c63c2242e39842218010ff1cae152",
-   "tx_judge": "69062ef64c276e9f24ab2482f0cba0b25b6255f94747138b0f2e3bd74c10509d",
+   "tx_post": "04e8a63bfd9cbddb9246ba3f0021fbf69101e96015c11d298e3494c1477944ef",
+   "tx_judge": "39c5f6425baa74c425f17115d71360cd5a5f2ab33289820702960949224fdc98",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "6297343005c937480c8b657ecb90df60bb0814d1d6b56267a1b0dcdfb278012a"
+    "tx": "95f6979f35f1ba2c1bdfbe78c10217fd0efa38a278ab211bdc8a104887bcf6c1"
    }
   },
   {
@@ -1096,12 +1096,12 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9971,
-   "tx_post": "466a2d38b963cfda3c83a135b176c86034dd88d6df32f7f7042e08a32b22143f",
-   "tx_judge": "2d0945ea890cbde67d2786146afe4ca10e9596fa87bb2456ce775177d2eae740",
+   "tx_post": "630f5afc67d65c13afc253f3b8b5e3eca2a880153cf05d1e03d0d7206da8aaae",
+   "tx_judge": "6a9f1abbb47cf5373bc26962f9271786f34e0bf411811a0c5a64a337573b1ec6",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "6beb1dd107c79df8c1d17954e75115538e97f9dc14ea10f98f2de1a1c9523675"
+    "tx": "a6cd17f78d9a291be5bc267b034053ffea9afd2a105a1bfe63af2417b37a863b"
    }
   },
   {
@@ -1123,12 +1123,12 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.4396,
-   "tx_post": "f3ad6ae66069802ffab71285d28bf60c491eeb9e3c40c628f2047265e45abef8",
-   "tx_judge": "0d38bae0961fad9d227c034d02caefb05308532f43f926b6b8ccdb8c430bf952",
+   "tx_post": "721c1c80b8f5b24812c1aba6bccc0e399abc5cb7c1c9d9bc88c5de558f05a2b0",
+   "tx_judge": "05ec6432bf339cbca9d1c93902437307e5e3ee8979737d323de93085cb96dc66",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "a4f1b348b60b95c720dd383aa86a352a65f22005dbc19b040048d913ae924144"
+    "tx": "37de43e9aeb924744162d97bdac1f56d2a91e89e0dd06ea23b754af477373d3c"
    }
   },
   {
@@ -1150,12 +1150,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "f0fee3489825dab05a544191a4178bdd0290bbc0c6b69bc61375c576f4334c20",
-   "tx_judge": "917c71413838745a9a9a5468ea15d952e363ff623b91a28c3ae7bfa7c6f4d0dd",
+   "tx_post": "0f634a0902e3cfa100a2a8d5b9a95a1ed27c0bc7e7b34959ec8b8ea390d394a4",
+   "tx_judge": "cde7d2ca14588dcd336b8a721c2498898811eec3ad6c6e30c511736ffeab426b",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "b4f4d219c802d420a5acca525d4b05ee05576ee64ca760da7e1fad8264d62387"
+    "tx": "dbf29df56c919c4d7c906fdf6e7fd43af292955283fd7d8b944f9e79a6dd113a"
    }
   },
   {
@@ -1177,12 +1177,12 @@
    "reason": "wrong quarter: the period ended in June, the claim says Q3 2026",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "f619df37f41beb01e11bbb7c27e4cea793fe6fc5238ef3c03fe053a7cee169e9",
-   "tx_judge": "b8153e764f474e3c1a8659cd4dcfa15f3b9f0278f7fd3a9da7f9748f39e770b6",
+   "tx_post": "7388f0459dfa256c7747a5cd2b5fc4dfe17733568b736317482b49d484308c91",
+   "tx_judge": "e840258bbb9bc9f0d581d168e18b4e01c289757c0753d0bd13b53e9343cf05b5",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "ef5abe576d428dbf5afe60cb08894cb33317d8bed1cd306610d48b3a17c7f404"
+    "tx": "bcc3d2bac94d8f90977ec10c37d5bb133a6b9160ade8dca459ce9a82090e8057"
    }
   },
   {
@@ -1204,12 +1204,12 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "e591d9f60a765b5af79e53840829fc440819e592c38ab482201b80ca6e5c6961",
-   "tx_judge": "1574f30b16ff9cf3258b5b6de2f4af4ffa485a90355e74905fafaeec3f8a7093",
+   "tx_post": "69c7ff334cf6a404b7e94674e71b78d2eae13909f9984b403a7c79fbe0a45ed2",
+   "tx_judge": "2da1628b1b735c716fa66827c4a7df57144b5819e57e002d36f4dda6b8d2686c",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "14caf291d670ebb42cfdfe1e93f6b8750d200beb2d8a8b6f90538b2ea5bf86d8"
+    "tx": "787c974905580fe9a78baf6bd4763302a1cf15e43696af3b102eaaac28c041ef"
    }
   },
   {
@@ -1231,12 +1231,12 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9933,
-   "tx_post": "23be59b8fb9a3d6c592f574db182619bc329953fc017d0aa57809d34429dce4d",
-   "tx_judge": "d6287310b7410c058ca8f8126ca9ad9d6c2df1e31c6c6fc2b836eff80eb03f36",
+   "tx_post": "12a9d944f4345ded355768482ce47a8d07ca865be7154f5892cf2e41b75f5432",
+   "tx_judge": "dcf8267b4094cde38d9e6dec7d695d7ef850238cfa096775e57e4cabeeabe900",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "8f311963758ab58fa4b540394369eb20cbe8d7e3223bb0398761bc4532827644"
+    "tx": "17c866f81f240596cc2ad113c7dc84d3ef8038c24a4895d8314266df8ce35ad7"
    }
   },
   {
@@ -1258,12 +1258,12 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.2465,
-   "tx_post": "575cb6c7004f9c98679aa3831dab698607feeb5fc405a921bbb3f60bce4d837c",
-   "tx_judge": "1e655cde0bc35309d36b7ecf12fa1f86eb88fa5f209afac099e92cd5ce2f3ec8",
+   "tx_post": "3dcd8d48d982b1c15cfbacd4d846ebc6086045e86cdf5149f4a6dc9ec3e4fd8b",
+   "tx_judge": "e0b5065721e964a08199b895e956da588be760c805981a6166d1dc946f671ddc",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "ad206f0b0152aceb0a3ba3a5e8e44f8881f0a42f410bb0962b14e088eb4b0116"
+    "tx": "919c101d4640d2e62bdd359e620a293f52c7513811b4c84653ba198885135079"
    }
   },
   {
@@ -1285,12 +1285,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "3f94055176c37ca03b94680d10fdade2228a758ee4f78a4f2d6a1c1cee4afce4",
-   "tx_judge": "f05ff3432d74a1ccc156f4a135027a329bcdb56db5d28a8459dea69cbe9ef303",
+   "tx_post": "f544eabe273c48af293c41e655ebfe33b34590ee0509daf6d9deb28bbd686c7e",
+   "tx_judge": "594d0af97de25d3e79d093c333a3edf193c8321516841a0bba2ab4a4ecb51b24",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "7197c51b7b5266ab9a65ca0bb5ba7e41a1731b8f676c6661a33ff7e47f1c9fb7"
+    "tx": "632f365084f4d42bd23c98269f47c63251abf49a55a23118e13cdeef4bf47cf7"
    }
   },
   {
@@ -1312,12 +1312,12 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "dd7a3948218e0c766392dc3e9f0732ac8bedbe67ad6329f798d3b8243ef502d1",
-   "tx_judge": "dd7f2d77e56851ce9c56896f12fa800daff45e3232bede80e37fcb1cab07e59a",
+   "tx_post": "40561b9b1aedf8a1bb4775451bedb92d768eec399d1a219f356a90a2b7613699",
+   "tx_judge": "a995e18b3560d45b25f1411aeaea8d2016fd9332b42cb2c3c7c8b51d8891b37d",
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "2e5d5feb195322454db56ebbc565fc4cc2a4fb2b32dca1a6df576cbcaf3e387f"
+    "tx": "5a457ddf6b62ddd85d46ae9c188c75178d06ec334db80874c5765167b60a1f34"
    }
   },
   {
@@ -1339,12 +1339,12 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "ec4346350b304f9386c78be1d2b31a142060ba004285c6f4aa320ec7b46d7ff8",
-   "tx_judge": "f595d5dcf5c931e05823bc1121fccafd0205e5b8d53b7e46fd372c156e7e181b",
+   "tx_post": "f2925d298dcf06dc5e73da85fd356f2e4961fae647b0ef83595890507d96a628",
+   "tx_judge": "df993aadd704454025d81fd5245252126faf589934c8ed9f6950fd74f56b15c3",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "b03472e0acc148b31a508100b1e6bbc8960007c721f53919653c0a5eaac65e20"
+    "tx": "a0d97ed6f5f86f680da2f44a89acd6c9879b83ec64a19f52c5c151fc3bde1151"
    }
   },
   {
@@ -1366,12 +1366,12 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9911,
-   "tx_post": "1db231df0eeaa2469718d7516e547e5ab134ffea6e1ec74e33f91f66ce1f562b",
-   "tx_judge": "2ac4a175c3a2535b746dfa355b79383799c7cb68a79638ca787ac82ca9a4a3eb",
+   "tx_post": "e69a43bdd1d6089a19f865bdb6e862731bd535d6d90a3a6b261450c474edd12f",
+   "tx_judge": "ad876577cc4d7cc21aaa8f75cd095d4f81dc7b2f3c8bee517125ce93cc6f460c",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "5b1c5171f06ed72cba42b1b3a10c39d3f7971f19c798c2c8f6af89edba59e8be"
+    "tx": "2f182afd3b8ddd287e6230923309068b894355a19889b7fe6e97976951d252d6"
    }
   },
   {
@@ -1393,12 +1393,12 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3699,
-   "tx_post": "5bdb760ea380828a2b136ca1d8e1087fee3083e41a7afd4a6e3ffa2f1cd9d5f2",
-   "tx_judge": "ed08c40e9b3d3c84195d6fc5f414cb916ad0f051058b6e8c3645a6446359ffac",
+   "tx_post": "4181b40d3657981dc205053908835fd766582a040b6057212adf6e9d096bee48",
+   "tx_judge": "84b2159bd5ca3d2c8b2674ab67f481f19dc968c9bdbf0646b5ce920c722675c6",
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "fdc503a85292a6e31492ff7f438c74b23e47ec30723194e843141e826a574046"
+    "tx": "2ed160881c9876ef7f9a62f68e2689707b11cf57263585f8550182f6eebf7785"
    }
   }
  ]

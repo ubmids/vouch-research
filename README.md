@@ -46,6 +46,21 @@ verdict is on-chain, other contracts can depend on it without trusting anyone's
 API: `AgentDesk` lets an AI agent open a position only when every claim it cites
 is cleared and about the same stock, and reverts otherwise.
 
+## Deployed, verified
+
+On **Robinhood Chain testnet** (chain 46630), source verified on the explorer:
+
+| Contract | Address |
+|---|---|
+| BondedClaims | [`0x285AcbD8919fdAd7fa39753347656711eC51d426`](https://explorer.testnet.chain.robinhood.com/address/0x285AcbD8919fdAd7fa39753347656711eC51d426) |
+| AgentDesk | [`0x6170c08ACF845C48032c9fAc118E62101cf29745`](https://explorer.testnet.chain.robinhood.com/address/0x6170c08ACF845C48032c9fAc118E62101cf29745) |
+| Bond token (test stand-in, 6 dp) | [`0x993FE01a767D0a9Da09b8C3FA2d04529f43861dB`](https://explorer.testnet.chain.robinhood.com/address/0x993FE01a767D0a9Da09b8C3FA2d04529f43861dB) |
+
+Every claim, verdict and agent trade on the feed links to its transaction. The
+first deployment (`deployments/46630-first-solc0.8.37-unverifiable.json`) was
+built with Solidity 0.8.37, which the explorer cannot verify yet; the compiler
+is pinned to 0.8.36 now.
+
 ## How it works
 
 ```

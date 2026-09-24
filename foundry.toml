@@ -1,4 +1,9 @@
 [profile.default]
+# Pinned so the deployed bytecode can be verified on the Robinhood Chain
+# explorer (Blockscout supports up to 0.8.36), and cancun rather than the
+# default osaka so it runs on every Arbitrum chain today.
+solc_version = "0.8.36"
+evm_version = "cancun"
 src = "src"
 out = "out"
 libs = ["lib"]

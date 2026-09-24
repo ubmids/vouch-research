@@ -155,7 +155,8 @@ Context Protocol, Paxos USDG, Robinhood Chain testnet, Arbitrum Sepolia, Vercel.
 - Repository: https://github.com/ubmids/vouch-research (public at submission)
 - Live feed: https://vouch-feed.vercel.app
 - Verify API: POST https://vouch-feed.vercel.app/api/verify
-- Contract on Robinhood Chain testnet: see `deployments/46630.json` after `scripts/testnet.sh`
+- BondedClaims on Robinhood Chain testnet (verified): https://explorer.testnet.chain.robinhood.com/address/0x285AcbD8919fdAd7fa39753347656711eC51d426
+- AgentDesk on Robinhood Chain testnet (verified): https://explorer.testnet.chain.robinhood.com/address/0x6170c08ACF845C48032c9fAc118E62101cf29745
 - Demo video: (paste once recorded, script in docs/DEMO_SCRIPT.md)
 
 ## Before submitting, the checklist
