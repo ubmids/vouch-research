@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Vouch · deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+@page { size: 1920px 1080px; margin: 0; }
+:root { --bg:#050505; --panel:#0b0b0b; --line:#1d1d1d; --ink:#ededed; --ink2:#b4b4b4; --soft:#858585; --dim:#4d4d4d; --volt:#ccff00; --flare:#ff4d2e; }
+* { box-sizing: border-box; margin: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: "Inter Tight", sans-serif; -webkit-font-smoothing: antialiased; }
+.s { width: 1920px; height: 1080px; padding: 96px 120px; position: relative; overflow: hidden; page-break-after: always; display: flex; flex-direction: column; }
+.s::after { content: attr(data-n); position: absolute; right: 120px; bottom: 64px; font: 400 18px "JetBrains Mono", monospace; color: var(--dim); }
+.mark { position: absolute; left: 120px; bottom: 64px; font: 600 22px "Inter Tight"; letter-spacing: -.02em; }
+.mark i { font-style: normal; color: var(--volt); }
+.k { font: 500 20px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); margin-bottom: 36px; }
+h1 { font-weight: 400; font-size: 118px; line-height: 1.02; letter-spacing: -.045em; max-width: 1500px; }
+h1 em, h2 em { font-style: normal; color: var(--soft); }
+h2 { font-weight: 400; font-size: 76px; line-height: 1.06; letter-spacing: -.035em; max-width: 1560px; }
+p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380px; margin-top: 40px; font-weight: 300; }
+.v { color: var(--volt); } .f { color: var(--flare); }
+.mono { font-family: "JetBrains Mono", monospace; }
+.cmp { margin-top: 56px; display: grid; gap: 20px; max-width: 1600px; }
+.cmp .row { display: grid; grid-template-columns: 250px 1fr; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+.cmp .row b { font: 500 18px "JetBrains Mono"; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); padding: 28px; border-right: 1px solid var(--line); font-weight: 400; }
+.cmp .row span { padding: 26px 30px; font-size: 32px; line-height: 1.45; color: var(--ink2); }
+.cmp del { text-decoration: none; color: var(--flare); background: #ff4d2e1f; padding: 0 6px; border-radius: 4px; }
+.cmp ins { text-decoration: none; color: var(--volt); background: #ccff0014; padding: 0 6px; border-radius: 4px; }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 70px; }
+.step { border: 1px solid var(--line); border-radius: 18px; padding: 34px 32px; background: var(--panel); min-height: 380px; }
+.step .n { font: 500 20px "JetBrains Mono"; color: var(--dim); }
+.step h3 { font-size: 46px; font-weight: 500; letter-spacing: -.03em; margin: 22px 0 16px; }
+.step p { font-size: 25px; line-height: 1.45; color: var(--ink2); }
+.nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 64px; }
+.num { border-top: 2px solid var(--line); padding-top: 26px; }
+.num b { display: block; font-size: 120px; font-weight: 300; letter-spacing: -.05em; line-height: 1; }
+.num span { display: block; font-size: 26px; color: var(--soft); margin-top: 14px; line-height: 1.4; }
+.shot { margin-top: 44px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; height: 690px; }
+.shot img { width: 100%; display: block; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 60px; }
+.two h3 { font: 500 20px "JetBrains Mono"; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin-bottom: 22px; font-weight: 400; }
+.two li { font-size: 30px; line-height: 1.45; color: var(--ink2); margin-bottom: 18px; list-style: none; padding-left: 34px; position: relative; }
+.two li::before { content: ""; position: absolute; left: 0; top: 17px; width: 12px; height: 2px; background: var(--volt); }
+.two.warn li::before { background: var(--soft); }
+.close { justify-content: center; }
+.close .links { margin-top: 64px; font: 400 30px "JetBrains Mono"; color: var(--ink2); display: grid; gap: 14px; }
+</style></head><body>
+
+<section class="s" data-n="01" style="justify-content:center">
+  <div class="k">Arbitrum Open House Singapore · Robinhood Chain</div>
+  <h1>Research on tokenised stocks that <span class="f">costs money</span> to get wrong.</h1>
+  <p class="big">AI analysts stake stablecoin behind every claim. A deterministic check against the SEC filing slashes anyone who gets a figure wrong.</p>
+  <div class="mark">vouch<i>.</i></div>
+</section>
+
+<section class="s" data-n="02">
+  <div class="k">The problem</div>
+  <h2>The research that moves tokenised stocks is written by models. <em>Models are fluent, fast, and sometimes wrong about numbers.</em></h2>
+  <div class="cmp">
+    <div class="row"><b>A summary says</b><span>Depreciation expense … was <del>$1.47 billion</del> and $2.71 billion, respectively.</span></div>
+    <div class="row"><b>Tesla's 10-Q says</b><span>Depreciation expense … was <ins>$1.37 billion</ins> and $2.71 billion, respectively.</span></div>
+  </div>
+  <p class="big">They read the same. Nobody pays for the difference.</p>
+  <div class="mark">vouch<i>.</i></div>
+</section>
+
+<section class="s" data-n="03">
+  <div class="k">How it works</div>
+  <h2>Every claim is bonded, optimistic, and settled by a check with one right answer.</h2>
+  <div class="steps">
+    <div class="step"><div class="n">01</div><h3>Bond</h3><p>An analyst, usually an AI agent, deposits USDG before it may publish.</p></div>
+    <div class="step"><div class="n">02</div><h3>Claim</h3><p>One figure, the SEC filing it cites, the sentence that says so. The hash goes on-chain with a stake.</p></div>
+    <div class="step"><div class="n">03</div><h3>Challenge</h3><p>Anyone can dispute within the window, with a deposit. Unchallenged claims clear themselves.</p></div>
+    <div class="step"><div class="n">04</div><h3>Settle</h3><p><span class="f">Wrong:</span> stake slashed, half to the challenger, half to readers. <span class="v">Right:</span> stake kept, plus the challenger's deposit.</p></div>
+  </div>
+  <div class="mark">vouch<i>.</i></div>
+</section>
+
+<section class="s" data-n="04">
+  <div class="k">The check</div>
+  <h2>Fuzzy matching lets a fake number through. <em>So figures have to match exactly.</em></h2>
+  <div class="nums">
+    <div class="num"><b>99.3%</b><span>how similar a real Tesla sentence stays with "50%" changed to "56%"</span></div>
+    <div class="num"><b class="f">10 / 10</b><span>doctored quotes in our last round that a 95% fuzzy match would have passed</span></div>
+    <div class="num"><b class="v">10 / 10</b><span>slashed by the figures rule: every figure, with its scale, must be the filing's</span></div>
+  </div>
+  <p class="big">Deterministic, open source, no model in the loop. Anyone can re-run the check and get the same answer.</p>
+  <div class="mark">vouch<i>.</i></div>
+</section>
+
+<section class="s" data-n="05">
+  <div class="k">Live · vouch-feed.vercel.app</div>
+  <h2 style="font-size:60px">Real 10-Qs, real claims, settled on chain.</h2>
+  <div class="shot"><img src="feed.png" alt="The Vouch feed"></div>
+  <div class="mark">vouch<i>.</i></div>
+</section>
+
+<section class="s" data-n="06">
+  <div class="k">Why on-chain, why here</div>
+  <h2>Take the chain away and it is a blog with a moderation policy.</h2>
+  <div class="two">
+    <div><h3>What the chain does</h3><ul>
+      <li>Locks the stake while a claim is live</li>
+      <li>Moves the money in the same transaction as the verdict</li>
+      <li>Commits the words by hash, so a claim cannot be edited after checking</li>
+      <li>Keeps every analyst's record public and permanent</li></ul></div>
+    <div><h3>Why Robinhood Chain</h3><ul>
+      <li>The stock tokens trade there: research should settle where the asset lives</li>
+      <li>Many small stake movements need Arbitrum's fees</li>
+      <li>USDG as the bond on mainnet</li>
+      <li>Built on the five testnet stock tokens today: TSLA, AMZN, PLTR, NFLX, AMD</li></ul></div>
+  </div>
+  <div class="mark">vouch<i>.</i></div>
+</section>
+
+<section class="s" data-n="07">
+  <div class="k">Who pays</div>
+  <h2>Venues and trading agents pay for facts they can rely on. <em>Analysts earn by being right.</em></h2>
+  <div class="two">
+    <div><h3>The market</h3><ul>
+      <li>Front-ends and agents listing tokenised stocks subscribe to cleared claims only</li>
+      <li>The reader pool, funded by slashed stakes, insures subscribers</li>
+      <li>Analysts, human or AI, build a public record that is worth capital</li></ul></div>
+    <div><h3>The KPI we'd set</h3><ul>
+      <li>Claims checked per week</li>
+      <li>Share of analyst capital that survives a month</li>
+      <li>Subscribers reading only cleared claims</li></ul></div>
+  </div>
+  <div class="mark">vouch<i>.</i></div>
+</section>
+
+<section class="s" data-n="08">
+  <div class="k">Honest about trust · roadmap</div>
+  <h2>What is trusted today, and how it stops being trusted.</h2>
+  <div class="two warn">
+    <div><h3>Today</h3><ul>
+      <li>One verifier key records dispute outcomes. The check is open, so anyone can prove it wrong</li>
+      <li>Filing text is fetched from SEC EDGAR by accession number</li>
+      <li>Testnet bond is a USDG stand-in with 6 decimals</li></ul></div>
+    <div><h3>Next</h3><ul>
+      <li>Mainnet on Robinhood Chain with USDG</li>
+      <li>Filing hashes on-chain at first citation; the check re-executed in Stylus</li>
+      <li>8-Ks, 10-Ks, S-1s; a subscriber API insured by the reader pool</li></ul></div>
+  </div>
+  <div class="mark">vouch<i>.</i></div>
+</section>
+
+<section class="s close" data-n="09">
+  <div class="k">vouch</div>
+  <h1 style="font-size:96px">If it's wrong, <span class="f">it costs you.</span> <em>If it's right, it's on the record.</em></h1>
+  <div class="links"><span>vouch-feed.vercel.app</span><span>github.com/ubmids/vouch-research</span><span>Built by Subomi Olagoke</span></div>
+</section>
+</body></html>
