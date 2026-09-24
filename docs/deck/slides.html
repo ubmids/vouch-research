@@ -32,7 +32,7 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
 .nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 64px; }
 .num { border-top: 2px solid var(--line); padding-top: 26px; }
 .num b { display: block; font-size: 120px; font-weight: 300; letter-spacing: -.05em; line-height: 1; }
-.num span { display: block; font-size: 26px; color: var(--soft); margin-top: 14px; line-height: 1.4; }
+.num > span { display: block; font-size: 26px; color: var(--soft); margin-top: 14px; line-height: 1.4; }
 .shot { margin-top: 44px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; height: 690px; }
 .shot img { width: 100%; display: block; }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 60px; }
@@ -105,6 +105,18 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
 </section>
 
 <section class="s" data-n="07">
+  <div class="k">For AI agents</div>
+  <h2>A trading agent that won't act on research that failed the check.</h2>
+  <div class="nums">
+    <div class="num"><b class="v">18</b><span>claims the agent traded on: every one cleared by Vouch</span></div>
+    <div class="num"><b class="f">32</b><span>trades refused on-chain: <span class="mono">AgentDesk.open</span> reverts with <span class="mono">NotCleared</span></span></div>
+    <div class="num"><b>3 ways</b><span>to ask first: <span class="mono">isCleared(id)</span> on-chain, <span class="mono">POST /api/verify</span>, an MCP tool</span></div>
+  </div>
+  <p class="big">The verdict lives on-chain, so any contract can depend on it without trusting anyone's API.</p>
+  <div class="mark">vouch<i>.</i></div>
+</section>
+
+<section class="s" data-n="08">
   <div class="k">Why on-chain, why here</div>
   <h2>Take the chain away and it is a blog with a moderation policy.</h2>
   <div class="two">
@@ -122,30 +134,31 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
   <div class="mark">vouch<i>.</i></div>
 </section>
 
-<section class="s" data-n="08">
+<section class="s" data-n="09">
   <div class="k">Who pays</div>
-  <h2>Venues and trading agents pay for facts they can rely on. <em>Analysts earn by being right.</em></h2>
+  <h2>Agent builders pay for a check before their agents act. <em>Analysts earn by being right.</em></h2>
   <div class="two">
     <div><h3>The market</h3><ul>
-      <li>Front-ends and agents listing tokenised stocks subscribe to cleared claims only</li>
+      <li>AI trading agents pay per check, or per cleared claim streamed to them</li>
+      <li>Venues on Robinhood Chain show a checked fact next to every stock token</li>
       <li>The reader pool, funded by slashed stakes, insures subscribers</li>
       <li>Analysts, human or AI, build a public record that is worth capital</li></ul></div>
     <div><h3>The KPI we'd set</h3><ul>
       <li>Claims checked per week</li>
       <li>Share of analyst capital that survives a month</li>
-      <li>Subscribers reading only cleared claims</li></ul></div>
+      <li>Agents gating trades on Vouch, and checks per day</li></ul></div>
   </div>
   <div class="mark">vouch<i>.</i></div>
 </section>
 
-<section class="s" data-n="09">
+<section class="s" data-n="10">
   <div class="k">Honest about trust · roadmap</div>
   <h2>What is trusted today, and how it stops being trusted.</h2>
   <div class="two warn">
     <div><h3>Today</h3><ul>
       <li>One verifier key records dispute outcomes. The check is open, so anyone can prove it wrong</li>
       <li>Filing text is fetched from SEC EDGAR by accession number</li>
-      <li>Testnet bond is a USDG stand-in with 6 decimals</li></ul></div>
+      <li>Testnet bonds in Paxos test USDG; locally, a 6-decimal stand-in</li></ul></div>
     <div><h3>Next</h3><ul>
       <li>Mainnet on Robinhood Chain with USDG</li>
       <li>Filing hashes on-chain at first citation; the check re-executed in Stylus</li>
@@ -154,7 +167,7 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
   <div class="mark">vouch<i>.</i></div>
 </section>
 
-<section class="s close" data-n="10">
+<section class="s close" data-n="11">
   <div class="k">vouch</div>
   <h1 style="font-size:96px">If it's wrong, <span class="f">it costs you.</span> <em>If it's right, it's on the record.</em></h1>
   <div class="links"><span>vouch-feed.vercel.app</span><span>github.com/ubmids/vouch-research</span><span>Built by Subomi Olagoke</span></div>

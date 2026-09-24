@@ -10,7 +10,13 @@ dispute has one right answer: is this quote in this filing, with every figure
 exactly as filed? A wrong claim loses its stake, half to whoever caught it and
 half to a pool that backs readers.
 
-Live feed: **https://vouch-feed.vercel.app**
+Live feed: **https://vouch-feed.vercel.app** · verify API: `POST https://vouch-feed.vercel.app/api/verify`
+
+**For AI agents.** Agents increasingly read research and act on it. Vouch is the
+check they run first: on-chain, a contract asks `isCleared(id)` and refuses to
+trade on anything else (`AgentDesk`); off-chain, an agent calls the verify API
+or the `verify_claim` MCP tool. Either way the answer is the same deterministic
+check the market settles stakes with.
 
 ## The problem
 
@@ -35,7 +41,10 @@ trusting the publisher:
   edited after someone checks it;
 - every analyst's record (cleared, slashed, bond left) is public and permanent.
 
-Take the chain away and it is a blog with a moderation policy.
+Take the chain away and it is a blog with a moderation policy. And because the
+verdict is on-chain, other contracts can depend on it without trusting anyone's
+API: `AgentDesk` lets an AI agent open a position only when every claim it cites
+is cleared and about the same stock, and reverts otherwise.
 
 ## How it works
 
@@ -76,6 +85,12 @@ and six months ... $138 million and $274 million, respectively"); a balance must
 carry its own date; and the direction next to the figure may not be reversed.
 Over 1,444 scripted claims on five filings it makes no wrong calls.
 
+In the latest round the model analyst, now citing by pointer and deterministic
+(temperature 0, fixed seed), cleared 8 of 10. Both claims it lost were real
+mistakes (a June quarter called Q3, twice). Of the 8 it kept, 7 are exactly
+right and one drops the word "unrecognized" from "unrecognized stock-based
+compensation", a nuance no string rule can see.
+
 What it cannot do, and says so: it cannot tell a borrowing limit from a balance,
 or an inflow from an outflow described in words. That is what the challenge
 window, and human challengers, are for.
@@ -85,6 +100,10 @@ window, and human challengers, are for.
 | Path | What |
 |---|---|
 | `src/BondedClaims.sol` | The market: bond, post, challenge, finalize, resolve, slash, withdraw |
+| `src/AgentDesk.sol` | A trading desk for AI agents: a position opens only on cleared claims about the same stock; anything else reverts |
+| `test/AgentDesk.t.sol` | 7 tests: cleared, slashed, still in its window, wrong ticker, mixed backing, none, close |
+| `web/api/verify.py` | `POST /api/verify`: the same check as a hosted API, for any agent |
+| `agent/vouchrh/mcp_server.py` | `verify_claim` as an MCP tool, for agents that speak Model Context Protocol |
 | `src/MockUSDG.sol` | Test stand-in for Paxos USDG on testnets where it is not deployed (6 decimals, like USDG) |
 | `tests/test_verifier.py` | The check, including every mistake our own model analyst made, next to the correct version |
 | `test/BondedClaims.t.sol` | 17 Foundry tests, including fuzzed conservation of money through disputes |
@@ -119,6 +138,23 @@ PYTHONPATH=agent .venv/bin/python -m vouchrh.publish feed/feed.json web/feed.jso
 python3 -m http.server -d web 8000                    # the feed at localhost:8000
 ```
 
+Ask the check from anywhere:
+
+```bash
+curl -s https://vouch-feed.vercel.app/api/verify -H 'content-type: application/json' -d '{
+  "ticker": "TSLA", "value": "$1.37 billion",
+  "quote": "Depreciation expense during the three and six months ended June 30, 2026 was $1.37 billion and $2.71 billion, respectively.",
+  "summary": "Tesla depreciation was $1.37 billion in Q3 2026."}'
+# -> "verdict": "slashed", "reason": "wrong quarter: the period ended in June, the claim says Q3 2026"
+```
+
+Or give an agent the MCP tool:
+
+```json
+{"mcpServers": {"vouch": {"command": "/path/to/vouch/.venv/bin/python",
+  "args": ["-m", "vouchrh.mcp_server"], "env": {"PYTHONPATH": "/path/to/vouch/agent"}}}}
+```
+
 EDGAR requires a contact in every request's User-Agent; set
 `VOUCH_SEC_CONTACT="Your Name you@example.com"`. Add `--model` to include the
 language-model analyst (`ollama pull qwen2.5:7b-instruct` first).
@@ -143,11 +179,13 @@ not one:
 - **The filing text is fetched off-chain.** Claims cite the SEC accession
   number; the verifier fetches that document from EDGAR. Committing a hash of
   the filing text on-chain at first citation is the next step.
-- **The bond token on testnet is a mock.** On mainnet it is Paxos USDG.
+- **The bond token.** On Robinhood Chain testnet the market bonds in Paxos's
+  test USDG (`0x7E955252E15c84f5768B83c41a71F9eba181802F`) when the wallet holds
+  some; locally it deploys a 6-decimal stand-in. On mainnet it is USDG.
 
 ## Contract quality
 
-- 17 Foundry tests, including fuzzed conservation of money through disputes
+- 24 Foundry tests (17 for the market, 7 for the agent desk), including fuzzed conservation of money through disputes
   (256 random stakes and outcomes: nothing is created or lost) and the rule
   that slashing one analyst never touches another.
 - Checks, effects, interactions throughout: state and events before any token

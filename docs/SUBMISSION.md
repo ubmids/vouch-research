@@ -67,9 +67,17 @@ reads the summary, so Vouch now checks the claim as written: whole sentences
 only, every figure in the summary grounded in the sentence (or its arithmetic),
 the right period, quarter and date for that figure, and no reversed direction.
 Over 1,444 scripted claims on five filings it makes no wrong calls. Rebuilt to
-cite by pointer, the model analyst now clears 9 of 10, and the one it loses is a
-real mistake. What the check cannot do, it says: telling a borrowing limit from
+cite by pointer and made deterministic, the model analyst clears 8 of 10 in the
+latest round; both claims it loses are real mistakes, and 7 of the 8 it keeps
+are exactly right. What the check cannot do, it says: telling a borrowing limit from
 a balance is what the challenge window and human challengers are for.
+
+**Agents that refuse bad research.** Other contracts can ask Vouch whether a
+claim is cleared. `AgentDesk` lets an AI agent open a position only when every
+claim it cites is cleared and about the same stock; a slashed claim, one still
+in its window, or research about another ticker reverts the trade on-chain. The
+same check is a hosted API (`POST /api/verify`) and an MCP tool, so any agent can
+ask before it acts.
 
 **What is live.** Real 10-Qs from SEC EDGAR for the five stock tokens on
 Robinhood Chain testnet (TSLA, AMZN, PLTR, NFLX, AMD). Four scripted analysts
@@ -91,16 +99,23 @@ first citation, and the check re-executed in Stylus.
 
 ## Who pays
 
-Venues and protocols that list tokenised stocks, and the traders on them, pay
-for research they can rely on; analysts earn by being right, and lose their
-stake by being wrong. The reader pool, funded by slashed stakes, insures
-subscribers against cleared claims that later prove wrong. The first customers
-are front-ends and trading agents on Robinhood Chain that want a machine-
-readable feed of checked facts about the equities they list.
+**The builders of AI trading agents.** An agent that reads research and trades
+on it is only as safe as the research. Vouch is the check it runs first:
+on-chain, a contract calls `isCleared(id)` and refuses to trade on anything
+else, which is what `AgentDesk` does (in our round the trading agent acted on
+the 18 cleared claims and was refused, on-chain, on the other 32); off-chain,
+the agent calls `POST /api/verify` or the `verify_claim` MCP tool. They pay per
+check, or per cleared claim streamed to them.
+
+Analysts, human or AI, earn by being right and lose their stake by being
+wrong, so the feed gets more trustworthy the more it is used. The reader pool,
+funded by slashed stakes, insures subscribers against a cleared claim that
+later proves wrong. Venues listing tokenised stocks on Robinhood Chain are the
+next customer: a checked fact next to every ticker.
 
 ## How it was built
 
-Solidity contract (`BondedClaims`) with Foundry, 17 tests and a clean Slither run including fuzzed
+Solidity contracts (`BondedClaims`, `AgentDesk`) with Foundry, 24 tests and a clean Slither run including fuzzed
 conservation of money through disputes. Python agent layer with web3.py: an
 SEC EDGAR client, the deterministic verifier, fact extraction from real 10-Qs,
 five analysts, and a market loop that runs on anvil, Robinhood Chain testnet or
@@ -132,19 +147,21 @@ for this buildathon from 24 September 2026; the README lists what is new.
 
 ## Tech
 
-Solidity, Foundry, Python, web3.py, SEC EDGAR, Ollama (Qwen 2.5 7B), Robinhood
-Chain testnet, Arbitrum Sepolia, Vercel.
+Solidity, Foundry, Python, web3.py, SEC EDGAR, Ollama (Qwen 2.5 7B), Model
+Context Protocol, Paxos USDG, Robinhood Chain testnet, Arbitrum Sepolia, Vercel.
 
 ## Links
 
 - Repository: https://github.com/ubmids/vouch-research (public at submission)
 - Live feed: https://vouch-feed.vercel.app
+- Verify API: POST https://vouch-feed.vercel.app/api/verify
 - Contract on Robinhood Chain testnet: see `deployments/46630.json` after `scripts/testnet.sh`
 - Demo video: (paste once recorded, script in docs/DEMO_SCRIPT.md)
 
 ## Before submitting, the checklist
 
 - [ ] Test ETH from faucet.testnet.chain.robinhood.com to 0x950d00BA837cD285e6d8a0F3f02d69434a775808
+- [ ] Test USDG on Robinhood testnet from faucet.paxos.com to the same address (for the USDG bonus)
 - [ ] `bash scripts/testnet.sh` (deploys, runs the round, republishes the feed with explorer links)
 - [ ] Registered on HackQuest before 2 Oct
 - [ ] Demo video recorded to DEMO_SCRIPT.md, uploaded, public

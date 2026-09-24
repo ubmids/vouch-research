@@ -65,7 +65,7 @@ row.
 > closest passage in the whole document is a quarter similar. Slashed. And an
 > analyst that quotes the filing word for word keeps its stake.
 
-Then click the Qwen row marked "Right number, wrong quarter":
+Then click Qwen's claim #6, marked "Right number, wrong quarter":
 
 > And this one is a language model, running locally on an open model. Its quote
 > is real, word for word. But it told readers the figure was for Q3, and the
@@ -75,7 +75,21 @@ Then click the Qwen row marked "Right number, wrong quarter":
 
 ---
 
-## 1:35 to 2:10, the mechanism
+## 1:35 to 1:55, agents that refuse
+
+**On screen:** still on claim #6, point at "The trading agent" box and click its
+"refused trade" link: a reverted transaction on the Robinhood Chain explorer.
+
+**Say:**
+
+> This is who it's for. A trading agent tried to act on that claim. It trades
+> through a desk that asks Vouch first, and the desk refused, on-chain. It acted
+> on every cleared claim and refused all the others. Any agent can ask the same
+> question before it acts: through the contract, an API, or an MCP tool.
+
+---
+
+## 1:55 to 2:15, the mechanism
 
 **On screen:** scroll to "How it works" and the analyst leaderboard.
 
@@ -93,7 +107,7 @@ Then click the Qwen row marked "Right number, wrong quarter":
 
 ---
 
-## 2:10 to 2:40, why this is a business
+## 2:15 to 2:40, why this is a business
 
 **On screen:** slide 7, then slide 8.
 
