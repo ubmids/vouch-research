@@ -139,8 +139,24 @@ function select(id, scroll) {
     </div></div>
     ${stakeOut}
     <div class="tx">${txLink(c.tx_post, "posted")}${txLink(c.tx_judge, bad ? "slashed" : "cleared")}</div>
-    <div class="hash">claim hash ${esc(c.hash)}</div>`;
+    <div class="hash">on-chain hash ${esc(c.hash)}</div>
+    <div class="verify"><button id="rehash">Verify it yourself</button><span id="rehashOut">Recompute the hash from the words shown, in your browser.</span></div>`;
+  $("#rehash").onclick = () => {
+    const got = rehash(c), ok = got === c.hash;
+    $("#rehashOut").innerHTML = ok
+      ? `<span class="ok">✓ ${short(got, 10, 6)} matches the chain.</span> These are exactly the words that were staked.`
+      : `<span class="no">✕ ${short(got, 10, 6)} does not match.</span> The words shown are not the ones staked.`;
+  };
   if (scroll && innerWidth < 1100) $("#inspect").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// The claim's canonical form, byte for byte what claims.py hashes: its seven
+// fields, keys sorted, no whitespace, UTF-8. keccak256 of it is what post()
+// stored. If the page showed different words, this would not match.
+function rehash(c) {
+  const fields = { accession: c.accession, analyst: c.analyst, metric: c.metric, quote: c.quote,
+                   summary: c.summary || "", ticker: c.ticker, value: c.value };
+  return "0x" + keccak256(JSON.stringify(fields));
 }
 
 function board() {

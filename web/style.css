@@ -112,6 +112,10 @@ td.claim .q { color: var(--soft); }
 .tx a { color: var(--ink2); text-decoration: none; border-bottom: 1px solid var(--line2); }
 .tx a:hover { color: var(--ink); }
 .hash { margin-top: 14px; font: 400 11px var(--mono); color: var(--dim); overflow-wrap: anywhere; }
+.verify { margin-top: 12px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font: 400 12px var(--mono); }
+.verify button { border: 1px solid var(--line2); border-radius: 6px; padding: 6px 10px; color: var(--ink2); font: 500 12px var(--mono); }
+.verify button:hover { color: var(--ink); border-color: var(--dim); }
+.verify .ok { color: var(--volt); } .verify .no { color: var(--flare); }
 
 /* ---- lower -------------------------------------------------------------- */
 .lower { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
