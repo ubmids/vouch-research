@@ -360,3 +360,78 @@ details.under li p { color: var(--ink2); font-size: 14px; } details.under li b {
   .nav { margin-left: 0; }
   .sectionHead { padding: 22px 16px 10px; }
 }
+
+/* ---- phones, done properly --------------------------------------------------
+   One compact bar, thumb-sized targets, and a claim that opens as a sheet over
+   the list instead of somewhere below fifty rows. */
+dialog.check { overflow-y: auto; }
+.sheetClose { display: none; }
+.mkpis[hidden] { display: none; }
+@media (max-width: 720px) {
+  .top { position: sticky; flex-wrap: nowrap; gap: 10px; padding: 10px 14px; }
+  .top .net { font-size: 11px; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .top .cta { order: 0; margin-left: auto; min-height: 40px; padding: 0 14px; font-size: 13px; }
+  .kpis { display: none; }
+  .mkpis { display: flex; justify-content: space-between; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--line); font: 400 12.5px var(--mono); color: var(--soft); }
+  .mkpis b { color: var(--ink); font-weight: 500; margin-left: 5px; }
+  .mkpis .c b { color: var(--volt); } .mkpis .s b { color: var(--flare); }
+
+  /* thumb-sized */
+  .switch button, .tabs button { min-height: 40px; padding: 0 14px; }
+  .nav button { min-height: 46px; padding: 0 20px; font-size: 15px; }
+  .nav { justify-content: space-between; }
+  .storyHead .skip, .txl { display: inline-flex; align-items: center; min-height: 40px; }
+  .txl { border-bottom: 0; text-decoration: underline; text-underline-offset: 4px; }
+  .acts button, .acts .btn { min-height: 44px; }
+  .bar #who, .bar #q { min-height: 42px; font-size: 15px; }
+  .examples button { min-height: 38px; padding: 0 12px; }
+  .checkForm input, .checkForm select, .checkForm textarea { font-size: 16px; }   /* 16px stops iOS zooming in */
+  .go .primary { min-height: 46px; padding: 0 24px; }
+  details.tech summary, details.under summary { min-height: 44px; display: flex; align-items: center; }
+  .verify button { min-height: 40px; }
+  tbody tr { padding: 14px 16px; }
+
+  /* readable */
+  .box .k, .vs span, .stakeViz span, .storyHead .k, .stepNum, .chip, .find .meta, td.vd .why, .who2 span { font-size: 12px; }
+  .pill { font-size: 11.5px; padding: 3px 8px; }
+  .ana { grid-template-columns: 1fr 90px; grid-template-areas: "nm val" "bb bb"; row-gap: 8px; }
+  .ana .nm { grid-area: nm; } .ana .val { grid-area: val; } .ana .bb { grid-area: bb; }
+  .ana .val span { white-space: nowrap; }
+
+  /* a claim opens as a sheet */
+  .inspect { display: none; }
+  body.sheet .inspect { display: block; position: fixed; inset: 0; z-index: 30; overflow-y: auto; padding: 0 16px 40px; border: 0; background: var(--panel); animation: sheetUp .28s cubic-bezier(.2,.7,.3,1); }
+  body.sheet { overflow: hidden; }
+  .sheetClose { display: flex; position: sticky; top: 0; z-index: 2; align-items: center; justify-content: space-between; margin: 0 -16px 14px; padding: 10px 16px; background: color-mix(in srgb, var(--panel) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .sheetClose button { min-height: 42px; padding: 0 16px; border: 1px solid var(--line2); border-radius: 999px; font: 500 14px var(--sans); color: var(--ink); }
+  .sheetClose span { font: 400 12px var(--mono); color: var(--soft); }
+  dialog.check { width: 100vw; max-width: 100vw; height: 100svh; max-height: 100svh; border-radius: 0; border: 0; margin: 0; }
+  .checkForm { padding: 18px 16px 30px; }
+}
+@keyframes sheetUp { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (max-width: 720px) {
+  .ana { grid-template-columns: 1fr auto; }
+  .ana .val { text-align: right; }
+  .box .k a, .tx a, .addr a, .linkish, .result a { display: inline-flex; align-items: center; min-height: 40px; }
+  .addr { gap: 0; }
+  .checkForm .x { min-width: 44px; min-height: 44px; }
+  .brand { display: inline-flex; align-items: center; min-height: 40px; }
+  .skip { padding-right: 4px; }
+}
+/* touch screens of any width (tablets too) get thumb-sized targets */
+@media (pointer: coarse) {
+  .switch button, .tabs button { min-height: 40px; padding: 0 14px; }
+  .nav button { min-height: 46px; padding: 0 20px; }
+  .txl, .storyHead .skip, .brand { display: inline-flex; align-items: center; min-height: 40px; }
+  .acts button, .acts .btn, .top .cta { min-height: 44px; }
+  .bar #who, .bar #q { min-height: 42px; }
+  .examples button { min-height: 38px; }
+  details.tech summary, details.under summary { min-height: 44px; display: flex; align-items: center; }
+  .box .k a, .tx a, .addr a, .linkish { display: inline-flex; align-items: center; min-height: 40px; }
+}
+@media (pointer: coarse) {
+  .checkForm .x { min-width: 44px; min-height: 44px; }
+  .go .primary { min-height: 46px; padding: 0 24px; }
+  .verify button { min-height: 40px; }
+  .result a { display: inline-flex; align-items: center; min-height: 40px; }
+}

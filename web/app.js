@@ -51,6 +51,9 @@ function boot() {
     k("s", "wrong", cs.length - cleared, "Wrong in a way the check can prove: the analyst lost its stake (slashed)") +
     k("opt", "lost by wrong claims", `${money(lost)} USDG`, "Stake taken from wrong claims: half to whoever caught them, half to the reader pool") +
     (cs[0] && cs[0].desk ? k("opt", "agent trades", `${acted} / ${cs.length}`, "A trading agent tried to act on every claim. The desk only let it trade on true ones") : "");
+  // On a phone, three numbers under the bar rather than six in it.
+  $("#mkpis").innerHTML = `<span>claims<b>${cs.length}</b></span><span class="c">true<b>${cleared}</b></span><span class="s">wrong<b>${cs.length - cleared}</b></span>`;
+  $("#mkpis").hidden = !matchMedia("(max-width: 720px)").matches;
   const tape = cs.slice().reverse().map((c) =>
     `<span><b>${esc(c.ticker)}</b>${esc(c.value)} <span class="${c.verdict[0]}">${c.verdict === "cleared" ? "TRUE" : "WRONG · " + plain(c).short}</span></span>`).join("");
   $("#tape").innerHTML = tape + tape;
@@ -172,6 +175,7 @@ function select(id, scroll) {
     : `<p><span class="bad">It was refused.</span> A trading agent tried to act on this claim. The desk asked Vouch first, and a claim that failed the check cannot back a trade, so the transaction reverted on-chain.</p>`) : "";
 
   $("#inspect").innerHTML = `
+    <div class="sheetClose"><button id="closeSheet">← All claims</button><span>claim #${c.id}</span></div>
     <div class="h"><span>${esc(NAMES[c.ticker] || c.ticker)} · ${esc(f.form || "10-Q")} filed ${esc(f.filed || "")}</span><span>claim #${c.id}</span></div>
     <h2>${p.title}</h2>
     <p class="sub">${p.why}${p.rule ? `<span class="rule">${esc(p.rule)}</span>` : ""}</p>
@@ -206,8 +210,20 @@ function select(id, scroll) {
       ? `<span class="ok">✓ ${short(got, 10, 6)} matches the chain.</span> These are exactly the words that were staked.`
       : `<span class="no">✕ ${short(got, 10, 6)} does not match.</span> The words shown are not the ones staked.`;
   };
-  if (scroll && innerWidth < 1100) $("#inspect").scrollIntoView({ behavior: "smooth", block: "start" });
+  $("#closeSheet").onclick = closeSheet;
+  // On a phone the claim opens as a sheet over the list; on a tablet it sits below it.
+  if (scroll && matchMedia("(max-width: 720px)").matches) { document.body.classList.add("sheet"); $("#inspect").scrollTop = 0; history.pushState({ sheet: 1 }, ""); }
+  else if (scroll && innerWidth < 1100) $("#inspect").scrollIntoView({ behavior: "smooth", block: "start" });
 }
+
+function closeSheet() {
+  if (!document.body.classList.contains("sheet")) return;
+  document.body.classList.remove("sheet");
+  if (history.state && history.state.sheet) history.back();
+}
+// The phone's back gesture closes the sheet rather than leaving the page.
+addEventListener("popstate", () => document.body.classList.remove("sheet"));
+addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
 
 // The claim's canonical form, byte for byte what claims.py hashes: its seven
 // fields, keys sorted, no whitespace, UTF-8. keccak256 of it is what post()
