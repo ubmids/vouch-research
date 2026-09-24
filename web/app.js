@@ -77,11 +77,9 @@ function boot() {
   };
   $("#who").onchange = (e) => { analyst = e.target.value; rows(); };
   $("#q").oninput = (e) => { query = e.target.value.trim().toLowerCase(); rows(); };
-  $("#showLie").onclick = () => { select(lead.id); $("#inspect").scrollIntoView({ behavior: "smooth", block: "start" }); };
-  $("#openCheck").onclick = $("#introCheck").onclick = openCheck;
-  $("#hideIntro").onclick = () => { $("#intro").hidden = true; try { localStorage.setItem("vouch.intro", "hidden"); } catch (e) {} };
-  try { if (localStorage.getItem("vouch.intro") === "hidden") $("#intro").hidden = true; } catch (e) {}
+  $("#openCheck").onclick = $("#devCheck").onclick = openCheck;
   checkPanel();
+  story(lead);
 }
 
 function watch() {
@@ -221,11 +219,18 @@ function rehash(c) {
 }
 
 function board() {
+  const st = F.standings, top = Math.max(...st.map((s) => s.bonded));
+  const honest = st.filter((s) => s.slashed === 0), liars = st.filter((s) => s.cleared === 0);
+  const ai = st.find((s) => s.kind === "model");
+  $("#boardLine").innerHTML = `Everyone started with ${money(top)} USDG. ` +
+    (honest.length ? `<span class="c">${esc(honest.map((s) => s.analyst).join(", "))} told the truth every time and kept all of it.</span> ` : "") +
+    (liars.length ? `<span class="s">The ${liars.length} that bent the numbers lost half.</span> ` : "") +
+    (ai ? `The AI got ${ai.slashed} of ${ai.cleared + ai.slashed} wrong and paid for each.` : "");
   const max = Math.max(...F.standings.map((s) => s.bonded), 1);
   $("#board").innerHTML = F.standings.slice().sort((a, b) => b.bonded - a.bonded).map((s) => {
     const lost = s.slashed > 0;
     return `<button class="ana" data-a="${esc(s.analyst)}" title="Show ${esc(s.analyst)}'s claims">
-      <div class="nm">${esc(s.analyst)}${s.kind === "model" ? ' <span class="ai">AI</span>' : ""}<span>${s.kind === "model" ? "an open model, running locally" : "a scripted analyst"}</span></div>
+      <div class="nm">${esc(s.analyst)}${s.kind === "model" ? ' <i class="ai">AI</i>' : ""}<span>${s.kind === "model" ? "an open model, running locally" : "a scripted analyst"}</span></div>
       <div class="bb"><i style="width:${(s.bonded / max * 100).toFixed(1)}%;background:${lost ? "var(--flare)" : "var(--volt)"}"></i></div>
       <div class="val">${money(s.bonded)}<span>${s.cleared} true · ${s.slashed} wrong</span></div></button>`;
   }).join("");
@@ -284,4 +289,90 @@ function checkPanel() {
         ? "The live check runs on vouch-feed.vercel.app." : `Could not check it: ${err.message}`;
     } finally { $("#runCheck").disabled = false; }
   };
+}
+
+
+// The one sentence that says exactly what went wrong, from the check's reason.
+function specific(c) {
+  const r = c.reason || "", Q = { January: 1, February: 1, March: 1, April: 2, May: 2, June: 2, July: 3, August: 3, September: 3, October: 4, November: 4, December: 4 };
+  let m = r.match(/^wrong quarter: the period ended in (\w+), the claim says (.+)$/);
+  if (m) return `The filing's quarter ended in ${esc(m[1])}, which is Q${Q[m[1]] || "?"}. The claim says ${esc(m[2])}.`;
+  m = r.match(/^wrong period: the filing gives (.+) for (.+), the claim says (.+)$/);
+  if (m) return `In the filing, ${esc(m[1])} is the figure for ${esc(m[2])}. The claim says it's for ${esc(m[3])}.`;
+  m = r.match(/^wrong date: the filing gives (.+) as of (.+), the claim says (.+)$/);
+  if (m) return `In the filing, ${esc(m[1])} is the balance as of ${esc(m[2])}. The claim dates it ${esc(m[3])}.`;
+  return esc(plain(c).why);
+}
+
+// ---- follow one claim: the story before the data ------------------------------
+function story(lead) {
+  const cs = F.claims, wrong = lead;
+  const right = cs.find((c) => c.verdict === "cleared" && c.quote === wrong.quote && c.id !== wrong.id)
+    || cs.find((c) => c.verdict === "cleared" && c.ticker === wrong.ticker) || cs.find((c) => c.verdict === "cleared");
+  const ex = F.chain.explorer, f = F.filings[wrong.ticker] || {};
+  const tx = (h, label) => ex && h ? `<a class="txl" href="${ex}/tx/${h}" target="_blank" rel="noopener">${label} on ${esc(F.chain.name)} ↗</a>` : "";
+  const acted = cs.filter((c) => c.desk && c.desk.acted).length, refused = cs.length - acted;
+  const company = NAMES[wrong.ticker] || wrong.ticker;
+  const bond = Math.max(...F.standings.map((s) => s.bonded));      // what each analyst started with
+  const who = (c) => `<div class="who2">${c.analyst_kind === "model" ? '<i class="ai">AI</i>' : ""}<b>${esc(c.analyst)}</b><span>${c.analyst_kind === "model" ? "a language model, running on a laptop" : "a scripted analyst"}</span></div>`;
+  const period = (t) => esc(t).replace(/\b((?:three|six|nine|twelve)(?: and (?:three|six|nine|twelve))? months ended [A-Z][a-z]+ \d{1,2}, \d{4})/, '<mark class="g">$1</mark>');
+  const said = (c) => c.summary ? esc(c.summary).replace(/\b(Q[1-4](?: \d{4})?)/, c.verdict === "slashed" ? '<mark class="r">$1</mark>' : '$1') : `${esc(company)}'s figure is <b>${esc(c.value)}</b>.`;
+  const S = {
+    wrong: [
+      [`An AI read ${esc(company)}'s quarterly report and wrote this.`,
+        `${who(wrong)}<blockquote>${said(wrong)}</blockquote><div class="chip">citing ${esc(company)}'s ${esc(f.form || "10-Q")}, filed ${esc(f.filed || "")}</div>`],
+      [`It put ${money(wrong.stake)} USDG of its own money behind that sentence.`,
+        `<div class="stakeViz"><div><span>its bond</span><b>${money(bond)} USDG</b></div><div class="arrow">→</div><div class="lockd"><span>locked on this claim</span><b>${money(wrong.stake)} USDG</b></div></div>
+         <p class="small">If the claim is true, the money comes back. If it isn't, it's gone. That's the whole idea.</p>${tx(wrong.tx_post, "the stake")}`],
+      [`Vouch checked it against the actual filing.`,
+        `<div class="vs"><div><span>The claim says</span><p>${said(wrong)}</p></div><div><span>${esc(company)}'s 10-Q says</span><p>${period(wrong.source ? wrong.source.match : wrong.quote)}</p></div></div>
+         <p class="small">${specific(wrong)} <b class="r">${esc(plain(wrong).short[0].toUpperCase() + plain(wrong).short.slice(1))}.</b></p>`],
+      [`Wrong, so it paid.`,
+        `<div class="flow big"><div class="n">${esc(wrong.analyst)}<b class="s">−${money(wrong.stake)} USDG</b></div><div class="ar">→</div><div class="n">${money(wrong.stake / 2)} to whoever caught it<br>${money(wrong.stake / 2)} to a pool that protects readers<b class="c">+${money(wrong.stake)}</b></div></div>
+         <p class="small">No moderator decided this. The check is mechanical, so anyone can re-run it and get the same answer.</p>${tx(wrong.tx_judge, "the slash")}`],
+      [`A trading agent wanted to act on it. The contract said no.`,
+        `<div class="agentViz"><div class="bad">✕ trade refused</div><p>The agent trades through a desk that asks Vouch first. A claim that failed the check can't back a trade, so the transaction reverted on-chain.</p></div>
+         <p class="small">Across this round it traded on all <b class="c">${acted}</b> true claims and was refused on all <b class="r">${refused}</b> wrong ones.</p>${tx(wrong.desk && wrong.desk.tx, "the refused trade")}`],
+    ],
+    right: [
+      [`Another analyst read the same report and quoted the same sentence.`,
+        `${who(right)}<blockquote>${said(right)}</blockquote><div class="chip">citing the same ${esc(f.form || "10-Q")}</div>`],
+      [`It staked ${money(right.stake)} USDG too.`,
+        `<div class="stakeViz"><div><span>its bond</span><b>${money(bond)} USDG</b></div><div class="arrow">→</div><div class="lockd"><span>locked on this claim</span><b>${money(right.stake)} USDG</b></div></div>${tx(right.tx_post, "the stake")}`],
+      [`Vouch checked it: word for word, figure for figure.`,
+        `<div class="vs one"><div><span>${esc(NAMES[right.ticker] || right.ticker)}'s 10-Q says</span><p><mark class="g">${esc(right.source ? right.source.match : right.quote)}</mark></p></div></div>
+         <p class="small">The sentence is in the filing, the figure ${esc(right.value)} is in it, and nothing claimed goes beyond it. <b class="c">It matches.</b></p>`],
+      [`Right, so it kept its money.`,
+        `<div class="flow big"><div class="n">${esc(right.analyst)} staked<b>${money(right.stake)} USDG</b></div><div class="ar">→</div><div class="n">returned in full<b class="c">+${money(right.stake)}</b></div></div>${tx(right.tx_judge, "the clearance")}`],
+      [`A trading agent acted on it.`,
+        `<div class="agentViz"><div class="good">✓ trade opened</div><p>The desk asked Vouch whether the claim was cleared. It was, so the agent's position opened.</p></div>${tx(right.desk && right.desk.tx, "the trade")}`],
+    ],
+  };
+  let which = "wrong", i = 0;
+  const end = () => `<div class="endCard"><h3>That's Vouch: research that costs money to get wrong.</h3>
+    <p>AI analysts are fast and fluent, and sometimes wrong about numbers. Here, being wrong has a price, and agents only act on what survived the check.</p>
+    <div class="acts"><button class="primary" id="endTry">Check a claim yourself</button><a class="btn" href="#claims">See all ${cs.length} claims</a><button id="endAgain">Follow the ${which === "wrong" ? "right" : "wrong"} one</button></div></div>`;
+  const draw = () => {
+    const steps = S[which], last = i === steps.length;
+    $("#stepNum").textContent = last ? "" : `${i + 1} / ${steps.length}`;
+    $("#stepBody").innerHTML = last ? end() : `<h2>${steps[i][0]}</h2><div class="viz">${steps[i][1]}</div>`;
+    $("#dots").innerHTML = [...steps, 0].map((_, k) => `<i class="${k === i ? "on" : ""}"></i>`).join("");
+    $("#prev").disabled = i === 0;
+    $("#next").hidden = last;
+    if (last) {
+      $("#endTry").onclick = openCheck;
+      $("#endAgain").onclick = () => setStory(which === "wrong" ? "right" : "wrong");
+    }
+  };
+  const setStory = (w) => {
+    which = w; i = 0;
+    document.querySelectorAll("#storySwitch button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.s === w)));
+    draw();
+  };
+  $("#storySwitch").onclick = (e) => { const b = e.target.closest("button"); if (b) setStory(b.dataset.s); };
+  $("#next").onclick = () => { i = Math.min(S[which].length, i + 1); draw(); };
+  $("#prev").onclick = () => { i = Math.max(0, i - 1); draw(); };
+  $("#story").onkeydown = (e) => { if (e.key === "ArrowRight") $("#next").click(); if (e.key === "ArrowLeft") $("#prev").click(); };
+  $("#story").tabIndex = -1;
+  draw();
 }
