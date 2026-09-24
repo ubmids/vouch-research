@@ -1,44 +1,87 @@
 // Vouch feed. Reads feed.json, written by `python -m vouchrh.publish`, and
 // shows it. Nothing here decides a verdict: the page displays what the
-// deterministic check found and what the chain did about it.
+// deterministic check found and what the chain did about it. The one thing it
+// asks the server is the live check, POST /api/verify, the same check again.
 "use strict";
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const short = (h, a = 6, b = 4) => h ? `${h.slice(0, a)}…${h.slice(-b)}` : "";
 const money = (n) => Number(n).toLocaleString("en-US", { maximumFractionDigits: 2 });
 const NAMES = { TSLA: "Tesla", AMZN: "Amazon", PLTR: "Palantir", NFLX: "Netflix", AMD: "AMD" };
-let F, filter = "all", ticker = null, selected = null;
+let F, filter = "all", ticker = null, analyst = "", query = "", selected = null;
 
 fetch("feed.json", { cache: "no-store" }).then((r) => r.json()).then((d) => { F = d; boot(); })
   .catch(() => { $("#inspect").innerHTML = `<p class="sub">The feed could not be loaded.</p>`; });
 
+// ---- plain words for every verdict -----------------------------------------
+// The check's reasons are exact; these are what a reader needs at a glance.
+function plain(c) {
+  const r = c.reason || "", src = c.source;
+  if (c.verdict === "cleared") return { short: "matches the filing", title: `In the filing, as claimed. <em class="c">Cleared.</em>`,
+    why: "The quote is a whole sentence of the company's 10-Q, the figure is in it, and nothing in the summary contradicts it." };
+  const rules = [
+    ["wrong period", "wrong period", "Right number, wrong period.", "The quote is real and the figure is in it, but the filing gives that figure for a different period than the claim states."],
+    ["wrong quarter", "wrong quarter", "Right number, wrong quarter.", "The quote is real, but the period it covers ends in a different quarter from the one the claim names."],
+    ["wrong date", "wrong date", "Right number, wrong date.", "The sentence gives two balances at two dates. The claim paired this figure with the wrong one."],
+    ["the summary states", "summary adds a number", "The summary adds a number.", "Every figure a reader sees must be in the cited sentence, or be simple arithmetic on it. This one is not."],
+    ["the summary reverses", "summary says the opposite", "The summary says the opposite.", "The summary reverses its own quote: up for down, or gain for loss."],
+    ["the quote is a fragment", "quote is a fragment", "A fragment, not a sentence.", "A quote must be a whole sentence of the filing. A fragment can drop the words that change its meaning."],
+    ["claimed value not grounded", "claims another number", "Real quote, wrong number.", "The sentence is genuinely in the filing, but it does not say the figure the claim asserts."],
+  ];
+  for (const [k, s, t, w] of rules) if (r.startsWith(k)) return { short: s, title: `${t} <em>Slashed.</em>`, why: w, rule: r };
+  if (c.check.method === "figures-differ") return { short: "a figure was changed", title: `One figure off the filing. <em>Slashed.</em>`,
+    why: `The quote is ${(c.check.score * 100).toFixed(1)}% identical to the filing, close enough to pass any fuzzy match. But a figure in it is not the filing's, and figures must match exactly.` };
+  if (src) return { short: "quote was altered", title: `The quote was altered. <em>Slashed.</em>`, why: "No sentence in the filing matches the quote closely enough." };
+  return { short: "not in the filing", title: `Not in the filing at all. <em>Slashed.</em>`,
+    why: `The closest passage in the whole 10-Q is only ${(c.similarity * 100).toFixed(0)}% similar. The sentence was invented.` };
+}
+
+// ---- boot -------------------------------------------------------------------
 function boot() {
   const cs = F.claims, cleared = cs.filter((c) => c.verdict === "cleared").length;
-  const staked = cs.reduce((a, c) => a + c.stake, 0);
-  const slashed = cs.filter((c) => c.verdict === "slashed").reduce((a, c) => a + c.stake, 0);
-  $("#net").textContent = `${F.chain.name} · ${F.chain_id}`;
+  const lost = cs.filter((c) => c.verdict === "slashed").reduce((a, c) => a + c.stake, 0);
+  const acted = cs.filter((c) => c.desk && c.desk.acted).length;
+  $("#net").textContent = F.chain.name;
+  $("#net").title = `chain id ${F.chain_id}`;
   $("#footChain").textContent = F.chain.name;
+  const k = (cls, label, val, tip) => `<span class="${cls}" title="${esc(tip)}">${label}<b>${val}</b></span>`;
   $("#kpis").innerHTML =
-    `<span>claims<b>${cs.length}</b></span><span class="c">cleared<b>${cleared}</b></span>` +
-    `<span class="s">slashed<b>${cs.length - cleared}</b></span><span class="opt">at stake<b>${money(staked)} USDG</b></span>` +
-    `<span class="opt">lost by wrong claims<b>${money(slashed)}</b></span><span>reader pool<b>${money(F.reader_pool)}</b></span>` +
-    (cs[0] && cs[0].desk ? `<span class="opt">agent acted<b class="cv">${cs.filter((c) => c.desk.acted).length}</b> refused<b class="sv">${cs.filter((c) => !c.desk.acted).length}</b></span>` : "");
+    k("", "claims", cs.length, "Claims posted in this round, each with USDG at stake") +
+    k("c", "true", cleared, "Checked against the SEC filing and found true: cleared") +
+    k("s", "wrong", cs.length - cleared, "Wrong in a way the check can prove: the analyst lost its stake (slashed)") +
+    k("opt", "lost by wrong claims", `${money(lost)} USDG`, "Stake taken from wrong claims: half to whoever caught them, half to the reader pool") +
+    (cs[0] && cs[0].desk ? k("opt", "agent trades", `${acted} / ${cs.length}`, "A trading agent tried to act on every claim. The desk only let it trade on true ones") : "");
   const tape = cs.slice().reverse().map((c) =>
-    `<span><b>${esc(c.ticker)}</b>${esc(c.value)} <span class="${c.verdict[0]}">${c.verdict === "cleared" ? "CLEARED" : "SLASHED −" + c.stake}</span></span>`).join("");
-  $("#tape").innerHTML = tape + tape;          // two copies, so the loop is seamless
+    `<span><b>${esc(c.ticker)}</b>${esc(c.value)} <span class="${c.verdict[0]}">${c.verdict === "cleared" ? "TRUE" : "WRONG · " + plain(c).short}</span></span>`).join("");
+  $("#tape").innerHTML = tape + tape;
+  const names = [...new Set(cs.map((c) => c.analyst))];
+  $("#who").innerHTML = `<option value="">Every analyst</option>` +
+    names.map((n) => `<option value="${esc(n)}">${esc(n)}${cs.find((c) => c.analyst === n).analyst_kind === "model" ? " (AI)" : ""}</option>`).join("");
   watch(); board(); rows();
-  const addr = F.contracts;
-  $("#addr").innerHTML = `<span>BondedClaims ${esc(addr.market)}</span><span>Bond token (test USDG) ${esc(addr.usdg)}</span>`;
+  const addr = F.contracts, ex = F.chain.explorer;
+  const link = (a, label) => ex ? `<a href="${ex}/address/${a}" target="_blank" rel="noopener">${label} ${esc(a)} ↗</a>` : `<span>${label} ${esc(a)}</span>`;
+  $("#addr").innerHTML = link(addr.market, "BondedClaims") + (addr.desk ? link(addr.desk, "AgentDesk") : "") + link(addr.usdg, "Bond token");
   $("#gen").textContent = `round of ${new Date(F.generated * 1000).toUTCString().slice(5, 22)} UTC`;
-  // Open on the most instructive claim: a near-perfect quote with one figure changed.
-  const lead = cs.find((c) => c.check.method === "figures-differ") || cs.find((c) => c.verdict === "slashed") || cs[0];
+
+  // Open on the most instructive claim: the AI's own mistake if it made one,
+  // else a near-perfect quote with one figure changed.
+  const lead = cs.find((c) => c.analyst_kind === "model" && c.verdict === "slashed")
+    || cs.find((c) => c.check.method === "figures-differ") || cs.find((c) => c.verdict === "slashed") || cs[0];
   select(lead.id);
+
   $("#tabs").onclick = (e) => {
     const b = e.target.closest("button"); if (!b) return;
     filter = b.dataset.f;
     document.querySelectorAll("#tabs button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
     rows();
   };
+  $("#who").onchange = (e) => { analyst = e.target.value; rows(); };
+  $("#q").oninput = (e) => { query = e.target.value.trim().toLowerCase(); rows(); };
+  $("#showLie").onclick = () => { select(lead.id); $("#inspect").scrollIntoView({ behavior: "smooth", block: "start" }); };
+  $("#openCheck").onclick = $("#introCheck").onclick = openCheck;
+  $("#hideIntro").onclick = () => { $("#intro").hidden = true; try { localStorage.setItem("vouch.intro", "hidden"); } catch (e) {} };
+  try { if (localStorage.getItem("vouch.intro") === "hidden") $("#intro").hidden = true; } catch (e) {}
+  checkPanel();
 }
 
 function watch() {
@@ -46,11 +89,11 @@ function watch() {
   F.claims.forEach((c) => { (by[c.ticker] ||= []).push(c); });
   $("#watch").innerHTML = Object.keys(by).map((t) => {
     const cs = by[t], c = cs.filter((x) => x.verdict === "cleared").length, s = cs.length - c, f = F.filings[t] || {};
-    return `<button class="tok" data-t="${t}" aria-pressed="false">
+    return `<button class="tok" data-t="${t}" aria-pressed="false" title="Show only ${esc(NAMES[t] || t)} claims">
       <div class="t"><b>${t}</b><span>${esc(NAMES[t] || "")}</span></div>
       <div class="f">${esc(f.form || "")} · filed ${esc(f.filed || "")}</div>
       <div class="mix"><i class="c" style="flex:${c}"></i><i class="s" style="flex:${s}"></i></div>
-      <div class="nums"><span class="c">${c} cleared</span><span class="s">${s} slashed</span></div></button>`;
+      <div class="nums"><span class="c">${c} true</span><span class="s">${s} wrong</span></div></button>`;
   }).join("");
   $("#watch").onclick = (e) => {
     const b = e.target.closest(".tok"); if (!b) return;
@@ -61,15 +104,28 @@ function watch() {
 }
 
 function rows() {
-  const list = F.claims.filter((c) => (filter === "all" || c.verdict === filter) && (!ticker || c.ticker === ticker));
-  $("#rows").innerHTML = list.map((c) => `
-    <tr data-id="${c.id}" class="${c.verdict}" aria-selected="${c.id === selected}">
-      <td class="id">${c.id}</td><td class="tk">${esc(c.ticker)}</td><td class="an">${esc(c.analyst)}${c.analyst_kind === "model" ? ' <span class="ai">AI</span>' : ""}</td>
-      <td class="claim"><span class="v">${esc(c.value)}</span><span class="q">${esc(headline(c))}</span></td><td class="n">${c.stake}</td>
-      <td class="vd"><span class="pill ${c.verdict[0]}">${c.verdict.toUpperCase()}</span></td></tr>`).join("");
-  $("#filterNote").innerHTML = ticker ? `${esc(ticker)} only · <button id="clearT">show all tokens</button>` : `${list.length} claims`;
-  const ct = $("#clearT"); if (ct) ct.onclick = () => { ticker = null; document.querySelectorAll(".tok").forEach((x) => x.setAttribute("aria-pressed", "false")); rows(); };
-  $("#rows").onclick = (e) => { const r = e.target.closest("tr"); if (r) select(+r.dataset.id, true); };
+  const list = F.claims.filter((c) => (filter === "all" || c.verdict === filter) && (!ticker || c.ticker === ticker)
+    && (!analyst || c.analyst === analyst)
+    && (!query || [c.ticker, NAMES[c.ticker], c.analyst, c.value, c.summary, c.quote].join(" ").toLowerCase().includes(query)));
+  $("#rows").innerHTML = list.map((c) => {
+    const p = plain(c);
+    return `<tr data-id="${c.id}" class="${c.verdict}" aria-selected="${c.id === selected}" tabindex="0">
+      <td class="tk">${esc(c.ticker)}<span>${esc(NAMES[c.ticker] || "")}</span></td>
+      <td class="an">${esc(c.analyst)}${c.analyst_kind === "model" ? ' <span class="ai" title="A language model, running locally">AI</span>' : ""}</td>
+      <td class="claim"><span class="v">${esc(c.value)}</span><span class="q">${esc(headline(c))}</span></td>
+      <td class="vd"><span class="pill ${c.verdict[0]}">${c.verdict === "cleared" ? "TRUE" : "WRONG"}</span><span class="why">${esc(p.short)}</span></td></tr>`;
+  }).join("") || `<tr class="none"><td colspan="4">No claims match. <button id="reset">Clear the filters</button></td></tr>`;
+  const bits = [];
+  if (ticker) bits.push(esc(NAMES[ticker] || ticker));
+  if (analyst) bits.push(esc(analyst));
+  if (query) bits.push(`"${esc(query)}"`);
+  $("#filterNote").innerHTML = `${list.length} of ${F.claims.length}` + (bits.length ? ` · ${bits.join(" · ")} · <button id="clearAll">clear</button>` : "");
+  const reset = () => { ticker = null; analyst = ""; query = ""; filter = "all"; $("#q").value = ""; $("#who").value = "";
+    document.querySelectorAll(".tok").forEach((x) => x.setAttribute("aria-pressed", "false"));
+    document.querySelectorAll("#tabs button").forEach((x) => x.setAttribute("aria-selected", String(x.dataset.f === "all"))); rows(); };
+  ["#clearAll", "#reset"].forEach((id) => { const b = $(id); if (b) b.onclick = reset; });
+  $("#rows").onclick = (e) => { const r = e.target.closest("tr[data-id]"); if (r) select(+r.dataset.id, true); };
+  $("#rows").onkeydown = (e) => { const r = e.target.closest("tr[data-id]"); if (r && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); select(+r.dataset.id, true); } };
 }
 
 function headline(c) {
@@ -94,40 +150,13 @@ function diff(a, b) {
   return out;
 }
 
+// ---- the inspector: in the order a reader asks ------------------------------
 function select(id, scroll) {
   selected = id;
   document.querySelectorAll("#rows tr").forEach((r) => r.setAttribute("aria-selected", String(+r.dataset.id === id)));
   const c = F.claims.find((x) => x.id === id), f = F.filings[c.ticker] || {}, bad = c.verdict === "slashed";
-  const src = c.source, ex = F.chain.explorer;
-  const r = c.reason || "";
-  const claimRule = /^(wrong period|wrong quarter|wrong date|the summary|the quote is a fragment)/.test(r);
-  const ruleTitle = r.startsWith("wrong period") ? `Right number, wrong period. <em>Slashed.</em>`
-    : r.startsWith("wrong quarter") ? `Right number, wrong quarter. <em>Slashed.</em>`
-    : r.startsWith("wrong date") ? `Right number, wrong date. <em>Slashed.</em>`
-    : r.startsWith("the summary states") ? `The summary adds a number. <em>Slashed.</em>`
-    : r.startsWith("the summary reverses") ? `The summary says the opposite. <em>Slashed.</em>`
-    : r.startsWith("the quote is a fragment") ? `A fragment, not a sentence. <em>Slashed.</em>` : "";
-  const title = claimRule ? ruleTitle : !bad ? `In the filing, word for word. <em class="c">Cleared.</em>`
-    : c.check.method === "figures-differ" ? `One figure off the filing. <em>Slashed.</em>`
-    : c.check.verified ? `Real quote, wrong number. <em>Slashed.</em>`
-    : src ? `The quote was altered. <em>Slashed.</em>` : `Not in the filing at all. <em>Slashed.</em>`;
-  const why = {
-    "exact": "The supporting sentence appears in the 10-Q exactly, and the figure claimed is the one it states.",
-    "figures-differ": `The quote is ${(c.check.score * 100).toFixed(1)}% similar to the filing, close enough to pass any fuzzy match. But a figure in it is not the filing's, and figures must match exactly.`,
-    "none": src ? "No sentence in the filing matches the quote closely enough." : `The closest passage in the whole 10-Q is only ${(c.similarity * 100).toFixed(0)}% similar. The sentence was invented.`,
-    "fuzzy": "A near-match with every figure identical to the filing: extraction noise, not a change of fact.",
-  }[c.check.method] || c.reason;
-  const ruleWhy = {
-    "wrong period": "The quote is real and the figure is in it, but the filing gives that figure for a different period than the claim states.",
-    "wrong quarter": "The quote is real, but the period it covers ends in a different quarter from the one the claim names.",
-    "wrong date": "The sentence gives two balances at two dates. The claim paired this figure with the wrong one.",
-    "the summary states": "Every figure a reader sees must be in the cited sentence. The summary quotes a number the filing sentence does not contain.",
-    "the summary reverses": "The summary says the opposite of its own quote: up for down, or gain for loss.",
-    "the quote is a fragment": "A quote must be a whole sentence of the filing. A fragment can strip the words that change its meaning.",
-  };
-  const ruleKey = Object.keys(ruleWhy).find((k) => r.startsWith(k));
-  const reason = claimRule ? `${ruleWhy[ruleKey]} <span class="rule">${esc(r)}</span>`
-    : c.check.verified && bad ? `The sentence is genuinely in the filing, but it does not say ${esc(c.value)}. The claim asserts a figure its own quote does not contain.` : why;
+  const src = c.source, ex = F.chain.explorer, p = plain(c);
+  const claimRule = !!p.rule;
 
   let quoted = esc(c.quote), filed = "";
   if (src) {
@@ -139,34 +168,40 @@ function select(id, scroll) {
   }
   const figsOk = c.check.method !== "figures-differ" && (c.check.verified || !src);
   const simPct = Math.max(0, Math.min(1, c.check.score || c.similarity));
-  const txLink = (h, label) => ex ? `<a href="${ex}/tx/${h}" target="_blank" rel="noopener">${label} ${short(h, 10, 6)} ↗</a>` : `<span>${label} ${short(h, 10, 6)} · local devnet</span>`;
-  const stakeOut = bad
-    ? `<div class="flow"><div class="n">${esc(c.analyst)} stake<b class="s">−${money(c.stake)}</b></div><div class="ar">→</div><div class="n">challenger ${money(c.stake / 2)} · readers ${money(c.stake / 2)}<b class="c">+${money(c.stake)}</b></div></div>`
-    : `<div class="flow"><div class="n">${esc(c.analyst)} stake<b>${money(c.stake)}</b></div><div class="ar">→</div><div class="n">released to the analyst<b class="c">+${money(c.stake)}</b></div></div>`;
+  const txLink = (h, label) => ex ? `<a href="${ex}/tx/${h}" target="_blank" rel="noopener">${label} ↗</a>` : `<span>${label} ${short(h, 10, 6)} · local devnet</span>`;
+  const agent = c.desk ? (c.desk.acted
+    ? `<p><span class="good">It traded.</span> A trading agent asked Vouch before acting on this claim. It was cleared, so the desk let the position open.</p>`
+    : `<p><span class="bad">It was refused.</span> A trading agent tried to act on this claim. The desk asked Vouch first, and a claim that failed the check cannot back a trade, so the transaction reverted on-chain.</p>`) : "";
 
   $("#inspect").innerHTML = `
-    <div class="h"><span>Claim #${c.id} · ${esc(c.ticker)} · ${esc(c.analyst)}</span><span>${esc(f.form || "")} ${esc(c.accession)}</span></div>
-    <h2>${title}</h2>
-    <p class="sub">${reason}</p>
-    ${c.summary ? `<div class="box"><div class="k"><span>What it told readers</span><span>${c.analyst_kind === "model" ? "written by the model" : "summary"}</span></div><div class="v said">${esc(c.summary)}</div></div>` : ""}
-    <div class="box"><div class="k"><span>The analyst's quote</span><span>claims ${esc(c.value)}</span></div><div class="v">${quoted}</div></div>
-    <div class="box"><div class="k"><span>SEC filing says</span><a href="${esc(c.filing_url)}" target="_blank" rel="noopener">${esc((c.filing_url || "").split("/").pop())} ↗</a></div>
-      <div class="v">${src ? filed : `<span class="none">No passage in the filing resembles this sentence.</span>`}</div></div>
-    <div class="box"><div class="k"><span>The check</span><span>deterministic · no model</span></div><div class="meter">
-      <div class="row"><span>similarity</span><div class="track2"><i style="width:${(simPct * 100).toFixed(1)}%"></i><span class="floor" style="left:95%"></span></div><b>${(simPct * 100).toFixed(1)}%</b></div>
-      <div class="row"><span>figures</span><span class="${figsOk ? "ok" : "no"}">${figsOk ? (src ? "all match the filing" : "not in the filing") : "differ from the filing"}</span><b class="${figsOk && src ? "ok" : "no"}">${figsOk && src ? "✓" : "✕"}</b></div>
-      <div class="row"><span>value in quote</span><span class="${c.check.verified && bad && !claimRule ? "no" : "ok"}">${c.check.verified && bad && !claimRule ? `${esc(c.value)} is not in it` : "grounded"}</span><b class="${c.check.verified && bad && !claimRule ? "no" : "ok"}">${c.check.verified && bad && !claimRule ? "✕" : "✓"}</b></div>
-      <div class="row"><span>claim as written</span><span class="${claimRule ? "no" : "ok"}">${claimRule ? esc(r.split(":")[0]) : "period, date, direction hold"}</span><b class="${claimRule ? "no" : bad ? "" : "ok"}">${claimRule ? "✕" : bad ? "·" : "✓"}</b></div>
-    </div></div>
-    ${stakeOut}
-    ${c.desk ? `<div class="box desk"><div class="k"><span>The trading agent</span><span>AgentDesk.open("${esc(c.ticker)}", 100 USDG, [${c.id}])</span></div>
-      <div class="v">${c.desk.acted
-        ? `<span class="good">Acted.</span> The desk asked Vouch whether claim #${c.id} is cleared, and it is, so the agent's position opened.`
-        : `<span class="bad">Refused on-chain: ${esc(c.desk.error || "reverted")}.</span> The agent tried to trade on this claim; the desk asked Vouch, and a claim that failed the check cannot back a trade.`}
-      <div class="tx">${txLink(c.desk.tx, c.desk.acted ? "trade" : "refused trade")}</div></div></div>` : ""}
-    <div class="tx">${txLink(c.tx_post, "posted")}${txLink(c.tx_judge, bad ? "slashed" : "cleared")}</div>
-    <div class="hash">on-chain hash ${esc(c.hash)}</div>
-    <div class="verify"><button id="rehash">Verify it yourself</button><span id="rehashOut">Recompute the hash from the words shown, in your browser.</span></div>`;
+    <div class="h"><span>${esc(NAMES[c.ticker] || c.ticker)} · ${esc(f.form || "10-Q")} filed ${esc(f.filed || "")}</span><span>claim #${c.id}</span></div>
+    <h2>${p.title}</h2>
+    <p class="sub">${p.why}${p.rule ? `<span class="rule">${esc(p.rule)}</span>` : ""}</p>
+
+    <div class="box"><div class="k"><span>What ${esc(c.analyst)}${c.analyst_kind === "model" ? " (AI)" : ""} claimed</span><span>${money(c.stake)} USDG at stake</span></div>
+      <div class="v said">${c.summary ? esc(c.summary) : `The figure is <b>${esc(c.value)}</b>.`}</div></div>
+
+    <div class="box"><div class="k"><span>The sentence it quoted</span><span>${src && c.quote !== src.match ? "differences marked" : "as quoted"}</span></div><div class="v">${quoted}</div></div>
+
+    <div class="box"><div class="k"><span>What the SEC filing says</span><a href="${esc(c.filing_url)}" target="_blank" rel="noopener">open the filing ↗</a></div>
+      <div class="v">${src ? filed : `<span class="none">Nothing in the filing resembles this sentence.</span>`}</div></div>
+
+    <div class="flow">${bad
+      ? `<div class="n">${esc(c.analyst)} lost<b class="s">−${money(c.stake)} USDG</b></div><div class="ar">→</div><div class="n">${money(c.stake / 2)} to whoever caught it · ${money(c.stake / 2)} to readers<b class="c">+${money(c.stake)}</b></div>`
+      : `<div class="n">${esc(c.analyst)} staked<b>${money(c.stake)} USDG</b></div><div class="ar">→</div><div class="n">returned to the analyst<b class="c">+${money(c.stake)}</b></div>`}</div>
+
+    ${agent ? `<div class="box desk"><div class="k"><span>What a trading agent did</span><span>AgentDesk</span></div><div class="v">${agent}</div></div>` : ""}
+
+    <details class="tech"><summary>Technical details · the check, the transactions, the hash</summary>
+      <div class="meter">
+        <div class="row"><span>similarity</span><div class="track2"><i style="width:${(simPct * 100).toFixed(1)}%"></i><span class="floor" style="left:95%"></span></div><b>${(simPct * 100).toFixed(1)}%</b></div>
+        <div class="row"><span>figures</span><span class="${figsOk ? "ok" : "no"}">${figsOk ? (src ? "all match the filing" : "not in the filing") : "differ from the filing"}</span><b class="${figsOk && src ? "ok" : "no"}">${figsOk && src ? "✓" : "✕"}</b></div>
+        <div class="row"><span>claim as written</span><span class="${claimRule ? "no" : "ok"}">${claimRule ? esc(p.short) : "period, date, direction hold"}</span><b class="${claimRule ? "no" : bad ? "" : "ok"}">${claimRule ? "✕" : bad ? "·" : "✓"}</b></div>
+      </div>
+      <div class="tx">${txLink(c.tx_post, "posted")}${txLink(c.tx_judge, bad ? "slashed" : "cleared")}${c.desk ? txLink(c.desk.tx, c.desk.acted ? "agent's trade" : "agent's refused trade") : ""}</div>
+      <div class="hash">accession ${esc(c.accession)} · on-chain hash ${esc(c.hash)}</div>
+      <div class="verify"><button id="rehash">Verify it yourself</button><span id="rehashOut">Recompute the hash from the words shown, in your browser.</span></div>
+    </details>`;
   $("#rehash").onclick = () => {
     const got = rehash(c), ok = got === c.hash;
     $("#rehashOut").innerHTML = ok
@@ -189,8 +224,64 @@ function board() {
   const max = Math.max(...F.standings.map((s) => s.bonded), 1);
   $("#board").innerHTML = F.standings.slice().sort((a, b) => b.bonded - a.bonded).map((s) => {
     const lost = s.slashed > 0;
-    return `<div class="ana"><div class="nm">${esc(s.analyst)}${s.kind === "model" ? ' <span class="ai">AI</span>' : ""}<span>${s.kind === "model" ? "open model, runs locally · " : ""}${short(s.address, 6, 4)}</span></div>
+    return `<button class="ana" data-a="${esc(s.analyst)}" title="Show ${esc(s.analyst)}'s claims">
+      <div class="nm">${esc(s.analyst)}${s.kind === "model" ? ' <span class="ai">AI</span>' : ""}<span>${s.kind === "model" ? "an open model, running locally" : "a scripted analyst"}</span></div>
       <div class="bb"><i style="width:${(s.bonded / max * 100).toFixed(1)}%;background:${lost ? "var(--flare)" : "var(--volt)"}"></i></div>
-      <div class="val">${money(s.bonded)}<span>${s.cleared} ✓ · ${s.slashed} ✕</span></div></div>`;
+      <div class="val">${money(s.bonded)}<span>${s.cleared} true · ${s.slashed} wrong</span></div></button>`;
   }).join("");
+  $("#board").onclick = (e) => {
+    const b = e.target.closest(".ana"); if (!b) return;
+    analyst = b.dataset.a; $("#who").value = analyst; rows();
+    $(".book").scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+}
+
+// ---- check a claim yourself ---------------------------------------------------
+const EXAMPLES = {
+  true: { ticker: "TSLA", value: "$1.37 billion", summary: "Tesla's depreciation was $1.37 billion in Q2 2026.",
+    quote: "Depreciation expense during the three and six months ended June 30, 2026 was $1.37 billion and $2.71 billion, respectively." },
+  quarter: { ticker: "TSLA", value: "$1.37 billion", summary: "Depreciation for Q3 2026 was $1.37 billion.",
+    quote: "Depreciation expense during the three and six months ended June 30, 2026 was $1.37 billion and $2.71 billion, respectively." },
+  doctored: { ticker: "TSLA", value: "$1.47 billion", summary: "Tesla's depreciation was $1.47 billion in Q2 2026.",
+    quote: "Depreciation expense during the three and six months ended June 30, 2026 was $1.47 billion and $2.71 billion, respectively." },
+};
+
+function openCheck() {
+  const d = $("#check");
+  if (typeof d.showModal === "function") d.showModal(); else d.setAttribute("open", "");
+  $("#checkForm").elements.value.focus();
+}
+
+function checkPanel() {
+  const form = $("#checkForm"), d = $("#check");
+  $("#closeCheck").onclick = () => d.close();
+  d.addEventListener("click", (e) => { if (e.target === d) d.close(); });
+  document.querySelectorAll(".examples button").forEach((b) => b.onclick = () => {
+    const ex = EXAMPLES[b.dataset.ex];
+    for (const k of Object.keys(ex)) form.elements[k].value = ex[k];
+    $("#result").hidden = true;
+  });
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    const body = Object.fromEntries(new FormData(form).entries());
+    $("#runCheck").disabled = true; $("#checkState").textContent = "Reading the filing…"; $("#result").hidden = true;
+    try {
+      const r = await fetch("api/verify", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+      const out = await r.json();
+      if (!r.ok) throw new Error(out.error || `the check said ${r.status}`);
+      const ok = out.verdict === "cleared";
+      const p = plain({ verdict: out.verdict, reason: out.reason, check: { method: out.match, score: out.similarity },
+                        similarity: out.similarity, source: out.match !== "none" });
+      $("#result").className = "result " + (ok ? "ok" : "no");
+      $("#result").innerHTML = `<b>${ok ? "True: this claim would be cleared." : "Wrong: this claim would be slashed."}</b>
+        <span>${esc(p.why)}</span>
+        ${!ok ? `<code>${esc(out.reason)}</code>` : ""}
+        <a href="${esc(out.filing.url)}" target="_blank" rel="noopener">checked against ${esc(out.filing.ticker)} ${esc(out.filing.form)} filed ${esc(out.filing.filed)} ↗</a>`;
+      $("#result").hidden = false;
+      $("#checkState").textContent = "";
+    } catch (err) {
+      $("#checkState").textContent = location.protocol === "file:" || location.hostname === "127.0.0.1"
+        ? "The live check runs on vouch-feed.vercel.app." : `Could not check it: ${err.message}`;
+    } finally { $("#runCheck").disabled = false; }
+  };
 }
