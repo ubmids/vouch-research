@@ -22,7 +22,7 @@ from eth_account import Account
 from . import edgar
 from .analysts import CAST, facts
 from .chain import USD, Chain
-from .verifier import audit_attestation
+from .verifier import audit_claim
 
 TOKENS = ("TSLA", "AMZN", "PLTR", "NFLX", "AMD")    # the stock tokens on Robinhood Chain testnet
 CHALLENGER = "0x000000000000000000000000000000000000c0DE"
@@ -88,13 +88,14 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
             for agent, acct in analysts:
                 c = agent.claim(t, filing.accession, fact, found)
                 cid, posted = chain.post(acct, c.ticker, c.accession, c.digest(), stake)
-                verdict = audit_attestation(c.value, c.quote, text)
+                verdict = audit_claim(c.value, c.quote, text, c.summary, c.metric)
                 if verdict.fraudulent:
                     judged = chain.slash(cid, CHALLENGER, verdict.reason)
                 else:
                     judged = chain.clear(cid)
                 feed.append({
                     "id": cid, **asdict(c), "hash": "0x" + c.digest().hex(), "filing_url": filing.url,
+                    "analyst_kind": agent.kind,
                     "filed": filing.filed, "stake": stake / USD, "analyst_address": acct.address,
                     "verdict": "slashed" if verdict.fraudulent else "cleared", "reason": verdict.reason,
                     "match": verdict.quote_check.method, "score": verdict.quote_check.score,
@@ -102,7 +103,7 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
                 })
                 log(f"  #{cid:<3} {t:5} {agent.name:12} {c.value:>16}  {'SLASH ' if verdict.fraudulent else 'clear '} {verdict.reason}")
 
-    standings = [{"analyst": a.name, "address": acct.address, "bonded": chain.bonded(acct.address) / USD,
+    standings = [{"analyst": a.name, "kind": a.kind, "address": acct.address, "bonded": chain.bonded(acct.address) / USD,
                   "cleared": sum(1 for f in feed if f["analyst"] == a.name and f["verdict"] == "cleared"),
                   "slashed": sum(1 for f in feed if f["analyst"] == a.name and f["verdict"] == "slashed")}
                  for a, acct in analysts]

@@ -74,6 +74,7 @@ def _nudge(figure: str, rng: random.Random) -> str:
 
 class Analyst:
     name = "analyst"
+    kind = "scripted"   # "model" for a language-model analyst
 
     def __init__(self, seed: int = 0):
         self.rng = random.Random(f"{self.name}:{seed}")

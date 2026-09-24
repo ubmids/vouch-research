@@ -24,13 +24,16 @@ CHAINS = {
 }
 
 
-def _passage(text: str, anchor: str, pad: int = 90) -> dict:
+def _passage(text: str, anchor: str, reach: int = 220) -> dict:
+    """The matched sentence with at most one short sentence of context either
+    side. Where the neighbour is a table (no sentence end within reach), none."""
     i = text.find(anchor)
-    lo = text.rfind(". ", 0, max(0, i - pad))
-    lo = 0 if lo < 0 else lo + 2
-    hi = text.find(". ", i + len(anchor) + pad)
-    hi = len(text) if hi < 0 else hi + 1
-    return {"before": text[lo:i], "match": anchor, "after": text[i + len(anchor): hi]}
+    lo = text.rfind(". ", 0, max(0, i - 2))
+    before = text[lo + 2: i] if lo >= 0 and i - lo <= reach else ""
+    j = i + len(anchor)
+    hi = text.find(". ", j + 1)
+    after = text[j: hi + 1] if hi >= 0 and hi - j <= reach else ""
+    return {"before": before, "match": anchor, "after": after}
 
 
 def enrich(feed: dict) -> dict:

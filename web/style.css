@@ -77,6 +77,7 @@ td.claim { white-space: normal; font-family: var(--sans); font-size: 14px; color
 td.claim .v { display: inline-block; color: var(--ink); font: 500 12.5px var(--mono); border: 1px solid var(--line2); border-radius: 4px; padding: 0 6px; margin-right: 8px; }
 tr.slashed td.claim .v { color: var(--flare); border-color: #ff4d2e40; }
 td.claim .q { color: var(--soft); }
+.ai { display: inline-block; font: 700 9.5px var(--mono); letter-spacing: .08em; color: var(--bg); background: var(--ink2); border-radius: 3px; padding: 1px 5px; vertical-align: 1px; margin-left: 4px; }
 .pill { display: inline-block; padding: 2px 8px; border-radius: 3px; font: 700 11px var(--mono); letter-spacing: .06em; }
 .pill.c { background: var(--volt-w); color: var(--volt); } .pill.s { background: var(--flare-w); color: var(--flare); }
 
@@ -95,6 +96,8 @@ td.claim .q { color: var(--soft); }
 .box del, .box .bad { color: var(--flare); text-decoration: none; background: var(--flare-w); padding: 0 3px; border-radius: 2px; }
 .box ins, .box .good { color: var(--volt); text-decoration: none; background: var(--volt-w); padding: 0 3px; border-radius: 2px; }
 .box .none { color: var(--soft); font-style: italic; }
+.box .v.said { color: var(--ink); font-size: 15px; }
+.inspect .sub .rule { display: block; margin-top: 6px; font: 400 12px var(--mono); color: var(--flare); }
 .meter { padding: 12px; }
 .meter .row { display: grid; grid-template-columns: 120px 1fr 64px; gap: 10px; align-items: center; font: 400 12px var(--mono); color: var(--soft); padding: 5px 0; }
 .meter .row b { color: var(--ink); font-weight: 500; text-align: right; }

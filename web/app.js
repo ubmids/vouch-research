@@ -63,7 +63,7 @@ function rows() {
   const list = F.claims.filter((c) => (filter === "all" || c.verdict === filter) && (!ticker || c.ticker === ticker));
   $("#rows").innerHTML = list.map((c) => `
     <tr data-id="${c.id}" class="${c.verdict}" aria-selected="${c.id === selected}">
-      <td class="id">${c.id}</td><td class="tk">${esc(c.ticker)}</td><td class="an">${esc(c.analyst)}</td>
+      <td class="id">${c.id}</td><td class="tk">${esc(c.ticker)}</td><td class="an">${esc(c.analyst)}${c.analyst_kind === "model" ? ' <span class="ai">AI</span>' : ""}</td>
       <td class="claim"><span class="v">${esc(c.value)}</span><span class="q">${esc(headline(c))}</span></td><td class="n">${c.stake}</td>
       <td class="vd"><span class="pill ${c.verdict[0]}">${c.verdict.toUpperCase()}</span></td></tr>`).join("");
   $("#filterNote").innerHTML = ticker ? `${esc(ticker)} only · <button id="clearT">show all tokens</button>` : `${list.length} claims`;
@@ -98,7 +98,15 @@ function select(id, scroll) {
   document.querySelectorAll("#rows tr").forEach((r) => r.setAttribute("aria-selected", String(+r.dataset.id === id)));
   const c = F.claims.find((x) => x.id === id), f = F.filings[c.ticker] || {}, bad = c.verdict === "slashed";
   const src = c.source, ex = F.chain.explorer;
-  const title = !bad ? `In the filing, word for word. <em class="c">Cleared.</em>`
+  const r = c.reason || "";
+  const claimRule = /^(wrong period|wrong quarter|wrong date|the summary|the quote is a fragment)/.test(r);
+  const ruleTitle = r.startsWith("wrong period") ? `Right number, wrong period. <em>Slashed.</em>`
+    : r.startsWith("wrong quarter") ? `Right number, wrong quarter. <em>Slashed.</em>`
+    : r.startsWith("wrong date") ? `Right number, wrong date. <em>Slashed.</em>`
+    : r.startsWith("the summary states") ? `The summary adds a number. <em>Slashed.</em>`
+    : r.startsWith("the summary reverses") ? `The summary says the opposite. <em>Slashed.</em>`
+    : r.startsWith("the quote is a fragment") ? `A fragment, not a sentence. <em>Slashed.</em>` : "";
+  const title = claimRule ? ruleTitle : !bad ? `In the filing, word for word. <em class="c">Cleared.</em>`
     : c.check.method === "figures-differ" ? `One figure off the filing. <em>Slashed.</em>`
     : c.check.verified ? `Real quote, wrong number. <em>Slashed.</em>`
     : src ? `The quote was altered. <em>Slashed.</em>` : `Not in the filing at all. <em>Slashed.</em>`;
@@ -108,14 +116,24 @@ function select(id, scroll) {
     "none": src ? "No sentence in the filing matches the quote closely enough." : `The closest passage in the whole 10-Q is only ${(c.similarity * 100).toFixed(0)}% similar. The sentence was invented.`,
     "fuzzy": "A near-match with every figure identical to the filing: extraction noise, not a change of fact.",
   }[c.check.method] || c.reason;
-  const reason = c.check.verified && bad ? `The sentence is genuinely in the filing, but it does not say ${esc(c.value)}. The claim asserts a figure its own quote does not contain.` : why;
+  const ruleWhy = {
+    "wrong period": "The quote is real and the figure is in it, but the filing gives that figure for a different period than the claim states.",
+    "wrong quarter": "The quote is real, but the period it covers ends in a different quarter from the one the claim names.",
+    "wrong date": "The sentence gives two balances at two dates. The claim paired this figure with the wrong one.",
+    "the summary states": "Every figure a reader sees must be in the cited sentence. The summary quotes a number the filing sentence does not contain.",
+    "the summary reverses": "The summary says the opposite of its own quote: up for down, or gain for loss.",
+    "the quote is a fragment": "A quote must be a whole sentence of the filing. A fragment can strip the words that change its meaning.",
+  };
+  const ruleKey = Object.keys(ruleWhy).find((k) => r.startsWith(k));
+  const reason = claimRule ? `${ruleWhy[ruleKey]} <span class="rule">${esc(r)}</span>`
+    : c.check.verified && bad ? `The sentence is genuinely in the filing, but it does not say ${esc(c.value)}. The claim asserts a figure its own quote does not contain.` : why;
 
   let quoted = esc(c.quote), filed = "";
   if (src) {
     const d = diff(src.match, c.quote);
     quoted = d.filter(([k]) => k !== "-").map(([k, w]) => k === "+" && w.trim() ? `<del>${esc(w)}</del>` : esc(w)).join("");
     const fixed = d.filter(([k]) => k !== "+").map(([k, w]) => k === "-" && w.trim() ? `<ins>${esc(w)}</ins>` : esc(w)).join("");
-    const val = c.check.verified && bad ? fixed.replace(esc(c.value), `<span class="bad">${esc(c.value)}</span>`) : fixed;
+    const val = c.check.verified && bad && !claimRule ? fixed.replace(esc(c.value), `<span class="bad">${esc(c.value)}</span>`) : fixed;
     filed = `<span class="ctx">${esc(src.before)}</span><span class="hit">${val}</span><span class="ctx">${esc(src.after)}</span>`;
   }
   const figsOk = c.check.method !== "figures-differ" && (c.check.verified || !src);
@@ -129,13 +147,15 @@ function select(id, scroll) {
     <div class="h"><span>Claim #${c.id} · ${esc(c.ticker)} · ${esc(c.analyst)}</span><span>${esc(f.form || "")} ${esc(c.accession)}</span></div>
     <h2>${title}</h2>
     <p class="sub">${reason}</p>
+    ${c.summary ? `<div class="box"><div class="k"><span>What it told readers</span><span>${c.analyst_kind === "model" ? "written by the model" : "summary"}</span></div><div class="v said">${esc(c.summary)}</div></div>` : ""}
     <div class="box"><div class="k"><span>The analyst's quote</span><span>claims ${esc(c.value)}</span></div><div class="v">${quoted}</div></div>
     <div class="box"><div class="k"><span>SEC filing says</span><a href="${esc(c.filing_url)}" target="_blank" rel="noopener">${esc((c.filing_url || "").split("/").pop())} ↗</a></div>
       <div class="v">${src ? filed : `<span class="none">No passage in the filing resembles this sentence.</span>`}</div></div>
     <div class="box"><div class="k"><span>The check</span><span>deterministic · no model</span></div><div class="meter">
       <div class="row"><span>similarity</span><div class="track2"><i style="width:${(simPct * 100).toFixed(1)}%"></i><span class="floor" style="left:95%"></span></div><b>${(simPct * 100).toFixed(1)}%</b></div>
-      <div class="row"><span>figures</span><span class="${figsOk ? "ok" : "no"}">${figsOk ? (src ? "all match the filing" : "not in the filing") : "differ from the filing"}</span><b class="${figsOk && !bad ? "ok" : "no"}">${figsOk && !bad ? "✓" : "✕"}</b></div>
-      <div class="row"><span>value in quote</span><span class="${c.check.verified && bad ? "no" : "ok"}">${c.check.verified && bad ? `${esc(c.value)} is not in it` : "grounded"}</span><b class="${bad ? "no" : "ok"}">${bad ? "✕" : "✓"}</b></div>
+      <div class="row"><span>figures</span><span class="${figsOk ? "ok" : "no"}">${figsOk ? (src ? "all match the filing" : "not in the filing") : "differ from the filing"}</span><b class="${figsOk && src ? "ok" : "no"}">${figsOk && src ? "✓" : "✕"}</b></div>
+      <div class="row"><span>value in quote</span><span class="${c.check.verified && bad && !claimRule ? "no" : "ok"}">${c.check.verified && bad && !claimRule ? `${esc(c.value)} is not in it` : "grounded"}</span><b class="${c.check.verified && bad && !claimRule ? "no" : "ok"}">${c.check.verified && bad && !claimRule ? "✕" : "✓"}</b></div>
+      <div class="row"><span>claim as written</span><span class="${claimRule ? "no" : "ok"}">${claimRule ? esc(r.split(":")[0]) : "period, date, direction hold"}</span><b class="${claimRule ? "no" : bad ? "" : "ok"}">${claimRule ? "✕" : bad ? "·" : "✓"}</b></div>
     </div></div>
     ${stakeOut}
     <div class="tx">${txLink(c.tx_post, "posted")}${txLink(c.tx_judge, bad ? "slashed" : "cleared")}</div>
@@ -163,7 +183,7 @@ function board() {
   const max = Math.max(...F.standings.map((s) => s.bonded), 1);
   $("#board").innerHTML = F.standings.slice().sort((a, b) => b.bonded - a.bonded).map((s) => {
     const lost = s.slashed > 0;
-    return `<div class="ana"><div class="nm">${esc(s.analyst)}<span>${short(s.address, 6, 4)}</span></div>
+    return `<div class="ana"><div class="nm">${esc(s.analyst)}${s.kind === "model" ? ' <span class="ai">AI</span>' : ""}<span>${s.kind === "model" ? "open model, runs locally · " : ""}${short(s.address, 6, 4)}</span></div>
       <div class="bb"><i style="width:${(s.bonded / max * 100).toFixed(1)}%;background:${lost ? "var(--flare)" : "var(--volt)"}"></i></div>
       <div class="val">${money(s.bonded)}<span>${s.cleared} ✓ · ${s.slashed} ✕</span></div></div>`;
   }).join("");
