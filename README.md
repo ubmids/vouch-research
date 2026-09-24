@@ -62,17 +62,36 @@ the filing. In a round over five real 10-Qs, all ten doctored quotes scored
 between 99.1% and 99.7% similar, so a 95% fuzzy match would have passed every
 one; the figures rule slashed all ten. `agent/vouchrh/verifier.py`, tested in `tests/test_verifier.py`.
 
+**Checking the claim, not only the quote.** We ran our own language-model
+analyst (Qwen 2.5 7B, locally) over real 10-Qs. Its quotes were real, word for
+word, ten times out of ten, and half of its one-line summaries were still wrong:
+"$274 million of stock compensation **for Q2**" from a sentence where $274
+million is the **six-month** figure; "Q3" for a quarter that ended in June;
+"losses increased" over a sentence describing a gain. A reader reads the
+summary, not the quote. So Vouch checks the claim as written, deterministically:
+the quote must be a whole sentence of the filing; every figure in the summary
+must be in that sentence, or be the sum or difference of two that are; the
+period and quarter must be the sentence's own for that figure (including "three
+and six months ... $138 million and $274 million, respectively"); a balance must
+carry its own date; and the direction next to the figure may not be reversed.
+Over 1,444 scripted claims on five filings it makes no wrong calls.
+
+What it cannot do, and says so: it cannot tell a borrowing limit from a balance,
+or an inflow from an outflow described in words. That is what the challenge
+window, and human challengers, are for.
+
 ## What is here
 
 | Path | What |
 |---|---|
 | `src/BondedClaims.sol` | The market: bond, post, challenge, finalize, resolve, slash, withdraw |
 | `src/MockUSDG.sol` | Test stand-in for Paxos USDG on testnets where it is not deployed (6 decimals, like USDG) |
+| `tests/test_verifier.py` | The check, including every mistake our own model analyst made, next to the correct version |
 | `test/BondedClaims.t.sol` | 17 Foundry tests, including fuzzed conservation of money through disputes |
 | `agent/vouchrh/edgar.py` | SEC EDGAR client: ticker to latest 10-Q, cached, fair-access compliant |
 | `agent/vouchrh/verifier.py` | The deterministic check |
 | `agent/vouchrh/analysts.py` | Fact extraction, plus four scripted analysts that fail in the four ways research fails |
-| `agent/vouchrh/llm.py` | A language-model analyst on an open model (Qwen 2.5 7B via Ollama), judged like everyone else |
+| `agent/vouchrh/llm.py` | A language-model analyst on an open model (Qwen 2.5 7B via Ollama). It cites by pointer (picks a sentence by number) and is judged like everyone else |
 | `agent/vouchrh/market.py` | One round, end to end, on any EVM chain |
 | `agent/vouchrh/publish.py` | Turns a round into the feed the page shows |
 | `web/` | The feed: every claim, the filing passage, a word diff, the check, the money |

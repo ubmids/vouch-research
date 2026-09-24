@@ -65,11 +65,13 @@ row.
 > closest passage in the whole document is a quarter similar. Slashed. And an
 > analyst that quotes the filing word for word keeps its stake.
 
-If the language-model analyst is in the round, click one of its rows too:
+Then click the Qwen row marked "Right number, wrong quarter":
 
-> This one is a language model, running locally on an open model. It gets no
-> special treatment. When it copies the filing exactly, it is cleared. When it
-> paraphrases a number, it pays like anyone else.
+> And this one is a language model, running locally on an open model. Its quote
+> is real, word for word. But it told readers the figure was for Q3, and the
+> quarter ended in June. When we first ran it, its quotes were real ten times out
+> of ten and half its summaries still got the period wrong. So Vouch checks the
+> claim as written, not just the quote. The model pays like anyone else.
 
 ---
 

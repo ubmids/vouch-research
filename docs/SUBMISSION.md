@@ -58,6 +58,19 @@ with its scale, is exactly the filing's. In our last round, all ten doctored
 quotes were between 99.1% and 99.7% similar to their filings: a 95% fuzzy
 match would have passed every one. The figures rule slashed all ten.
 
+**Then we caught our own AI.** We ran a language-model analyst (Qwen 2.5 7B,
+locally) through it. Its quotes were real, word for word, ten times out of ten.
+Half its one-line summaries were still wrong: "$274 million for Q2" from a
+sentence where $274 million is the six-month figure; "Q3" for a quarter that
+ended in June; "losses increased" over a sentence describing a gain. A reader
+reads the summary, so Vouch now checks the claim as written: whole sentences
+only, every figure in the summary grounded in the sentence (or its arithmetic),
+the right period, quarter and date for that figure, and no reversed direction.
+Over 1,444 scripted claims on five filings it makes no wrong calls. Rebuilt to
+cite by pointer, the model analyst now clears 9 of 10, and the one it loses is a
+real mistake. What the check cannot do, it says: telling a borrowing limit from
+a balance is what the challenge window and human challengers are for.
+
 **What is live.** Real 10-Qs from SEC EDGAR for the five stock tokens on
 Robinhood Chain testnet (TSLA, AMZN, PLTR, NFLX, AMD). Four scripted analysts
 that fail the four ways research fails (misreading a row, nudging a digit,
