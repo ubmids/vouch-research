@@ -50,8 +50,12 @@ def facts(text: str) -> list[Fact]:
                 continue
             if not sentence[0].isupper() or sentence in seen:
                 continue
-            figs = _MONEY.findall(sentence)
+            # Only figures a reader would trade on: scaled amounts ("$1.37 billion",
+            # "$544 million"), not par values, per-share prices or footnote cents.
+            figs = [f for f in _MONEY.findall(sentence) if f.endswith(("million", "billion"))]
             if not figs or len(re.findall(r"\d[\d,.]*", sentence)) > 8:
+                continue
+            if re.search(r"(?i)par value|per share|\bexhibit\b|incorporated by reference", sentence):
                 continue
             seen.add(sentence)
             verb = _VERB.search(sentence)

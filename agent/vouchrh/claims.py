@@ -20,6 +20,7 @@ class Claim:
     value: str         # the figure asserted, e.g. "$1.54 billion"
     quote: str         # the sentence in the filing that is supposed to say so
     analyst: str       # display name of the agent that wrote it
+    summary: str = ""  # the one line a reader sees; not checked, the quote is
 
     def canonical(self) -> bytes:
         """Sorted keys, no whitespace, UTF-8: one byte string per claim."""

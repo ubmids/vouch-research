@@ -28,11 +28,18 @@ CHALLENGER = "0x000000000000000000000000000000000000c0DE"
 
 
 def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD, bond: int = 500 * USD,
-        seed: int = 7, fund_wei: int = 10**16, log=print) -> dict:
+        seed: int = 7, fund_wei: int = 10**16, log=print, with_model: bool = False) -> dict:
     rng = random.Random(seed)
     deployed = chain.deploy()
+    cast = list(CAST)
+    if with_model:
+        from . import llm
+        if llm.available():
+            cast.insert(1, llm.Model)
+        else:
+            log(f"  (no local model at {llm.HOST}; running the scripted analysts only)")
     analysts = []
-    for i, A in enumerate(CAST):
+    for i, A in enumerate(cast):
         acct = Account.from_key(bytes([i + 1]) * 32 if chain.chain_id == 31337 else Account.create().key)
         chain.fund(acct.address, fund_wei)
         chain.onboard(acct, bond)
@@ -76,9 +83,10 @@ def main(argv=None):
     ap.add_argument("--rpc", default="http://127.0.0.1:8545")
     ap.add_argument("--key", required=True, help="the verifier's private key (it also deploys)")
     ap.add_argument("--per-ticker", type=int, default=2)
+    ap.add_argument("--model", action="store_true", help="add the local language-model analyst (Ollama)")
     ap.add_argument("--out", default=str(Path(__file__).resolve().parents[2] / "feed" / "feed.json"))
     args = ap.parse_args(argv)
-    result = run(Chain(args.rpc, args.key), per_ticker=args.per_ticker)
+    result = run(Chain(args.rpc, args.key), per_ticker=args.per_ticker, with_model=args.model)
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(result, indent=1))
     print(f"-> {args.out}  ({len(result['claims'])} claims, reader pool {result['reader_pool']} tUSDG)")

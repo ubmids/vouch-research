@@ -1,0 +1,68 @@
+"""Turn a round's feed into what the web page shows.
+
+Adds, for every claim, the passage of the filing it is about (the quote itself
+when it is genuine, otherwise the real sentence it was doctored from), and the
+verifier's full answer. The page never recomputes anything: it shows what the
+check found, so what a judge reads is what the chain acted on.
+
+    python -m vouchrh.publish feed/feed.json web/feed.json
+"""
+from __future__ import annotations
+
+import json
+import sys
+from difflib import SequenceMatcher
+
+from . import edgar
+from .analysts import facts
+from .verifier import figures, normalize, verify_quote
+
+CHAINS = {
+    31337: {"name": "Local devnet (anvil)", "explorer": None},
+    46630: {"name": "Robinhood Chain testnet", "explorer": "https://explorer.testnet.chain.robinhood.com"},
+    421614: {"name": "Arbitrum Sepolia", "explorer": "https://sepolia.arbiscan.io"},
+}
+
+
+def _passage(text: str, anchor: str, pad: int = 90) -> dict:
+    i = text.find(anchor)
+    lo = text.rfind(". ", 0, max(0, i - pad))
+    lo = 0 if lo < 0 else lo + 2
+    hi = text.find(". ", i + len(anchor) + pad)
+    hi = len(text) if hi < 0 else hi + 1
+    return {"before": text[lo:i], "match": anchor, "after": text[i + len(anchor): hi]}
+
+
+def enrich(feed: dict) -> dict:
+    texts, sentences = {}, {}
+    for c in feed["claims"]:
+        t = c["ticker"]
+        if t not in texts:
+            texts[t] = " ".join(edgar.latest(t).text().split())
+            sentences[t] = [f.sentence for f in facts(texts[t])]
+    for c in feed["claims"]:
+        text = texts[c["ticker"]]
+        check = verify_quote(c["quote"], text)
+        genuine = normalize(c["quote"]) in normalize(text)
+        if genuine and c["quote"] in text:
+            source = c["quote"]
+        else:
+            source = max(sentences[c["ticker"]], key=lambda s: SequenceMatcher(None, s, c["quote"]).ratio())
+        similarity = SequenceMatcher(None, normalize(source), normalize(c["quote"])).ratio()
+        c["source"] = _passage(text, source) if similarity >= 0.6 and source in text else None
+        c["similarity"] = round(similarity, 4)
+        c["figures_quote"] = figures(c["quote"])
+        c["figures_source"] = figures(source) if c["source"] else []
+        c["check"] = {"verified": check.verified, "method": check.method, "score": check.score}
+    feed["chain"] = CHAINS.get(feed["chain_id"], {"name": f"chain {feed['chain_id']}", "explorer": None})
+    feed["filings"] = {t: {"accession": f.accession, "form": f.form, "filed": f.filed, "period": f.period, "url": f.url}
+                       for t in texts for f in [edgar.latest(t)]}
+    return feed
+
+
+if __name__ == "__main__":
+    src, dst = sys.argv[1], sys.argv[2]
+    out = enrich(json.load(open(src)))
+    json.dump(out, open(dst, "w"), separators=(",", ":"))
+    n = len(out["claims"])
+    print(f"{dst}: {n} claims, {sum(1 for c in out['claims'] if c['source'])} with their filing passage")
