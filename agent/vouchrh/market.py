@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import time
 from dataclasses import asdict
@@ -25,12 +26,40 @@ from .verifier import audit_attestation
 
 TOKENS = ("TSLA", "AMZN", "PLTR", "NFLX", "AMD")    # the stock tokens on Robinhood Chain testnet
 CHALLENGER = "0x000000000000000000000000000000000000c0DE"
+KEYS = Path(os.path.expanduser("~/.config/vouch-rh/analysts.json"))
+
+
+def _wallet(chain: Chain, name: str, index: int):
+    """Anvil gets throwaway keys. A public chain keeps one wallet per analyst
+    across rounds, kept beside the verifier key and never in the repo, so a
+    track record accumulates where anyone can read it."""
+    if chain.chain_id == 31337:
+        return Account.from_key(bytes([index + 1]) * 32)
+    keys = json.loads(KEYS.read_text()) if KEYS.exists() else {}
+    if name not in keys:
+        keys[name] = Account.create().key.hex()
+        KEYS.parent.mkdir(parents=True, exist_ok=True)
+        KEYS.write_text(json.dumps(keys, indent=1))
+        KEYS.chmod(0o600)
+    return Account.from_key(keys[name])
 
 
 def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD, bond: int = 500 * USD,
-        seed: int = 7, fund_wei: int = 10**16, log=print, with_model: bool = False) -> dict:
+        seed: int = 7, fund_wei: int | None = None, log=print, with_model: bool = False) -> dict:
     rng = random.Random(seed)
-    deployed = chain.deploy()
+    # On a public chain the market lives at one address, so its record builds
+    # up round after round. The addresses are public and live in the repo.
+    record = Path(__file__).resolve().parents[2] / "deployments" / f"{chain.chain_id}.json"
+    if chain.chain_id != 31337 and record.exists():
+        from .chain import Deployed
+        deployed = chain.attach(Deployed(**json.loads(record.read_text())))
+        log(f"  market at {deployed.market} (existing)")
+    else:
+        deployed = chain.deploy()
+        if chain.chain_id != 31337:
+            record.parent.mkdir(exist_ok=True)
+            record.write_text(json.dumps(asdict(deployed), indent=1))
+        log(f"  market deployed at {deployed.market}")
     cast = list(CAST)
     if with_model:
         from . import llm
@@ -40,8 +69,11 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
             log(f"  (no local model at {llm.HOST}; running the scripted analysts only)")
     analysts = []
     for i, A in enumerate(cast):
-        acct = Account.from_key(bytes([i + 1]) * 32 if chain.chain_id == 31337 else Account.create().key)
-        chain.fund(acct.address, fund_wei)
+        acct = _wallet(chain, A.name, i)
+        # a round costs each analyst well under 0.0003 ETH at testnet gas prices
+        need = fund_wei if fund_wei is not None else (10**16 if chain.chain_id == 31337 else 3 * 10**14)
+        if chain.w3.eth.get_balance(acct.address) < need:
+            chain.fund(acct.address, need)
         chain.onboard(acct, bond)
         analysts.append((A(seed=seed), acct))
         log(f"  {A.name:12} {acct.address}  bonded {bond // USD} tUSDG")

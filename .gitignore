@@ -29,3 +29,4 @@ broadcast/*/31337/
 __pycache__/
 *.pyc
 .pytest_cache/
+web/.vercel/
