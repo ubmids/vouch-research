@@ -435,3 +435,41 @@ dialog.check { overflow-y: auto; }
   .verify button { min-height: 40px; }
   .result a { display: inline-flex; align-items: center; min-height: 40px; }
 }
+
+/* ---- onboarding: a walkthrough over the page, not a section of it ---------- */
+.onboard { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 24px; background: #000c; backdrop-filter: blur(6px); animation: obIn .25s ease-out; }
+.onboard[hidden] { display: none; }
+body.touring { overflow: hidden; }
+@keyframes obIn { from { opacity: 0; } to { opacity: 1; } }
+.obPanel { width: min(1040px, 100%); max-height: calc(100svh - 48px); overflow-y: auto; background: radial-gradient(90% 120% at 15% 0%, #141414, var(--panel)); border: 1px solid var(--line2); border-radius: 20px; padding: 22px 26px 22px; box-shadow: 0 30px 80px -20px #000; animation: obUp .35s cubic-bezier(.2,.7,.3,1); }
+@keyframes obUp { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+.obHead { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.obHead .k { font: 500 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--volt); }
+.skipTour { font: 500 13.5px var(--sans); color: var(--soft); border: 1px solid var(--line2); border-radius: 999px; padding: 6px 14px; }
+.skipTour:hover { color: var(--ink); border-color: var(--dim); }
+.obProgress { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; margin-top: 16px; }
+.obProgress i { display: block; height: 3px; border-radius: 2px; background: var(--line2); transition: background .25s; }
+.obProgress i.done { background: var(--soft); } .obProgress i.on { background: var(--volt); }
+.onboard .stepWrap { margin-top: 24px; min-height: 330px; }
+.onboard .nav { margin: 20px 0 0 90px; justify-content: flex-start; }
+.onboard .nav #next { margin-left: auto; }
+.tourBtn { margin-left: 4px; font: 500 13px var(--sans); color: var(--ink2); border: 1px solid var(--line2); border-radius: 999px; padding: 7px 14px; white-space: nowrap; }
+.tourBtn:hover { color: var(--ink); border-color: var(--dim); }
+.sectionHead .linkish { margin-left: 4px; }
+@media (max-width: 720px) {
+  .onboard { padding: 0; place-items: stretch; }
+  .obPanel { max-height: none; height: 100svh; border-radius: 0; border: 0; padding: 14px 16px 18px; display: flex; flex-direction: column; }
+  .onboard .stepWrap { flex: 1; min-height: 0; margin-top: 18px; }
+  .onboard .nav { margin: 12px 0 0; }
+  .tourBtn { display: none; }
+  .skipTour { min-height: 40px; }
+}
+@media (pointer: coarse) { .skipTour, .tourBtn { min-height: 40px; } }
+.onboard .stepWrap { align-content: start; }
+
+/* tablet: the totals get their own row so both header buttons fit */
+@media (min-width: 721px) and (max-width: 980px) {
+  .top { flex-wrap: wrap; row-gap: 10px; }
+  .kpis { order: 3; width: 100%; margin: 0; justify-content: space-between; }
+  .tourBtn { margin-left: auto; }
+}

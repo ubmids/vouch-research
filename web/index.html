@@ -17,29 +17,29 @@
   <a class="brand" href="./">vouch<i>.</i></a>
   <span class="net" id="net">loading</span>
   <nav class="kpis" id="kpis" aria-label="Totals"></nav>
+  <button class="tourBtn" id="openTour">How it works</button>
   <button class="cta" id="openCheck">Check a claim</button>
 </header>
 
 <div class="mkpis" id="mkpis" hidden></div>
 
-<section class="story" id="story" aria-label="Follow one claim">
-  <div class="storyHead">
-    <span class="k">Follow one claim</span>
-    <div class="switch" id="storySwitch" role="tablist">
-      <button role="tab" data-s="wrong" aria-selected="true">A wrong claim</button>
-      <button role="tab" data-s="right" aria-selected="false">The same sentence, told right</button>
+<div class="onboard" id="story" role="dialog" aria-modal="true" aria-labelledby="stepTitle" hidden>
+  <div class="obPanel">
+    <div class="obHead">
+      <span class="k" id="obKicker">How Vouch works · one real claim</span>
+      <button class="skipTour" id="skipTour">Skip</button>
     </div>
-    <a class="skip" href="#claims">Skip to all 50 claims ↓</a>
+    <div class="obProgress" id="dots" aria-hidden="true"></div>
+    <div class="stepWrap"><div class="stepNum" id="stepNum"></div><div class="stepBody" id="stepBody" aria-live="polite"></div></div>
+    <div class="nav"><button id="prev">← Back</button><button id="next" class="primary">Next →</button></div>
   </div>
-  <div class="stepWrap"><div class="stepNum" id="stepNum"></div><div class="stepBody" id="stepBody" aria-live="polite"></div></div>
-  <div class="nav"><button id="prev">← Back</button><div class="dots" id="dots"></div><button id="next" class="primary">Next →</button></div>
-</section>
+</div>
 
 <div class="tape" aria-hidden="true"><div class="track" id="tape"></div></div>
 
 <section class="watch" id="watch" aria-label="Stock tokens"></section>
 
-<div class="sectionHead" id="claims"><h2>Every claim in this round</h2><p>Click any claim to see what was said, what the filing says, and what happened to the money.</p></div>
+<div class="sectionHead" id="claims"><h2>Every claim in this round</h2><p>AI analysts staked USDG on claims about five stocks. Click any claim to see what was said, what the SEC filing says, and what happened to the money. <button class="linkish" id="headTour">New here? Take the 60-second tour</button></p></div>
 
 <main class="main">
   <section class="book" aria-label="Claims">

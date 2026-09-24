@@ -364,31 +364,67 @@ function story(lead) {
         `<div class="agentViz"><div class="good">✓ trade opened</div><p>The desk asked Vouch whether the claim was cleared. It was, so the agent's position opened.</p></div>${tx(right.desk && right.desk.tx, "the trade")}`],
     ],
   };
-  let which = "wrong", i = 0;
-  const end = () => `<div class="endCard"><h3>That's Vouch: research that costs money to get wrong.</h3>
-    <p>AI analysts are fast and fluent, and sometimes wrong about numbers. Here, being wrong has a price, and agents only act on what survived the check.</p>
-    <div class="acts"><button class="primary" id="endTry">Check a claim yourself</button><a class="btn" href="#claims">See all ${cs.length} claims</a><button id="endAgain">Follow the ${which === "wrong" ? "right" : "wrong"} one</button></div></div>`;
+  let which = "wrong", i = 0, opener = null;
+  const KICK = { wrong: "How Vouch works · one real claim", right: "The same sentence, told right" };
+  const end = () => which === "wrong"
+    ? `<div class="endCard"><h3>That's Vouch: research that costs money to get wrong.</h3>
+        <p>AI analysts are fast and fluent, and sometimes wrong about numbers. Here, being wrong has a price, and agents only act on what survived the check.</p>
+        <div class="acts"><button class="primary" id="endExplore">Explore all ${cs.length} claims</button><button id="endTry">Check a claim yourself</button><button id="endAgain">See the same sentence told right →</button></div></div>`
+    : `<div class="endCard"><h3>Same filing, same sentence. One claim paid, one got paid.</h3>
+        <p>The difference was whether the claim said what the filing says. That's the only thing Vouch checks, and it checks it every time.</p>
+        <div class="acts"><button class="primary" id="endExplore">Explore all ${cs.length} claims</button><button id="endTry">Check a claim yourself</button><button id="endAgain">← Back to the wrong one</button></div></div>`;
   const draw = () => {
     const steps = S[which], last = i === steps.length;
-    $("#stepNum").textContent = last ? "" : `${i + 1} / ${steps.length}`;
-    $("#stepBody").innerHTML = last ? end() : `<h2>${steps[i][0]}</h2><div class="viz">${steps[i][1]}</div>`;
-    $("#dots").innerHTML = [...steps, 0].map((_, k) => `<i class="${k === i ? "on" : ""}"></i>`).join("");
+    $("#obKicker").textContent = KICK[which];
+    $("#stepNum").textContent = last ? "" : `${i + 1} of ${steps.length}`;
+    $("#stepBody").innerHTML = last ? end() : `<h2 id="stepTitle">${steps[i][0]}</h2><div class="viz">${steps[i][1]}</div>`;
+    $("#dots").innerHTML = [...steps, 0].map((_, k) => `<i class="${k < i ? "done" : k === i ? "on" : ""}"></i>`).join("");
     $("#prev").disabled = i === 0;
     $("#next").hidden = last;
+    $("#skipTour").textContent = last ? "Close" : "Skip";
     if (last) {
-      $("#endTry").onclick = openCheck;
-      $("#endAgain").onclick = () => setStory(which === "wrong" ? "right" : "wrong");
+      $("#endExplore").onclick = () => closeTour(true);
+      $("#endTry").onclick = () => { closeTour(false); openCheck(); };
+      $("#endAgain").onclick = () => { which = which === "wrong" ? "right" : "wrong"; i = 0; draw(); };
     }
   };
-  const setStory = (w) => {
-    which = w; i = 0;
-    document.querySelectorAll("#storySwitch button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.s === w)));
-    draw();
+  const seen = () => { try { localStorage.setItem("vouch.tour", "seen"); } catch (e) {} };
+  const openTour = () => {
+    opener = document.activeElement;
+    which = "wrong"; i = 0; draw();
+    $("#story").hidden = false;
+    document.body.classList.add("touring");
+    $("#next").focus({ preventScroll: true });
   };
-  $("#storySwitch").onclick = (e) => { const b = e.target.closest("button"); if (b) setStory(b.dataset.s); };
+  const closeTour = (toClaims) => {
+    $("#story").hidden = true;
+    document.body.classList.remove("touring");
+    seen();
+    if (toClaims) $("#claims").scrollIntoView({ behavior: "smooth", block: "start" });
+    else if (opener && opener.focus) opener.focus({ preventScroll: true });
+  };
   $("#next").onclick = () => { i = Math.min(S[which].length, i + 1); draw(); };
   $("#prev").onclick = () => { i = Math.max(0, i - 1); draw(); };
-  $("#story").onkeydown = (e) => { if (e.key === "ArrowRight") $("#next").click(); if (e.key === "ArrowLeft") $("#prev").click(); };
-  $("#story").tabIndex = -1;
-  draw();
+  $("#skipTour").onclick = () => closeTour(false);
+  $("#openTour").onclick = $("#headTour").onclick = openTour;
+  $("#story").addEventListener("click", (e) => { if (e.target === $("#story")) closeTour(false); });
+  addEventListener("keydown", (e) => {
+    if ($("#story").hidden) return;
+    if (e.key === "ArrowRight" && !$("#next").hidden) $("#next").click();
+    else if (e.key === "ArrowLeft" && !$("#prev").disabled) $("#prev").click();
+    else if (e.key === "Escape") closeTour(false);
+  });
+  // Swipe on a phone: left for next, right for back.
+  let x0 = null;
+  $("#story").addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  $("#story").addEventListener("touchend", (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) < 60) return;
+    if (dx < 0 && !$("#next").hidden) $("#next").click(); else if (dx > 0 && !$("#prev").disabled) $("#prev").click();
+  }, { passive: true });
+  // First visit, or ?tour in the link (for judges and the video): open it.
+  let first = true;
+  try { first = localStorage.getItem("vouch.tour") !== "seen"; } catch (e) {}
+  if (first || new URLSearchParams(location.search).has("tour")) openTour();
 }

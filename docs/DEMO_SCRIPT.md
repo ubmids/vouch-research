@@ -1,11 +1,12 @@
 # Vouch, demo script
 
 Target 2:45, hard ceiling 3:00. The page is built to be the demo: the
-"Follow one claim" story at the top is the video's spine, so you mostly read
+walkthrough that opens on arrival is the video's spine, so you mostly read
 the headline and press Next. Judges often stop at ninety seconds; by then they
 have seen an AI caught and a trade refused.
 
-Record at 1920x1080, browser full screen at https://vouch-feed.vercel.app, no
+Record at 1920x1080, browser full screen at **https://vouch-feed.vercel.app/?tour**
+(the `?tour` makes the walkthrough open even if you've seen it before), no
 face cam, no music. One voice: yours, unhurried. Everything on screen is real:
 Tesla's actual 10-Q, a claim a language model actually wrote, transactions on
 Robinhood Chain testnet.
@@ -17,7 +18,7 @@ deck (`docs/slides.pdf`) read over in about 2 minutes; the demo is this script.
 
 ## 0:00 to 0:15, the hook
 
-**On screen:** the page as it loads, story on step 1.
+**On screen:** the page as it loads, the walkthrough open on step 1.
 
 **Say:**
 
@@ -67,8 +68,8 @@ on the explorer for two seconds, come back.
 
 ## 1:15 to 1:35, the same sentence, told right
 
-**On screen:** click **"The same sentence, told right"**, then Next through
-steps 3 to 5 quickly.
+**On screen:** on the end card, click **"See the same sentence told right"**,
+then Next through steps 3 to 5 quickly.
 
 **Say:**
 
@@ -79,7 +80,7 @@ steps 3 to 5 quickly.
 
 ## 1:35 to 1:55, check one yourself
 
-**On screen:** click **"Check a claim"** (top right). Click **"The AI's wrong
+**On screen:** on the end card, click **"Check a claim yourself"**. Click **"The AI's wrong
 quarter"**, then **Check it**. Then click **"A true claim"**, **Check it**.
 
 **Say:**
@@ -92,8 +93,8 @@ quarter"**, then **Check it**. Then click **"A true claim"**, **Check it**.
 
 ## 1:55 to 2:15, the whole round
 
-**On screen:** close the dialog, click **"Skip to all 50 claims"**, scroll the
-table briefly, then scroll to **The scoreboard**.
+**On screen:** close the dialog. The page is on "Every claim in this round":
+scroll the table briefly, then scroll to **The scoreboard**.
 
 **Say:**
 
@@ -119,7 +120,8 @@ table briefly, then scroll to **The scoreboard**.
 
 ## 2:40 to 2:50, close
 
-**On screen:** the story's end card, "That's Vouch."
+**On screen:** click **"How it works"** (top bar) and jump to the end card,
+"That's Vouch." (or cut back to the first end card in the edit).
 
 **Say:**
 
