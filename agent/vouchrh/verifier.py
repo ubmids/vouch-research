@@ -161,7 +161,10 @@ def _span_of_value(quote: str, value: str):
     multi, single = _MULTI.search(quote), _SINGLE.findall(quote)
     if multi and "respectively" in quote and v is not None:
         spans = [_SPAN[multi.group(1)], _SPAN[multi.group(2)]]
-        after = amounts(quote[multi.end():])
+        # The figures come after the phrase ("... ended June 30, 2026, we recorded
+        # $138 million and $274 million, respectively") or before it ("... was
+        # $544 million and $1.1 billion for the three and six months ended ...").
+        after = amounts(quote[multi.end():]) or amounts(quote[:multi.start()])[-len(spans):]
         for i, a in enumerate(after[: len(spans)]):
             if abs(a - v) < 1e-6 * max(1, v):
                 return spans[i], _MONTH.get(multi.group(3).lower()), int(multi.group(5))

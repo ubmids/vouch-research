@@ -58,7 +58,7 @@ def available() -> bool:
 def ask(passage: str, company: str) -> dict:
     body = json.dumps({
         "model": MODEL, "stream": False, "format": "json",
-        "options": {"temperature": 0.2, "num_ctx": 4096},
+        "options": {"temperature": 0, "seed": 7, "num_ctx": 4096},   # reproducible: same filing, same claim
         "messages": [{"role": "system", "content": SYSTEM},
                      {"role": "user", "content": f"Company: {company}\n\nSentences from its latest 10-Q:\n{passage}"}],
     }).encode()

@@ -2,10 +2,12 @@
  "chain_id": 31337,
  "contracts": {
   "usdg": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-  "market": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+  "market": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+  "desk": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
  },
- "generated": 1790267654,
- "reader_pool": 387.5,
+ "generated": 1790269530,
+ "trader": "0x91692F169934F67899449362A8A938e3055e3db5",
+ "reader_pool": 400.0,
  "standings": [
   {
    "analyst": "Diligent",
@@ -19,9 +21,9 @@
    "analyst": "Qwen 2.5 7B",
    "kind": "model",
    "address": "0x5050A4F4b3f9338C3472dcC01A87C76A144b3c9c",
-   "bonded": 475.0,
-   "cleared": 9,
-   "slashed": 1
+   "bonded": 450.0,
+   "cleared": 8,
+   "slashed": 2
   },
   {
    "analyst": "Misreader",
@@ -68,8 +70,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "21b3ad6edaeb5f4d5c03e9e5255e4ba3badd7c743fd8b870cd2d9ed643cd904e",
-   "tx_judge": "95d75cc405ffe7fc9102e33be712cea06a9ca3e99ce10891b268678bde41207c"
+   "tx_post": "67d51569cb1f2938b73fb99d5179a448a66d3358cd2249d64dfdd347a37e187b",
+   "tx_judge": "30459abe8f37fac9d6f8fa46676ff2e3e8a712c6310501249617aeede47cf91c",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "683913b912a6adeb2ed81925479cb9d36c2f4602ab4f61f0b7e1db1e587169bc"
+   }
   },
   {
    "id": 1,
@@ -79,8 +86,8 @@
    "value": "$8.63 billion",
    "quote": "Our cash flows provided by operating activities were $8.63 billion during the six months ended June 30, 2026, compared to $4.70 billion during the same period ended June 30, 2025, representing an increase of $3.94 billion.",
    "analyst": "Qwen 2.5 7B",
-   "summary": "Operating cash flows were $8.63 billion, up from $4.7 billion year over year.",
-   "hash": "0x926bf2984bb77d33d46bbff2d7a0ee6b4185bcdf0e44937e4f3bded317f82188",
+   "summary": "Operating cash flows increased to $8.63 billion in the first half of 2026 from $4.7 billion in the same period last year.",
+   "hash": "0x892bd633f33dd74d028efb64035c06989e0ea026085d2432da45037fa3bb7e2a",
    "filing_url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026049270/tsla-20260630.htm",
    "analyst_kind": "model",
    "filed": "2026-07-23",
@@ -90,8 +97,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "0c89feb887bf5ce646b03a67c9a6164190b720301a8796043f90fef1b63f77e3",
-   "tx_judge": "422de06eda5668e824369c153147cf5263ae26c166042938b9ac48ea47cfd9e2"
+   "tx_post": "ef735ac510b5b63b87e2b5cb1cb832a0033668f100688acec0460891cf7a73ca",
+   "tx_judge": "5bfe72fb8e5c216ffaaec79f63955982498eb5665cadd8cf6cdad5595943e273",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "c9997d96c01e8374fcc72373f5e155acbbec0429371016b9e370bd5fe2af423d"
+   }
   },
   {
    "id": 2,
@@ -112,8 +124,13 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "29629f2cf6ec429c365226bf0735dfac701b0490b3ac019fd05a2d23287b6d30",
-   "tx_judge": "9daf690f8ae3f71e2e8680aa239531c58d65b01c25da54cd4d3d0df3eb548f0c"
+   "tx_post": "920c4067288e4811a2230c7d872e277d1953a2f53efbdd2748b125765b1ec4ba",
+   "tx_judge": "e867a1b186abc7511573bf59d91e7922e9ce3f39df017bfea5e2ed2d5b4619a2",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "50807dce4bfd73c438751bd68124be33ec05a564630aa1a6d44b9d4d458888d7"
+   }
   },
   {
    "id": 3,
@@ -134,8 +151,13 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.995,
-   "tx_post": "401c9d9653ba897f01c7d458d604af349bb17c824cb0a5412fb7e57ea4f1a34e",
-   "tx_judge": "4b3e443ef30a0fdf04c98868fd26f28690934576f957ba7e50db0d75fd94bf86"
+   "tx_post": "b6884b160f0b0481d55503930fe1464b94277a32ec209c2dcfe259ec94937265",
+   "tx_judge": "e7c83fb1408a8871de2456f7ba363e3e0827171321a9f578fd7dee4f60f02e93",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "5db7f927484942f1a97515d9497ebf81acf06e11c4190897881d13a5aad1f183"
+   }
   },
   {
    "id": 4,
@@ -156,8 +178,13 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3113,
-   "tx_post": "a323e15302ded6716ee83ea1442a40202404a75b741d44662034d107c9b84f5c",
-   "tx_judge": "65550180349ec30381e94e4b06b0dc1fab0bc28f8963cf942f86d078450217bd"
+   "tx_post": "8f2629de9838aab4b7d70c0ed24f60111ac502a64a10cbc20281ab0728f41805",
+   "tx_judge": "1bda66b07aa69d81c73800aa17cbf365173a147f9cd7822f9e0adf77158eff65",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "251daedf8dc4ee84457eda1e63f424f0efe4acef865c1d444d2ae9cd3f5f6189"
+   }
   },
   {
    "id": 5,
@@ -178,8 +205,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "29d1c16aa78a0dcbd8cb594f16d1a02e174ac44f0ad638e48eaa6e685bfb19c8",
-   "tx_judge": "065bbdb8ffe27dc85c7de019c5d659660242659b991aae8abf9d7269f2d42040"
+   "tx_post": "02de47b841d6244058c7deb56fbd3f2962cd6be88e5da58b9eac49301f669367",
+   "tx_judge": "f7785e3f7fb93248f167d4ff2b02a3c43cdfd211224c56d3856942ece9dedf96",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "b03eae93ab7cece09ab1e714e4c2450740cf2a8d2dd5fb7ee1534d32fa4dce59"
+   }
   },
   {
    "id": 6,
@@ -200,8 +232,13 @@
    "reason": "wrong quarter: the period ended in June, the claim says Q3 2026",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "ebeb36b0d059a5c8e6815a594d5bc9caec2ebc2a435d5bb7493258698132afc8",
-   "tx_judge": "32e7b56b22b455cc8c835b778403df2d0cc4d04539d4b20628689a4656f4e467"
+   "tx_post": "61d67fcf50d5f5e3ad680813a1e974a817c484d17253e64f782382f73bf9490d",
+   "tx_judge": "31b9354d9546acf3ba4776d1797e07b9e8eb906c7cd01cecef26f90fe173ce1e",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "3f9c8d2cc9ababc2560f1c5758e3e3e6858a16af29811a17343dafc56e3107cc"
+   }
   },
   {
    "id": 7,
@@ -222,8 +259,13 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "e272a028302c3d09ab7889d4d0b31c28ea6148a7bf8e192d3ec2fd835eb8cc04",
-   "tx_judge": "3b0017e15f13422072aa2e93f291d460da5b18eb03b3a064122967f94f979c3d"
+   "tx_post": "ec2900a80b0344d7abeb678ce5ede353310852a659385d0eaedf455fbacb8271",
+   "tx_judge": "76f293d46755763992ee309297ba951c5cb0040181692855b49fad67dd0095c6",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "7b739f5872c646ab4880e675aa1e4ada66954e9278b63a7294073b5d4a96d006"
+   }
   },
   {
    "id": 8,
@@ -244,8 +286,13 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9919,
-   "tx_post": "7d424d88c22727dadc62987590c1d59ab434835f13104d61da26e1ffb17c6b8e",
-   "tx_judge": "10097e12fe72a2d5fa115a63b6f2cb86c8d60f6500cfd64fcefd33505a5f5405"
+   "tx_post": "f371970839bd7b723760189a166186f11b558bf0e40d7b7a6b11a1f9c21e73f9",
+   "tx_judge": "bf0d19c249f6aefea36f10cb109735aaa723b319beb55b69d97d2cf368bfa648",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "3e6fe524f964715c0e6c7cea9bf1411a8cf47977b754f55d54f495a6695696cd"
+   }
   },
   {
    "id": 9,
@@ -266,8 +313,13 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.2812,
-   "tx_post": "aaf8463ea55c1b03e59f3f16472b85f8b2599ca33c1d9c5249c2a52e4ad39084",
-   "tx_judge": "4060aad0f96e0e79c23ee7c84e594f9a6b31a13fa33138fabeaf7124dd9fe301"
+   "tx_post": "33138c24d16427c077ba7619e7311cf6db29ff9fbb9077443baf9c16996cf608",
+   "tx_judge": "e0b3d21eabf20c0fffb777ddd46156a5b94cc10f06aac36a2f3708ab9a041817",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "a8acf74cd4b5b869c3647e7a2859127a03508a9bbf67f7962cbabe16acd2da0a"
+   }
   },
   {
    "id": 10,
@@ -288,8 +340,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "4820b368bd3c0200c68866f0f9adc38b2d8d2153b8f7b283380f99c6f6c77f4e",
-   "tx_judge": "ce5bb70d9c7db71a705a73b8dbfa1a5c3e957fc0b4fc44b2384e856242214def"
+   "tx_post": "6817c67b43c7906c049e2d07f415d2588aeafe1526c5551f15ac1edc6419c3a6",
+   "tx_judge": "a8667595a86afe174b527fa21ef1f69620510984778eabce48a0bd6dc3a5e8b5",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "06614545db79050e0654d3f77221e31f71e77507c2809846b040f43f5284a7c4"
+   }
   },
   {
    "id": 11,
@@ -310,8 +367,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "69653ffe2f7a72b634a56acdd35f1cb50bf805205f64d830f3e0730a0f767c8f",
-   "tx_judge": "6b85c830d609a94fabbf10fc8807c637b31e38aa8c6347dd07c8acdf8fdd3e49"
+   "tx_post": "204ebb8840cac4389be0b030fe38d1711e3a595a6fe68f8e4098a7ff4be6ca65",
+   "tx_judge": "cc0a01a7ed963b45deb023fc6ceffe3e89d87b6acd930d7c01a7c2ea291a4c84",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "6516e4f745fe949cb0df786992831227a26ed443cae8c4dbeff46afdb9d6c906"
+   }
   },
   {
    "id": 12,
@@ -332,8 +394,13 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "a82801c2f246109900d84096ffd276e59d4630a09022cbb576f3231d9d43e82d",
-   "tx_judge": "0bf31624716743c892d6102c48aedac0f47fc5a43130fbd22bb64ce1f323b011"
+   "tx_post": "2aaa051781afa1af196e7c26577dbb65979fa2e5eafbcb4b9362ddcb4d99a176",
+   "tx_judge": "3cd72761a4db31d2a4be5a84405c3d2e8b89559b0fac53fc20f8d22e51433ed2",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "bde3d53c6127060fb77a59645f59950557d0d8439d5a7fdc26031968241c9aef"
+   }
   },
   {
    "id": 13,
@@ -354,8 +421,13 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9932,
-   "tx_post": "60aebad25ea17443f88d78c2b9abc80fa8b70caa5ce6861463c0e0013040d036",
-   "tx_judge": "71059d1980086e24a600b051c6562d2cb15fe687bdbe02219370e3735d16c946"
+   "tx_post": "b2fae889b45070439c17ebf95b0b968b780b9e767f78a83c934fba2ee3aa993b",
+   "tx_judge": "70e69d39df0ab3e0653ef58416dc142cee4f66fbdb3448dfc301edc6c1be04ac",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "41afd5de87bc18a4d2655f82f3a4a4d4c9814c3af748583db0d3cdbccd1488fc"
+   }
   },
   {
    "id": 14,
@@ -376,8 +448,13 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3232,
-   "tx_post": "733a188c48bc40a29b88a351745998dd1e65f8a5a6a8fff0573a0bd9f0bd6e8d",
-   "tx_judge": "74b3011ba83234d1f9d128c14679ff67107e6f8f1a67d78af8d236beeec0a0cd"
+   "tx_post": "4f282175a577b176b97ee08758e53365c13902d3f21798c2bef6ae429009ec08",
+   "tx_judge": "d74b7900c065406d3cbf0f1805e4380d8c543dd00824a16a726b9d5976a27951",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "4bb173c3c470a66b4f3187a4185156a9e1d52e35725711f1dac40123d7099af8"
+   }
   },
   {
    "id": 15,
@@ -398,8 +475,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "064ca5fbc8f66e1f00b6116e06ac13c3a16291cc208018399ae28eac6762d277",
-   "tx_judge": "7ee362028b81e60b975975ede42249e8b7fdc1ae995dd7eab1334479c9b12ada"
+   "tx_post": "ab71dfe82de0a8e4fe5108e2d11f0f46cbb6468e87c37471feebb260d521e2ac",
+   "tx_judge": "486ae812e530c2c52139f3e9cc1d35adcba1388381eca79135d82b9b3fec4e34",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "9f0d195eef409cc80a9794be1f1ca99ad4f9bd7788ad1c08eb18f0d5c7f9212c"
+   }
   },
   {
    "id": 16,
@@ -420,8 +502,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "10d4d2de3460f724d936ba04ea38dc19e53f9ce01cf62d4a53f78f5939aa5543",
-   "tx_judge": "10f7379fdded5b3bf5e6ed117931bb39c1a2e9b9abfc422159511d3b5f518713"
+   "tx_post": "51ac48dd288e0b28d8b60941ceb3392e9d4e7d09dbc4eb506f00c9c16e343adf",
+   "tx_judge": "7802316c27cbedadf72dadd330a5831d7865c023afcb43dd7dab51247ecc3317",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "dcee67a40d67ace22d16653a3c1efd7deecfaa50ebd9f2f917262bce56bea745"
+   }
   },
   {
    "id": 17,
@@ -442,8 +529,13 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "fecc67ed218ef7ef8d58d0a4b279d1aa597e5de064c92f6283b580fe8eb8eb31",
-   "tx_judge": "705c19decafbb8142913a0dabc296ccbf11a55b0faaa1b8111a40050ebd13ea5"
+   "tx_post": "b2ac5334faa78d4aa25bdb15310d5c2ca5bced37f416b8796b746348923c1906",
+   "tx_judge": "821be2605c59778b063864a468f703ad58014e6e827dbc388fb21c5a2c5fab67",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "1233c30669392fecd41af97df3dac48c81c095ba41f6800293164124c16f8ffe"
+   }
   },
   {
    "id": 18,
@@ -464,8 +556,13 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9954,
-   "tx_post": "a4965248e22b86c81fd5bdda05f350c02c956406f3acd14a2249611951f0eaf9",
-   "tx_judge": "dee74c056ba639a74dea8cc78e2f35695e0d4f5b59bb553dd2344eeaa0d7b44e"
+   "tx_post": "793d6acd3c593b225176a9b7a1fc34825db85c24e5235c75804e24bb093eb9b2",
+   "tx_judge": "581d777d0f31563a3b49336c85ab26ea51bf594909821bd533cf1ed43fb4cb2a",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "5e18ba7f2520617ba99b6392c2aeb162257740cc6d3f416044452d451818c961"
+   }
   },
   {
    "id": 19,
@@ -486,8 +583,13 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3552,
-   "tx_post": "67dcb2774eb4208b447b7efc639f055e549bc0988b02e3e548cd5648db7a90de",
-   "tx_judge": "060d7eafc07777fbcb1d33cb619fb3dbddeb5c2cd11f34047b1f210cabbd546a"
+   "tx_post": "c05e32f6f967bb91e47e5875991bd2dba6a1630cb339fe61201207ba1eeb3a77",
+   "tx_judge": "7b21bf14c30974507b0ff7fffb7812dac178a492b46a71f03eaf3c2c9e11cba4",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "31ffb465ff73824156c70b1773b0b273c12edc1f40ceaa0545fdf1fd95a8c43c"
+   }
   },
   {
    "id": 20,
@@ -508,8 +610,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "9e63c63765ba34ca0e82d6d581714e2baa9f29fcd7ce141e0b882898269aab85",
-   "tx_judge": "76678a276f73c01a3ed4211895f70baa6fedd04980b0c06ccde8f6348b640348"
+   "tx_post": "148b8524ff8e264a670c95505c405b069072ef756c561e82f54cca8be9836164",
+   "tx_judge": "cc0c29266e99882ebca5ca0c9275046b1da64b387620f4a4272a9120ae3f799f",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "0a0dfe406b1c63bcf337460e224bde605bb97670361fc404657dd84dd1f4d677"
+   }
   },
   {
    "id": 21,
@@ -530,8 +637,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "c66be9034553fd2bb99d6ca5f2f7c42a35093889177e2b3752a8f176aa4d5526",
-   "tx_judge": "bb27b114b3cd85488931aac2f5f9425ff2b473427abc02e0f29560d1f509a3c7"
+   "tx_post": "efd9bb56d9e837be5619da66acd3c57619c8d9f0f28f2d3a895b3abe3b9be47d",
+   "tx_judge": "026591115b6ded52d0f7bb7cd4980a57c041da997eecab7daec2cf72d039939c",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "4f708590b4d3b0b8a73d600ee1d142abb8cd42295745714707c9156d85b5734d"
+   }
   },
   {
    "id": 22,
@@ -552,8 +664,13 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "ec38a2425f5d7d3fd3a96ae59098e7227cbf9e26d5e2966e475c7a663be7c76c",
-   "tx_judge": "07b28b4ed3d28c76f6941498bbbac8116ab57dce5d710d017d6de76e90435430"
+   "tx_post": "5badab90fb98c4d820a91d074aad603c23c4896ab1883bf03f529672296c160f",
+   "tx_judge": "b4c1fd38504c2fdb8f45e8cab51fce91f4205610f20c3191658f75c1097e3fd6",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "21090eebb2a17361458d542db604317a8f604a2d22109a0cfad19d7944a37af2"
+   }
   },
   {
    "id": 23,
@@ -574,8 +691,13 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.996,
-   "tx_post": "1709981be8654ac682e91bc6b80660f399312bb8ed766badb4bcb0f2b83e0def",
-   "tx_judge": "f07778a06e251bae1acf475029464e3764bca910c75d0fe9868ba003a727dc32"
+   "tx_post": "5e415641a92c0e038fce1df7e0a535c47df700f1ca9ef2f0550828b7d73e9909",
+   "tx_judge": "1fb5ba1ee4cbee008cf55dd7c4d42771ef461a22492d088f64d7287608bab39d",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "79a37e24dea13b641126608591ca100e35f76853bec979075b5b95c9fb362d25"
+   }
   },
   {
    "id": 24,
@@ -596,8 +718,13 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.5404,
-   "tx_post": "2afd63e92f72dbc21c5d360bfa069036f4c16eea2d253119486c42893889d600",
-   "tx_judge": "864637fbdea5035b76e704244c71ce5900aa87a9abbf252916496dfb3f069afe"
+   "tx_post": "d740ffbffd95d287d2bbf2d029b3b28a48bdfd1b91770b7e00c6621c5441ab58",
+   "tx_judge": "7f3d488eb04b0e36078c0fd0f2e287db05f9f0892f2b127115a58a56be019c4a",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "ce558803e17e3bbfd7b1fed80fe76998ecadac9b2a66bec94a6386a463b13648"
+   }
   },
   {
    "id": 25,
@@ -618,8 +745,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "eed262cfc3509a1e032b64b4af89d10bdc06dd6be980bedbd439e1e983229638",
-   "tx_judge": "1c34455ec2059194cb51cb539ad930f8122f4834b4dc49352e05acf6336fecaa"
+   "tx_post": "cde26c7a57a7f5eefda1f0926cb4e7ba2e98fee472c3bda59d6e2b99a22a90da",
+   "tx_judge": "8f2b73387978c6b8d9b14c1eb9fadb9d22944bad5959a0cb59cf26642fed00b5",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "2494f2b4108997449249017692dfd34c1e4162f97e014ae14e6eaf55adda8165"
+   }
   },
   {
    "id": 26,
@@ -629,8 +761,8 @@
    "value": "$361 million",
    "quote": "As of June 30, 2026, the total unrecognized stock-based compensation expense related to options and SARs outstanding was $361 million, and $136 million, respectively, which is expected to be recognized over a weighted-average service period of five and eight years , respectively.",
    "analyst": "Qwen 2.5 7B",
-   "summary": "Stock-based compensation expense as of June 30, 2026 is $361 million.",
-   "hash": "0x6c663396822f931cc95fcd14b3a19d549a5ac9d9deb6977dd1422ac3246d0999",
+   "summary": "Stock-based comp expense as of June 30, 2026 is $361 million.",
+   "hash": "0xd2213a29a83762a565f98408b06898e3025523d625a51ac8f6c03b8cc9655b83",
    "filing_url": "https://www.sec.gov/Archives/edgar/data/1321655/000132165526000041/pltr-20260630.htm",
    "analyst_kind": "model",
    "filed": "2026-08-04",
@@ -640,8 +772,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "b880c1c39c1ab3396a6610dd3d35a28987306ceb665f7ce47f24f3da90e02106",
-   "tx_judge": "8c11f0151c2136b3533b1828a6b1f1cdf0b52cbdfe2d0de343f0847247829ef9"
+   "tx_post": "0f4a48a694dcfed2eec1924507a33fdbb4e3eface58b6f53397857b6b3079da8",
+   "tx_judge": "5521195809069767f8d49aa8a8dbd2fc1981f821f9dd517b02e95e63934590a1",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "13f37fd8f4dc601eb8ba0495a9675d1c180cecff402351da9c591485223e8ffb"
+   }
   },
   {
    "id": 27,
@@ -662,8 +799,13 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "ddc2e98dfc78d42621cafa4f27823d697458e180a271e0a72ad8aa91eefbdf78",
-   "tx_judge": "406c3bd77ecaa9f5641990dda7b57771ef19320ddde85ef7c34c7060caae54fe"
+   "tx_post": "143e68622d2331a87fc7f3a52724289864211c9f3766e468e416609beba8d751",
+   "tx_judge": "ae3679fe39aca21782a86427c212ae66589b1384948e69a46f3e9f5d0aa66d39",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "e351ffe83e31e11fda463fb8a5664da438baf709ab888d6ce4fef6848f2c0377"
+   }
   },
   {
    "id": 28,
@@ -684,8 +826,13 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9955,
-   "tx_post": "127d32ded6b528b97e8047c59f0d3dc44dff8317fdbc2d03723a08e9c51ce4a6",
-   "tx_judge": "5cf161c84f38920671ffb149de786f973b28255dcaefa9b87e70b32deb2cdb60"
+   "tx_post": "16e5a08bb9a8fe637a3bf2b06da8a7269d4dce9d86d4af3db2e3175357b28b98",
+   "tx_judge": "b5f25f7bff9d5ea71693ce69664f0bacd32235c20476eadbaa30d4d16ceaf2f9",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "c6dbfe582ef580674ed5dc5340ef32056e667be69418dcad74e72c8daf96369f"
+   }
   },
   {
    "id": 29,
@@ -706,8 +853,13 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3776,
-   "tx_post": "e76d0853d114e7ee7f7920b0c8172aa15e5d466f3af4c0a12feecb2095320e0d",
-   "tx_judge": "0cc809779e4d340efd78ee5d05044f9e1dbd570d986ffc68a2d90e789df54752"
+   "tx_post": "a904ecd448093ccb8e09395b112e175dd225bde8ebe114c80461856737de0de3",
+   "tx_judge": "915b3f8d66ca979645d0c9722afe9114ebdf4e5e9903e643aa5da216cb6e8bcb",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "f1eb2b5e2d9dc00a611f716ef33c19557397f81823a7ed8686ba0545b0dac2f7"
+   }
   },
   {
    "id": 30,
@@ -728,8 +880,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "ea63ca4696c59c800d1c521057a74d7ce93a6aadb9bbadfe8db82356ac61502a",
-   "tx_judge": "d6be74e0b80fb14005df30fb200795be6401fc1bd319d29c264439bc103e062e"
+   "tx_post": "d7c987c259966ba3838ac0d23906346c329755669cb91d17c956fd8aef6563b6",
+   "tx_judge": "e941e41a5a96876c9d6aed89d6178abc3bfb55b8b4f71f19f5b889f75b7e7c0d",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "d0eee3d95c7f156daafc07de31e8d8c66dff50167c26d786122f0781e4034fbc"
+   }
   },
   {
    "id": 31,
@@ -750,8 +907,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "9a6f3bb9c1cab0ba54ae833e9c0924416bc92e6618b36e44e6bd633675cb60bb",
-   "tx_judge": "b24acdb74fdab9c8206731476b8989d7f738cceeb447ce7f49be5db801ea3999"
+   "tx_post": "6e368398c4e4d8cee3d58c77d61ff75f649c46f5c1ec82320bd9ee65f9448d23",
+   "tx_judge": "ae1b04bebe354fbe91ecb849fc58cafddc947e675c57d0eab36e125622f23bca",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "c2831ef076033033c83ff63dbf6f6e2b16bb1185fb33678b0a85a3575cf1f580"
+   }
   },
   {
    "id": 32,
@@ -772,8 +934,13 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "5f9773e67ce964cf098bfdd0b13d7591e1b2036b66fc76e84eecfeef7651ebfd",
-   "tx_judge": "8c7612dfc19dda433ad579e2bcc0324bdf414323ee06717cb291793d3448784a"
+   "tx_post": "754b6a9472f73a6031d67c19972089670d553440039798e2f6acc980184fd1d6",
+   "tx_judge": "593273164bee3869ffc07f582e40f30f786b98c7e9e30a8e7a6b05cbdd098d21",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "4f6845636d1312fabc51c0ac7e3ef1bedba0bcf19be6ce2d675bb35acf36b91c"
+   }
   },
   {
    "id": 33,
@@ -794,8 +961,13 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9954,
-   "tx_post": "4be505f4496c00890fd2000bfd1233d40d353bb1e9d8d7dd319a47581d33e8ba",
-   "tx_judge": "05e0acc1b6b8f572411a2a2f422b636646c84416d9aeb5578f33e388b592a009"
+   "tx_post": "934885472a1e9c1bc07e726d85b1c28b1579437ec220bafce80b838bce3895c9",
+   "tx_judge": "b0f1e60a0f63e62156599643f7854c0363099dbc4f7bd14de06fca9551db469b",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "82e0db33a1767e059e0cf1e59479980006de60e33187356917257a7cfb82b59c"
+   }
   },
   {
    "id": 34,
@@ -816,8 +988,13 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.243,
-   "tx_post": "880ea8ac84f7a8f73ed2c0a8c20b7cef87bf9f001b52f6aba5d6ee18d48465ff",
-   "tx_judge": "90025ad0af5967814eb18ed63c2141d0645aaa267362a886d807e932b93ba643"
+   "tx_post": "e3120a9262322798056976d51156bc531fbeecb438391c9bcba19d938eeaa4da",
+   "tx_judge": "332eef84625e690992719d99a37ff26e146a06508797a9f323c930956cc2801e",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "0d720041679834efde01aaae50e10a2ccb3594b1a919f485e55d44e91e869544"
+   }
   },
   {
    "id": 35,
@@ -838,19 +1015,24 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "1a5f64d2b6ba96a230439d7339046f62a8e5150da8ff4ae74d138b5bfea37346",
-   "tx_judge": "a887f4f1d6c8c5fc0af241c2e7a7c1dfbef63d3e9ddbaceee516838fb021ee3f"
+   "tx_post": "876ca68c6dc333522d33a1523e32ede07bdf5c365ef1f21f17e472eedf232ef6",
+   "tx_judge": "5cb48e0c862b6092424bb375dcca20c7150bb80c04d2655f6892a45032644c46",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "3d972dd7094786bdb5895b935229751b59c9b82adb968d9c8a92400cc059b938"
+   }
   },
   {
    "id": 36,
    "ticker": "NFLX",
    "accession": "0001065280-26-000212",
-   "metric": "foreign exchange losses for three months ended June 30, 2026",
+   "metric": "Foreign exchange losses for three months ended June 30, 2026",
    "value": "$17 million",
    "quote": "Interest and other income (expense) increased in the three months ended June 30, 2026 primarily due to foreign exchange losses of $17 million, net of the impacts of derivatives and hedging, compared to losses of $36 million for the corresponding period in 2025.",
    "analyst": "Qwen 2.5 7B",
    "summary": "Foreign exchange losses decreased to $17 million from $36 million year over year.",
-   "hash": "0x14c84d4a732704192600d224778ba667569658d7c646263190d635823e411903",
+   "hash": "0xa03f90ec22f437a7aefff9e11b2f7d3b148f4d3ac0c4a8bf26f52eb84a529123",
    "filing_url": "https://www.sec.gov/Archives/edgar/data/1065280/000106528026000212/nflx-20260630.htm",
    "analyst_kind": "model",
    "filed": "2026-07-17",
@@ -860,8 +1042,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "1a0c4f9c7f70fe157e9cac26f52cfde2176629fcf4384561a7aba7a763a91a74",
-   "tx_judge": "4442522ebbfe2281a02a51facc3739780ec043148270f7560a38164278bc5bca"
+   "tx_post": "4cc52e64e9630163ce9d6db944a60ceaec478c186847c166b944967352032902",
+   "tx_judge": "6245132a8c4701dcfa5dbd48c1f1570e3d28e2f28d685514253b0b2f22c638ea",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "ed010d0a872d9040be8adcc2124a7e1a9320180079bd7c8d8b723bfe780c25e3"
+   }
   },
   {
    "id": 37,
@@ -882,8 +1069,13 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "e9b47f94c413c33bd88683747edb3187e76f695f03c5bf8ec955a1dfee1e8ab5",
-   "tx_judge": "725e889779a89f736b1b63227b602eee843b5c6fbfde8f9d58078ea261c51feb"
+   "tx_post": "71e885eaee974209d1098763ad44c637ea1951722a67b1e7a4eee11ad5273380",
+   "tx_judge": "87d5e03c1fa857f63636cd1c55b6f11efcd89096b275106c645491c2e2f70772",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "534e35339318e068ec05d0c19f2c650e7194c5902ea6e946bf850d20a711f635"
+   }
   },
   {
    "id": 38,
@@ -904,8 +1096,13 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9971,
-   "tx_post": "1f4803937649490db69384ad176e1d29bd9f3921f94c80147d8a64c3eb8ed8d7",
-   "tx_judge": "8d867c6a9a9b05186f9934d7125b70a0896f941dda0363e6a138b48973811480"
+   "tx_post": "12c30999f14af33ab4587a8e008c58b280429a73e24cea8c26f1835ca2a1d35b",
+   "tx_judge": "16ab0cb7ba91407b226f96ad57c0a4ea749da6d7cf2eb623521715261a880ef2",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "6dc363cb6703e49b18620f694b5ad364376df4d3207234312cf6e581e8aaab3e"
+   }
   },
   {
    "id": 39,
@@ -926,8 +1123,13 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.4396,
-   "tx_post": "553da0015ead9c8243bc8dd167580bc4afb65ba686930be02718d76176a9f139",
-   "tx_judge": "6af08fcfae6d558ccaa61f03c497f335163cdd28e1b3c9effa33f3f15287fc72"
+   "tx_post": "e7fda44c39fa070c5115f8cb72dd6ec8407644a37de2a7716e2cd36660d61920",
+   "tx_judge": "bbd371c6d11ebd2c6f717c3ecf5593891fd5a3a996c101f8414d2808bcb12c7d",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "1dbd17dbc88e1928dc7c930183b76c316695f3f0cefe49bb74127e5c746c0d6a"
+   }
   },
   {
    "id": 40,
@@ -948,8 +1150,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "b21283555f274ca516a7d5f56e7d0d5994145c28858c37ce704b0eadf3b9aa4f",
-   "tx_judge": "9ae40ea2c548f0ac7cccf9961d55c4e24cc3069b426da45810a8cce4133a1696"
+   "tx_post": "0fabb09a557fb226f25edb9d745a96d138ff0f46dbcf2bd4d8af35a9e07a5309",
+   "tx_judge": "9194dc38a5d2dca2d18f862c433fefff26f0a2b26e8d28f47f981569d6db1533",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "72e218ab610dfd30b47dfde0070cea7ddc64f4f9b80996faf0f5113da8c3cc45"
+   }
   },
   {
    "id": 41,
@@ -966,12 +1173,17 @@
    "filed": "2026-08-05",
    "stake": 25.0,
    "analyst_address": "0x5050A4F4b3f9338C3472dcC01A87C76A144b3c9c",
-   "verdict": "cleared",
-   "reason": "quote verified and value grounded",
+   "verdict": "slashed",
+   "reason": "wrong quarter: the period ended in June, the claim says Q3 2026",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "2071d98af1f2107a691e9246b07606d2ca42e083b5593475ca2a75d38beb56ba",
-   "tx_judge": "80b5fff0aa49ed2355fe525b4575ac31b94e40bbbf715e73bad6ab097d8180db"
+   "tx_post": "52a095ed717760514ab0c6e982c583323702a3e75d6ba0f813684db60e311df7",
+   "tx_judge": "4aa28d51ed17316de6edaa5c3d85e5e049320cae9222d671eda1abc140743aaf",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "211217d525aea5ff79a1d4b471ef7122065533194b43dc4f83119649ebdd5578"
+   }
   },
   {
    "id": 42,
@@ -992,8 +1204,13 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "b5b2a8959d7e73390bec9cfd54bacc437362429f41a0e5360d114d11a04e4e0e",
-   "tx_judge": "a238fbe1c5d678878c30a997762e4f7cd7bc89d15b648d613c136b35cbe53e8f"
+   "tx_post": "7155e6b57e61be29b92009763fdf0f50ac57e7df7887b6096a53796984f3d57d",
+   "tx_judge": "f92a0215a56f8dd1ed357fbf971a99cb92454a88f7dc1ba72c98738c6a3da793",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "8e0e34d4ed6ea54aaa2d8eaba6adc23b9d5073009e14a4059c28e40f3f73f326"
+   }
   },
   {
    "id": 43,
@@ -1014,8 +1231,13 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9933,
-   "tx_post": "5170203022a5cbfbdf64558b146c5241d3b42bfd78c9fa82904b07c218bba8f9",
-   "tx_judge": "3e886383391000760a32c327dc889d9024d654eabdc27b8723ce931e3bb69959"
+   "tx_post": "54d5be05eaa0bb863e4a9f517b6f9f7cdade298b0f143e851091c3f5590b6ea4",
+   "tx_judge": "383bd016939843e6a31b3d100f396a69ae53b1f13c7fb74623fca444d30f0535",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "87bff496362366410aa5e5be0951e7515a9598596cd6ed41e0b311747c1a5359"
+   }
   },
   {
    "id": 44,
@@ -1036,8 +1258,13 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.2465,
-   "tx_post": "2dfedca02421e4bfe92a1ad6adda24c4702ef08d89eaee674e9365d70788bbe2",
-   "tx_judge": "ea9fd774ae7a35ebb7e3481858d301a205234af5fa463cde0ad1e038a69922f9"
+   "tx_post": "85716ca67d7b1dcc8f2bd01464413bc6801dba27aea4111c6cd5e3cb3364731a",
+   "tx_judge": "aafe989217649029d0ef153841a34d0e517b595f7ac388da694acf31013f5339",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "b1fdb7c2bc7fe76d8dfffba94d1b900923ceae2cffbcbd7caf9369fa68461956"
+   }
   },
   {
    "id": 45,
@@ -1058,8 +1285,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "749b435bf9392aee1e86f2fde19c40125ca00994303cb779b06f293b5bcd3f39",
-   "tx_judge": "2562028470fbfccc1c67cda1362ad086c606c84a59eb4032dbf6a7360f532988"
+   "tx_post": "099f3c7f00ac9f6e41eb19940a14ebd25f2fb1b4c3b42429ac9a17175d5e70cd",
+   "tx_judge": "d6b0363f1f099f3c663d51e2f5dfc16efdf8f4d0d4179e21b5bfe5960259851b",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "57064538bd36ae245b82b1a39e96cb23e687febf53e38852c70889e6811e00e2"
+   }
   },
   {
    "id": 46,
@@ -1069,8 +1301,8 @@
    "value": "$1,095 million",
    "quote": "Amortization of acquisition-related intangibles of $1,095 million for the six months ended June 27, 2026 decreased by $40 million, or 4%, compared to $1,135 million for the prior year period.",
    "analyst": "Qwen 2.5 7B",
-   "summary": "Amortization was $1,095 million for the six months ended June 27, 2026.",
-   "hash": "0xd8cee44db2211350d77c21cd6073fe1a9969f2f495d95d49a29238711470f021",
+   "summary": "Amortization decreased to $1,095 million from $1,135 million year over year.",
+   "hash": "0x703f1d9dbd56e58afee12ce65130e39bee3ebdc261ae814149584a8d63b5b93b",
    "filing_url": "https://www.sec.gov/Archives/edgar/data/2488/000000248826000123/amd-20260627.htm",
    "analyst_kind": "model",
    "filed": "2026-08-05",
@@ -1080,8 +1312,13 @@
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "11c9e659a1a35504c0589ad073ee88fe1f6fc16d641a468107e27fa99c37f8fa",
-   "tx_judge": "12d52c9aeaf7bbf8abaadae74547d6abd60f41ff904c43a25544420540ac8664"
+   "tx_post": "24fb8ef970de4c5a3c665cf1cecc7b2a386a95c7973dcfbd93dfa6f390db99a0",
+   "tx_judge": "c71a9330ce4505b72f8ed9e1d63cb305004fac2cad4c284fd4e9dd1dbcc3ef9c",
+   "desk": {
+    "acted": true,
+    "error": null,
+    "tx": "5f0871eddbee6c3a1f9b72f826fd17b038e2289a51fae07f1ec0b159bba18a81"
+   }
   },
   {
    "id": 47,
@@ -1102,8 +1339,13 @@
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "66050beea54fe617cecb88513396267caecf6f8592b549178016801518eeeb6c",
-   "tx_judge": "30d90331421a87e2686785b9a2b27459dc1791ec779b156da594c6b35614ae55"
+   "tx_post": "0034f4c1b13d1e785702e33ce02c6895bfc0556023f763e518d1dae4347e14c9",
+   "tx_judge": "87a895892c3e0fb266e4ab0c228acefd1e909462196e007f46b7a920c35d46d4",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "d39be803e1a37e4402d484cb438338e947348aeeda1ec2a19aefbcaacfd5ee1b"
+   }
   },
   {
    "id": 48,
@@ -1124,8 +1366,13 @@
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9911,
-   "tx_post": "ccaeb3382cd381593f8334110a344622edde1db9ea6cfd1273747a040223b9a7",
-   "tx_judge": "e1c672623b577e5322a76892e6b7bd91afa34c49d7b69f7b14cbe3d1710131e2"
+   "tx_post": "879a1ff313e82ec4e2edf92adc81072f93937cdac302554475f99b01a8b6a330",
+   "tx_judge": "57aa3c27d0d6feb67821d7b89358dc5e1ff0f8bdcfa25e1d05b667fddae26c01",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "13b0305e26a5604bc21faf78098e039477e6a50d9752a5f286749a95816046d9"
+   }
   },
   {
    "id": 49,
@@ -1146,8 +1393,13 @@
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3699,
-   "tx_post": "36da1327759a132f89731c2cc969ef16d60f23d9222012e0354f7127ac4e45cb",
-   "tx_judge": "b62d6ee074cdbfac851e681b06e0a2ed91dbc04a8ff1c4ffec9af73e1e0b36dd"
+   "tx_post": "dcfca84b6b294fe67d146b7a8354ba85ed4d43d60e7368489d37a77831f61524",
+   "tx_judge": "afad2ff253651d13b8372ce7991a33cc3cb7532753be3b7aa5cdff7567c3a550",
+   "desk": {
+    "acted": false,
+    "error": "NotCleared",
+    "tx": "9960c8b2964c4a68ac57d7eee1c62c95480ba7a12363f10cef6ba0abeba0f64b"
+   }
   }
  ]
 }

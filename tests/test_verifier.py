@@ -117,3 +117,12 @@ def test_arithmetic_on_the_sentence_is_allowed_and_nothing_else():
           "losses of $36 million for the corresponding period in 2025.")
     assert not _slash("$17 million", fx, "Foreign exchange losses fell by $19 million to $17 million in the quarter.")
     assert _slash("$17 million", fx, "Foreign exchange losses fell by $21 million to $17 million in the quarter.")
+
+
+def test_respectively_with_the_figures_before_the_periods():
+    amort = ("Acquisition-related intangible amortization expense was $544 million and $1.1 billion for the "
+             "three and six months ended June 27, 2026, respectively.")
+    assert _slash("$544 million", amort, "Intangible amortization was $544 million for Q3 2026.")
+    assert not _slash("$544 million", amort, "Intangible amortization was $544 million for Q2 2026.")
+    assert _slash("$1.1 billion", amort, "Intangible amortization was $1.1 billion in the quarter.")
+    assert not _slash("$1.1 billion", amort, "Intangible amortization was $1.1 billion in the six months to June.")
