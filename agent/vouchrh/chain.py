@@ -67,9 +67,11 @@ class Chain:
             return "reverted"
 
     def fund(self, to: str, wei: int):
-        tx = {"to": to, "value": wei, "from": self.verifier.address, "chainId": self.chain_id, "gas": 21000,
+        tx = {"to": to, "value": wei, "from": self.verifier.address, "chainId": self.chain_id,
               "nonce": self.w3.eth.get_transaction_count(self.verifier.address, "pending"),
               "maxFeePerGas": self.w3.eth.gas_price * 2, "maxPriorityFeePerGas": 0}
+        # Not a flat 21,000: an Arbitrum chain also charges for the data it posts to Ethereum.
+        tx["gas"] = self.w3.eth.estimate_gas(tx)
         h = self.w3.eth.send_raw_transaction(self.verifier.sign_transaction(tx).raw_transaction)
         self.w3.eth.wait_for_transaction_receipt(h)
 

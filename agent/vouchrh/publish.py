@@ -43,7 +43,11 @@ def enrich(feed: dict) -> dict:
         if t not in texts:
             texts[t] = " ".join(edgar.latest(t).text().split())
             sentences[t] = [f.sentence for f in facts(texts[t])]
+    fix = lambda h: h if not h or h.startswith("0x") else "0x" + h      # web3 7 drops the prefix
     for c in feed["claims"]:
+        c["tx_post"], c["tx_judge"] = fix(c.get("tx_post")), fix(c.get("tx_judge"))
+        if c.get("desk"):
+            c["desk"]["tx"] = fix(c["desk"]["tx"])
         text = texts[c["ticker"]]
         check = verify_quote(c["quote"], text)
         genuine = normalize(c["quote"]) in normalize(text)

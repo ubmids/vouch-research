@@ -28,7 +28,7 @@ if [ "$BAL" = "0" ]; then
   exit 1
 fi
 
-~/.foundry/bin/forge build >/dev/null
+~/.foundry/bin/forge build >/dev/null 2>&1
 
 # Bond in real Paxos USDG when the wallet holds some (faucet.paxos.com), sized
 # to what it holds; otherwise the market deploys its test stand-in.
@@ -46,6 +46,6 @@ fi
 MODEL=""
 curl -s -m 3 http://127.0.0.1:11434/api/tags >/dev/null 2>&1 && MODEL="--model"
 PYTHONPATH=agent .venv/bin/python -m vouchrh.market --rpc "$RPC" --key "$(cat "$KEYFILE")" \
-  --per-ticker "${PER_TICKER:-2}" $MODEL "${TOKEN_ARGS[@]}" --out feed/feed.json
+  --per-ticker "${PER_TICKER:-2}" $MODEL ${TOKEN_ARGS[@]+"${TOKEN_ARGS[@]}"} --out feed/feed.json
 PYTHONPATH=agent .venv/bin/python -m vouchrh.publish feed/feed.json web/feed.json
 (cd web && vercel deploy --prod --yes >/dev/null) && echo "published: https://vouch-feed.vercel.app"
