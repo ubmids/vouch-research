@@ -49,7 +49,9 @@ contract BondedClaims {
     address public verifier;
     uint256 public immutable minStake;
     uint256 public immutable challengeBond;
-    uint64 public immutable window;       // seconds a claim can be challenged
+    // Seconds a claim can be challenged. Compared with block.timestamp, which a
+    // sequencer can skew by seconds; the window is an hour, so it cannot matter.
+    uint64 public immutable window;
 
     mapping(address => uint256) public bonded;     // everything an analyst has deposited
     mapping(address => uint256) public locked;     // the part currently at stake on pending claims
@@ -92,10 +94,12 @@ contract BondedClaims {
 
     // ---- analysts ---------------------------------------------------------
 
+    // Every function below updates state and emits before it moves tokens
+    // (checks, effects, interactions); a failed transfer reverts all of it.
     function bond(uint256 amount) external {
-        if (!bondToken.transferFrom(msg.sender, address(this), amount)) revert TransferFailed();
         bonded[msg.sender] += amount;
         emit Bonded(msg.sender, amount, bonded[msg.sender]);
+        if (!bondToken.transferFrom(msg.sender, address(this), amount)) revert TransferFailed();
     }
 
     /// @notice Publish a claim, putting `atStake` of your free bond behind it.
@@ -114,8 +118,8 @@ contract BondedClaims {
     function withdraw(uint256 amount) external {
         if (freeBond(msg.sender) < amount) revert NotEnoughFreeBond();
         bonded[msg.sender] -= amount;
-        if (!bondToken.transfer(msg.sender, amount)) revert TransferFailed();
         emit Withdrawn(msg.sender, amount);
+        if (!bondToken.transfer(msg.sender, amount)) revert TransferFailed();
     }
 
     // ---- anyone -----------------------------------------------------------
@@ -124,10 +128,10 @@ contract BondedClaims {
     function challenge(uint256 id) external {
         Claim storage c = _pending(id);
         if (block.timestamp > c.postedAt + window) revert WindowClosed();
-        if (!bondToken.transferFrom(msg.sender, address(this), challengeBond)) revert TransferFailed();
         c.status = Status.Challenged;
         c.challenger = msg.sender;
         emit Challenged(id, msg.sender, challengeBond);
+        if (!bondToken.transferFrom(msg.sender, address(this), challengeBond)) revert TransferFailed();
     }
 
     /// @notice A claim nobody challenged in time clears itself. Anyone may call.
@@ -164,8 +168,12 @@ contract BondedClaims {
 
     /// @notice The claim failed the check. The stake at risk is taken: half to
     /// the challenger who raised it, the rest to the reader pool.
+    /// The verifier as the default challenger: it may slash directly, but only
+    /// inside the same window anyone else would have had.
     function slash(uint256 id, address challenger, string calldata reason) external onlyVerifier {
-        _slash(id, _pending(id), challenger, reason);
+        Claim storage c = _pending(id);
+        if (block.timestamp > c.postedAt + window) revert WindowClosed();
+        _slash(id, c, challenger, reason);
     }
 
     function _clear(uint256 id, Claim storage c) private {
@@ -183,11 +191,12 @@ contract BondedClaims {
         slashedCount[c.analyst] += 1;
         uint256 bounty = challenger == address(0) ? 0 : amount / 2;
         readerPool += amount - bounty;
-        if (bounty > 0 && !bondToken.transfer(challenger, bounty)) revert TransferFailed();
         emit Slashed(id, c.analyst, challenger, amount, reason);
+        if (bounty > 0 && !bondToken.transfer(challenger, bounty)) revert TransferFailed();
     }
 
     function setVerifier(address next) external onlyVerifier {
+        if (next == address(0)) revert NotVerifier();
         emit VerifierChanged(verifier, next);
         verifier = next;
     }

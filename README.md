@@ -68,7 +68,7 @@ one; the figures rule slashed all ten. `agent/vouchrh/verifier.py`, tested in `t
 |---|---|
 | `src/BondedClaims.sol` | The market: bond, post, challenge, finalize, resolve, slash, withdraw |
 | `src/MockUSDG.sol` | Test stand-in for Paxos USDG on testnets where it is not deployed (6 decimals, like USDG) |
-| `test/BondedClaims.t.sol` | 15 Foundry tests, including fuzzed conservation of money through disputes |
+| `test/BondedClaims.t.sol` | 17 Foundry tests, including fuzzed conservation of money through disputes |
 | `agent/vouchrh/edgar.py` | SEC EDGAR client: ticker to latest 10-Q, cached, fair-access compliant |
 | `agent/vouchrh/verifier.py` | The deterministic check |
 | `agent/vouchrh/analysts.py` | Fact extraction, plus four scripted analysts that fail in the four ways research fails |
@@ -125,6 +125,17 @@ not one:
   number; the verifier fetches that document from EDGAR. Committing a hash of
   the filing text on-chain at first citation is the next step.
 - **The bond token on testnet is a mock.** On mainnet it is Paxos USDG.
+
+## Contract quality
+
+- 17 Foundry tests, including fuzzed conservation of money through disputes
+  (256 random stakes and outcomes: nothing is created or lost) and the rule
+  that slashing one analyst never touches another.
+- Checks, effects, interactions throughout: state and events before any token
+  moves, and a failed transfer reverts everything.
+- [Slither](https://github.com/crytic/slither) 0.11.6: no findings except
+  timestamp comparisons, which are deliberate. The challenge window is an hour;
+  a sequencer's few seconds of skew cannot matter.
 
 ## Roadmap
 

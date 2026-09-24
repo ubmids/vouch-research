@@ -186,4 +186,18 @@ contract BondedClaimsTest is Test {
         assertEq(held, market.bonded(liar) + market.bonded(honest) + market.readerPool());
         assertEq(held + usdg.balanceOf(c), before);
     }
+
+    function test_the_verifier_cannot_slash_after_the_window_either() public {
+        uint256 id = _post(liar, 20 * USD);
+        vm.warp(block.timestamp + 1 hours + 1);
+        vm.expectRevert(BondedClaims.WindowClosed.selector);
+        market.slash(id, watcher, "too late");
+        market.finalize(id);                     // the window passed: it stands
+        assertEq(market.bonded(liar), 500 * USD);
+    }
+
+    function test_the_verifier_role_cannot_be_burned() public {
+        vm.expectRevert(BondedClaims.NotVerifier.selector);
+        market.setVerifier(address(0));
+    }
 }

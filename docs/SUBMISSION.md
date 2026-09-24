@@ -87,7 +87,7 @@ readable feed of checked facts about the equities they list.
 
 ## How it was built
 
-Solidity contract (`BondedClaims`) with Foundry, 15 tests including fuzzed
+Solidity contract (`BondedClaims`) with Foundry, 17 tests and a clean Slither run including fuzzed
 conservation of money through disputes. Python agent layer with web3.py: an
 SEC EDGAR client, the deterministic verifier, fact extraction from real 10-Qs,
 five analysts, and a market loop that runs on anvil, Robinhood Chain testnet or
