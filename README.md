@@ -58,7 +58,9 @@ survive the noise of turning HTML into text. In a financial filing that
 tolerance is the hole: change "50%" to "56%" in a real Tesla sentence and it is
 still **99.3% similar** to the filing. Vouch accepts near-matches only when every
 figure in the quote, and its scale, appears exactly in the matching passage of
-the filing. `agent/vouchrh/verifier.py`, tested in `tests/test_verifier.py`.
+the filing. In a round over five real 10-Qs, all ten doctored quotes scored
+between 99.1% and 99.7% similar, so a 95% fuzzy match would have passed every
+one; the figures rule slashed all ten. `agent/vouchrh/verifier.py`, tested in `tests/test_verifier.py`.
 
 ## What is here
 
