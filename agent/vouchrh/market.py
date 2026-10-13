@@ -121,7 +121,7 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
                 log(f"  #{cid:<3} {t:5} {agent.name:12} {c.value:>16}  {'SLASH ' if verdict.fraudulent else 'clear '} {verdict.reason}")
     standings = [{"analyst": a.name, "kind": a.kind, "address": acct.address} for a, acct in analysts]
     return {"chain_id": chain.chain_id, "contracts": asdict(deployed), "generated": int(time.time()),
-            "settled_by": "local forwarder (Python check)" if settle == "local" else "Chainlink CRE workflow",
+            "settled_by": "the Python check, through a local forwarder" if settle == "local" else "the Chainlink CRE workflow (CRE CLI simulation)",
             "from_block": start_block, "standings": standings, "claims": feed, "trade_size": trade, "fund_wei": fund_wei}
 
 

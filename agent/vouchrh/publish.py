@@ -14,8 +14,8 @@ import sys
 from difflib import SequenceMatcher
 
 from . import edgar
-from .analysts import facts
 from .verifier import figures, normalize, verify_quote
+from .verifier import sentences as split_sentences
 
 CHAINS = {
     31337: {"name": "Local devnet (anvil)", "explorer": None, "rpc": None},
@@ -59,8 +59,12 @@ def enrich(feed: dict) -> dict:
     for c in feed["claims"]:
         t = c["ticker"]
         if t not in texts:
-            texts[t] = " ".join(edgar.latest(t).text().split())
-            sentences[t] = [f.sentence for f in facts(texts[t])]
+            original = edgar.latest(t).text()
+            texts[t] = " ".join(original.split())
+            # Candidates for "the sentence it was doctored from": every sentence of
+            # the filing with a figure in it, split the way the check splits them
+            # (per line), so a sentence next to a table is not lost in the join.
+            sentences[t] = [x for x in split_sentences(original) if any(ch.isdigit() for ch in x)]
     fix = lambda h: h if not h or h.startswith("0x") else "0x" + h      # web3 7 drops the prefix
     for c in feed["claims"]:
         c["tx_post"], c["tx_judge"] = fix(c.get("tx_post")), fix(c.get("tx_judge"))
@@ -72,7 +76,9 @@ def enrich(feed: dict) -> dict:
         if genuine and c["quote"] in text:
             source = c["quote"]
         else:
-            source = max(sentences[c["ticker"]], key=lambda s: SequenceMatcher(None, s, c["quote"]).ratio())
+            pool = [x for x in sentences[c["ticker"]] if SequenceMatcher(None, x, c["quote"]).quick_ratio() >= 0.6] \
+                or sentences[c["ticker"]]
+            source = max(pool, key=lambda x: SequenceMatcher(None, x, c["quote"]).ratio())
         similarity = SequenceMatcher(None, normalize(source), normalize(c["quote"])).ratio()
         c["source"] = _passage(text, source) if similarity >= 0.6 and source in text else None
         c["similarity"] = round(similarity, 4)

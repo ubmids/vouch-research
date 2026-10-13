@@ -533,3 +533,15 @@ a.txl:hover { color: var(--ink); }
 .cited td, .cited th { white-space: normal; height: auto; }
 .cited .cl { overflow-wrap: anywhere; }
 .cited td.vd { white-space: nowrap; }
+.inspect .by { font: 400 11.5px var(--mono); color: var(--soft); margin: 10px 0 14px; display: flex; gap: 6px; flex-wrap: wrap; align-items: baseline; }
+.inspect .by b { color: var(--volt); font-weight: 500; }
+.inspect .by a { color: var(--soft); }
+@media (max-width: 720px) {
+  .cited, .cited tbody { display: block; }
+  .cited thead { display: none; }
+  .cited tr { display: block !important; grid-template-columns: none !important; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .cited td { display: inline-block; border: 0; padding: 2px 8px 2px 0; min-width: 0 !important; max-width: none; height: auto; }
+  .cited td.cl { display: block; }
+  .cited td.sig { display: block; }
+  .refused li { gap: 6px; }
+}

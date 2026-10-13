@@ -53,7 +53,7 @@ function boot() {
     k("", "claims", cs.length, "Claims posted in this round, each with USDG at stake") +
     k("c", "true", cleared, "Checked against the SEC filing and found true: cleared") +
     k("s", "wrong", cs.length - cleared, "Wrong in a way the check can prove: the analyst lost its stake (slashed)") +
-    k("opt", "lost by wrong claims", `${money(lost)} USDG`, "Stake taken from wrong claims: half to whoever caught them, half to the reader pool") +
+    k("opt", "lost by wrong claims", `${money(lost)} USDG`, F.settled_by ? "Stake taken from wrong claims, to the pool that backs readers" : "Stake taken from wrong claims: half to whoever caught them, half to the reader pool") +
     (J.length ? k("opt", "agent", `${trades} trades · ${refusals} refused`, "A trading agent read every claim. The desk refused every trade that cited a wrong one; each trade it made is in the journal below") : "");
   // On a phone, three numbers under the bar rather than six in it.
   $("#mkpis").innerHTML = `<span>claims<b>${cs.length}</b></span><span class="c">true<b>${cleared}</b></span><span class="s">wrong<b>${cs.length - cleared}</b></span>`;
@@ -89,7 +89,10 @@ function boot() {
   $("#openCheck").onclick = $("#devCheck").onclick = openCheck;
   checkPanel();
   story(lead);
-  if (new URLSearchParams(location.search).has("journal")) openEntry(lead.ticker);
+  const qs = new URLSearchParams(location.search);
+  if (qs.has("journal")) openEntry(lead.ticker);
+  // ?claim (the lead) or ?claim=<id>: open on one claim, no tour (for links and the video)
+  if (qs.has("claim")) { const id = Number(qs.get("claim")); select(qs.get("claim") && cs.some((c) => c.id === id) ? id : lead.id, true); }
 }
 
 function watch() {
@@ -158,6 +161,13 @@ function diff(a, b) {
   return out;
 }
 
+// Where a slashed stake went. Rounds settled through the forwarder (v2) have no
+// challenger, so all of it backs readers; v1 rounds paid half to a challenger.
+function split(c, sep = " · ") {
+  return F.settled_by ? `all ${money(c.stake)} to the pool that backs readers`
+    : `${money(c.stake / 2)} to whoever caught it${sep}${money(c.stake / 2)} to a pool that protects readers`;
+}
+
 // ---- the inspector: in the order a reader asks ------------------------------
 function select(id, scroll) {
   selected = id;
@@ -202,8 +212,11 @@ function select(id, scroll) {
       <div class="v">${src ? filed : `<span class="none">Nothing in the filing resembles this sentence.</span>`}</div></div>
 
     <div class="flow">${bad
-      ? `<div class="n">${esc(c.analyst)} lost<b class="s">−${money(c.stake)} USDG</b></div><div class="ar">→</div><div class="n">${money(c.stake / 2)} to whoever caught it · ${money(c.stake / 2)} to readers<b class="c">+${money(c.stake)}</b></div>`
+      ? `<div class="n">${esc(c.analyst)} lost<b class="s">−${money(c.stake)} USDG</b></div><div class="ar">→</div><div class="n">${split(c)}<b class="c">+${money(c.stake)}</b></div>`
       : `<div class="n">${esc(c.analyst)} staked<b>${money(c.stake)} USDG</b></div><div class="ar">→</div><div class="n">returned to the analyst<b class="c">+${money(c.stake)}</b></div>`}</div>
+
+    <div class="by">${c.workflow_id && !/^0x0+$/.test(c.workflow_id) ? `<b>Checked by Chainlink CRE</b> · workflow ${esc(short(c.workflow_id, 8, 4))}`
+      : `<b>Checked by</b> ${esc(F.settled_by || "the verifier key (before Chainlink CRE)")}`} · against the filing SEC EDGAR serves${txLink(c.tx_judge, " · the verdict")}</div>
 
     ${agent ? `<div class="box desk"><div class="k"><span>What a trading agent did</span><span>AgentDesk</span></div><div class="v">${agent}</div></div>` : ""}
 
@@ -486,7 +499,7 @@ function story(lead) {
         `<div class="vs"><div><span>The claim says</span><p>${said(wrong)}</p></div><div><span>${esc(company)}'s 10-Q says</span><p>${period(wrong.source ? wrong.source.match : wrong.quote)}</p></div></div>
          <p class="small">${specific(wrong)} <b class="r">${esc(plain(wrong).short[0].toUpperCase() + plain(wrong).short.slice(1))}.</b></p>`],
       [`Wrong, so it paid.`,
-        `<div class="flow big"><div class="n">${esc(wrong.analyst)}<b class="s">−${money(wrong.stake)} USDG</b></div><div class="ar">→</div><div class="n">${money(wrong.stake / 2)} to whoever caught it<br>${money(wrong.stake / 2)} to a pool that protects readers<b class="c">+${money(wrong.stake)}</b></div></div>
+        `<div class="flow big"><div class="n">${esc(wrong.analyst)}<b class="s">−${money(wrong.stake)} USDG</b></div><div class="ar">→</div><div class="n">${split(wrong, "<br>")}<b class="c">+${money(wrong.stake)}</b></div></div>
          <p class="small">No moderator decided this. The check is mechanical, so anyone can re-run it and get the same answer.</p>${tx(wrong.tx_judge, "the slash")}`],
       [`A trading agent wanted to act on it. The contract said no.`,
         `<div class="agentViz"><div class="bad">✕ trade refused</div><p>The agent trades through a desk that asks Vouch first. A claim that failed the check can't back a trade, so the transaction reverted on-chain.</p></div>
@@ -576,5 +589,5 @@ function story(lead) {
   let first = true;
   try { first = localStorage.getItem("vouch.tour") !== "seen"; } catch (e) {}
   const qs = new URLSearchParams(location.search);
-  if ((first && !qs.has("journal")) || qs.has("tour")) openTour();
+  if ((first && !qs.has("journal") && !qs.has("claim")) || qs.has("tour")) openTour();
 }
