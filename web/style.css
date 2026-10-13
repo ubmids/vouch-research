@@ -473,3 +473,63 @@ body.touring { overflow: hidden; }
   .kpis { order: 3; width: 100%; margin: 0; justify-content: space-between; }
   .tourBtn { margin-left: auto; }
 }
+
+/* ---- the agent's journal ------------------------------------------------- */
+.journal { border-top: 1px solid var(--line); }
+.journal .sectionHead p b { color: var(--ink); font-weight: 500; }
+#entries { padding: 0 22px 26px; display: grid; gap: 10px; }
+.jnote { color: var(--soft); font-size: 13.5px; } .jnote a { color: var(--volt); }
+.jentry { border: 1px solid var(--line2); border-radius: 10px; background: var(--panel); overflow: hidden; }
+.jentry[open] { background: var(--bg); }
+.jentry.long { box-shadow: inset 3px 0 0 var(--volt); } .jentry.short { box-shadow: inset 3px 0 0 var(--flare); }
+.jentry summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; gap: 12px; padding: 13px 16px; flex-wrap: wrap; }
+.jentry summary::-webkit-details-marker { display: none; }
+.jentry summary:hover { background: var(--panel2); }
+.jentry .side { font: 700 11px var(--mono); letter-spacing: .08em; padding: 2px 8px; border-radius: 3px; background: var(--line2); color: var(--ink2); }
+.jentry .side.long { background: var(--volt-w); color: var(--volt); } .jentry .side.short { background: var(--flare-w); color: var(--flare); }
+.jentry .tk { font: 700 14px var(--mono); } .jentry .co { color: var(--soft); font-size: 13px; }
+.jentry .what { font: 400 12px var(--mono); color: var(--soft); } .jentry .when { margin-left: auto; font: 400 11.5px var(--mono); color: var(--dim); }
+.trail { list-style: none; padding: 4px 16px 6px 16px; counter-reset: t; display: grid; gap: 12px; }
+.trail > li { counter-increment: t; display: grid; grid-template-columns: 26px 1fr; color: var(--ink2); font-size: 13.5px; line-height: 1.55; }
+.trail > li::before { content: counter(t, decimal-leading-zero); font: 400 11.5px var(--mono); color: var(--dim); padding-top: 2px; }
+.trail > li > div { min-width: 0; }
+.trail > li > div > b:first-child { color: var(--ink); font-weight: 500; }
+.trail b.c { color: var(--volt); } .trail b.s { color: var(--flare); }
+.trail .rule { display: block; font: 400 11.5px var(--mono); color: var(--dim); margin-top: 3px; }
+.trail code, .checks code { font: 400 12px var(--mono); color: var(--ink); }
+.refused { list-style: none; padding: 6px 0 0; display: grid; gap: 3px; font: 400 12px var(--mono); }
+.refused li { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.refused .who, .cited .who { color: var(--soft); } .refused .s { color: var(--flare); }
+.cid { font: 500 12px var(--mono); color: var(--ink); border-bottom: 1px dotted var(--dim); padding: 0; }
+.cid:hover { color: var(--volt); border-color: var(--volt); }
+.txl { font: 400 11.5px var(--mono); color: var(--soft); text-decoration: none; border-bottom: 1px solid var(--line2); margin-left: 6px; white-space: nowrap; }
+a.txl:hover { color: var(--ink); }
+.scrollx { overflow-x: auto; margin-top: 8px; }
+.cited { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.cited th { text-align: left; font: 400 10.5px var(--mono); color: var(--dim); text-transform: uppercase; letter-spacing: .08em; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.cited td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.cited .cl { color: var(--ink2); min-width: 260px; } .cited .cl .v { font: 500 12.5px var(--mono); color: var(--ink); margin-right: 4px; }
+.cited .vd { white-space: nowrap; }
+.cited .sig b { font: 600 11.5px var(--mono); display: block; } .cited .sig span { font: 400 11px var(--mono); color: var(--dim); }
+.cited .sig.c b { color: var(--volt); } .cited .sig.s b { color: var(--flare); }
+.cited .none { color: var(--soft); font-style: italic; }
+.pnl { font: 600 12.5px var(--mono); } .pnl.c { color: var(--volt); } .pnl.s { color: var(--flare); }
+.verify.jv { padding: 4px 16px 14px 42px; margin-top: 4px; color: var(--dim); }
+.checks { list-style: none; padding: 0 16px 14px 42px; display: grid; gap: 3px; font: 400 12px var(--mono); }
+.checks:empty { display: none; }
+.checks .ok { color: var(--ink2); } .checks .ok::first-letter { color: var(--volt); }
+.checks .no { color: var(--flare); } .checks .na { color: var(--dim); }
+.checks .sum { margin-top: 6px; font-weight: 600; } .checks .sum.ok { color: var(--volt); }
+.jmini { border: 1px solid var(--line2); border-radius: 8px; padding: 10px 12px; font: 400 12.5px var(--mono); display: grid; gap: 4px; background: var(--bg); }
+.jmini .s { color: var(--flare); } .jmini .c { color: var(--volt); } .jmini .d { color: var(--ink); margin-top: 6px; }
+@media (max-width: 720px) {
+  #entries { padding: 0 12px 20px; }
+  .jentry .when { margin-left: 0; }
+  .trail { padding: 4px 10px; } .verify.jv, .checks { padding-left: 12px; }
+}
+.cited .cl { max-width: 560px; }
+.cited .sig { min-width: 170px; }
+.refused li { line-height: 1.4; }
+.cited td, .cited th { white-space: normal; height: auto; }
+.cited .cl { overflow-wrap: anywhere; }
+.cited td.vd { white-space: nowrap; }

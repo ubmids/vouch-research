@@ -1,7 +1,8 @@
 """Write the parity fixtures for the CRE workflow's TypeScript check.
 
 For every stock token's latest 10-Q: the hash of the text the Python check
-reads, and the Python verdict on a few thousand claims about it (every
+reads, and the Python verdict (and the trading policy's signal) on a few
+thousand claims about it (every
 scripted analyst on every fact, plus summaries that get the period, quarter,
 date, direction or figure right and wrong). cre/vouch-verifier/parity.test.ts
 runs the TypeScript port over the same claims and must agree on every one.
@@ -20,6 +21,7 @@ from eth_utils import keccak
 from vouchrh import edgar
 from vouchrh.analysts import CAST, facts
 from vouchrh.market import TOKENS
+from vouchrh.policy import signal
 from vouchrh.verifier import audit_claim
 
 OUT = Path(__file__).resolve().parents[1] / "cre" / "vouch-verifier" / "fixtures"
@@ -54,6 +56,7 @@ def main():
             v = audit_claim(c["value"], c["quote"], text, c["summary"], c["metric"])
             c["want"] = {"fraudulent": v.fraudulent, "reason": v.reason, "method": v.quote_check.method,
                          "score": v.quote_check.score}
+            c["signal"] = signal(c)          # the trading agent's reading of it (policy.ts must agree)
         fixture = {"ticker": t, "accession": f.accession, "url": f.url, "cache_key": edgar.CACHE.name,
                    "raw_keccak": "0x" + keccak(raw).hex(), "text_sha256": hashlib.sha256(text.encode()).hexdigest(),
                    "text_length": len(text), "claims": claims}

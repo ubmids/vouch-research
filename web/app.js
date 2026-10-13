@@ -10,7 +10,9 @@ const money = (n) => Number(n).toLocaleString("en-US", { maximumFractionDigits: 
 const NAMES = { TSLA: "Tesla", AMZN: "Amazon", PLTR: "Palantir", NFLX: "Netflix", AMD: "AMD" };
 let F, filter = "all", ticker = null, analyst = "", query = "", selected = null;
 
-fetch("feed.json", { cache: "no-store" }).then((r) => r.json()).then((d) => { F = d; boot(); })
+// ?feed=feed-local.json shows another published round (same page, another file).
+const FEED = (new URLSearchParams(location.search).get("feed") || "").match(/^[\w.-]+\.json$/) ? new URLSearchParams(location.search).get("feed") : "feed.json";
+fetch(FEED, { cache: "no-store" }).then((r) => r.json()).then((d) => { F = d; boot(); })
   .catch(() => { $("#inspect").innerHTML = `<p class="sub">The feed could not be loaded.</p>`; });
 
 // ---- plain words for every verdict -----------------------------------------
@@ -40,17 +42,19 @@ function plain(c) {
 function boot() {
   const cs = F.claims, cleared = cs.filter((c) => c.verdict === "cleared").length;
   const lost = cs.filter((c) => c.verdict === "slashed").reduce((a, c) => a + c.stake, 0);
-  const acted = cs.filter((c) => c.desk && c.desk.acted).length;
+  const J = F.journal || [], trades = J.filter((j) => j.status === "opened").length;
+  const refusals = J.reduce((a, j) => a + j.attempts.length, 0);
   $("#net").textContent = F.chain.name;
   $("#net").title = `chain id ${F.chain_id}`;
   $("#footChain").textContent = F.chain.name;
+  $("#footSettle").textContent = F.settled_by || "one verifier key (this round predates the Chainlink CRE workflow)";
   const k = (cls, label, val, tip) => `<span class="${cls}" title="${esc(tip)}">${label}<b>${val}</b></span>`;
   $("#kpis").innerHTML =
     k("", "claims", cs.length, "Claims posted in this round, each with USDG at stake") +
     k("c", "true", cleared, "Checked against the SEC filing and found true: cleared") +
     k("s", "wrong", cs.length - cleared, "Wrong in a way the check can prove: the analyst lost its stake (slashed)") +
     k("opt", "lost by wrong claims", `${money(lost)} USDG`, "Stake taken from wrong claims: half to whoever caught them, half to the reader pool") +
-    (cs[0] && cs[0].desk ? k("opt", "agent trades", `${acted} / ${cs.length}`, "A trading agent tried to act on every claim. The desk only let it trade on true ones") : "");
+    (J.length ? k("opt", "agent", `${trades} trades · ${refusals} refused`, "A trading agent read every claim. The desk refused every trade that cited a wrong one; each trade it made is in the journal below") : "");
   // On a phone, three numbers under the bar rather than six in it.
   $("#mkpis").innerHTML = `<span>claims<b>${cs.length}</b></span><span class="c">true<b>${cleared}</b></span><span class="s">wrong<b>${cs.length - cleared}</b></span>`;
   $("#mkpis").hidden = !matchMedia("(max-width: 720px)").matches;
@@ -60,7 +64,7 @@ function boot() {
   const names = [...new Set(cs.map((c) => c.analyst))];
   $("#who").innerHTML = `<option value="">Every analyst</option>` +
     names.map((n) => `<option value="${esc(n)}">${esc(n)}${cs.find((c) => c.analyst === n).analyst_kind === "model" ? " (AI)" : ""}</option>`).join("");
-  watch(); board(); rows();
+  watch(); board(); rows(); journal();
   const addr = F.contracts, ex = F.chain.explorer;
   const link = (a, label) => ex ? `<a href="${ex}/address/${a}" target="_blank" rel="noopener">${label} ${esc(a)} ↗</a>` : `<span>${label} ${esc(a)}</span>`;
   $("#addr").innerHTML = link(addr.market, "BondedClaims") + (addr.desk ? link(addr.desk, "AgentDesk") : "") + link(addr.usdg, "Bond token");
@@ -68,7 +72,9 @@ function boot() {
 
   // Open on the most instructive claim: the AI's own mistake if it made one,
   // else a near-perfect quote with one figure changed.
-  const lead = cs.find((c) => c.analyst_kind === "model" && c.verdict === "slashed")
+  const refusedOnChain = (c) => c.verdict === "slashed" && c.desk && !c.desk.acted;
+  const lead = cs.find((c) => c.analyst_kind === "model" && refusedOnChain(c)) || cs.find((c) => c.analyst_kind === "model" && c.verdict === "slashed")
+    || cs.find((c) => c.check.method === "figures-differ" && refusedOnChain(c))
     || cs.find((c) => c.check.method === "figures-differ") || cs.find((c) => c.verdict === "slashed") || cs[0];
   select(lead.id);
 
@@ -83,6 +89,7 @@ function boot() {
   $("#openCheck").onclick = $("#devCheck").onclick = openCheck;
   checkPanel();
   story(lead);
+  if (new URLSearchParams(location.search).has("journal")) openEntry(lead.ticker);
 }
 
 function watch() {
@@ -170,9 +177,15 @@ function select(id, scroll) {
   const figsOk = c.check.method !== "figures-differ" && (c.check.verified || !src);
   const simPct = Math.max(0, Math.min(1, c.check.score || c.similarity));
   const txLink = (h, label) => ex ? `<a href="${ex}/tx/${h}" target="_blank" rel="noopener">${label} ↗</a>` : `<span>${label} ${short(h, 10, 6)} · local devnet</span>`;
-  const agent = c.desk ? (c.desk.acted
-    ? `<p><span class="good">It traded.</span> A trading agent asked Vouch before acting on this claim. It was cleared, so the desk let the position open.</p>`
-    : `<p><span class="bad">It was refused.</span> A trading agent tried to act on this claim. The desk asked Vouch first, and a claim that failed the check cannot back a trade, so the transaction reverted on-chain.</p>`) : "";
+  const je = (F.journal || []).find((j) => j.ticker === c.ticker);
+  const SIG = { 1: "bullish", "-1": "bearish", 0: "no signal" };
+  const toEntry = je ? ` <button class="linkish" data-entry="${esc(c.ticker)}">See the journal entry →</button>` : "";
+  const agent = c.desk && c.desk.acted
+    ? `<p><span class="good">It backs a trade.</span> The agent's ${esc(c.desk.side.toUpperCase())} ${esc(c.ticker)} paper position cites this claim (journal entry #${c.desk.entry}); it read it as ${SIG[c.desk.signal]}.${toEntry}</p>`
+    : c.desk
+    ? `<p><span class="bad">It was refused.</span> The trading agent cited this claim. The desk asked Vouch first, and a claim that failed the check cannot back a trade, so the transaction reverted on-chain.${toEntry}</p>`
+    : je ? `<p>The trading agent read it${je.status === "opened" ? ", but the trade did not need it" : `. What it was left with on ${esc(NAMES[c.ticker] || c.ticker)} pointed nowhere, so it did not trade`}.${toEntry}</p>`
+    : "";
 
   $("#inspect").innerHTML = `
     <div class="sheetClose"><button id="closeSheet">← All claims</button><span>claim #${c.id}</span></div>
@@ -201,6 +214,7 @@ function select(id, scroll) {
         <div class="row"><span>claim as written</span><span class="${claimRule ? "no" : "ok"}">${claimRule ? esc(p.short) : "period, date, direction hold"}</span><b class="${claimRule ? "no" : bad ? "" : "ok"}">${claimRule ? "✕" : bad ? "·" : "✓"}</b></div>
       </div>
       <div class="tx">${txLink(c.tx_post, "posted")}${txLink(c.tx_judge, bad ? "slashed" : "cleared")}${c.desk ? txLink(c.desk.tx, c.desk.acted ? "agent's trade" : "agent's refused trade") : ""}</div>
+      <div class="hash">verdict by ${c.workflow_id && !/^0x0+$/.test(c.workflow_id) ? `Chainlink CRE workflow ${esc(short(c.workflow_id, 10, 6))}` : esc(F.settled_by || "the verifier key")}${c.evidence && !/^0x0+$/.test(c.evidence) ? ` · against filing bytes keccak256 ${esc(short(c.evidence, 10, 6))}` : ""}</div>
       <div class="hash">accession ${esc(c.accession)} · on-chain hash ${esc(c.hash)}</div>
       <div class="verify"><button id="rehash">Verify it yourself</button><span id="rehashOut">Recompute the hash from the words shown, in your browser.</span></div>
     </details>`;
@@ -211,6 +225,7 @@ function select(id, scroll) {
       : `<span class="no">✕ ${short(got, 10, 6)} does not match.</span> The words shown are not the ones staked.`;
   };
   $("#closeSheet").onclick = closeSheet;
+  const go = $("#inspect [data-entry]"); if (go) go.onclick = () => openEntry(go.dataset.entry);
   // On a phone the claim opens as a sheet over the list; on a tablet it sits below it.
   if (scroll && matchMedia("(max-width: 720px)").matches) { document.body.classList.add("sheet"); $("#inspect").scrollTop = 0; history.pushState({ sheet: 1 }, ""); }
   else if (scroll && innerWidth < 1100) $("#inspect").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -308,6 +323,131 @@ function checkPanel() {
 }
 
 
+// ---- the agent's journal ------------------------------------------------------
+// Every paper trade, the claims it cites, the verdict on each and the rules that
+// turned them into a trade. Re-verify recomputes all of it in the browser with
+// the agent's own policy (vouch-policy.js) and, on a public chain, reads the
+// transactions back from the chain's RPC.
+const SIDE = { long: "LONG", short: "SHORT" };
+const byId = () => Object.fromEntries(F.claims.map((c) => [c.id, c]));
+
+function journal() {
+  const J = F.journal || [], el = $("#entries");
+  if (!J.length) {
+    el.innerHTML = `<p class="jnote">This round was published before the agent kept a journal. <a href="?feed=feed-local.json&journal">See a round with one</a> (run on a local devnet).</p>`;
+    return;
+  }
+  const order = J.slice().sort((a, b) => (b.status === "opened") - (a.status === "opened"));
+  el.innerHTML = order.map(entryHtml).join("");
+  el.onclick = (e) => {
+    const c = e.target.closest("[data-claim]");
+    if (c) { select(+c.dataset.claim, true); if (innerWidth >= 1100) $(".main").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+    const v = e.target.closest("[data-verify]");
+    if (v) reverify(v.dataset.verify, v);
+  };
+}
+
+function openEntry(ticker) {
+  const d = document.getElementById(`je-${ticker}`);
+  if (!d) return;
+  d.open = true;
+  d.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function entryHtml(j) {
+  const ex = F.chain.explorer, r = j.reasoning || {}, by = byId(), company = NAMES[j.ticker] || j.ticker;
+  const tx = (h, label) => !h ? "" : ex ? `<a class="txl" href="${ex}/tx/${h}" target="_blank" rel="noopener">${label} ↗</a>`
+    : `<span class="txl" title="${esc(h)}">${label} ${short(h, 8, 4)}</span>`;
+  const opened = j.status === "opened";
+  const analysts = new Set(j.read.map((id) => by[id] && by[id].analyst)).size;
+  const price = r.price ? `entry ${esc(r.price.price)} USD` : "no price recorded";
+  const pnl = j.pnl != null ? `<span class="pnl ${j.pnl >= 0 ? "c" : "s"}">${j.pnl >= 0 ? "+" : "−"}${money(Math.abs(j.pnl))} USD</span> paper, marked at ${esc(j.mark.price)} (${price})` : price;
+  const refused = j.attempts.map((a) => {
+    const c = by[a.claim];
+    return `<li><button class="cid" data-claim="${a.claim}">#${a.claim}</button><span class="who">${esc(c.analyst)}</span><span class="s">${esc(plain(c).short)}</span>${tx(a.tx, "refused on-chain")}</li>`;
+  }).join("");
+  const cited = (r.evidence || []).map((e) => {
+    const c = by[e.claim], tone = e.signal > 0 ? "c" : e.signal < 0 ? "s" : "";
+    return `<tr><td><button class="cid" data-claim="${e.claim}">#${e.claim}</button></td><td class="who">${esc(e.analyst)}</td>
+      <td class="cl"><span class="v">${esc(e.value)}</span> ${esc(headline(c))}</td>
+      <td class="vd"><span class="pill ${c.verdict[0]}">${c.verdict === "cleared" ? "CLEARED" : "SLASHED"}</span>${tx(e.verdict_tx || c.tx_judge, "verdict")}</td>
+      <td class="sig ${tone}"><b>${e.signal > 0 ? "bullish" : e.signal < 0 ? "bearish" : "no signal"}</b><span>${esc(e.why.replace(/: (bullish|bearish)$/, ""))}</span></td></tr>`;
+  }).join("");
+  const decision = opened
+    ? `Net signal <b>${r.net_signal > 0 ? "+" : ""}${r.net_signal}</b>, so <b class="${j.side === "long" ? "c" : "s"}">${SIDE[j.side]} ${money(j.notional / 1e6)} USD</b> (${money(r.per_claim / 1e6)} per claim that carries a signal).`
+    : `Net signal <b>0</b>, so <b>no trade</b>. The agent does not guess.`;
+  return `<details class="jentry ${opened ? j.side : "flat"}" id="je-${esc(j.ticker)}"${opened ? " open" : ""}>
+    <summary><span class="side ${opened ? j.side : "none"}">${opened ? SIDE[j.side] : "NO TRADE"}</span><b class="tk">${esc(j.ticker)}</b><span class="co">${esc(company)}</span>
+      <span class="what">${opened ? `${money(j.notional / 1e6)} USD paper · cites ${r.evidence.length} cleared claims · ${j.attempts.length} refusals` : `${j.attempts.length} refusals · nothing left that points anywhere`}</span>
+      <span class="when">${opened ? `entry #${j.entry}` : ""}</span></summary>
+    <ol class="trail">
+      <li><div><b>Read.</b> ${j.read.length} claims about ${esc(company)} from ${analysts} analysts, each citing ${esc(company)}'s 10-Q.</div></li>
+      ${j.attempts.length ? `<li><div><b>Refused.</b> It tried to trade citing everything it read. The desk asked Vouch about each claim and reverted the trade ${j.attempts.length} time${j.attempts.length > 1 ? "s" : ""}, each time naming a claim that failed the check:<ul class="refused">${refused}</ul></div></li>` : ""}
+      <li><div><b>${opened ? "Kept what held." : "What was left."}</b> ${opened ? "The desk accepted every one of these: each cleared the check." : "Read by the agent's rules, these point nowhere, so it stopped before testing the rest against the desk."}<div class="scrollx"><table class="cited"><thead><tr><th>Claim</th><th>Analyst</th><th>What it says</th><th>Verdict</th><th>Read as</th></tr></thead><tbody>${cited || `<tr><td colspan="5" class="none">nothing left</td></tr>`}</tbody></table></div></div></li>
+      <li><div><b>Decided.</b> ${decision} <span class="rule">${esc(r.rule || "")}</span></div></li>
+      ${opened ? `<li><div><b>Committed.</b> All of the above, with the transaction of every verdict and refusal, hashes to <code>${esc(short(j.reasoning_hash, 12, 8))}</code>. The desk stored that hash with the trade ${tx(j.tx, "in this transaction")}, so the reasons cannot be rewritten afterwards. ${pnl}.</div></li>` : ""}
+    </ol>
+    <div class="verify jv"><button data-verify="${esc(j.ticker)}">Re-verify this ${opened ? "trade" : "decision"}</button><span>Recomputes every hash and verdict link, and re-runs the agent's rules, in your browser.</span></div>
+    <ul class="checks" id="rv-${esc(j.ticker)}"></ul>
+  </details>`;
+}
+
+async function rpc(method, params) {
+  const r = await fetch(F.chain.rpc, { method: "POST", headers: { "content-type": "application/json" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }) });
+  const out = await r.json();
+  if (out.error) throw new Error(out.error.message);
+  return out.result;
+}
+
+async function reverify(ticker, button) {
+  const j = F.journal.find((x) => x.ticker === ticker), r = j.reasoning, by = byId(), list = $(`#rv-${ticker}`);
+  const rows = [], add = (ok, text) => { rows.push(`<li class="${ok ? "ok" : "no"}">${ok ? "✓" : "✕"} ${text}</li>`); list.innerHTML = rows.join(""); };
+  button.disabled = true; list.innerHTML = "";
+  const company = NAMES[ticker] || ticker;
+  if (j.status === "opened") {
+    const h = "0x" + keccak256(VouchPolicy.canonical(r));
+    add(h === j.reasoning_hash, `The reasoning record hashes to <code>${esc(short(h, 10, 6))}</code>, the hash the trade carries.`);
+  }
+  for (const e of r.evidence) {
+    const c = by[e.claim];
+    add(rehash(c) === c.hash && c.hash === e.hash, `Claim #${e.claim}: its words hash to the hash staked on-chain.`);
+    if (j.status === "opened")
+      add(c.verdict === "cleared" && (!e.verdict_tx || e.verdict_tx === c.tx_judge), `Claim #${e.claim}: cleared by the check against ${esc(company)}'s 10-Q, in the verdict transaction cited.`);
+  }
+  for (const a of j.attempts) add(by[a.claim].verdict === "slashed", `Claim #${a.claim} was refused because it failed the check: ${esc(by[a.claim].reason)}.`);
+  const again = VouchPolicy.thesis(ticker, r.evidence.map((e) => by[e.claim]), r.per_claim);
+  const same = again.side === r.side && again.notional === r.notional && again.evidence.every((e, i) => e.signal === r.evidence[i].signal && e.why === r.evidence[i].why);
+  add(same, `Re-running the agent's rules on these claims gives the same ${j.status === "opened" ? `trade: ${SIDE[again.side] || "no trade"} ${money(again.notional / 1e6)} USD` : "decision: no trade"}.`);
+  if (!F.chain.rpc) {
+    rows.push(`<li class="na">· On-chain: this round ran on a local devnet the browser cannot reach. <code>python -m vouchrh.journal verify</code> checks the chain and re-fetches the filing.</li>`);
+    list.innerHTML = rows.join("");
+  } else {
+    try {
+      if (j.status === "opened") {
+        const rc = await rpc("eth_getTransactionReceipt", [j.tx]);
+        const log = rc.logs.find((l) => l.address.toLowerCase() === F.contracts.desk.toLowerCase());
+        const stored = log ? "0x" + log.data.slice(2 + 64 * 3, 2 + 64 * 4) : "";
+        add(rc.status === "0x1" && stored === j.reasoning_hash, `On ${esc(F.chain.name)}: the trade's Opened event carries exactly this hash.`);
+      }
+      const CLEARED = "0x" + keccak256("Cleared(uint256,address)");
+      for (const e of j.status === "opened" ? r.evidence.filter((e) => e.verdict_tx) : []) {
+        const rc = await rpc("eth_getTransactionReceipt", [e.verdict_tx]);
+        const hit = rc.logs.some((l) => l.address.toLowerCase() === F.contracts.market.toLowerCase() && l.topics[0] === CLEARED && BigInt(l.topics[1]) === BigInt(e.claim));
+        add(rc.status === "0x1" && hit, `On ${esc(F.chain.name)}: claim #${e.claim}'s verdict transaction cleared it.`);
+      }
+      for (const a of j.attempts) {
+        const rc = await rpc("eth_getTransactionReceipt", [a.tx]);
+        add(rc.status === "0x0", `On ${esc(F.chain.name)}: the trade citing claim #${a.claim} reverted.`);
+      }
+    } catch (err) { add(false, `Could not reach ${esc(F.chain.name)} from the browser (${esc(err.message)}).`); }
+  }
+  const bad = list.querySelectorAll(".no").length;
+  rows.push(`<li class="sum ${bad ? "no" : "ok"}">${bad ? `${bad} check${bad > 1 ? "s" : ""} failed.` : "Every link in the chain of reasons holds."}</li>`);
+  list.innerHTML = rows.join("");
+  button.disabled = false;
+}
+
 // The one sentence that says exactly what went wrong, from the check's reason.
 function specific(c) {
   const r = c.reason || "", Q = { January: 1, February: 1, March: 1, April: 2, May: 2, June: 2, July: 3, August: 3, September: 3, October: 4, November: 4, December: 4 };
@@ -327,6 +467,8 @@ function story(lead) {
     || cs.find((c) => c.verdict === "cleared" && c.ticker === wrong.ticker) || cs.find((c) => c.verdict === "cleared");
   const ex = F.chain.explorer, f = F.filings[wrong.ticker] || {};
   const tx = (h, label) => ex && h ? `<a class="txl" href="${ex}/tx/${h}" target="_blank" rel="noopener">${label} on ${esc(F.chain.name)} ↗</a>` : "";
+  const J = F.journal || [], je = J.find((j) => j.ticker === wrong.ticker);
+  const trades = J.filter((j) => j.status === "opened").length, refusals = J.reduce((a, j) => a + j.attempts.length, 0);
   const acted = cs.filter((c) => c.desk && c.desk.acted).length, refused = cs.length - acted;
   const company = NAMES[wrong.ticker] || wrong.ticker;
   const bond = Math.max(...F.standings.map((s) => s.bonded));      // what each analyst started with
@@ -348,7 +490,13 @@ function story(lead) {
          <p class="small">No moderator decided this. The check is mechanical, so anyone can re-run it and get the same answer.</p>${tx(wrong.tx_judge, "the slash")}`],
       [`A trading agent wanted to act on it. The contract said no.`,
         `<div class="agentViz"><div class="bad">✕ trade refused</div><p>The agent trades through a desk that asks Vouch first. A claim that failed the check can't back a trade, so the transaction reverted on-chain.</p></div>
-         <p class="small">Across this round it traded on all <b class="c">${acted}</b> true claims and was refused on all <b class="r">${refused}</b> wrong ones.</p>${tx(wrong.desk && wrong.desk.tx, "the refused trade")}`],
+         <p class="small">${J.length ? `Across this round the desk refused <b class="r">${refusals}</b> trades that cited a wrong claim. The agent made <b class="c">${trades}</b> paper trades, each on research that held.`
+           : `Across this round it traded on all <b class="c">${acted}</b> true claims and was refused on all <b class="r">${refused}</b> wrong ones.`}</p>${tx(wrong.desk && wrong.desk.tx, "the refused trade")}`],
+      ...(je ? [[`Every trade it did make keeps its reasons.`,
+        `<div class="jmini">${je.attempts.slice(0, 4).map((a) => `<div class="s">✕ #${a.claim} refused · ${esc(plain(cs.find((c) => c.id === a.claim)).short)}</div>`).join("")}
+           ${(je.reasoning.evidence || []).map((e) => `<div class="c">✓ #${e.claim} cleared · ${esc(e.value)} · ${e.signal > 0 ? "bullish" : e.signal < 0 ? "bearish" : "no signal"}</div>`).join("")}
+           <div class="d">${je.status === "opened" ? `→ ${SIDE[je.side]} ${esc(je.ticker)} ${money(je.notional / 1e6)} USD paper · reasoning hash ${esc(short(je.reasoning_hash, 8, 6))} on-chain` : "→ no trade: what held points nowhere"}</div></div>
+         <p class="small">The journal names the claims behind each trade, the Chainlink verdict on each, and the rules that turned them into a position. Anyone can re-run it.</p>`]] : []),
     ],
     right: [
       [`Another analyst read the same report and quoted the same sentence.`,
@@ -369,7 +517,7 @@ function story(lead) {
   const end = () => which === "wrong"
     ? `<div class="endCard"><h3>That's Vouch: research that costs money to get wrong.</h3>
         <p>AI analysts are fast and fluent, and sometimes wrong about numbers. Here, being wrong has a price, and agents only act on what survived the check.</p>
-        <div class="acts"><button class="primary" id="endExplore">Explore all ${cs.length} claims</button><button id="endTry">Check a claim yourself</button><button id="endAgain">See the same sentence told right →</button></div></div>`
+        <div class="acts"><button class="primary" id="endExplore">Explore all ${cs.length} claims</button>${J.length ? `<button id="endJournal">Open the agent's journal</button>` : ""}<button id="endTry">Check a claim yourself</button><button id="endAgain">See the same sentence told right →</button></div></div>`
     : `<div class="endCard"><h3>Same filing, same sentence. One claim paid, one got paid.</h3>
         <p>The difference was whether the claim said what the filing says. That's the only thing Vouch checks, and it checks it every time.</p>
         <div class="acts"><button class="primary" id="endExplore">Explore all ${cs.length} claims</button><button id="endTry">Check a claim yourself</button><button id="endAgain">← Back to the wrong one</button></div></div>`;
@@ -385,6 +533,7 @@ function story(lead) {
     if (last) {
       $("#endExplore").onclick = () => closeTour(true);
       $("#endTry").onclick = () => { closeTour(false); openCheck(); };
+      if ($("#endJournal")) $("#endJournal").onclick = () => { closeTour(false); openEntry(wrong.ticker); };
       $("#endAgain").onclick = () => { which = which === "wrong" ? "right" : "wrong"; i = 0; draw(); };
     }
   };
@@ -426,5 +575,6 @@ function story(lead) {
   // First visit, or ?tour in the link (for judges and the video): open it.
   let first = true;
   try { first = localStorage.getItem("vouch.tour") !== "seen"; } catch (e) {}
-  if (first || new URLSearchParams(location.search).has("tour")) openTour();
+  const qs = new URLSearchParams(location.search);
+  if ((first && !qs.has("journal")) || qs.has("tour")) openTour();
 }

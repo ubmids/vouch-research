@@ -62,6 +62,11 @@
   <aside class="inspect" id="inspect" aria-live="polite"></aside>
 </main>
 
+<section class="journal" id="journal" aria-label="The trading agent's journal">
+  <div class="sectionHead"><h2>The agent's journal</h2><p>A trading agent read every claim and tried to trade on it. The desk only lets a trade cite research that passed the check, so every paper trade below names the cleared claims behind it, the verdict on each, and the reasoning it committed to on-chain. <b>Re-verify</b> walks any entry back to the filing in your browser.</p></div>
+  <div id="entries"></div>
+</section>
+
 <section class="lower">
   <div class="board">
     <h2>The scoreboard</h2>
@@ -75,6 +80,8 @@
       <li><b>From a contract:</b> <code>BondedClaims.isCleared(id)</code>. The trading desk here reverts any trade backed by a claim that isn't cleared.</li>
       <li><b>Over HTTP:</b> <code>POST /api/verify</code> with a ticker, a figure and the sentence. Or use <button class="linkish" id="devCheck">Check a claim</button>.</li>
       <li><b>As an MCP tool:</b> <code>verify_claim</code>, for agents that use Model Context Protocol.</li>
+      <li><b>Verdicts come from Chainlink:</b> a CRE workflow fetches the filing from SEC EDGAR, runs the check on every node and writes the verdict through the Chainlink forwarder. The contract accepts no other source.</li>
+      <li><b>Audit a trade:</b> <code>python -m vouchrh.journal verify feed.json --rpc …</code> re-checks every journal entry against the chain and EDGAR.</li>
     </ul>
     <details class="under"><summary>How it works, in full</summary>
       <ol>
@@ -90,7 +97,7 @@
 </section>
 
 <footer class="foot">
-  <span>Filings from SEC EDGAR. Claims settle on <span id="footChain">an Arbitrum chain</span>.</span>
+  <span>Filings from SEC EDGAR. Verdicts by <span id="footSettle">a Chainlink CRE workflow</span>. Claims settle on <span id="footChain">an Arbitrum chain</span>.</span>
   <span id="gen"></span>
 </footer>
 
@@ -118,6 +125,7 @@
 </dialog>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha3/0.9.3/sha3.min.js"></script>
+<script src="vouch-policy.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
