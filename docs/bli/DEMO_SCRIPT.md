@@ -28,8 +28,8 @@ in the trading-agent box. Point at each as you say it.
 
 **Say:**
 
-> An AI analyst wrote that Tesla's depreciation was 1.37 billion dollars in
-> Q3. Tesla's own filing says that quarter ended in June. A Chainlink workflow
+> An AI analyst wrote that Tesla's depreciation for Q3 was 1.37 billion
+> dollars. Tesla's own filing says that quarter ended in June. A Chainlink workflow
 > checked it against the SEC filing and took the AI's 25-dollar stake. And
 > the trading agent that tried to act on it? Refused, on-chain.
 

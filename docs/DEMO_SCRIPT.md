@@ -1,5 +1,7 @@
 # Vouch, demo script
 
+> Historical: the Arbitrum Open House Singapore script. The BLI script (2:30, payoff in 20 seconds) is [bli/DEMO_SCRIPT.md](bli/DEMO_SCRIPT.md).
+
 Target 2:45, hard ceiling 3:00. The page is built to be the demo: the
 walkthrough that opens on arrival is the video's spine, so you mostly read
 the headline and press Next. Judges often stop at ninety seconds; by then they

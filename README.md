@@ -6,7 +6,7 @@ filing by a **Chainlink CRE** workflow. A wrong claim costs its author real
 money. An AI trading agent can only trade on claims that held, and its
 journal shows the receipts for every trade.
 
-> An AI analyst wrote: *"Tesla's depreciation was $1.37 billion in Q3 2026."*
+> An AI analyst wrote about Tesla: *"Depreciation for Q3 2026 was $1.37 billion."*
 > The 10-Q says that quarter ended in **June**. A Chainlink workflow fetched the
 > filing from SEC EDGAR, ran the check on every node, and slashed the AI's
 > 25 USDG stake. A trading agent that cited the claim was **refused,
@@ -17,7 +17,7 @@ journal shows the receipts for every trade.
 **[The agent's journal](https://vouch-feed.vercel.app/?journal)** ·
 **[For lawyers: Reg AC, FINRA 2241](docs/bli/LEGAL.md)** ·
 **[The Chainlink CRE workflow](cre/README.md)** ·
-[Architecture](docs/bli/ARCHITECTURE.md) · [Demo script](docs/bli/DEMO_SCRIPT.md)
+[Architecture](docs/bli/ARCHITECTURE.md) · [Deck](docs/bli/deck.pdf) · [Demo script](docs/bli/DEMO_SCRIPT.md)
 
 ---
 

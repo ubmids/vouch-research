@@ -1,5 +1,7 @@
 # Submission copy, Arbitrum Open House Singapore (HackQuest)
 
+> Historical: the Arbitrum Open House Singapore copy (v1, verifier key). The BLI Legal Tech Hackathon 2 copy is [bli/BUIDL.md](bli/BUIDL.md).
+
 Deadline 4 October 2026, 23:59 Singapore time (16:59 Lagos). Register by 2 October.
 Judged on innovation, smart-contract quality, product-market fit, solving a real
 problem, use of Arbitrum technology and presentation, with a bonus for novelty

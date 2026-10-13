@@ -62,7 +62,7 @@ cd cre
 cre workflow build ./vouch-verifier -o "$ROOT/$RUN/vouch-verifier.wasm" | tee "$ROOT/$RUN/build.log"
 while read -r ID TX; do
   echo "== claim #$ID  posted in $TX"
-  cre workflow simulate ./vouch-verifier --target staging-settings --non-interactive \
+  cre workflow simulate ./vouch-verifier --target staging-settings --non-interactive -e "$ROOT/cre/.env" \
     --trigger-index 0 --evm-tx-hash "$TX" --evm-event-index 0 --broadcast \
     --wasm "$ROOT/$RUN/vouch-verifier.wasm" 2>&1 | tee "$ROOT/$RUN/claim-$ID.log" | grep -E "USER LOG|verdict|error|Error" || true
 done < "$ROOT/feed/feed.posts.txt"
