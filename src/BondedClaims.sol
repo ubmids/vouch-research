@@ -9,67 +9,131 @@ interface IERC20 {
     function balanceOf(address who) external view returns (uint256);
 }
 
+/// @notice What a Chainlink CRE forwarder calls with a verified report.
+interface IReceiver {
+    function onReport(bytes calldata metadata, bytes calldata report) external;
+}
+
+/// @notice ERC-165, so the forwarder can confirm this contract takes reports.
+interface IERC165 {
+    function supportsInterface(bytes4 interfaceId) external view returns (bool);
+}
+
 /// @title BondedClaims
 /// @notice Research claims about public companies that cost the author money
-/// when they are false.
+/// when they are false, settled by a Chainlink CRE workflow rather than by any
+/// one key.
 ///
 /// An analyst (usually an AI agent) bonds a stablecoin, then publishes a claim
-/// about a company with the exact quote from an SEC filing that supports it.
-/// Part of the bond is put at risk on each claim. The verifier checks the quote
-/// against the filing off-chain, deterministically, and either clears the claim
-/// or slashes the stake at risk: half to whoever raised the challenge, half to
-/// a pool that backs readers of the feed.
+/// about a company with the exact sentence from an SEC filing that supports it.
+/// The claim's words go into the Posted event and their keccak256 into storage,
+/// so the record holds exactly what was said and it cannot be edited.
 ///
-/// Research is optimistic. A claim clears by itself once its challenge window
-/// passes unchallenged. Within the window anyone may challenge it by posting a
-/// smaller deposit. Because the check is deterministic (is this quote, with
-/// these figures, in this filing?), a dispute has one right answer, which the
-/// verifier records: a false claim loses its stake, and the challenger gets
-/// their deposit back plus half of it; a true claim keeps its stake and takes
-/// the challenger's deposit, so challenging costs something to get wrong too.
+/// Posting a claim is what triggers the check. A Chainlink Runtime Environment
+/// workflow listens for Posted, fetches the cited filing from SEC EDGAR, runs
+/// the deterministic check on every node of a decentralised oracle network, and
+/// writes the verdict back through the Chainlink forwarder, which only delivers
+/// a report the network's nodes signed. This contract accepts verdicts from that
+/// forwarder, from that workflow, and from nobody else: there is no verifier key.
 ///
-/// What lives on-chain is what has to be trusted: who said it, what they put
-/// at risk, and what happened to that money. The claim text and quote are kept
-/// off-chain and committed to by hash, so anyone can re-run the check.
-contract BondedClaims {
-    enum Status { None, Pending, Challenged, Cleared, Slashed }
+/// A false claim loses its stake to the reader pool, or half to whoever raised
+/// a challenge first. A true claim keeps its stake, and takes the challenger's
+/// deposit if there was one. If no verdict comes, the claim clears itself once
+/// its window passes unchallenged; a challenge that no verdict ever answers can
+/// be unwound after a long timeout, refunding both sides.
+contract BondedClaims is IReceiver, IERC165 {
+    enum Status {
+        None,
+        Pending,
+        Challenged,
+        Cleared,
+        Slashed,
+        Void
+    }
 
     struct Claim {
         address analyst;
         uint64 postedAt;
         Status status;
         uint256 atStake;
-        bytes32 claimHash;   // keccak256 of the canonical claim JSON (value + quote + filing)
-        string filing;       // SEC accession number, e.g. "0001628280-26-049270"
+        bytes32 claimHash; // keccak256 of the canonical claim JSON (value + quote + filing), as posted
+        string filing; // SEC accession number, e.g. "0001628280-26-049270"
         string ticker;
-        address challenger;  // set once challenged
+        address challenger; // set once challenged
+    }
+
+    /// @notice How a claim was settled, so anything that relies on it can say
+    /// which check it relied on.
+    struct Verdict {
+        uint64 settledAt; // when it was written (the transaction is the Cleared or Slashed event for this id)
+        bytes32 evidence; // keccak256 of the filing bytes the workflow fetched from EDGAR; 0 if unchecked
+        bytes32 workflowId; // the CRE workflow that wrote it; 0 if it cleared unchallenged
+    }
+
+    /// @notice The report a workflow writes, one claim per report:
+    /// abi.encode(claimId, claimHash, fraudulent, evidence, reason). The hash
+    /// must match: the workflow checked these words and no others.
+    struct Report {
+        uint256 claimId;
+        bytes32 claimHash;
+        bool fraudulent;
+        bytes32 evidence;
+        string reason;
     }
 
     IERC20 public immutable bondToken;
-    address public verifier;
     uint256 public immutable minStake;
     uint256 public immutable challengeBond;
     // Seconds a claim can be challenged. Compared with block.timestamp, which a
     // sequencer can skew by seconds; the window is an hour, so it cannot matter.
     uint64 public immutable window;
+    // A challenge nobody's verdict answers in this long can be unwound.
+    uint64 public constant UNWIND_AFTER = 7 days;
 
-    mapping(address => uint256) public bonded;     // everything an analyst has deposited
-    mapping(address => uint256) public locked;     // the part currently at stake on pending claims
+    // Who may settle: the Chainlink forwarder on this chain, carrying a report
+    // from this owner's workflow of this name, and, once pinned, only the
+    // workflow with this id (a hash of its compiled code and config).
+    // A market built for CRE simulation points at Chainlink's mock forwarder,
+    // which signs nothing and fills no workflow identity, so it is deployed
+    // with no owner (0) and checks only the forwarder. That market is for
+    // demonstrating the path; it trusts whoever calls the mock.
+    address public immutable forwarder;
+    address public immutable workflowOwner;
+    bytes10 public immutable workflowName;
+    bytes32 public workflowId;
+    address private immutable _deployer;
+
+    mapping(address => uint256) public bonded; // everything an analyst has deposited
+    mapping(address => uint256) public locked; // the part currently at stake on pending claims
     mapping(address => uint32) public cleared;
     mapping(address => uint32) public slashedCount;
     Claim[] private _claims;
+    mapping(uint256 => Verdict) private _verdicts;
+    mapping(uint256 => uint64) public challengedAt;
     uint256 public readerPool;
 
     event Bonded(address indexed analyst, uint256 amount, uint256 total);
-    event Posted(uint256 indexed id, address indexed analyst, string ticker, string filing, bytes32 claimHash, uint256 atStake);
+    event Posted(
+        uint256 indexed id,
+        address indexed analyst,
+        string ticker,
+        string filing,
+        bytes32 claimHash,
+        uint256 atStake,
+        bytes claim
+    );
     event Cleared(uint256 indexed id, address indexed analyst);
-    event Slashed(uint256 indexed id, address indexed analyst, address indexed challenger, uint256 amount, string reason);
+    event Slashed(
+        uint256 indexed id, address indexed analyst, address indexed challenger, uint256 amount, string reason
+    );
+    event Checked(uint256 indexed id, bool fraudulent, bytes32 evidence, bytes32 workflowId, string reason);
+    event ReportIgnored(uint256 indexed id, Status status);
     event Withdrawn(address indexed analyst, uint256 amount);
-    event VerifierChanged(address indexed from, address indexed to);
     event Challenged(uint256 indexed id, address indexed challenger, uint256 deposit);
     event Upheld(uint256 indexed id, address indexed challenger, uint256 deposit);
+    event Unwound(uint256 indexed id, address indexed challenger);
+    event WorkflowPinned(bytes32 workflowId);
 
-    error NotVerifier();
     error StakeTooSmall();
     error NotEnoughFreeBond();
     error NotPending();
@@ -77,19 +141,42 @@ contract BondedClaims {
     error WindowOpen();
     error WindowClosed();
     error NotChallenged();
+    error NoSuchClaim();
+    error NotForwarder(address sender);
+    error WrongWorkflow();
+    error WrongClaim();
+    error AlreadyPinned();
+    error ZeroAddress();
 
-    modifier onlyVerifier() {
-        if (msg.sender != verifier) revert NotVerifier();
-        _;
-    }
-
-    constructor(IERC20 token, uint256 minimumStake, uint256 challengeDeposit, uint64 challengeWindow) {
+    constructor(
+        IERC20 token,
+        uint256 minimumStake,
+        uint256 challengeDeposit,
+        uint64 challengeWindow,
+        address chainlinkForwarder,
+        address owner_,
+        bytes10 name_
+    ) {
+        if (chainlinkForwarder == address(0)) revert ZeroAddress();
         bondToken = token;
         minStake = minimumStake;
         challengeBond = challengeDeposit;
         window = challengeWindow;
-        verifier = msg.sender;
-        emit VerifierChanged(address(0), msg.sender);
+        forwarder = chainlinkForwarder;
+        workflowOwner = owner_;
+        workflowName = name_;
+        _deployer = msg.sender;
+    }
+
+    /// @notice Bind the market to one compiled workflow, once. The id is
+    /// derived from the workflow's code and config, so anyone can rebuild it from
+    /// the repository and see it is the check they read. It cannot be changed.
+    function pinWorkflow(bytes32 id) external {
+        if (msg.sender != _deployer || workflowOwner == address(0)) revert WrongWorkflow();
+        if (workflowId != bytes32(0)) revert AlreadyPinned();
+        if (id == bytes32(0)) revert WrongWorkflow();
+        workflowId = id;
+        emit WorkflowPinned(id);
     }
 
     // ---- analysts ---------------------------------------------------------
@@ -103,7 +190,9 @@ contract BondedClaims {
     }
 
     /// @notice Publish a claim, putting `atStake` of your free bond behind it.
-    function post(string calldata ticker, string calldata filing, bytes32 claimHash, uint256 atStake)
+    /// `claim` is the canonical claim JSON; its hash is stored and its words are
+    /// emitted, which is what the checking workflow reads.
+    function post(string calldata ticker, string calldata filing, bytes calldata claim, uint256 atStake)
         external
         returns (uint256 id)
     {
@@ -111,10 +200,11 @@ contract BondedClaims {
         if (freeBond(msg.sender) < atStake) revert NotEnoughFreeBond();
         locked[msg.sender] += atStake;
         id = _claims.length;
+        bytes32 h = keccak256(claim);
         // casting to uint64 is safe: block timestamps fit in 64 bits for the next 500 billion years
         // forge-lint: disable-next-line(unsafe-typecast)
-        _claims.push(Claim(msg.sender, uint64(block.timestamp), Status.Pending, atStake, claimHash, filing, ticker, address(0)));
-        emit Posted(id, msg.sender, ticker, filing, claimHash, atStake);
+        _claims.push(Claim(msg.sender, uint64(block.timestamp), Status.Pending, atStake, h, filing, ticker, address(0)));
+        emit Posted(id, msg.sender, ticker, filing, h, atStake, claim);
     }
 
     function withdraw(uint256 amount) external {
@@ -126,12 +216,15 @@ contract BondedClaims {
 
     // ---- anyone -----------------------------------------------------------
 
-    /// @notice Dispute a pending claim inside its window, with a deposit.
+    /// @notice Dispute a pending claim inside its window, with a deposit. The
+    /// workflow's verdict settles it; the challenger is paid if it was right.
     function challenge(uint256 id) external {
         Claim storage c = _pending(id);
         if (block.timestamp > c.postedAt + window) revert WindowClosed();
         c.status = Status.Challenged;
         c.challenger = msg.sender;
+        // forge-lint: disable-next-line(unsafe-typecast)
+        challengedAt[id] = uint64(block.timestamp);
         emit Challenged(id, msg.sender, challengeBond);
         if (!bondToken.transferFrom(msg.sender, address(this), challengeBond)) revert TransferFailed();
     }
@@ -140,53 +233,81 @@ contract BondedClaims {
     function finalize(uint256 id) external {
         Claim storage c = _pending(id);
         if (block.timestamp <= c.postedAt + window) revert WindowOpen();
-        _clear(id, c);
+        _clear(id, c, Verdict(_now(), bytes32(0), bytes32(0)));
     }
 
-    // ---- the verifier -----------------------------------------------------
-
-    /// @notice Settle a challenge. `fraudulent` is the deterministic check's
-    /// answer; the verifier only records it.
-    function resolve(uint256 id, bool fraudulent, string calldata reason) external onlyVerifier {
+    /// @notice If no verdict ever answers a challenge, nobody's money stays
+    /// stuck: after UNWIND_AFTER both sides get theirs back and the claim counts
+    /// for nothing.
+    function unwind(uint256 id) external {
         Claim storage c = _claims[id];
         if (c.status != Status.Challenged) revert NotChallenged();
-        address who = c.challenger;
-        if (fraudulent) {
-            // records first, then the money: the deposit comes back with the bounty
-            _slash(id, c, who, reason);
-            if (!bondToken.transfer(who, challengeBond)) revert TransferFailed();
+        if (block.timestamp <= challengedAt[id] + UNWIND_AFTER) revert WindowOpen();
+        c.status = Status.Void;
+        locked[c.analyst] -= c.atStake;
+        emit Unwound(id, c.challenger);
+        if (!bondToken.transfer(c.challenger, challengeBond)) revert TransferFailed();
+    }
+
+    // ---- the workflow's verdict ---------------------------------------------
+
+    /// @notice Called by the Chainlink forwarder with a report the workflow's
+    /// nodes agreed on and signed. Metadata is the forwarder's standard header:
+    /// workflow id (32 bytes), workflow name (10 bytes), workflow owner (20).
+    function onReport(bytes calldata metadata, bytes calldata report) external override {
+        if (msg.sender != forwarder) revert NotForwarder(msg.sender);
+        (bytes32 wid, bytes10 name, address owner_) = _decodeMetadata(metadata);
+        if (workflowOwner != address(0) && (owner_ != workflowOwner || name != workflowName)) revert WrongWorkflow();
+        if (workflowId != bytes32(0) && wid != workflowId) revert WrongWorkflow();
+        Report memory r;
+        (r.claimId, r.claimHash, r.fraudulent, r.evidence, r.reason) =
+            abi.decode(report, (uint256, bytes32, bool, bytes32, string));
+        if (r.claimId >= _claims.length) revert NoSuchClaim();
+        Claim storage c = _claims[r.claimId];
+        if (c.claimHash != r.claimHash) revert WrongClaim();
+        _settle(r, c, wid);
+    }
+
+    function _settle(Report memory r, Claim storage c, bytes32 wid) private {
+        uint256 id = r.claimId;
+        Verdict memory v = Verdict(_now(), r.evidence, wid);
+        // A verdict for a claim that is already settled, or a slash that comes
+        // after the window an analyst was promised, changes nothing. It is
+        // recorded rather than reverted, so the forwarder's delivery succeeds.
+        bool late = block.timestamp > c.postedAt + window;
+        if (c.status == Status.Challenged) {
+            address who = c.challenger;
+            emit Checked(id, r.fraudulent, r.evidence, wid, r.reason);
+            if (r.fraudulent) {
+                // records first, then the money: the deposit comes back with the bounty
+                _slash(id, c, who, r.reason, v);
+                if (!bondToken.transfer(who, challengeBond)) revert TransferFailed();
+            } else {
+                // a true claim keeps its stake and is paid for the trouble
+                bonded[c.analyst] += challengeBond;
+                emit Upheld(id, who, challengeBond);
+                _clear(id, c, v);
+            }
+        } else if (c.status == Status.Pending && !(late && r.fraudulent)) {
+            emit Checked(id, r.fraudulent, r.evidence, wid, r.reason);
+            if (r.fraudulent) _slash(id, c, address(0), r.reason, v);
+            else _clear(id, c, v);
         } else {
-            // a true claim keeps its stake and is paid for the trouble
-            bonded[c.analyst] += challengeBond;
-            emit Upheld(id, who, challengeBond);
-            _clear(id, c);
+            emit ReportIgnored(id, c.status);
         }
     }
 
-    /// @notice The quote was found in the filing and the value is in the quote.
-    function clear(uint256 id) external onlyVerifier {
-        _clear(id, _pending(id));
-    }
-
-    /// @notice The claim failed the check. The stake at risk is taken: half to
-    /// the challenger who raised it, the rest to the reader pool.
-    /// The verifier as the default challenger: it may slash directly, but only
-    /// inside the same window anyone else would have had.
-    function slash(uint256 id, address challenger, string calldata reason) external onlyVerifier {
-        Claim storage c = _pending(id);
-        if (block.timestamp > c.postedAt + window) revert WindowClosed();
-        _slash(id, c, challenger, reason);
-    }
-
-    function _clear(uint256 id, Claim storage c) private {
+    function _clear(uint256 id, Claim storage c, Verdict memory v) private {
         c.status = Status.Cleared;
+        _verdicts[id] = v;
         locked[c.analyst] -= c.atStake;
         cleared[c.analyst] += 1;
         emit Cleared(id, c.analyst);
     }
 
-    function _slash(uint256 id, Claim storage c, address challenger, string calldata reason) private {
+    function _slash(uint256 id, Claim storage c, address challenger, string memory reason, Verdict memory v) private {
         c.status = Status.Slashed;
+        _verdicts[id] = v;
         uint256 amount = c.atStake;
         locked[c.analyst] -= amount;
         bonded[c.analyst] -= amount;
@@ -197,13 +318,18 @@ contract BondedClaims {
         if (bounty > 0 && !bondToken.transfer(challenger, bounty)) revert TransferFailed();
     }
 
-    function setVerifier(address next) external onlyVerifier {
-        if (next == address(0)) revert NotVerifier();
-        emit VerifierChanged(verifier, next);
-        verifier = next;
+    function _decodeMetadata(bytes calldata m) private pure returns (bytes32 wid, bytes10 name, address owner_) {
+        if (m.length < 62) revert WrongWorkflow();
+        wid = bytes32(m[0:32]);
+        name = bytes10(m[32:42]);
+        owner_ = address(bytes20(m[42:62]));
     }
 
     // ---- reading ----------------------------------------------------------
+
+    function supportsInterface(bytes4 interfaceId) external pure override returns (bool) {
+        return interfaceId == type(IReceiver).interfaceId || interfaceId == type(IERC165).interfaceId;
+    }
 
     function freeBond(address analyst) public view returns (uint256) {
         return bonded[analyst] - locked[analyst];
@@ -211,6 +337,10 @@ contract BondedClaims {
 
     function claim(uint256 id) external view returns (Claim memory) {
         return _claims[id];
+    }
+
+    function verdict(uint256 id) external view returns (Verdict memory) {
+        return _verdicts[id];
     }
 
     /// @notice For other contracts: did this claim survive the check? Pending
@@ -226,5 +356,10 @@ contract BondedClaims {
     function _pending(uint256 id) private view returns (Claim storage c) {
         c = _claims[id];
         if (c.status != Status.Pending) revert NotPending();
+    }
+
+    function _now() private view returns (uint64) {
+        // forge-lint: disable-next-line(unsafe-typecast)
+        return uint64(block.timestamp);
     }
 }
