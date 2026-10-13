@@ -103,7 +103,7 @@ claim (exact words, hash on-chain) → filing sentence (SEC EDGAR) → verdict (
   each line independently, and what the record does not prove.
 - **From the command line:** `python -m vouchrh.journal verify feed.json --rpc <url>`
   also re-fetches every filing from EDGAR and re-runs the check.
-  In the local round: 96 of 96 checks hold. Editing one word of a reasoning
+  In the local round: 104 of 104 checks hold. Editing one word of a reasoning
   record, or of a claim, fails it (tested).
 
 ## Chainlink CRE
@@ -131,9 +131,9 @@ has and has not been run is listed in [cre/README.md](cre/README.md).
 
 | | |
 |---|---|
-| Contracts | 37 Foundry tests: forwarder-only settlement, forged workflow owner, name or id refused, verdict bound to the posted words, money conserved through fuzzed disputes, the desk's refusals and citations. Slither: only the deliberate timestamp windows. |
-| Agent and journal | 31 pytest tests on a real EVM (anvil) and real SEC filings, including end-to-end journal re-verification and tamper detection |
-| CRE workflow | 19 Bun tests (SDK runtime, Python parity, policy parity); QuickJS parity script; WASM build |
+| Contracts | 41 Foundry tests: forwarder-only settlement, forged workflow owner, name or id refused, verdict bound to the posted words, unchecked claims refused by the desk, no gain from challenging your own claim, money conserved through fuzzed disputes, the desk's refusals and citations. Slither: only the deliberate timestamp windows. |
+| Agent and journal | 34 pytest tests on a real EVM (anvil) and real SEC filings, including end-to-end journal re-verification and tamper detection |
+| CRE workflow | 22 Bun tests (SDK runtime incl. malformed and mismatched claims, Python parity, policy parity); QuickJS parity script; WASM build |
 | The check | Catches a changed figure in a quote that is 99.3% identical to the filing; a real AI's "Q3" for a June quarter; a six-month figure called a quarter; a reversed direction. No wrong calls over 1,444 scripted claims ([engineering notes](docs/ENGINEERING.md)) |
 | Live | v1 contracts verified on Robinhood Chain testnet ([market](https://explorer.testnet.chain.robinhood.com/address/0x285AcbD8919fdAd7fa39753347656711eC51d426), [desk](https://explorer.testnet.chain.robinhood.com/address/0x6170c08ACF845C48032c9fAc118E62101cf29745)); the hosted check at `POST https://vouch-feed.vercel.app/api/verify`. The CRE-settled contracts deploy with `scripts/cre_round.sh`. |
 
@@ -147,6 +147,15 @@ has and has not been run is listed in [cre/README.md](cre/README.md).
   can change who settles.
 - **The filing** is whatever SEC EDGAR serves; its keccak256 is on-chain
   with each verdict, so anyone can download it and redo the check.
+- **Until a workflow id is pinned**, the workflow owner could replace the
+  workflow's code under the same name; pinning (once, by the deployer) ends that.
+- **No verdict, no trade.** If the network never answers, an unchallenged claim
+  clears by default after its window, marked unchecked, and the desk refuses to
+  let an agent cite it. Malformed words, or words naming another stock or filing
+  than the one posted under, are slashed by the workflow without a fetch.
+- **The reader pool only accumulates** in this version: there is no payout
+  function and no admin key to add one. Paying it out to insured readers is
+  roadmap work and needs its own rules.
 - **The check has limits it states:** it cannot tell a borrowing limit from a
   balance, or an inflow from an outflow described in words.
 

@@ -88,7 +88,7 @@
         <li><p><b>Bond.</b> An analyst deposits USDG into the contract before it may publish.</p></li>
         <li><p><b>Claim.</b> Each claim quotes the company's SEC filing and puts part of the bond at stake. The words stay off-chain; their hash goes on-chain, so a claim cannot be edited after it is checked.</p></li>
         <li><p><b>Check.</b> The check is deterministic: a whole sentence of the filing, every figure, period, date and direction as filed. Anyone can also challenge within the window.</p></li>
-        <li><p><b>Settle.</b> A Chainlink CRE workflow checks the claim against the filing and writes the verdict. A wrong claim loses its stake to a pool that backs readers (half to a challenger, if someone challenged first). A right one keeps it.</p></li>
+        <li><p><b>Settle.</b> A Chainlink CRE workflow checks the claim against the filing and writes the verdict. A wrong claim loses its whole stake to a pool that backs readers. A right one keeps it, and an agent may cite it only once a verdict has checked it.</p></li>
         <li><p><b>Gate.</b> Contracts can ask whether a claim is cleared, so an agent can only trade on research that survived.</p></li>
       </ol>
       <div class="addr" id="addr"></div>

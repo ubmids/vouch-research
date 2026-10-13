@@ -55,7 +55,7 @@ passes `metadata` = workflow id (32 bytes), name (10), owner (20), report id (2)
 paper notional, time, ticker, reasoning hash, and per cited claim: id, claim
 hash, verdict time, evidence, workflow id.
 
-## The reasoning record (off-chain, hashed on-chain)
+## The reasoning record (off-chain, hashed on-chain): an abridged example
 
 ```json
 {"policy": "vouch-desk-policy/1", "rule": "signal per claim = change x polarity; …",
@@ -81,7 +81,11 @@ the same bytes.
 | A report comes from another workflow | Reverts `WrongWorkflow` (owner, name, or pinned id) |
 | A report is about different words than were posted | Reverts `WrongClaim` |
 | A second verdict arrives for a settled claim | Recorded as `ReportIgnored`; nothing changes |
-| The DON never answers | Unchallenged: the claim clears itself after the window (journal shows "unchecked"). Challenged: `unwind` after 7 days refunds both sides; the claim never counts as cleared |
+| The DON never answers | Unchallenged: the claim clears by default after the window, with no filing evidence, and `AgentDesk` refuses it (`NotChecked`). Challenged: `unwind` after 7 days refunds both sides; the claim never counts as cleared |
+| An analyst posts malformed words, or words naming another stock or filing | The workflow reports it slashed without fetching anything; it never waits |
+| An analyst challenges their own wrong claim | Gains nothing: a slash sends the whole stake to the reader pool; the challenger only gets the deposit back |
+| The same words are posted twice | The desk treats them as one piece of evidence (`CitedTwice` on the hash) |
+| A verdict arrives after the window | A slash still applies while the claim is unsettled |
 | SEC EDGAR is down | The workflow throws; no report; the claim waits |
 | The analyst cites a filing the company never made | Slashed: "filing … is not one of TSLA's recent filings" |
 | The check is wrong on a nuance (limit vs balance) | A human challenger disputes within the window; stated as a limit |

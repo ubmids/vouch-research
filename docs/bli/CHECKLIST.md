@@ -10,7 +10,7 @@ wallet or a camera is Subomi's; the rest is done on the `first-place` branch.
    - Sign up at https://app.chain.link/cre/discover (free, 2FA). Install the CLI:
      `curl -sSL https://app.chain.link/cre/install.sh | bash`. Install bun:
      `curl -fsSL https://bun.sh/install | bash`. Then `cre login`.
-   - `cd cre/vouch-verifier && bun install && bun test`: expect 19 pass.
+   - `cd cre/vouch-verifier && bun install && bun test`: expect 22 pass.
    - Dry run against the old testnet market is not possible (old ABI). The next step deploys the new one.
 2. **By 22 Oct: the CRE-settled round on Robinhood Chain testnet.**
    - Wallet `0x950d00BA837cD285e6d8a0F3f02d69434a775808` needs test ETH (faucet.testnet.chain.robinhood.com).
