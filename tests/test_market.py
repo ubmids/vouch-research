@@ -5,41 +5,21 @@ test can say which must be slashed. What is asserted is the thing the product
 promises: honest research keeps its bond, every way of lying loses it, and not
 a unit of stablecoin is created or lost on the way.
 """
-import os, shutil, socket, subprocess, sys, time
-import pytest
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "agent"))
-
-ANVIL = shutil.which("anvil") or os.path.expanduser("~/.foundry/bin/anvil")
-KEY0 = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+PRICE = {"TSLA": "376.11", "AMD": "160.00", "NFLX": "1200.00"}
 
 
-@pytest.fixture(scope="module")
-def chain():
-    if not os.path.exists(ANVIL):
-        pytest.skip("anvil not installed")
-    # The Python side loads Foundry's artifacts; build them if a clean (or a
-    # tool such as Slither) removed them, so the test never runs stale code.
-    root = os.path.join(os.path.dirname(__file__), "..")
-    forge = shutil.which("forge") or os.path.expanduser("~/.foundry/bin/forge")
-    subprocess.run([forge, "build"], cwd=root, check=True, capture_output=True)
-    s = socket.socket(); s.bind(("127.0.0.1", 0)); port = s.getsockname()[1]; s.close()
-    proc = subprocess.Popen([ANVIL, "--silent", "--port", str(port)])
-    try:
-        from vouchrh.chain import Chain
-        for _ in range(50):
-            try:
-                c = Chain(f"http://127.0.0.1:{port}", KEY0); c.w3.eth.block_number; break
-            except Exception:
-                time.sleep(0.1)
-        yield c
-    finally:
-        proc.terminate(); proc.wait(timeout=10)
+def quote(t):
+    return {"ticker": t, "price": PRICE.get(t, "100.00"), "currency": "USD", "at": 1791909803, "source": "test"}
+
+
+def round_(chain, **kw):
+    from vouchrh.market import run, finish
+    return finish(chain, run(chain, log=lambda *_: None, **kw), log=lambda *_: None, quote=quote)
 
 
 def test_honest_research_keeps_its_bond_and_every_lie_loses_it(chain):
-    from vouchrh.market import run, CHALLENGER
     from vouchrh.chain import USD
-    r = run(chain, tickers=("TSLA", "AMD"), per_ticker=2, log=lambda *_: None)
+    r = round_(chain, tickers=("TSLA", "AMD"), per_ticker=2)
     by = {s["analyst"]: s for s in r["standings"]}
     assert by["Diligent"]["slashed"] == 0 and by["Diligent"]["bonded"] == 500
     for liar in ("Misreader", "Embellisher", "Fabricator"):
@@ -47,24 +27,40 @@ def test_honest_research_keeps_its_bond_and_every_lie_loses_it(chain):
         assert by[liar]["slashed"] == 4, liar
     slashed_total = sum(f["stake"] for f in r["claims"] if f["verdict"] == "slashed")
     held = chain.usdg.functions.balanceOf(chain.market.address).call() / USD
-    paid = chain.usdg.functions.balanceOf(CHALLENGER).call() / USD
-    assert paid + r["reader_pool"] == slashed_total
+    assert r["reader_pool"] == slashed_total          # nobody challenged: every slashed unit backs readers
     assert held == sum(s["bonded"] for s in r["standings"]) + r["reader_pool"]
 
 
-def test_the_chain_holds_the_hash_of_exactly_the_published_words(chain):
-    from vouchrh.market import run
-    r = run(chain, tickers=("NFLX",), per_ticker=1, log=lambda *_: None)
+def test_every_verdict_arrived_through_the_forwarder_and_says_which_filing(chain):
+    from eth_utils import keccak
+    from vouchrh import edgar
+    r = round_(chain, tickers=("NFLX",), per_ticker=1)
+    raw = keccak(edgar.latest("NFLX").raw())
+    for f in r["claims"]:
+        assert f["agrees"], f                         # the chain holds what the check said
+        assert f["evidence"] == "0x" + raw.hex()      # and commits to the exact bytes EDGAR served
+        receipt = chain.w3.eth.get_transaction_receipt(f["tx_judge"])
+        assert receipt["to"] == chain.forwarder.address
+
+
+def test_the_chain_holds_the_hash_and_the_words_that_were_published(chain):
+    r = round_(chain, tickers=("NFLX",), per_ticker=1)
     for f in r["claims"]:
         on_chain = chain.market.functions.claim(f["id"]).call()
         assert "0x" + on_chain[4].hex() == f["hash"]
+        posted = chain.market.events.Posted().process_receipt(chain.w3.eth.get_transaction_receipt(f["tx_post"]))[0]
+        from vouchrh.journal import _canonical
+        assert posted.args.claim == _canonical(f)     # the words themselves are in the record
 
 
 def test_the_trading_agent_acts_only_on_cleared_research(chain):
-    from vouchrh.market import run
-    r = run(chain, tickers=("TSLA",), per_ticker=2, log=lambda *_: None)
-    for f in r["claims"]:
-        assert f["desk"]["acted"] == (f["verdict"] == "cleared"), f
-        if not f["desk"]["acted"]:
-            assert f["desk"]["error"] == "NotCleared"
-            assert chain.w3.eth.get_transaction_receipt(f["desk"]["tx"]).status == 0   # refused on-chain
+    r = round_(chain, tickers=("TSLA", "NFLX", "AMD"), per_ticker=2)
+    claims = {c["id"]: c for c in r["claims"]}
+    opened = [j for j in r["journal"] if j["status"] == "opened"]
+    assert opened
+    for j in r["journal"]:
+        for a in j["attempts"]:
+            assert claims[a["claim"]]["verdict"] == "slashed" and a["error"] == "NotCleared"
+            assert chain.w3.eth.get_transaction_receipt(a["tx"]).status == 0     # refused on-chain
+        if j["status"] == "opened":
+            assert all(claims[e["claim"]]["verdict"] == "cleared" for e in j["reasoning"]["evidence"])
