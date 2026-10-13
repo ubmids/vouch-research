@@ -430,7 +430,13 @@ async function reverify(ticker, button) {
     if (j.status === "opened")
       add(c.verdict === "cleared" && (!e.verdict_tx || e.verdict_tx === c.tx_judge), `Claim #${e.claim}: cleared by the check against ${esc(company)}'s 10-Q, in the verdict transaction cited.`);
   }
-  for (const a of j.attempts) add(by[a.claim].verdict === "slashed", `Claim #${a.claim} was refused because it failed the check: ${esc(by[a.claim].reason)}.`);
+  for (const a of j.attempts) {
+    const c = by[a.claim], unchecked = c.verdict === "cleared" && /^0x0*$/.test(c.evidence || "");
+    add(c.verdict === "slashed" || unchecked, unchecked ? `Claim #${a.claim} was refused because no verdict ever checked it.`
+      : `Claim #${a.claim} was refused because it failed the check: ${esc(c.reason)}.`);
+  }
+  const accounted = [...r.evidence.map((e) => e.claim), ...r.dropped.map((d) => d.claim)].sort((x, y) => x - y);
+  add(JSON.stringify([...j.read].sort((x, y) => x - y)) === JSON.stringify(accounted), "Every claim the agent read is either cited or refused: none was quietly left out.");
   const again = VouchPolicy.thesis(ticker, r.evidence.map((e) => by[e.claim]), r.per_claim);
   const same = again.side === r.side && again.notional === r.notional && again.evidence.every((e, i) => e.signal === r.evidence[i].signal && e.why === r.evidence[i].why);
   add(same, `Re-running the agent's rules on these claims gives the same ${j.status === "opened" ? `trade: ${SIDE[again.side] || "no trade"} ${money(again.notional / 1e6)} USD` : "decision: no trade"}.`);
@@ -458,7 +464,7 @@ async function reverify(ticker, button) {
     } catch (err) { add(false, `Could not reach ${esc(F.chain.name)} from the browser (${esc(err.message)}).`); }
   }
   const bad = list.querySelectorAll(".no").length;
-  rows.push(`<li class="sum ${bad ? "no" : "ok"}">${bad ? `${bad} check${bad > 1 ? "s" : ""} failed.` : "Every link in the chain of reasons holds."}</li>`);
+  rows.push(`<li class="sum ${bad ? "no" : "ok"}">${bad ? `${bad} check${bad > 1 ? "s" : ""} failed.` : F.chain.rpc ? "Every link in the chain of reasons holds, on-chain too." : "Every link checked here holds. The on-chain links need the command line."}</li>`);
   list.innerHTML = rows.join("");
   button.disabled = false;
 }

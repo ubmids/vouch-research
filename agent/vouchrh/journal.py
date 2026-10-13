@@ -65,8 +65,15 @@ def trade(chain: Chain, agent, claims: list[dict], per_claim: int = 100 * USD, l
                 log(f"  {ticker:5} {t['side'].upper():5} {t['notional'] / USD:>6.0f} USD paper on claims {ids} "
                     f"after {len(dropped)} refusals  tx {out['tx'][:12]}")
                 break
-            refused = out["claim"] if out["claim"] is not None else ids[0]
-            bad = next(c for c in cited if c["id"] == refused)
+            refused = out["claim"]
+            bad = next((c for c in cited if c["id"] == refused), None)
+            if bad is None:
+                # Reverted for a reason that names no claim: never guess which one.
+                # Stop on this stock and say so.
+                entry["status"] = "error"
+                entry["error"] = {"error": out["error"], "tx": out["tx"]}
+                log(f"  {ticker:5} stopped: the desk reverted ({out['error']}) without naming a claim")
+                break
             miss = {"claim": refused, "error": out["error"], "tx": out["tx"], "verdict": bad.get("verdict"),
                     "reason": bad.get("reason"), "side_before": t["side"]}
             dropped.append(miss)
@@ -75,7 +82,7 @@ def trade(chain: Chain, agent, claims: list[dict], per_claim: int = 100 * USD, l
         if entry["status"] != "opened":
             final = policy.thesis(ticker, cited, per_claim)
             entry["reasoning"] = policy.record(final, price, dropped)
-            log(f"  {ticker:5} no trade: the cleared research gives no direction ({len(dropped)} refusals)")
+            log(f"  {ticker:5} no trade: what is left gives no direction ({len(dropped)} refusals)")
         journal.append(entry)
     return journal
 
@@ -99,10 +106,18 @@ def verify(feed: dict, chain: Chain, edgar_check: bool = True) -> list[dict]:
     for j in feed.get("journal", []):
         tag = f"{j['ticker']} #{j.get('entry', '-')}"
         rec = j["reasoning"]
+        accounted = sorted([e["claim"] for e in rec["evidence"]] + [d["claim"] for d in rec["dropped"]])
+        check(tag, "every claim the agent read is either cited or refused (none quietly left out)",
+              sorted(j["read"]) == accounted or j["status"] == "error", f"read {sorted(j['read'])}, accounted {accounted}")
         for a in j.get("attempts", []):
             r = _receipt(chain, a["tx"])
             check(tag, f"refusal of claim #{a['claim']} reverted on-chain", r.status == 0, a["tx"])
-            check(tag, f"claim #{a['claim']} is not cleared", not chain.market.functions.isCleared(a["claim"]).call())
+            unchecked = chain.market.functions.verdict(a["claim"]).call()[1] == bytes(32)
+            check(tag, f"claim #{a['claim']} failed the check (or was never checked)",
+                  not chain.market.functions.isCleared(a["claim"]).call() or unchecked)
+        if j["status"] == "error":
+            check(tag, "the agent stopped on a refusal that named no claim", False, str(j.get("error")))
+            continue
         if j["status"] != "opened":
             again = policy.thesis(j["ticker"], [claims[e["claim"]] for e in rec["evidence"]], 0)
             check(tag, "re-running the policy gives no trade too", again["side"] is None)
@@ -111,6 +126,8 @@ def verify(feed: dict, chain: Chain, edgar_check: bool = True) -> list[dict]:
         h = policy.digest(rec)
         check(tag, "reasoning record hashes to what the desk stored", "0x" + on[6].hex() == "0x" + h.hex(), "0x" + h.hex())
         check(tag, "the desk's citations are the record's evidence", list(on[8]) == [e["claim"] for e in rec["evidence"]])
+        check(tag, "the desk's ticker, side and notional are the record's",
+              (on[5], on[1], on[4]) == (j["ticker"], SIDE[rec["side"]], rec["notional"]))
         r = _receipt(chain, j["tx"])
         opened = chain.desk.events.Opened().process_receipt(r, errors=DISCARD)
         check(tag, "the trade's transaction opened this entry", r.status == 1 and opened and opened[0].args.entry == j["entry"], j["tx"])
@@ -127,7 +144,10 @@ def verify(feed: dict, chain: Chain, edgar_check: bool = True) -> list[dict]:
             v = chain.market.functions.verdict(c["id"]).call()
             if edgar_check:
                 if c["accession"] not in texts:
-                    f = next(f for f in edgar.filings(c["ticker"], ("10-Q", "10-K"), 8) if f.accession == c["accession"])
+                    f = next((f for f in edgar.filings(c["ticker"], ("10-Q", "10-K"), 40) if f.accession == c["accession"]), None)
+                    if f is None:
+                        check(tag, f"claim #{c['id']} cites a filing EDGAR lists for {c['ticker']}", False, c["accession"])
+                        continue
                     texts[c["accession"]] = (f.raw(), f.text())
                 raw, text = texts[c["accession"]]
                 if v[1] != bytes(32):

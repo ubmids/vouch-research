@@ -109,3 +109,19 @@ def test_a_fabricated_story_can_flip_the_trade_until_the_desk_refuses_it():
                                  "every region.", analyst="Fabricator")
     assert thesis("X", [COST_UP, fake, fake | {"id": 8}], 100)["side"] == "long"    # believing everything
     assert thesis("X", [COST_UP], 100)["side"] == "short"                          # on what survived the check
+
+
+def test_an_agent_that_leaves_out_a_claim_it_read_is_caught(chain, feed):
+    from vouchrh.journal import verify
+    bad = copy.deepcopy(feed)
+    j = next(j for j in bad["journal"] if j["status"] == "opened")
+    j["read"].append(max(c["id"] for c in bad["claims"]) + 1000)    # read one more than it accounts for
+    assert "every claim the agent read is either cited or refused (none quietly left out)" in _fails(verify(bad, chain, edgar_check=False))
+
+
+def test_the_record_must_match_the_desks_side_and_size(chain, feed):
+    from vouchrh.journal import verify
+    bad = copy.deepcopy(feed)
+    j = next(j for j in bad["journal"] if j["status"] == "opened")
+    j["ticker"] = "XXXX"
+    assert "the desk's ticker, side and notional are the record's" in _fails(verify(bad, chain, edgar_check=False))

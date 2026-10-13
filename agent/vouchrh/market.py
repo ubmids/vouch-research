@@ -134,6 +134,7 @@ def finish(chain: Chain, feed: dict, log=print, quote=None) -> dict:
         f["verdict"] = s["status"] if s["status"] in ("cleared", "slashed") else "pending"
         f["tx_judge"] = s["tx"] or f.get("tx_judge")
         f["evidence"], f["workflow_id"] = s["evidence"], s["workflow_id"]
+        f["checked"] = f["verdict"] != "pending" and int(s["evidence"], 16) != 0   # cleared by default is not checked
         if s.get("reason"):
             f["reason"] = s["reason"]
         f["agrees"] = f["verdict"] == f.get("local_verdict")

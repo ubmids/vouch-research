@@ -140,14 +140,18 @@ class Chain:
         anyone can look up; the error names the claim that was refused."""
         fn = self.desk.functions.open(ticker, side, notional, backing, reasoning)
         refusal, refused = self.why(fn, acct.address), None
-        if refusal:
+        # Only the desk's own refusals name a claim: NotCleared, NotChecked,
+        # WrongTicker and CitedTwice take the claim id as their one argument.
+        if refusal in ("NotCleared", "NotChecked", "WrongTicker", "CitedTwice"):
             try:
                 fn.call({"from": acct.address})
-            except Exception as e:  # NotCleared(uint256) / WrongTicker(uint256): the claim id is the argument
+            except Exception as e:
                 data = getattr(e, "data", None) or ""
-                data = data if isinstance(data, str) else str(data)
-                if len(data) >= 2 + 8 + 64:
-                    refused = int(data[-64:], 16)
+                data = (data if isinstance(data, str) else str(data)).removeprefix("0x")
+                try:
+                    refused = int(data[8:8 + 64], 16) if len(data) >= 8 + 64 else None
+                except ValueError:
+                    refused = None
         r = self.send(acct, fn, gas=600_000 if refusal else None, allow_revert=bool(refusal))
         out = {"acted": r.status == 1, "error": refusal, "claim": refused, "tx": "0x" + r.transactionHash.hex().removeprefix("0x")}
         if r.status == 1:
