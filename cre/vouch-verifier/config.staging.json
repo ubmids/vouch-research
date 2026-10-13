@@ -1,0 +1,13 @@
+{
+  "chainSelectorName": "robinhood-testnet",
+  "market": "0x0000000000000000000000000000000000000000",
+  "userAgent": "Vouch research prototype solagoke21@gmail.com",
+  "ciks": {
+    "TSLA": "0001318605",
+    "AMZN": "0001018724",
+    "PLTR": "0001321655",
+    "NFLX": "0001065280",
+    "AMD": "0000002488"
+  },
+  "gasLimit": "1000000"
+}

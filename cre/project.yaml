@@ -1,0 +1,9 @@
+# Chainlink CRE project: Vouch's verifier. RPC URLs only; keys never live here.
+# The simulation broadcasts through Chainlink's mock forwarder on Robinhood
+# Chain testnet when run with --broadcast and CRE_ETH_PRIVATE_KEY in .env.
+staging-settings:
+  rpcs:
+    - chain-name: robinhood-testnet
+      url: https://rpc.testnet.chain.robinhood.com
+    - chain-name: ethereum-testnet-sepolia-arbitrum-1
+      url: https://sepolia-rollup.arbitrum.io/rpc

@@ -1,0 +1,22 @@
+{
+  "name": "vouch-verifier",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vouch's filing check as a Chainlink CRE workflow: Posted claim -> EDGAR -> deterministic check -> verdict report on-chain",
+  "main": "dist/main.js",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@chainlink/cre-sdk": "^1.23.0",
+    "fflate": "0.8.2",
+    "viem": "2.34.0",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@types/bun": "1.2.21",
+    "typescript": "5.9.3"
+  }
+}
