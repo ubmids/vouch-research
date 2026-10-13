@@ -357,6 +357,8 @@ function journal() {
     if (c) { select(+c.dataset.claim, true); if (innerWidth >= 1100) $(".main").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
     const v = e.target.closest("[data-verify]");
     if (v) reverify(v.dataset.verify, v);
+    const d = e.target.closest("[data-record]");
+    if (d) download(`vouch-audit-${d.dataset.record}-${F.chain_id}.md`, auditRecord(F.journal.find((x) => x.ticker === d.dataset.record)));
   };
 }
 
@@ -400,7 +402,7 @@ function entryHtml(j) {
       <li><div><b>Decided.</b> ${decision} <span class="rule">${esc(r.rule || "")}</span></div></li>
       ${opened ? `<li><div><b>Committed.</b> All of the above, with the transaction of every verdict and refusal, hashes to <code>${esc(short(j.reasoning_hash, 12, 8))}</code>. The desk stored that hash with the trade ${tx(j.tx, "in this transaction")}, so the reasons cannot be rewritten afterwards. ${pnl}.</div></li>` : ""}
     </ol>
-    <div class="verify jv"><button data-verify="${esc(j.ticker)}">Re-verify this ${opened ? "trade" : "decision"}</button><span>Recomputes every hash and verdict link, and re-runs the agent's rules, in your browser.</span></div>
+    <div class="verify jv"><button data-verify="${esc(j.ticker)}">Re-verify this ${opened ? "trade" : "decision"}</button><button data-record="${esc(j.ticker)}">Download the audit record</button><span>Recomputes every hash and verdict link, and re-runs the agent's rules, in your browser. The record is one file an examiner or counsel can keep.</span></div>
     <ul class="checks" id="rv-${esc(j.ticker)}"></ul>
   </details>`;
 }
@@ -459,6 +461,64 @@ async function reverify(ticker, button) {
   rows.push(`<li class="sum ${bad ? "no" : "ok"}">${bad ? `${bad} check${bad > 1 ? "s" : ""} failed.` : "Every link in the chain of reasons holds."}</li>`);
   list.innerHTML = rows.join("");
   button.disabled = false;
+}
+
+// ---- the audit record ------------------------------------------------------------
+// One self-contained file per journal entry: the trade, each claim's exact words,
+// the filing, the verdict and its evidence, the refusals, the reasoning record,
+// how to check every line independently, and what the record does not prove.
+function download(name, text) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], { type: "text/markdown" }));
+  a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function auditRecord(j) {
+  const by = byId(), r = j.reasoning, ex = F.chain.explorer, f = F.filings[j.ticker] || {};
+  const tx = (h) => !h ? "n/a" : ex ? `${h} (${ex}/tx/${h})` : `${h} (local devnet)`;
+  const zero = (h) => !h || /^0x0+$/.test(h);
+  const L = [];
+  L.push(`# Audit record: ${j.ticker} ${j.status === "opened" ? `${SIDE[j.side]} paper trade, journal entry #${j.entry}` : "no-trade decision"}`, "");
+  L.push(`Generated ${new Date().toISOString()} from ${location.origin}${location.pathname} (round of ${new Date(F.generated * 1000).toISOString()}).`, "");
+  L.push(`- Chain: ${F.chain.name} (chain id ${F.chain_id})`, `- BondedClaims (the market): ${F.contracts.market}`, `- AgentDesk (the trading desk): ${F.contracts.desk}`,
+    `- Verdicts written by: ${F.settled_by || "the verifier key (v1)"}`, `- Trading agent: ${F.trader || "n/a"}`, "");
+  if (j.status === "opened") {
+    L.push("## The trade", "", `- Side and size: ${SIDE[j.side]} ${money(j.notional / 1e6)} USD, paper (no money moves)`, `- Transaction: ${tx(j.tx)}`,
+      `- Reasoning hash stored with the trade: ${j.reasoning_hash}`, `- Reference price: ${r.price ? `${r.price.price} ${r.price.currency} (${r.price.source})` : "none recorded"}`, "");
+  } else L.push("## The decision", "", "No trade: under the agent's rules, what was left after the refusals points nowhere.", "");
+  L.push(`## The filing`, "", `- ${j.ticker} ${f.form || "10-Q"}, accession ${f.accession || "?"}, filed ${f.filed || "?"}, period ${f.period || "?"}`, `- ${f.url || ""}`, "");
+  L.push(j.status === "opened" ? "## Claims the trade cites (each cleared)" : "## Claims left when the agent stopped", "");
+  for (const e of r.evidence) {
+    const c = by[e.claim];
+    L.push(`### Claim #${c.id}, by ${c.analyst}${c.analyst_kind === "model" ? " (a language model)" : ""}`, "",
+      `- Analyst wallet: ${c.analyst_address}`, `- Stake: ${money(c.stake)} USDG`, `- Figure claimed: ${c.value}`,
+      `- Summary as published: ${c.summary || "(none)"}`, `- Sentence quoted: "${c.quote}"`,
+      `- keccak256 of the claim's canonical words (on-chain): ${c.hash}`, `- Posted: ${tx(c.tx_post)}`,
+      `- Verdict: ${c.verdict.toUpperCase()}: ${c.reason}`, `- Verdict transaction: ${tx(c.tx_judge)}`,
+      `- Filing bytes checked (keccak256): ${zero(c.evidence) ? "not recorded (v1 or unchecked)" : c.evidence}`,
+      `- CRE workflow id: ${zero(c.workflow_id) ? "not supplied (simulation forwarder or local)" : c.workflow_id}`,
+      `- The agent read it as: ${e.signal > 0 ? "bullish" : e.signal < 0 ? "bearish" : "no signal"} (${e.why.replace(/: (bullish|bearish)$/, "").replace(/^no signal: /, "")})`, "");
+  }
+  if (j.attempts.length) {
+    L.push("## Trades the desk refused, on-chain", "");
+    for (const a of j.attempts) { const c = by[a.claim]; L.push(`- Claim #${a.claim} (${c.analyst}): ${c.reason}. Reverted transaction: ${tx(a.tx)}`); }
+    L.push("");
+  }
+  L.push("## The reasoning record", "", `Its keccak256 is ${"0x" + keccak256(VouchPolicy.canonical(r))}. Canonical JSON (keys sorted, no whitespace, UTF-8):`, "", "```json", VouchPolicy.canonical(r), "```", "");
+  L.push("## How to check every line yourself", "",
+    "1. Download the filing from the URL above and compute keccak256 of the bytes: it equals each verdict's filing hash.",
+    "2. Rebuild each claim's canonical JSON (ticker, accession, metric, value, quote, analyst, summary; keys sorted; no whitespace) and hash it: it equals the on-chain claim hash.",
+    "3. Look up each transaction above on the explorer: the verdicts emit Checked and Cleared or Slashed for the claim id; the refusals reverted; the trade's Opened event carries the reasoning hash.",
+    "4. Re-run the check and the agent's rules: `python -m vouchrh.journal verify feed.json --rpc <chain rpc>` from github.com/ubmids/vouch-research.", "");
+  L.push("## What this record does not prove", "",
+    "- that any view was honestly held (the Regulation AC certification concerns belief);",
+    "- that a recommendation had a reasonable basis (FINRA Rule 2241(c)(1)(B)); Vouch checks facts against the filing, not opinions;",
+    "- that the filing itself is accurate, or that a cleared figure is complete or material;",
+    "- who controls a wallet, or compliance with SEC Rule 17a-4.", "",
+    "See docs/bli/LEGAL.md in the repository. This record is not legal advice.");
+  return L.join("\n") + "\n";
 }
 
 // The one sentence that says exactly what went wrong, from the check's reason.

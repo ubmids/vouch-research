@@ -64,3 +64,26 @@ def test_the_trading_agent_acts_only_on_cleared_research(chain):
             assert chain.w3.eth.get_transaction_receipt(a["tx"]).status == 0     # refused on-chain
         if j["status"] == "opened":
             assert all(claims[e["claim"]]["verdict"] == "cleared" for e in j["reasoning"]["evidence"])
+
+
+def test_a_cre_round_posts_first_and_reads_its_verdicts_back_from_the_chain(chain, tmp_path):
+    """The path scripts/cre_round.sh takes: post only (--settle cre), let the
+    workflow settle (here: reports laid out as the CRE workflow builds them,
+    through the forwarder), then --finish reads everything from the chain."""
+    from eth_utils import keccak
+    from vouchrh import edgar
+    from vouchrh.market import run, finish
+    from vouchrh.verifier import audit_claim
+    posted = run(chain, tickers=("TSLA",), per_ticker=2, settle="cre", log=lambda *_: None)
+    assert all("tx_judge" not in c for c in posted["claims"])
+    assert posted["settled_by"].startswith("the Chainlink CRE workflow")
+    f = edgar.latest("TSLA")
+    raw, text = f.raw(), f.text()
+    for c in posted["claims"]:                       # what each DON node computes, then the report
+        v = audit_claim(c["value"], c["quote"], text, c["summary"], c["metric"])
+        chain.report(c["id"], bytes.fromhex(c["hash"][2:]), v.fraudulent, keccak(raw), v.reason)
+    done = finish(chain, posted, log=lambda *_: None, quote=quote)
+    for c in done["claims"]:
+        assert c["verdict"] in ("cleared", "slashed") and c["agrees"], c
+        assert c["tx_judge"] and c["reason"]
+    assert done["journal"] and all(j["status"] in ("opened", "no trade") for j in done["journal"])

@@ -209,7 +209,10 @@ Those are what the challenge window and human challengers are for.
 - **The operator of an AI trading agent:** the desk's guardrail and the
   journal's trace, the two things FINRA's 2026 report asks about agents.
 - **An examiner, auditor or litigator:** an independent, re-runnable record
-  of what was said, what the source said, and what was done about it.
+  of what was said, what the source said, and what was done about it. Each
+  journal entry downloads as a single audit record (Markdown): the exact words,
+  hashes, filing, verdicts, refusals and reasoning, with the steps to check
+  each line and this page's list of what it does not prove.
 
 ## 8. Open questions we flag rather than answer
 

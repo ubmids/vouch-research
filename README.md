@@ -97,6 +97,10 @@ claim (exact words, hash on-chain) → filing sentence (SEC EDGAR) → verdict (
   hash, every claim's hash and verdict, the refusals, and re-runs the agent's
   rules (the same code, compiled for the page). On a public chain it reads
   the receipts back from the RPC.
+- **For the file:** *Download the audit record* writes one Markdown file per
+  trade: every claim's exact words and hash, the filing, each verdict with its
+  filing hash and transaction, the refusals, the reasoning record, how to check
+  each line independently, and what the record does not prove.
 - **From the command line:** `python -m vouchrh.journal verify feed.json --rpc <url>`
   also re-fetches every filing from EDGAR and re-runs the check.
   In the local round: 96 of 96 checks hold. Editing one word of a reasoning
