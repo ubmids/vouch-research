@@ -32,6 +32,13 @@ class Deployed:
     forwarder: str = ""     # Chainlink's forwarder on a public chain; a local stand-in on anvil
 
 
+def workflow_name_bytes(name: str) -> bytes:
+    """A CRE workflow name as the forwarder's metadata carries it: the first ten
+    hex characters of its SHA-256, as bytes (Chainlink's ReceiverTemplate rule)."""
+    import hashlib
+    return hashlib.sha256(name.encode()).hexdigest()[:10].encode()
+
+
 # The header a CRE forwarder puts in front of a workflow's report (see
 # test/LocalForwarder.sol and Chainlink's MockKeystoneForwarder): version,
 # execution id, timestamp, DON id, config version, workflow id, name, owner,
@@ -181,7 +188,19 @@ class Chain:
         fn = self.forwarder.functions.report(self.market.address, raw_report(payload), b"", [])
         return "0x" + self.send(self.verifier, fn).transactionHash.hex().removeprefix("0x")
 
-    def settlement(self, claim_id: int, from_block: int = 0) -> dict:
+    def logs(self, event, from_block: int | None = None, span: int = 5_000_000, **filters) -> list:
+        """An event's logs, queried in chunks: public RPCs cap the block range
+        (Robinhood Chain testnet's at 10M blocks, about a month of blocks)."""
+        latest = self.w3.eth.block_number
+        start = max(0, latest - 2_000_000) if from_block is None else from_block
+        out = []
+        while start <= latest:
+            end = min(latest, start + span - 1)
+            out += event().get_logs(from_block=start, to_block=end, argument_filters=filters or None)
+            start = end + 1
+        return out
+
+    def settlement(self, claim_id: int, from_block: int | None = None) -> dict:
         """How the chain settled a claim, read back from the chain itself: status,
         the verdict record, and the transaction that wrote it."""
         c = self.market.functions.claim(claim_id).call()
@@ -189,11 +208,11 @@ class Chain:
         status = ["none", "pending", "challenged", "cleared", "slashed", "void"][c[2]]
         tx = None
         for ev in (self.market.events.Cleared, self.market.events.Slashed):
-            logs = ev().get_logs(from_block=from_block, argument_filters={"id": claim_id})
+            logs = self.logs(ev, from_block, id=claim_id)
             if logs:
                 tx = "0x" + logs[-1].transactionHash.hex().removeprefix("0x")
         reason = None
-        for ev in self.market.events.Checked().get_logs(from_block=from_block, argument_filters={"id": claim_id}):
+        for ev in self.logs(self.market.events.Checked, from_block, id=claim_id):
             reason = ev.args.reason
         return {"status": status, "settled_at": v[0], "evidence": "0x" + v[1].hex(), "workflow_id": "0x" + v[2].hex(),
                 "tx": tx, "reason": reason}

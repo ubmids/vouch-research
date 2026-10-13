@@ -50,7 +50,8 @@ def _wallet(chain: Chain, name: str, index: int):
 
 def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD, bond: int = 500 * USD,
         seed: int = 7, fund_wei: int | None = None, log=print, with_model: bool = False,
-        token: str | None = None, trade: int = 100 * USD, forwarder: str | None = None, settle: str = "local") -> dict:
+        token: str | None = None, trade: int = 100 * USD, forwarder: str | None = None, settle: str = "local",
+        window: int = 3600, workflow_owner: str | None = None, workflow_name: str | None = None) -> dict:
     """Post a round of claims. With settle="local" the verdicts are delivered at
     once through the forwarder, computed by the Python check (anvil, or a
     public chain without the CRE CLI). With settle="cre" the claims are only
@@ -65,8 +66,10 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
         deployed = chain.attach(Deployed(**json.loads(record.read_text())))
         log(f"  market at {deployed.market} (existing)")
     else:
+        from .chain import workflow_name_bytes
         deployed = chain.deploy(min_stake=min(10 * USD, stake), challenge_bond=max(1, stake // 5), token=token,
-                                forwarder=forwarder)
+                                forwarder=forwarder, window=window, owner=workflow_owner,
+                                name=workflow_name_bytes(workflow_name) if workflow_name else bytes(10))
         if chain.chain_id != 31337:
             record.parent.mkdir(exist_ok=True)
             record.write_text(json.dumps(asdict(deployed), indent=1))
@@ -127,7 +130,7 @@ def finish(chain: Chain, feed: dict, log=print, quote=None) -> dict:
     Whoever settled the claims, what the feed shows is what the chain holds."""
     from . import journal, prices
     for f in feed["claims"]:
-        s = chain.settlement(f["id"], feed.get("from_block", 0))
+        s = chain.settlement(f["id"], feed.get("from_block"))
         f["verdict"] = s["status"] if s["status"] in ("cleared", "slashed") else "pending"
         f["tx_judge"] = s["tx"] or f.get("tx_judge")
         f["evidence"], f["workflow_id"] = s["evidence"], s["workflow_id"]
@@ -183,6 +186,9 @@ def main(argv=None):
                     help="local: deliver the Python check's verdicts through the forwarder now; cre: post only, "
                          "the CRE workflow settles, then run again with --finish")
     ap.add_argument("--finish", help="a posted round's feed: read its verdicts from the chain and trade on them")
+    ap.add_argument("--window", type=int, default=3600, help="challenge window in seconds (a CRE round needs time to settle)")
+    ap.add_argument("--workflow-owner", help="production: accept reports only from this CRE workflow owner")
+    ap.add_argument("--workflow-name", help="production: ... and this workflow name")
     ap.add_argument("--bond", type=float, default=500, help="each analyst's bond, in token units")
     ap.add_argument("--stake", type=float, default=25, help="stake per claim, in token units")
     ap.add_argument("--trade", type=float, default=100, help="the trading agent's paper size per claim with a signal")
@@ -197,7 +203,8 @@ def main(argv=None):
     else:
         result = run(chain, per_ticker=args.per_ticker, with_model=args.model, token=args.token,
                      bond=int(args.bond * USD), stake=int(args.stake * USD), trade=int(args.trade * USD),
-                     forwarder=args.forwarder, settle=args.settle)
+                     forwarder=args.forwarder, settle=args.settle, window=args.window,
+                     workflow_owner=args.workflow_owner, workflow_name=args.workflow_name)
         if args.settle == "local":
             result = finish(chain, result)
         else:

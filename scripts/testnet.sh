@@ -8,14 +8,19 @@
 # Deploys the contracts, runs every analyst over the latest 10-Q of each stock
 # token (the language-model analyst too, if Ollama is running), publishes the
 # feed with explorer links, and redeploys the page. Stops at the first failure.
+#
+# Here the Python check computes each verdict and delivers it through
+# Chainlink's (permissionless) mock forwarder, the same path a CRE report takes.
+# The round settled by the Chainlink CRE workflow itself is scripts/cre_round.sh.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# FORWARDER: Chainlink CRE's mock forwarder on that chain (docs.chain.link/cre forwarder directory)
 case "${CHAIN:-robinhood}" in
   robinhood)        RPC=https://rpc.testnet.chain.robinhood.com; FAUCET=https://faucet.testnet.chain.robinhood.com
-                    USDG=0x7E955252E15c84f5768B83c41a71F9eba181802F ;;
+                    USDG=0x7E955252E15c84f5768B83c41a71F9eba181802F; FORWARDER=0x0b93082D9b3C7C97fAcd250082899BAcf3af3885 ;;
   arbitrum-sepolia) RPC=https://sepolia-rollup.arbitrum.io/rpc;  FAUCET="https://www.alchemy.com/faucets/arbitrum-sepolia"
-                    USDG=0xFFC95faa3d63Cde504a05B567C600B78C0b41892 ;;
+                    USDG=0xFFC95faa3d63Cde504a05B567C600B78C0b41892; FORWARDER=0xd41263567ddfead91504199b8c6c87371e83ca5d ;;
   *) echo "CHAIN must be robinhood or arbitrum-sepolia"; exit 1 ;;
 esac
 KEYFILE="$HOME/.config/vouch-rh/testnet.key"
@@ -46,6 +51,6 @@ fi
 MODEL=""
 curl -s -m 3 http://127.0.0.1:11434/api/tags >/dev/null 2>&1 && MODEL="--model"
 PYTHONPATH=agent .venv/bin/python -m vouchrh.market --rpc "$RPC" --key "$(cat "$KEYFILE")" \
-  --per-ticker "${PER_TICKER:-2}" $MODEL ${TOKEN_ARGS[@]+"${TOKEN_ARGS[@]}"} --out feed/feed.json
+  --forwarder "$FORWARDER" --per-ticker "${PER_TICKER:-2}" $MODEL ${TOKEN_ARGS[@]+"${TOKEN_ARGS[@]}"} --out feed/feed.json
 PYTHONPATH=agent .venv/bin/python -m vouchrh.publish feed/feed.json web/feed.json
 (cd web && vercel deploy --prod --yes >/dev/null) && echo "published: https://vouch-feed.vercel.app"
