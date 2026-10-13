@@ -14,6 +14,7 @@ from pathlib import Path
 
 from eth_account import Account
 from web3 import Web3
+from web3.logs import DISCARD
 
 ROOT = Path(__file__).resolve().parents[2]
 USD = 10**6
@@ -28,6 +29,18 @@ class Deployed:
     usdg: str
     market: str
     desk: str = ""
+    forwarder: str = ""     # Chainlink's forwarder on a public chain; a local stand-in on anvil
+
+
+# The header a CRE forwarder puts in front of a workflow's report (see
+# test/LocalForwarder.sol and Chainlink's MockKeystoneForwarder): version,
+# execution id, timestamp, DON id, config version, workflow id, name, owner,
+# report id. The receiver is handed bytes 45..109 as metadata, the rest as the report.
+def raw_report(payload: bytes, workflow_id: bytes = bytes(32), name: bytes = bytes(10), owner: str = "0x" + "00" * 20,
+               timestamp: int = 0) -> bytes:
+    from eth_utils import keccak
+    return (b"\x01" + keccak(payload) + timestamp.to_bytes(4, "big") + (0).to_bytes(4, "big") + (0).to_bytes(4, "big")
+            + workflow_id + name + bytes.fromhex(owner[2:]) + b"\x00\x01" + payload)
 
 
 class Chain:
@@ -77,9 +90,16 @@ class Chain:
 
     # ---- deploy -------------------------------------------------------------
     def deploy(self, min_stake: int = 10 * USD, challenge_bond: int = 5 * USD, window: int = 3600,
-               token: str | None = None) -> Deployed:
+               token: str | None = None, forwarder: str | None = None, owner: str | None = None,
+               name: bytes = bytes(10)) -> Deployed:
         """Deploy the market. With `token`, bond in that ERC-20 (Paxos USDG on
-        Robinhood Chain testnet); without, deploy the test stand-in."""
+        Robinhood Chain testnet); without, deploy the test stand-in. Verdicts
+        are accepted from `forwarder` only: Chainlink's on a public chain, a
+        local stand-in laid out the same way when none is given."""
+        if not forwarder:
+            f = artifact("LocalForwarder")
+            cf = self.w3.eth.contract(abi=f["abi"], bytecode=f["bytecode"]["object"])
+            forwarder = self.send(self.verifier, (), deploy=cf).contractAddress
         b = artifact("BondedClaims")
         if token:
             usdg = Web3.to_checksum_address(token)
@@ -88,11 +108,13 @@ class Chain:
             cu = self.w3.eth.contract(abi=a["abi"], bytecode=a["bytecode"]["object"])
             usdg = self.send(self.verifier, (), deploy=cu).contractAddress
         cm = self.w3.eth.contract(abi=b["abi"], bytecode=b["bytecode"]["object"])
-        r2 = self.send(self.verifier, (usdg, min_stake, challenge_bond, window), deploy=cm)
+        args = (usdg, min_stake, challenge_bond, window, Web3.to_checksum_address(forwarder),
+                Web3.to_checksum_address(owner or "0x" + "00" * 20), name)
+        r2 = self.send(self.verifier, args, deploy=cm)
         c = artifact("AgentDesk")
         cd = self.w3.eth.contract(abi=c["abi"], bytecode=c["bytecode"]["object"])
         r3 = self.send(self.verifier, (r2.contractAddress,), deploy=cd)
-        return self.attach(Deployed(usdg, r2.contractAddress, r3.contractAddress))
+        return self.attach(Deployed(usdg, r2.contractAddress, r3.contractAddress, forwarder))
 
     def attach(self, d: Deployed) -> Deployed:
         self.usdg = self.w3.eth.contract(address=d.usdg, abi=artifact("MockUSDG")["abi"])
@@ -100,16 +122,30 @@ class Chain:
         self.mintable = self._can_mint()
         self.market = self.w3.eth.contract(address=d.market, abi=artifact("BondedClaims")["abi"])
         self.desk = self.w3.eth.contract(address=d.desk, abi=artifact("AgentDesk")["abi"]) if d.desk else None
+        # Chainlink's MockKeystoneForwarder takes report() with the same arguments as the local one.
+        self.forwarder = self.w3.eth.contract(address=d.forwarder, abi=artifact("LocalForwarder")["abi"]) if d.forwarder else None
         return d
 
     # ---- the agent desk -------------------------------------------------------
-    def act(self, acct, ticker: str, notional: int, backing: list[int]) -> dict:
-        """An agent tries to trade on these claims. If the desk would refuse, the
-        attempt is still sent, so the refusal is a transaction anyone can look up."""
-        fn = self.desk.functions.open(ticker, notional, backing)
-        refusal = self.why(fn, acct.address)
-        r = self.send(acct, fn, gas=300_000 if refusal else None, allow_revert=bool(refusal))
-        return {"acted": r.status == 1, "error": refusal, "tx": r.transactionHash.hex()}
+    def act(self, acct, ticker: str, side: int, notional: int, backing: list[int], reasoning: bytes) -> dict:
+        """An agent tries to open a paper position on these claims. If the desk
+        would refuse, the attempt is still sent, so the refusal is a transaction
+        anyone can look up; the error names the claim that was refused."""
+        fn = self.desk.functions.open(ticker, side, notional, backing, reasoning)
+        refusal, refused = self.why(fn, acct.address), None
+        if refusal:
+            try:
+                fn.call({"from": acct.address})
+            except Exception as e:  # NotCleared(uint256) / WrongTicker(uint256): the claim id is the argument
+                data = getattr(e, "data", None) or ""
+                data = data if isinstance(data, str) else str(data)
+                if len(data) >= 2 + 8 + 64:
+                    refused = int(data[-64:], 16)
+        r = self.send(acct, fn, gas=600_000 if refusal else None, allow_revert=bool(refusal))
+        out = {"acted": r.status == 1, "error": refusal, "claim": refused, "tx": "0x" + r.transactionHash.hex().removeprefix("0x")}
+        if r.status == 1:
+            out["entry"] = self.desk.events.Opened().process_receipt(r, errors=DISCARD)[0].args.entry
+        return out
 
     # ---- the market ---------------------------------------------------------
     def _can_mint(self) -> bool:
@@ -130,16 +166,37 @@ class Chain:
         self.send(acct, self.usdg.functions.approve(self.market.address, 2**256 - 1))
         self.send(acct, self.market.functions.bond(amount))
 
-    def post(self, acct, ticker: str, accession: str, digest: bytes, stake: int):
-        r = self.send(acct, self.market.functions.post(ticker, accession, digest, stake))
-        ev = self.market.events.Posted().process_receipt(r)[0]
-        return ev.args.id, r.transactionHash.hex()
+    def post(self, acct, ticker: str, accession: str, words: bytes, stake: int):
+        """Post a claim: its canonical words go on-chain in the event, their hash in storage."""
+        r = self.send(acct, self.market.functions.post(ticker, accession, words, stake))
+        ev = self.market.events.Posted().process_receipt(r, errors=DISCARD)[0]
+        return ev.args.id, "0x" + r.transactionHash.hex().removeprefix("0x")
 
-    def clear(self, claim_id: int) -> str:
-        return self.send(self.verifier, self.market.functions.clear(claim_id)).transactionHash.hex()
+    def report(self, claim_id: int, claim_hash: bytes, fraudulent: bool, evidence: bytes, reason: str) -> str:
+        """Deliver a verdict the way a CRE workflow's report arrives: through the
+        forwarder, which calls the market's onReport. Used on anvil, and as the
+        fallback when the CRE simulation is not run (see cre/README.md)."""
+        from eth_abi import encode
+        payload = encode(["uint256", "bytes32", "bool", "bytes32", "string"], [claim_id, claim_hash, fraudulent, evidence, reason])
+        fn = self.forwarder.functions.report(self.market.address, raw_report(payload), b"", [])
+        return "0x" + self.send(self.verifier, fn).transactionHash.hex().removeprefix("0x")
 
-    def slash(self, claim_id: int, challenger: str, reason: str) -> str:
-        return self.send(self.verifier, self.market.functions.slash(claim_id, challenger, reason)).transactionHash.hex()
+    def settlement(self, claim_id: int, from_block: int = 0) -> dict:
+        """How the chain settled a claim, read back from the chain itself: status,
+        the verdict record, and the transaction that wrote it."""
+        c = self.market.functions.claim(claim_id).call()
+        v = self.market.functions.verdict(claim_id).call()
+        status = ["none", "pending", "challenged", "cleared", "slashed", "void"][c[2]]
+        tx = None
+        for ev in (self.market.events.Cleared, self.market.events.Slashed):
+            logs = ev().get_logs(from_block=from_block, argument_filters={"id": claim_id})
+            if logs:
+                tx = "0x" + logs[-1].transactionHash.hex().removeprefix("0x")
+        reason = None
+        for ev in self.market.events.Checked().get_logs(from_block=from_block, argument_filters={"id": claim_id}):
+            reason = ev.args.reason
+        return {"status": status, "settled_at": v[0], "evidence": "0x" + v[1].hex(), "workflow_id": "0x" + v[2].hex(),
+                "tx": tx, "reason": reason}
 
     def bonded(self, who: str) -> int:
         return self.market.functions.bonded(who).call()

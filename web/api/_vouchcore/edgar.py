@@ -50,8 +50,13 @@ class Filing:
     period: str
     url: str
 
+    def raw(self) -> bytes:
+        """The document exactly as EDGAR serves it. Its keccak256 is the evidence
+        a verdict commits to: anyone can download the same bytes and hash them."""
+        return _get(self.url)
+
     def text(self) -> str:
-        return to_text(_get(self.url).decode("utf-8", "ignore"))
+        return to_text(self.raw().decode("utf-8", "ignore"))
 
 
 def to_text(raw_html: str) -> str:
