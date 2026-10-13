@@ -84,6 +84,8 @@ contract AgentDesk {
         if (reasoning == bytes32(0)) revert NoReasoning();
         bytes32 t = keccak256(bytes(ticker));
         Citation[] memory cites = new Citation[](backing.length);
+        // Calls in this loop are views on the immutable market; a revert there is the refusal itself.
+        // slither-disable-start calls-loop
         for (uint256 i; i < backing.length; i++) {
             uint256 id = backing[i];
             if (!vouch.isCleared(id)) revert NotCleared(id);
@@ -95,6 +97,7 @@ contract AgentDesk {
             BondedClaims.Verdict memory v = vouch.verdict(id);
             cites[i] = Citation(id, c.claimHash, v.settledAt, v.evidence, v.workflowId);
         }
+        // slither-disable-end calls-loop
         entry = _journal.length;
         // casting to uint64 is safe: block timestamps fit in 64 bits for the next 500 billion years
         // forge-lint: disable-next-line(unsafe-typecast)
@@ -128,9 +131,11 @@ contract AgentDesk {
     function citations(uint256 entry) external view returns (Citation[] memory cites) {
         uint256[] storage b = _journal[entry].backing;
         cites = new Citation[](b.length);
+        // slither-disable-start calls-loop
         for (uint256 i; i < b.length; i++) {
             BondedClaims.Verdict memory v = vouch.verdict(b[i]);
             cites[i] = Citation(b[i], vouch.claim(b[i]).claimHash, v.settledAt, v.evidence, v.workflowId);
         }
+        // slither-disable-end calls-loop
     }
 }

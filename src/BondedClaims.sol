@@ -163,7 +163,8 @@ contract BondedClaims is IReceiver, IERC165 {
         challengeBond = challengeDeposit;
         window = challengeWindow;
         forwarder = chainlinkForwarder;
-        workflowOwner = owner_;
+        // slither-disable-next-line missing-zero-check
+        workflowOwner = owner_; // 0 on purpose: a market for CRE simulation (see above)
         workflowName = name_;
         _deployer = msg.sender;
     }
@@ -190,9 +191,9 @@ contract BondedClaims is IReceiver, IERC165 {
     }
 
     /// @notice Publish a claim, putting `atStake` of your free bond behind it.
-    /// `claim` is the canonical claim JSON; its hash is stored and its words are
+    /// `words` is the canonical claim JSON; its hash is stored and the words are
     /// emitted, which is what the checking workflow reads.
-    function post(string calldata ticker, string calldata filing, bytes calldata claim, uint256 atStake)
+    function post(string calldata ticker, string calldata filing, bytes calldata words, uint256 atStake)
         external
         returns (uint256 id)
     {
@@ -200,11 +201,11 @@ contract BondedClaims is IReceiver, IERC165 {
         if (freeBond(msg.sender) < atStake) revert NotEnoughFreeBond();
         locked[msg.sender] += atStake;
         id = _claims.length;
-        bytes32 h = keccak256(claim);
+        bytes32 h = keccak256(words);
         // casting to uint64 is safe: block timestamps fit in 64 bits for the next 500 billion years
         // forge-lint: disable-next-line(unsafe-typecast)
         _claims.push(Claim(msg.sender, uint64(block.timestamp), Status.Pending, atStake, h, filing, ticker, address(0)));
-        emit Posted(id, msg.sender, ticker, filing, h, atStake, claim);
+        emit Posted(id, msg.sender, ticker, filing, h, atStake, words);
     }
 
     function withdraw(uint256 amount) external {
@@ -259,9 +260,9 @@ contract BondedClaims is IReceiver, IERC165 {
         (bytes32 wid, bytes10 name, address owner_) = _decodeMetadata(metadata);
         if (workflowOwner != address(0) && (owner_ != workflowOwner || name != workflowName)) revert WrongWorkflow();
         if (workflowId != bytes32(0) && wid != workflowId) revert WrongWorkflow();
-        Report memory r;
-        (r.claimId, r.claimHash, r.fraudulent, r.evidence, r.reason) =
+        (uint256 id, bytes32 claimHash, bool fraudulent, bytes32 evidence, string memory reason) =
             abi.decode(report, (uint256, bytes32, bool, bytes32, string));
+        Report memory r = Report(id, claimHash, fraudulent, evidence, reason);
         if (r.claimId >= _claims.length) revert NoSuchClaim();
         Claim storage c = _claims[r.claimId];
         if (c.claimHash != r.claimHash) revert WrongClaim();
@@ -346,6 +347,7 @@ contract BondedClaims is IReceiver, IERC165 {
     /// @notice For other contracts: did this claim survive the check? Pending
     /// and challenged claims are not cleared; only a settled truth is.
     function isCleared(uint256 id) external view returns (bool) {
+        // slither-disable-next-line incorrect-equality
         return id < _claims.length && _claims[id].status == Status.Cleared;
     }
 
