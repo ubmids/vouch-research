@@ -51,4 +51,22 @@ jobs:
       - run: forge build
       - run: pip install "web3>=7,<8" pytest
       - run: PYTHONPATH=agent python -m pytest -q tests/test_verifier.py
+      - run: PYTHONPATH=agent python -m pytest -q tests/test_api.py
+
+  cre:
+    name: CRE workflow (build, SDK tests, Python parity)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "web3>=7,<8"
+      - run: PYTHONPATH=agent python scripts/cre_fixtures.py   # fetches the five 10-Qs into .cache/edgar
+      - run: cd cre/vouch-verifier && bun install && bun test
 
