@@ -14,6 +14,7 @@ collapsed whitespace) so authentic quotes never false-fail.
 """
 
 import re
+import unicodedata
 from dataclasses import dataclass
 from difflib import SequenceMatcher
 
@@ -22,7 +23,9 @@ FUZZY_FLOOR = 0.95
 # In a financial filing a quote that is 97% right can be 100% wrong: change one
 # digit and SequenceMatcher barely notices. So a near-match is only accepted if
 # every figure in the quote, and its scale, appears exactly in the matched span.
-_FIGURE = re.compile(r"\d[\d,]*(?:\.\d+)?%?|\b(?:thousand|million|billion|trillion)\b")
+# Digits are ASCII on purpose ([0-9], not \d): Python's \d also matches other
+# scripts' digits, JavaScript's does not, and the CRE workflow must agree.
+_FIGURE = re.compile(r"[0-9][0-9,]*(?:\.[0-9]+)?%?|\b(?:thousand|million|billion|trillion)\b")
 
 
 def figures(text: str) -> list[str]:
@@ -126,10 +129,10 @@ def audit_attestation(claimed_value: str, quote: str, source_text: str) -> Verdi
 _SPAN = {"three": 3, "six": 6, "nine": 9, "twelve": 12}
 _MONTH = {m: i for i, m in enumerate(
     "january february march april may june july august september october november december".split(), 1)}
-_DATE = r"([A-Z][a-z]+) (\d{1,2}), (\d{4})"
+_DATE = r"([A-Z][a-z]+) ([0-9]{1,2}), ([0-9]{4})"
 _MULTI = re.compile(r"\b(three|six|nine|twelve) and (three|six|nine|twelve) months ended " + _DATE)
 _SINGLE = re.compile(r"\b(three|six|nine|twelve) months ended " + _DATE)
-_AMOUNT = re.compile(r"\$\s?\(?\d[\d,]*(?:\.\d+)?\)?(?:\s(?:thousand|million|billion|trillion))?|\d[\d,]*(?:\.\d+)?\s?%")
+_AMOUNT = re.compile(r"\$\s?\(?[0-9][0-9,]*(?:\.[0-9]+)?\)?(?:\s(?:thousand|million|billion|trillion))?|[0-9][0-9,]*(?:\.[0-9]+)?\s?%")
 _SCALE = {"thousand": 1e3, "million": 1e6, "billion": 1e9, "trillion": 1e12}
 
 
@@ -143,7 +146,7 @@ def sentences(text: str) -> list[str]:
 
 def amount(text: str) -> float | None:
     """'$1.37 billion' -> 1.37e9, '43 %' -> 43.0 (percent), '$(48) million' -> 48e6."""
-    m = re.match(r"\$?\s?\(?(\d[\d,]*(?:\.\d+)?)\)?\s?(%|thousand|million|billion|trillion)?", text.strip())
+    m = re.match(r"\$?\s?\(?([0-9][0-9,]*(?:\.[0-9]+)?)\)?\s?(%|thousand|million|billion|trillion)?", text.strip())
     if not m:
         return None
     n = float(m.group(1).replace(",", ""))
@@ -203,7 +206,7 @@ def _date_of_value(quote: str, value: str):
 
 
 def _claimed_date(text: str):
-    m = re.search(r"\bas of ([A-Z][a-z]+)(?: \d{1,2},)? (\d{4})", text)
+    m = re.search(r"\bas of ([A-Z][a-z]+)(?: [0-9]{1,2},)? ([0-9]{4})", text)
     return (_MONTH.get(m.group(1).lower()), int(m.group(2))) if m and m.group(1).lower() in _MONTH else None
 
 
@@ -212,7 +215,7 @@ def _claimed_period(text: str):
     t = text.lower()
     if re.search(r"\b(three|six|nine|twelve) and (three|six|nine|twelve)\b", t):
         return None
-    q = re.search(r"\bq([1-4])(?:\s*(?:fy)?\s*(\d{4}))?\b", t)
+    q = re.search(r"\bq([1-4])(?:\s*(?:fy)?\s*([0-9]{4}))?\b", t)
     if q:
         return 3, int(q.group(1)), int(q.group(2)) if q.group(2) else None
     m = re.search(r"\b(three|six|nine|twelve)[- ]months?\b", t)
@@ -250,8 +253,15 @@ def _direction_near(text: str, value: str, reach: int = 80):
     return best[1] if best else None
 
 
+def _foreign_digits(text: str) -> bool:
+    """Digits other than 0-9 (Arabic-Indic, full-width, ...): figures the check cannot read."""
+    return any(ch not in "0123456789" and unicodedata.category(ch) == "Nd" for ch in text)
+
+
 def audit_claim(value: str, quote: str, source_text: str, summary: str = "", metric: str = "") -> Verdict:
     """The whole claim: its quote, its value, and what its summary says about them."""
+    if any(_foreign_digits(t) for t in (value, quote, summary, metric)):
+        return Verdict(True, "the claim writes a figure in digits other than 0-9", QuoteCheck(False, "none", 0.0))
     v = audit_attestation(value, quote, source_text)
     if v.fraudulent:
         return v

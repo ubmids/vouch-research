@@ -262,8 +262,13 @@ const monthName = (i: number | null) => {
   return m.charAt(0).toUpperCase() + m.slice(1)
 }
 
+// Digits other than 0-9 (Arabic-Indic, full-width, ...): figures the check cannot read.
+const FOREIGN_DIGIT = /(?![0-9])\p{Nd}/u
+
 /** The whole claim: its quote, its value, and what its summary says about them. */
 export function auditClaim(value: string, quote: string, sourceText: string, summary = "", metric = ""): Verdict {
+  if ([value, quote, summary, metric].some((t) => FOREIGN_DIGIT.test(t)))
+    return { fraudulent: true, reason: "the claim writes a figure in digits other than 0-9", quoteCheck: { verified: false, method: "none", score: 0.0 } }
   const v = auditAttestation(value, quote, sourceText)
   if (v.fraudulent) return v
   const q = normalize(quote)

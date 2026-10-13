@@ -30,6 +30,7 @@ SUMMARIES = [
     "{v} in Q2 2026.", "{v} in Q3 2026.", "{v} in Q2 2025.", "{v} for the quarter.", "{v} for the six months to June.",
     "{v} in the first half.", "It rose to {v}.", "It fell to {v}.", "It was {v} as of June 30, 2026.",
     "It was {v} as of December 31, 2025.", "{v}, up {w} from a year earlier.", "Losses were {v}.", "Gains were {v}.",
+    "{v}, up from $\u0669.\u0669 billion.",   # Arabic-Indic digits: both languages must treat them as text
 ]
 
 

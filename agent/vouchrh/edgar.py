@@ -62,13 +62,13 @@ def to_text(raw_html: str) -> str:
     """The words of a filing, as a reader sees them. Scripts, styles and the
     hidden inline-XBRL header go; tags become spaces; entities are decoded."""
     raw = re.sub(r"(?is)<(script|style|ix:header)\b.*?</\1>", " ", raw_html)
-    raw = re.sub(r"(?i)<br\s*/?>|</(p|div|tr|li|h\d)>", "\n", raw)
+    raw = re.sub(r"(?i)<br\s*/?>|</(p|div|tr|li|h[0-9])>", "\n", raw)
     text = html.unescape(re.sub(r"<[^>]+>", " ", raw)).replace("\xa0", " ")
     text = re.sub(r"[ \t]+", " ", re.sub(r"\n\s*\n+", "\n", text))
     # A tag between the currency sign and the number leaves "$ 3.3 billion";
     # rejoin it so quotes read the way the filing reads.
-    text = re.sub(r"\$\s+(?=[\d(])", "$", text)
-    return re.sub(r"\(\s+(?=\d)|(?<=\d)\s+\)", lambda m: m.group(0).strip(), text).strip()
+    text = re.sub(r"\$\s+(?=[0-9(])", "$", text)
+    return re.sub(r"\(\s+(?=[0-9])|(?<=[0-9])\s+\)", lambda m: m.group(0).strip(), text).strip()
 
 
 def cik_for(ticker: str) -> str:

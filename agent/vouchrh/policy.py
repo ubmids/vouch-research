@@ -38,7 +38,7 @@ _GOOD = re.compile(r"(?i)\b(revenues?|sales|net income|operating income|gross (?
 _BAD = re.compile(r"(?i)\b(loss(?:es)?|expenses?|costs?|debt|borrowings?|impairments?|amortization|"
                   r"depreciation|restructuring|liabilit(?:y|ies)|(?:income )?tax(?:es)?|provision)\b")
 _PRIOR = re.compile(r"(?i)\b(?:compared (?:to|with)|from|versus|vs\.?)\s+(?:losses of |income of |the )?"
-                    r"(\$\s?\(?\d[\d,]*(?:\.\d+)?\)?(?:\s(?:thousand|million|billion|trillion))?)")
+                    r"(\$\s?\(?[0-9][0-9,]*(?:\.[0-9]+)?\)?(?:\s(?:thousand|million|billion|trillion))?)")
 
 
 _HYPOTHETICAL = re.compile(r"(?i)\b(would|could|if)\b")
