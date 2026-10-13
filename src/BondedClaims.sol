@@ -35,12 +35,16 @@ interface IERC165 {
 /// writes the verdict back through the Chainlink forwarder, which only delivers
 /// a report the network's nodes signed. This contract accepts verdicts from that
 /// forwarder, from that workflow, and from nobody else: there is no verifier key.
+/// (Until the deployer pins one compiled workflow id, the workflow owner can
+/// replace the workflow's code under the same name; once pinned, nobody can.)
 ///
-/// A false claim loses its stake to the reader pool, or half to whoever raised
-/// a challenge first. A true claim keeps its stake, and takes the challenger's
-/// deposit if there was one. If no verdict comes, the claim clears itself once
-/// its window passes unchallenged; a challenge that no verdict ever answers can
-/// be unwound after a long timeout, refunding both sides.
+/// A false claim loses its whole stake to the reader pool. A true claim keeps
+/// it, and takes the deposit of anyone who challenged it. A challenge stops the
+/// clock: a challenged claim cannot clear by default. If no verdict comes, an
+/// unchallenged claim clears itself once its window passes, but it is marked
+/// unchecked (no filing evidence) and AgentDesk will not let an agent cite it.
+/// A challenge that no verdict ever answers unwinds after seven days, refunding
+/// both sides.
 contract BondedClaims is IReceiver, IERC165 {
     enum Status {
         None,
@@ -218,7 +222,8 @@ contract BondedClaims is IReceiver, IERC165 {
     // ---- anyone -----------------------------------------------------------
 
     /// @notice Dispute a pending claim inside its window, with a deposit. The
-    /// workflow's verdict settles it; the challenger is paid if it was right.
+    /// workflow's verdict settles it: a wrong claim is slashed and the deposit
+    /// returned; a right one keeps its stake and takes the deposit.
     function challenge(uint256 id) external {
         Claim storage c = _pending(id);
         if (block.timestamp > c.postedAt + window) revert WindowClosed();
@@ -272,15 +277,15 @@ contract BondedClaims is IReceiver, IERC165 {
     function _settle(Report memory r, Claim storage c, bytes32 wid) private {
         uint256 id = r.claimId;
         Verdict memory v = Verdict(_now(), r.evidence, wid);
-        // A verdict for a claim that is already settled, or a slash that comes
-        // after the window an analyst was promised, changes nothing. It is
-        // recorded rather than reverted, so the forwarder's delivery succeeds.
-        bool late = block.timestamp > c.postedAt + window;
+        // A verdict for a claim that is already settled changes nothing. It is
+        // recorded rather than reverted, so the forwarder's delivery succeeds. A
+        // slash is applied whenever it arrives while the claim is unsettled: a
+        // slow network must not turn a wrong claim into a cleared one.
         if (c.status == Status.Challenged) {
             address who = c.challenger;
             emit Checked(id, r.fraudulent, r.evidence, wid, r.reason);
             if (r.fraudulent) {
-                // records first, then the money: the deposit comes back with the bounty
+                // records first, then the money: the challenger's deposit comes back
                 _slash(id, c, who, r.reason, v);
                 if (!bondToken.transfer(who, challengeBond)) revert TransferFailed();
             } else {
@@ -289,7 +294,7 @@ contract BondedClaims is IReceiver, IERC165 {
                 emit Upheld(id, who, challengeBond);
                 _clear(id, c, v);
             }
-        } else if (c.status == Status.Pending && !(late && r.fraudulent)) {
+        } else if (c.status == Status.Pending) {
             emit Checked(id, r.fraudulent, r.evidence, wid, r.reason);
             if (r.fraudulent) _slash(id, c, address(0), r.reason, v);
             else _clear(id, c, v);
@@ -313,10 +318,10 @@ contract BondedClaims is IReceiver, IERC165 {
         locked[c.analyst] -= amount;
         bonded[c.analyst] -= amount;
         slashedCount[c.analyst] += 1;
-        uint256 bounty = challenger == address(0) ? 0 : amount / 2;
-        readerPool += amount - bounty;
+        // All of it backs readers. No bounty: the workflow checks every claim, so a
+        // bounty would only pay an analyst to challenge their own wrong claim.
+        readerPool += amount;
         emit Slashed(id, c.analyst, challenger, amount, reason);
-        if (bounty > 0 && !bondToken.transfer(challenger, bounty)) revert TransferFailed();
     }
 
     function _decodeMetadata(bytes calldata m) private pure returns (bytes32 wid, bytes10 name, address owner_) {

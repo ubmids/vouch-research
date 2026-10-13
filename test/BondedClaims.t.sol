@@ -145,13 +145,35 @@ contract BondedClaimsTest is Reports {
         assertEq(market.bonded(liar), 480 * USD);
     }
 
-    function test_a_late_slash_cannot_reach_a_claim_whose_window_passed() public {
+    function test_a_slow_network_cannot_turn_a_wrong_claim_into_a_cleared_one() public {
         uint256 id = _post(liar, 20 * USD);
         vm.warp(block.timestamp + 1 hours + 1);
-        _verdict(market, id, true, "too late");
-        assertEq(uint8(market.claim(id).status), uint8(BondedClaims.Status.Pending));
-        market.finalize(id); // the window passed: it stands
-        assertEq(market.bonded(liar), 500 * USD);
+        _verdict(market, id, true, "arrived after the window");
+        assertEq(uint8(market.claim(id).status), uint8(BondedClaims.Status.Slashed));
+        assertEq(market.bonded(liar), 480 * USD);
+    }
+
+    function test_a_claim_that_cleared_by_default_is_marked_unchecked() public {
+        uint256 id = _post(liar, 20 * USD);
+        vm.warp(block.timestamp + 1 hours + 1);
+        market.finalize(id);
+        assertEq(market.verdict(id).evidence, bytes32(0), "no filing was checked");
+        _verdict(market, id, true, "too late: already settled");
+        assertEq(uint8(market.claim(id).status), uint8(BondedClaims.Status.Cleared));
+    }
+
+    function test_challenging_your_own_wrong_claim_gains_nothing() public {
+        address sock = makeAddr("sock puppet");
+        usdg.mint(sock, 100 * USD);
+        vm.prank(sock);
+        usdg.approve(address(market), type(uint256).max);
+        uint256 id = _post(liar, 100 * USD);
+        vm.prank(sock);
+        market.challenge(id);
+        _verdict(market, id, true, "figures differ from the filing");
+        assertEq(market.bonded(liar), 400 * USD, "the whole stake is lost");
+        assertEq(usdg.balanceOf(sock), 100 * USD, "the puppet only gets its deposit back");
+        assertEq(market.readerPool(), 100 * USD);
     }
 
     function test_simulation_market_checks_only_the_forwarder() public {
@@ -219,16 +241,16 @@ contract BondedClaimsTest is Reports {
         assertEq(market.verdict(id).workflowId, bytes32(0), "cleared by default, not by the check");
     }
 
-    function test_a_won_challenge_returns_the_deposit_and_pays_the_bounty() public {
+    function test_a_won_challenge_returns_the_deposit_and_the_stake_backs_readers() public {
         address c = _challenger();
         uint256 id = _post(liar, 100 * USD);
         vm.prank(c);
         market.challenge(id);
         assertEq(usdg.balanceOf(c), 95 * USD);
         _verdict(market, id, true, "figures differ from the filing");
-        assertEq(usdg.balanceOf(c), 100 * USD + 50 * USD, "deposit back plus half the stake");
+        assertEq(usdg.balanceOf(c), 100 * USD, "deposit back");
         assertEq(market.bonded(liar), 400 * USD);
-        assertEq(market.readerPool(), 50 * USD);
+        assertEq(market.readerPool(), 100 * USD);
     }
 
     function test_a_lost_challenge_pays_the_analyst() public {

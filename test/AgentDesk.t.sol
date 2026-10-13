@@ -94,11 +94,24 @@ contract AgentDeskTest is Reports {
         vm.prank(agent);
         vm.expectRevert(abi.encodeWithSelector(AgentDesk.NotCleared.selector, open_));
         desk.open("TSLA", AgentDesk.Side.Long, 100 * USD, _ids(open_), WHY);
+    }
+
+    function test_a_claim_that_only_cleared_by_default_cannot_back_a_trade() public {
         vm.warp(block.timestamp + 1 hours + 1);
-        vouch.finalize(open_); // unchallenged: now it counts
+        vouch.finalize(open_); // nobody's verdict came: cleared, but nothing was checked
+        assertTrue(vouch.isCleared(open_));
         vm.prank(agent);
-        uint256 e = desk.open("TSLA", AgentDesk.Side.Long, 100 * USD, _ids(open_), WHY);
-        assertEq(desk.citations(e)[0].workflowId, bytes32(0), "and the journal shows nobody checked it");
+        vm.expectRevert(abi.encodeWithSelector(AgentDesk.NotChecked.selector, open_));
+        desk.open("TSLA", AgentDesk.Side.Long, 100 * USD, _ids(open_), WHY);
+    }
+
+    function test_the_same_words_under_two_ids_count_once() public {
+        vm.prank(analyst);
+        uint256 copy = vouch.post("TSLA", "0001628280-26-049270", bytes("true"), 25 * USD);
+        _verdict(vouch, copy, false, "quote verified and value grounded");
+        vm.prank(agent);
+        vm.expectRevert(abi.encodeWithSelector(AgentDesk.CitedTwice.selector, copy));
+        desk.open("TSLA", AgentDesk.Side.Long, 200 * USD, _two(good, copy), WHY);
     }
 
     function test_research_about_another_stock_does_not_count() public {

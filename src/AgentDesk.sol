@@ -8,9 +8,10 @@ import {BondedClaims} from "./BondedClaims.sol";
 /// every trade was made.
 ///
 /// An agent opens a practice position by naming the claims it is acting on and
-/// the hash of its written reasoning. Every claim must be cleared by Vouch and
-/// be about the same stock; a slashed claim, one still inside its challenge
-/// window, or a claim about another ticker reverts the trade on-chain.
+/// the hash of its written reasoning. Every claim must have been cleared by the
+/// check (a verdict with filing evidence) and be about the same stock; a slashed
+/// claim, one still unsettled, one that only cleared by default, a claim about
+/// another ticker, or the same words cited twice reverts the trade on-chain.
 ///
 /// What the desk keeps is the reasoning trail, in the order a reviewer follows
 /// it: the trade, the claims it cites (by id and by the hash of their exact
@@ -66,6 +67,7 @@ contract AgentDesk {
     error NotCleared(uint256 claimId);
     error WrongTicker(uint256 claimId);
     error CitedTwice(uint256 claimId);
+    error NotChecked(uint256 claimId);
     error NotYours();
     error AlreadyClosed();
 
@@ -91,10 +93,13 @@ contract AgentDesk {
             if (!vouch.isCleared(id)) revert NotCleared(id);
             BondedClaims.Claim memory c = vouch.claim(id);
             if (keccak256(bytes(c.ticker)) != t) revert WrongTicker(id);
+            // the same words twice (even under two ids) are one piece of evidence
             for (uint256 j; j < i; j++) {
-                if (backing[j] == id) revert CitedTwice(id);
+                if (backing[j] == id || cites[j].claimHash == c.claimHash) revert CitedTwice(id);
             }
             BondedClaims.Verdict memory v = vouch.verdict(id);
+            // cleared by default (nobody's verdict came) is not cleared by the check
+            if (v.evidence == bytes32(0)) revert NotChecked(id);
             cites[i] = Citation(id, c.claimHash, v.settledAt, v.evidence, v.workflowId);
         }
         // slither-disable-end calls-loop
