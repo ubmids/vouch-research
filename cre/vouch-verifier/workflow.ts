@@ -48,7 +48,16 @@ export const REPORT = parseAbiParameters("uint256 claimId, bytes32 claimHash, bo
 export type Observation = { fraudulent: boolean; reason: string; evidence: string }
 
 /** The claim as posted: the canonical JSON whose keccak256 is on-chain. */
-export type ClaimWords = { ticker: string; accession: string; metric: string; value: string; quote: string; analyst: string; summary: string }
+export const claimSchema = z.object({
+  ticker: z.string().min(1),
+  accession: z.string().regex(/^\d{10}-\d{2}-\d{6}$/),
+  metric: z.string(),
+  value: z.string().min(1),
+  quote: z.string().min(1),
+  analyst: z.string(),
+  summary: z.string(),
+})
+export type ClaimWords = z.infer<typeof claimSchema>
 
 const get = (req: HTTPSendRequester, url: string, ua: string): Uint8Array => {
   const r = req
@@ -64,11 +73,12 @@ const get = (req: HTTPSendRequester, url: string, ua: string): Uint8Array => {
   return inflate(r.body)
 }
 
-/** Runs on every node. Network failures throw (no verdict, the claim waits);
- * a claim that cites a filing this company never filed is a wrong claim. */
+/** Runs on every node. Network failures throw: no verdict, and the claim can
+ * never back a trade (AgentDesk requires filing evidence). A claim that cites a
+ * filing this company never filed is a wrong claim. */
 export const checkOnNode = (req: HTTPSendRequester, claim: ClaimWords, config: Config): Observation => {
   const NONE = "0x" + "00".repeat(32)
-  const cik = config.ciks[claim.ticker]
+  const cik = Object.hasOwn(config.ciks, claim.ticker) ? config.ciks[claim.ticker] : undefined
   if (!cik) return { fraudulent: true, reason: `no SEC registrant on record for ${claim.ticker}`, evidence: NONE }
   const index = JSON.parse(decodeUtf8(get(req, `https://data.sec.gov/submissions/CIK${cik}.json`, config.userAgent)))
   const doc = primaryDocument(index, cik, claim.accession)
@@ -92,12 +102,27 @@ export const onPosted = (runtime: Runtime<Config>, log: EVMLog): string => {
   const config = runtime.config
   const posted = decodePosted(log)
   if (keccak256(posted.claim) !== posted.claimHash) throw new Error("claim words do not match their hash")
-  const claim = JSON.parse(decodeUtf8(hexToBytes(posted.claim))) as ClaimWords
-  runtime.log(`claim #${posted.id} ${claim.ticker} ${claim.value} by ${claim.analyst}, citing ${claim.accession}`)
-
-  const seen = new cre.capabilities.HTTPClient()
-    .sendRequest(runtime, checkOnNode, consensusIdenticalAggregation<Observation>())(claim, config)
-    .result()
+  // Words that are not a well-formed claim, or that name another stock or filing
+  // than the one the contract stored, are wrong claims, decided here without a
+  // fetch. Throwing instead would leave the claim waiting for a verdict that never
+  // comes, which is the one outcome an analyst could exploit.
+  const NONE = ("0x" + "00".repeat(32)) as Hex
+  let parsed: unknown = null
+  try {
+    parsed = JSON.parse(decodeUtf8(hexToBytes(posted.claim)))
+  } catch {}
+  const ok = claimSchema.safeParse(parsed)
+  let seen: Observation
+  if (!ok.success) seen = { fraudulent: true, reason: "the posted words are not a well-formed claim", evidence: NONE }
+  else if (ok.data.ticker !== posted.ticker || ok.data.accession !== posted.filing)
+    seen = { fraudulent: true, reason: "the claim's words name another stock or filing than the one it was posted under", evidence: NONE }
+  else {
+    const claim = ok.data
+    runtime.log(`claim #${posted.id} ${claim.ticker} ${claim.value} by ${claim.analyst}, citing ${claim.accession}`)
+    seen = new cre.capabilities.HTTPClient()
+      .sendRequest(runtime, checkOnNode, consensusIdenticalAggregation<Observation>())(claim, config)
+      .result()
+  }
   runtime.log(`verdict: ${seen.fraudulent ? "SLASH" : "CLEAR"} (${seen.reason}); filing keccak256 ${seen.evidence}`)
 
   const payload = encodeAbiParameters(REPORT, [posted.id, posted.claimHash, seen.fraudulent, seen.evidence as Hex, seen.reason])
@@ -108,6 +133,9 @@ export const onPosted = (runtime: Runtime<Config>, log: EVMLog): string => {
   const w = evm.writeReport(runtime, { receiver: config.market, report, gasConfig: { gasLimit: config.gasLimit } }).result()
   if (w.txStatus !== TxStatus.SUCCESS) throw new Error(`verdict write failed: ${w.errorMessage || w.txStatus}`)
   const tx = bytesToHex(w.txHash || new Uint8Array(32))
+  // 1 = RECEIVER_CONTRACT_EXECUTION_STATUS_REVERTED: the forwarder's transaction
+  // succeeded but onReport refused the report (wrong workflow, wrong claim).
+  if (w.receiverContractExecutionStatus === 1) runtime.log(`WARNING: BondedClaims refused the report in ${tx}`)
   runtime.log(`verdict for claim #${posted.id} written: ${tx}`)
   return `#${posted.id} ${seen.fraudulent ? "slashed" : "cleared"} ${tx}`
 }

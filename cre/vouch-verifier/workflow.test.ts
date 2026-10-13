@@ -32,12 +32,12 @@ const claimOf = (value: string, quote: string, summary: string) => ({
   accession: "0001628280-26-049270", analyst: "Qwen 2.5 7B", metric: "Depreciation expense", quote, summary, ticker: "TSLA", value,
 })
 
-function postedLog(id: bigint, words: string) {
+function postedLog(id: bigint, words: string, ticker = "TSLA", filing = "0001628280-26-049270") {
   const claim = toBytes(words)
   const topics = encodeEventTopics({ abi: POSTED, eventName: "Posted", args: { id, analyst: "0x1618A08FA335DBe562526033D839E90E0D2e400b" } })
   const data = encodeAbiParameters(
     [{ type: "string" }, { type: "string" }, { type: "bytes32" }, { type: "uint256" }, { type: "bytes" }],
-    ["TSLA", "0001628280-26-049270", keccak256(claim), 25_000_000n, bytesToHex(claim)],
+    [ticker, filing, keccak256(claim), 25_000_000n, bytesToHex(claim)],
   )
   return { address: hexToBytes(config.market as `0x${string}`), topics: topics.map((t) => hexToBytes(t as `0x${string}`)), data: hexToBytes(data) } as any
 }
@@ -119,11 +119,48 @@ describe("the Vouch verifier workflow", () => {
     evm.writeReport = (input) => ((written = input), { txStatus: TxStatus.SUCCESS, txHash: new Uint8Array(32) })
     const runtime = newTestRuntime<Config>(null, {}, config as Config)
     const words = canonical({ ...claimOf("$1.37 billion", SENTENCE, ""), accession: "0000000000-26-000000" })
-    onPosted(runtime as any, postedLog(9n, words))
+    onPosted(runtime as any, postedLog(9n, words, "TSLA", "0000000000-26-000000"))
     const [, , fraudulent, , reason] = decodeAbiParameters(REPORT, bytesToHex(written.report.rawReport.slice(REPORT_METADATA_HEADER_LENGTH)))
     expect(fraudulent).toBe(true)
     expect(reason).toBe("filing 0000000000-26-000000 is not one of TSLA's recent filings")
     expect(seen).toEqual([TSLA_INDEX]) // never fetched a document for it
+  })
+
+  // A claim that can never be checked must not be left waiting: it is slashed, with no fetch.
+  const reportFor = (log: any) => {
+    const seen: string[] = []
+    serveEdgar(seen)
+    const evm = EvmMock.testInstance(CHAIN)
+    let written: any = null
+    evm.writeReport = (input) => ((written = input), { txStatus: TxStatus.SUCCESS, txHash: new Uint8Array(32) })
+    onPosted(newTestRuntime<Config>(null, {}, config as Config) as any, log)
+    const [, , fraudulent, , reason] = decodeAbiParameters(REPORT, bytesToHex(written.report.rawReport.slice(REPORT_METADATA_HEADER_LENGTH)))
+    return { fraudulent, reason, seen }
+  }
+
+  test("slashes words that are not a well-formed claim, without fetching anything", () => {
+    for (const words of ["{not json", JSON.stringify({ ticker: "TSLA", value: 137 }), canonical({ ...claimOf("$1.37 billion", SENTENCE, ""), accession: "x" })]) {
+      const r = reportFor(postedLog(10n, words))
+      expect(r.fraudulent).toBe(true)
+      expect(r.reason).toBe("the posted words are not a well-formed claim")
+      expect(r.seen).toEqual([])
+    }
+  })
+
+  test("slashes words about another stock than the one posted under", () => {
+    const words = canonical({ ...claimOf("$1.37 billion", SENTENCE, ""), ticker: "AMD" })
+    const r = reportFor(postedLog(11n, words)) // the log says TSLA
+    expect(r.fraudulent).toBe(true)
+    expect(r.reason).toBe("the claim's words name another stock or filing than the one it was posted under")
+  })
+
+  test("a ticker named like an object property is just an unknown company", () => {
+    const words = canonical({ ...claimOf("$1.37 billion", SENTENCE, ""), ticker: "constructor" })
+    const log = postedLog(12n, words, "constructor")
+    const r = reportFor(log)
+    expect(r.fraudulent).toBe(true)
+    expect(r.reason).toBe("no SEC registrant on record for constructor")
+    expect(r.seen).toEqual([])
   })
 
   test("refuses words that do not match their hash", () => {
