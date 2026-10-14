@@ -2,19 +2,25 @@
 
 **Accountability for AI-written research.** Every claim an analyst, human
 or AI, makes about a public company is checked against the company's SEC
-filing by a **Chainlink CRE** workflow. A wrong claim costs its author real
-money. An AI trading agent can only trade on claims that held, and its
+filing, and the check is a **Chainlink CRE** workflow. A wrong claim costs its
+author its stake. An AI trading agent can only trade on claims that held, and its
 journal shows the receipts for every trade.
 
-> An AI analyst wrote about Tesla: *"Depreciation for Q3 2026 was $1.37 billion."*
-> The 10-Q says that quarter ended in **June**. A Chainlink workflow fetched the
-> filing from SEC EDGAR, ran the check on every node, and slashed the AI's
-> 25 USDG stake. A trading agent that cited the claim was **refused,
-> on-chain**. Its journal shows the trade it made instead, the claims it
-> relied on, and why.
+> An AI analyst (Qwen 2.5 7B) wrote about Tesla: *"Depreciation for Q3 2026 was $1.37 billion."*
+> The 10-Q says that quarter ended in **June**. The check caught it, the AI lost
+> its 25 USDG stake (test USDG), and a trading agent that cited the claim was **refused,
+> on-chain**.
 
-**[Live feed](https://vouch-feed.vercel.app)** ·
-**[The agent's journal](https://vouch-feed.vercel.app/?journal)** ·
+Where each part of that has run, as of 14 October 2026:
+
+| | Where | Settled by |
+|---|---|---|
+| The AI wrote it; stake slashed; trade refused | Robinhood Chain testnet, 24 Sep ([slash](https://explorer.testnet.chain.robinhood.com/tx/0xbed0273dfe767314c80bdad33187044bfcda94f68b6853ef9c1e2b33a1912892), [refused trade](https://explorer.testnet.chain.robinhood.com/tx/0x885779d54f221e655c1c2242fef7361383d11eaaf123cd6aea2f7fbd5b9698d9)) | v1: one verifier key, before the CRE work |
+| The same words, re-posted (their hash matches v1's), slashed; trade refused; journal | a local devnet (anvil), [`web/feed-local.json`](web/feed-local.json) | **the CRE workflow's own handler, in Chainlink's CRE SDK test runtime** ([`scripts/sdk_round.sh`](scripts/sdk_round.sh)) |
+| A `cre workflow simulate --broadcast` round | Robinhood Chain testnet | **pending Subomi: `cre login` and the round** ([CHECKLIST step 1-2](docs/bli/CHECKLIST.md)) |
+
+**[Live feed](https://vouch-feed.vercel.app)** (the 24 Sep round) ·
+**The agent's journal** (on the live site after the next deploy, pending Subomi; today: serve `web/` and open `?feed=feed-local.json&journal`) ·
 **[For lawyers: Reg AC, FINRA 2241](docs/bli/LEGAL.md)** ·
 **[The Chainlink CRE workflow](cre/README.md)** ·
 [Architecture](docs/bli/ARCHITECTURE.md) · [Deck](docs/bli/deck.pdf) · [Demo script](docs/bli/DEMO_SCRIPT.md)
@@ -42,9 +48,10 @@ that record. [What it proves, and what it does not →](docs/bli/LEGAL.md)
  analyst (AI or human) ── posts a claim: figure + verbatim sentence + SEC accession, with a USDG stake
             │  the exact words go on-chain in the Posted event; their keccak256 in storage
             ▼
- Chainlink CRE workflow (log trigger on Posted), on every node of the DON:
+ Chainlink CRE workflow (log trigger on Posted). On a DON every node runs it; in the
+ CLI simulation one local node does:
      fetch the filing from SEC EDGAR → the deterministic check → {verdict, reason, keccak256(filing)}
-            │  nodes must agree; the report is signed by the network
+            │  on a DON: nodes must agree and sign; in simulation: nothing is signed
             ▼
  Chainlink forwarder → BondedClaims.onReport  ── wrong: stake slashed to the reader pool
             │                                      right: stake returned
@@ -60,7 +67,8 @@ that record. [What it proves, and what it does not →](docs/bli/LEGAL.md)
    and runs the check: the quote must be a whole sentence of the filing, every
    figure exact, and the period, quarter, date and direction as filed. There
    is no verifier key: the market accepts a verdict only from the Chainlink
-   forwarder.
+   forwarder. (In the simulation that forwarder is Chainlink's mock, which
+   anyone can call; see [What is trusted](#what-is-trusted).)
 3. **Pay.** A wrong claim loses its stake in the same transaction as the
    verdict. A right one keeps it.
 4. **Gate.** `AgentDesk` will not let an agent trade on a claim that failed,
@@ -79,8 +87,9 @@ position citing everything it read. The desk refuses any trade that cites a
 claim that failed the check, and names the claim. The agent drops it, records
 the refusal, re-forms its thesis on what is left, and tries again.
 
-In the local round in `web/feed-local.json` it read 40 claims about five
-stocks, was refused 26 times, and made 3 trades, each on claims that held.
+In the local round in `web/feed-local.json` (verdicts by the CRE workflow's
+handler in the SDK test runtime) it read 50 claims about five stocks, was
+refused 17 times, and made 2 trades, each on claims that held.
 Run the same rules over AMD's claims in the published testnet round: on
 everything it read, the agent would go **short**, because a fabricated
 "expenses rose" story tips it; on what cleared the check, it goes **long**.
@@ -89,7 +98,7 @@ That difference is what the desk is for.
 Each journal entry is the chain of reasons, in order:
 
 ```
-claim (exact words, hash on-chain) → filing sentence (SEC EDGAR) → verdict (Chainlink CRE, filing bytes' hash, tx)
+claim (exact words, hash on-chain) → filing sentence (SEC EDGAR) → verdict (who wrote it, filing hash, tx)
    → signal per claim (the rule) → decision → trade (tx, entry id, reasoning hash stored with it)
 ```
 
@@ -103,8 +112,29 @@ claim (exact words, hash on-chain) → filing sentence (SEC EDGAR) → verdict (
   each line independently, and what the record does not prove.
 - **From the command line:** `python -m vouchrh.journal verify feed.json --rpc <url>`
   also re-fetches every filing from EDGAR and re-runs the check.
-  In the local round: 104 of 104 checks hold. Editing one word of a reasoning
-  record, or of a claim, fails it (tested).
+  In the local round: 87 of 87 checks hold (KOL round: 85 of 85). Editing one
+  word of a reasoning record, or of a claim, fails it (tested).
+
+## For RYO-CHAN: the agent as a news checker
+
+RYO's directions include a **News Checker** ("verify a story, connect it to
+market evidence") and a **Multi-KOL** agent. Vouch's agent does the checking
+those leave out. In KOL mode ([`agent/vouchrh/kol.py`](agent/vouchrh/kol.py))
+it reads posts by market voices about the stock tokens on Robinhood Chain, by
+fixed rules: which token, which figure, which period, and the voice's
+sentiment, conviction and urgency. It writes each story with its figures as
+the filing writes them, finds the 10-Q sentence the figure must come from, and
+posts the story as a staked claim by that voice. A story that misstates the
+figure, the quarter or the direction is slashed, and the desk refuses any trade
+that leans on it. Loud, high-conviction voices whose story fails move nothing.
+
+The 20 posts are a **fixture** ([`feed/kol/posts.json`](feed/kol/posts.json)):
+written for this demo by fictional accounts, and labelled so in the feed and
+on the page. 11 are true to the filing, 9 wrong on purpose; each gets the
+verdict it was written for (tested). `bash scripts/sdk_round.sh --kol` settles
+them with the CRE workflow's handler: 2 paper trades, 9 refusals, journal 85
+of 85 ([`web/feed-kol.json`](web/feed-kol.json), `?feed=feed-kol.json`).
+Live posts from X are not read.
 
 ## Chainlink CRE
 
@@ -119,34 +149,44 @@ Chainlink:
 | [`src/BondedClaims.sol`](src/BondedClaims.sol) | The consumer: `IReceiver.onReport`, accepts verdicts only from the forwarder, from the configured workflow owner and name, optionally one pinned workflow id |
 | [`test/LocalForwarder.sol`](test/LocalForwarder.sol), [`test/Reports.sol`](test/Reports.sol) | The forwarder's report layout, for Foundry tests |
 | [`tests/test_cre_report.py`](tests/test_cre_report.py) | The SDK-built report settles a claim through Chainlink's own MockKeystoneForwarder (on a fork of Robinhood Chain testnet) |
-| [`scripts/cre_round.sh`](scripts/cre_round.sh) | A testnet round settled by `cre workflow simulate --broadcast` |
+| [`cre/vouch-verifier/sdk-round.ts`](cre/vouch-verifier/sdk-round.ts), [`scripts/sdk_round.sh`](scripts/sdk_round.sh) | The fallback round: every claim's report built by the workflow's handler in the CRE SDK test runtime |
+| [`scripts/cre_round.sh`](scripts/cre_round.sh) | A testnet round settled by `cre workflow simulate --broadcast`, with a preflight and a dry run first. **Not run yet** (needs `cre login`) |
 
 The check in the workflow is a line-for-line TypeScript port of the Python
 check the market used, held to it by parity tests: **3,249 claims on five
 real 10-Qs give the same verdict, reason and score, on Bun and on QuickJS,
-the engine CRE runs.** Built with `cre workflow build` (CLI v1.38.0). What
-has and has not been run is listed in [cre/README.md](cre/README.md).
+the engine CRE runs** (re-run 14 Oct). Built with `cre workflow build` (CLI
+v1.38.0). What has and has not been run is listed in [cre/README.md](cre/README.md).
 
 ## Proof it works
 
 | | |
 |---|---|
-| Contracts | 41 Foundry tests: forwarder-only settlement, forged workflow owner, name or id refused, verdict bound to the posted words, unchecked claims refused by the desk, no gain from challenging your own claim, money conserved through fuzzed disputes, the desk's refusals and citations. Slither: only the deliberate timestamp windows. |
-| Agent and journal | 34 pytest tests on a real EVM (anvil) and real SEC filings, including end-to-end journal re-verification and tamper detection |
-| CRE workflow | 22 Bun tests (SDK runtime incl. malformed and mismatched claims, Python parity, policy parity); QuickJS parity script; WASM build |
+| Contracts | 48 Foundry tests: forwarder-only settlement, forged workflow owner, name or id refused, verdict bound to the posted words, unchecked claims refused by the desk, no gain from challenging your own claim, money conserved through fuzzed disputes, the desk's refusals and citations, claims capped to fit CRE's 5 KB log limit, default clears not counted as checked. Slither: only the three challenge-window timestamp comparisons. |
+| Agent and journal | 53 pytest tests (plus 1 on a fork of Robinhood Chain testnet) on a real EVM (anvil) and real SEC filings: journal re-verification and tamper detection, the KOL mode, the SDK-runtime round, `cre_round.sh`'s preflight and failure handling |
+| CRE workflow | 24 Bun tests (SDK runtime incl. malformed and mismatched claims, the same evidence whatever SEC's CDN adds, the production config's headers; Python parity; policy parity); QuickJS parity script; WASM build. On a fresh clone run `bun run fixtures` first, or 4 parity tests skip |
 | The check | Catches a changed figure in a quote that is 99.3% identical to the filing; a real AI's "Q3" for a June quarter; a six-month figure called a quarter; a reversed direction. No wrong calls over 1,444 scripted claims ([engineering notes](docs/ENGINEERING.md)) |
-| Live | v1 contracts verified on Robinhood Chain testnet ([market](https://explorer.testnet.chain.robinhood.com/address/0x285AcbD8919fdAd7fa39753347656711eC51d426), [desk](https://explorer.testnet.chain.robinhood.com/address/0x6170c08ACF845C48032c9fAc118E62101cf29745)); the hosted check at `POST https://vouch-feed.vercel.app/api/verify`. The CRE-settled contracts deploy with `scripts/cre_round.sh`. |
+| Live | v1 contracts verified on Robinhood Chain testnet ([market](https://explorer.testnet.chain.robinhood.com/address/0x285AcbD8919fdAd7fa39753347656711eC51d426), [desk](https://explorer.testnet.chain.robinhood.com/address/0x6170c08ACF845C48032c9fAc118E62101cf29745)), settled by one verifier key; the hosted check at `POST https://vouch-feed.vercel.app/api/verify`. The CRE-settled contracts are not deployed yet: `scripts/cre_round.sh` deploys them (pending Subomi's `cre login`). |
 
 ## What is trusted
 
 - **Simulation** writes verdicts through Chainlink's mock forwarder, which
-  checks no signatures. That market proves the path, not the security.
+  checks no signatures and lets the caller choose the workflow metadata, so
+  **anyone can settle a claim on a simulation market**. One local node runs
+  the workflow and the operator's wallet sends the transaction. That market
+  proves the path, not the security.
 - **Production** points the market at Chainlink's `KeystoneForwarder`, which
   delivers only reports the DON signed, from the configured workflow owner and
   name. The deployer can pin one compiled workflow id, once; after that nobody
   can change who settles.
-- **The filing** is whatever SEC EDGAR serves; its keccak256 is on-chain
-  with each verdict, so anyone can download it and redo the check.
+- **The filing** is whatever SEC EDGAR serves. The keccak256 on-chain is of
+  the document without the one script tag SEC's CDN appends (its path changes
+  over time, so raw bytes never hash the same twice); anyone can download it,
+  drop that tag, and redo the hash and the check.
+- **Production is not ready yet.** A DON's HTTP gateway refuses a User-Agent
+  header, and SEC refuses requests without one (403); the gateway's default
+  response cap (26.4 KB) is below a gzipped 10-Q (94-171 KB). Both need an
+  answer before a live deployment ([cre/README.md](cre/README.md#production)).
 - **Until a workflow id is pinned**, the workflow owner could replace the
   workflow's code under the same name; pinning (once, by the deployer) ends that.
 - **No verdict, no trade.** If the network never answers, an unchallenged claim
@@ -165,24 +205,27 @@ has and has not been run is listed in [cre/README.md](cre/README.md).
 forge test                                                   # contracts
 python3 -m venv .venv && .venv/bin/pip install "web3>=7,<8" pytest
 PYTHONPATH=agent:tests .venv/bin/python -m pytest tests      # agent, journal, a round on anvil
-cd cre/vouch-verifier && bun install && bun test && cd ../.. # the CRE workflow
+cd cre/vouch-verifier && bun install && bun run fixtures && bun test && cd ../..   # the CRE workflow
 cre workflow build ./cre/vouch-verifier                      # WASM (CRE CLI)
+bash scripts/sdk_round.sh                                    # the fallback round -> web/feed-local.json
+bash scripts/sdk_round.sh --kol                              # KOL mode -> web/feed-kol.json
 
-anvil &                                                      # a local round with the journal
-PYTHONPATH=agent .venv/bin/python -m vouchrh.market --key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-PYTHONPATH=agent .venv/bin/python -m vouchrh.journal verify feed/feed.json --rpc http://127.0.0.1:8545
+anvil &                                                      # a quick local round, settled by the Python check
+PYTHONPATH=agent .venv/bin/python -m vouchrh.market --key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --out /tmp/round.json
+PYTHONPATH=agent .venv/bin/python -m vouchrh.journal verify /tmp/round.json --rpc http://127.0.0.1:8545
 ```
 
-On Robinhood Chain testnet, settled by Chainlink CRE: `bash scripts/cre_round.sh`
-(needs `cre login` and the testnet wallet). The hosted check and the MCP tool
+On Robinhood Chain testnet, settled by Chainlink CRE: `bash scripts/cre_round.sh --preflight`,
+then `bash scripts/cre_round.sh` (needs `cre login` or `CRE_API_KEY`, and the testnet wallet). The hosted check and the MCP tool
 are described in [docs/ENGINEERING.md](docs/ENGINEERING.md).
 
 ## Prior work
 
 Built for Arbitrum Open House Singapore (from 24 September 2026), from an
 earlier Vouch on Casper (June 2026). New for BLI Legal Tech Hackathon 2:
-verdicts by Chainlink CRE instead of a verifier key, the trading journal, and
-the legal framing. [What changed, exactly →](docs/bli/WHATS_NEW.md)
+the check as a Chainlink CRE workflow and a contract that takes verdicts only
+from Chainlink's forwarder (instead of a verifier key), the trading journal, the
+KOL mode, and the legal framing. [What changed, exactly →](docs/bli/WHATS_NEW.md)
 
 ## Licence
 

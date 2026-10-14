@@ -105,12 +105,12 @@ window, and human challengers, are for.
 |---|---|
 | `src/BondedClaims.sol` | The market: bond, post, challenge, finalize, resolve, slash, withdraw |
 | `src/AgentDesk.sol` | A trading desk for AI agents: a position opens only on cleared claims about the same stock; anything else reverts |
-| `test/AgentDesk.t.sol` | 7 tests: cleared, slashed, still in its window, wrong ticker, mixed backing, none, close |
+| `test/AgentDesk.t.sol` | 14 tests, among them: cleared, slashed, still in its window, wrong ticker, mixed backing, none, close, unchecked claims refused |
 | `web/api/verify.py` | `POST /api/verify`: the same check as a hosted API, for any agent |
 | `agent/vouchrh/mcp_server.py` | `verify_claim` as an MCP tool, for agents that speak Model Context Protocol |
 | `src/MockUSDG.sol` | Test stand-in for Paxos USDG on testnets where it is not deployed (6 decimals, like USDG) |
 | `tests/test_verifier.py` | The check, including every mistake our own model analyst made, next to the correct version |
-| `test/BondedClaims.t.sol` | 17 Foundry tests, including fuzzed conservation of money through disputes |
+| `test/BondedClaims.t.sol` | 34 Foundry tests, including fuzzed conservation of money through disputes, forwarder-only verdicts, and the claim size caps |
 | `agent/vouchrh/edgar.py` | SEC EDGAR client: ticker to latest 10-Q, cached, fair-access compliant |
 | `agent/vouchrh/verifier.py` | The deterministic check |
 | `agent/vouchrh/analysts.py` | Fact extraction, plus four scripted analysts that fail in the four ways research fails |
@@ -172,9 +172,10 @@ CHAIN=arbitrum-sepolia bash scripts/testnet.sh   # Arbitrum Sepolia (421614)
 
 ## What was trusted in v1 (superseded)
 
-*v1 settled disputes with one verifier key. Since the BLI build, verdicts are
-written only by the Chainlink CRE workflow through the forwarder; see
-[../cre/README.md](../cre/README.md). Kept for the record:*
+*v1 settled disputes with one verifier key. Since the BLI build, the contract
+takes verdicts only from the Chainlink forwarder, as reports from the CRE
+workflow; what has and has not run is in [../cre/README.md](../cre/README.md).
+Kept for the record:*
 
 Honestly stated, because a trust layer that hides its own trust assumptions is
 not one:
@@ -193,7 +194,7 @@ not one:
 
 ## Contract quality
 
-- 37 Foundry tests (25 for the market, 12 for the agent desk), including fuzzed conservation of money through disputes
+- 48 Foundry tests (34 for the market, 14 for the agent desk), including fuzzed conservation of money through disputes
   (256 random stakes and outcomes: nothing is created or lost) and the rule
   that slashing one analyst never touches another.
 - Checks, effects, interactions throughout: state and events before any token
