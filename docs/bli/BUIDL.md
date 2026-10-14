@@ -3,7 +3,7 @@
 Paste the fields the form asks for. Submit by **30 October 2026** (BLI's post
 says 31 October; DoraHacks closes 1 November 01:01 UTC).
 
-**Track:** LegalTech / RegTech (also AI x Blockchain)
+**Track:** All BUIDLs (the event's only track; theme: LegalTech / RegTech)
 **Bounties:** RYO-CHAN "Autonomous Agents" ($6,000) · Chainlink "Best workflow with CRE" (2 x $1,000)
 
 ---
@@ -18,8 +18,8 @@ Accountability for AI-written research, checked by Chainlink against the SEC.
 
 ## One-liner
 
-Analysts, human or AI, stake on every claim about a public company; a
-Chainlink CRE workflow checks it against the SEC filing; wrong claims pay;
+Analysts, human or AI, stake on every claim about a public company; the
+check against the SEC filing is a Chainlink CRE workflow; wrong claims pay;
 and an AI trading agent can only trade on what held, with a journal that
 shows why.
 
@@ -28,7 +28,7 @@ shows why.
 Research is increasingly drafted by AI, and AI gets numbers wrong. Vouch makes
 every claim checkable and accountable: the analyst stakes USDG, a Chainlink
 CRE workflow fetches the cited 10-Q from SEC EDGAR and checks the figure,
-period and direction, and a wrong claim is slashed on-chain. Trading agents
+period and direction, and a wrong claim is slashed. Trading agents
 can only act on cleared claims, and every trade keeps a re-verifiable
 reasoning trail.
 
@@ -51,20 +51,22 @@ compliance officer, an examiner or a court can rely on and re-run:
 1. **Stake.** An analyst, human or AI, posts a claim (one figure, the 10-Q
    sentence that supports it, the filing's accession number) with a USDG
    stake. The exact words go on-chain.
-2. **Check, by Chainlink.** A Chainlink Runtime Environment workflow, triggered by
-   the claim's on-chain event, fetches the filing from SEC EDGAR on every node
-   of a decentralised oracle network and runs a deterministic check: the quote
-   must be a whole sentence of the filing, every figure exact, and the period,
-   quarter, date and direction as filed. The nodes agree, sign, and write the
-   verdict through the Chainlink forwarder. **The contract accepts verdicts
-   from nowhere else: there is no verifier key.**
+2. **Check, by a Chainlink CRE workflow.** Triggered by the claim's on-chain
+   event, the workflow fetches the filing from SEC EDGAR and runs a
+   deterministic check: the quote must be a whole sentence of the filing, every
+   figure exact, and the period, quarter, date and direction as filed. On a
+   live DON every node runs it and the nodes agree and sign; in the CLI
+   simulation one node runs it. The verdict reaches the contract through the
+   Chainlink forwarder, and **the contract has no verifier key**. (On a
+   simulation market that forwarder is Chainlink's mock, which anyone can
+   call; see "Honest about trust".)
 3. **Pay.** A wrong claim loses its stake in the same transaction as the
    verdict, which also records the hash of the exact filing bytes checked.
 4. **Gate.** An AI trading agent trades through `AgentDesk`, which refuses,
    on-chain, any trade that cites a claim that failed or is unchecked.
 5. **Journal.** Every paper trade records the cleared claims it relies on, the
-   Chainlink verdict on each, the agent's per-claim reasoning, and the
-   refusals, hashed on-chain with the trade.
+   verdict on each, the agent's per-claim reasoning, and the refusals; the
+   record's hash is stored on-chain with the trade.
 
 **Why lawyers should care.** Vouch is a control a firm can show an
 examiner for 2241(c)(1)(A): every number checked against the issuer's own
@@ -76,24 +78,37 @@ view was honestly held, that a recommendation had a reasonable basis, that the
 filing is true, or that a record meets Rule 17a-4. The one-page brief is
 [docs/bli/LEGAL.md](LEGAL.md).
 
-**For the RYO-CHAN bounty: an agent with a reasoning trail.** The agent reads
-every claim about a stock, like a reader following several KOLs, and turns
-them into a thesis by fixed rules: did the figure rise or fall, and is rising
-good or bad for the company. It asks the desk to trade on everything it read.
-The desk refuses, naming the claim that failed the check; the agent drops it,
-records the refusal, re-forms its thesis and tries again. What it trades on
-has all held. Each journal entry is cause and effect in order (claim → filing
-sentence → Chainlink verdict → signal → decision → trade), and it is
-repeatable: the reasoning record's hash is on-chain, and **Re-verify** in the
-page recomputes every hash, every verdict link and the agent's rules, and
-reads the receipts back from the chain. Run on the published round's AMD
-claims, the rules give a short on everything read, because a fabricated
-"expenses rose" story tips it, and a long on what cleared.
+**For the RYO-CHAN bounty: a News Checker agent with a reasoning trail.**
+RYO's News Checker direction is "verify a story, connect it to market
+evidence"; its Multi-KOL direction reads market voices for tokens, sentiment,
+conviction and urgency. Vouch's agent does both on the stock tokens on
+Robinhood Chain, and adds what a KOL feed leaves out: the check. In KOL mode
+it reads each post by fixed rules (token, figure, period, sentiment,
+conviction, urgency), writes the story with its figures as the filing writes
+them, finds the 10-Q sentence the figure must come from, and posts it as a
+staked claim by that voice. A story with the wrong quarter, a figure no
+sentence states, or a reversed direction is slashed, and the desk refuses any
+trade that leans on it: a loud, high-conviction post that fails moves nothing.
+The 20 posts in the demo are a **written fixture by fictional accounts**,
+labelled so everywhere; 11 are true to the filing and 9 wrong on purpose, and
+each gets the verdict it was written for (tested). Live posts from X are not
+read.
+
+Then the agent turns what held into a thesis by fixed rules (did the figure
+rise or fall; is rising good or bad for the company), asks the desk to trade
+on everything it read, is refused for each claim that failed, drops it, and
+tries again. Each journal entry is cause and effect in order (claim → filing
+sentence → verdict → signal → decision → trade), and it is repeatable: the
+reasoning record's hash is on-chain, and **Re-verify** in the page recomputes
+every hash, every verdict link and the agent's rules, and reads the receipts
+back from the chain. Run on the published round's AMD claims, the rules give
+a short on everything read, because a fabricated "expenses rose" story tips
+it, and a long on what cleared.
 
 **For the Chainlink bounty: CRE is the orchestration layer.** The verifier
 *is* a CRE workflow: EVM log trigger on Robinhood Chain → HTTP capability to
-SEC EDGAR → deterministic computation on every node → identical consensus →
-signed report → forwarder → on-chain settlement. It connects a chain to an
+SEC EDGAR → deterministic computation (on every node of a DON) → identical
+consensus → report → forwarder → on-chain settlement. It connects a chain to an
 external API, and the contract is a CRE consumer (`IReceiver.onReport`)
 that checks the forwarder, the workflow owner and name, and can pin one
 compiled workflow id forever. The check is a line-for-line port of the
@@ -102,18 +117,26 @@ reason and score on 3,249 claims about five real 10-Qs, on Bun and on QuickJS
 (the engine CRE runs). It compiles with `cre workflow build`, and its handler
 is tested in the CRE SDK's own test runtime. The report bytes the SDK builds
 settle a claim through Chainlink's own MockKeystoneForwarder on a fork of
-Robinhood Chain testnet. `cre workflow simulate --broadcast` runs per claim
-in `scripts/cre_round.sh`.
+Robinhood Chain testnet, and a 50-claim round on a local devnet is settled
+entirely by reports the handler built in that runtime. The CRE CLI simulation
+(`cre workflow simulate --broadcast`, per claim, in `scripts/cre_round.sh`,
+after a preflight and a dry run) is [pending: Subomi's Chainlink login and the
+testnet round; replace this sentence with the run's result].
 
 **Built with:** Solidity (Foundry), Chainlink CRE (TypeScript SDK, CLI),
-Python (web3.py), SEC EDGAR, Robinhood Chain testnet, Paxos USDG (test), an
-open model (Qwen 2.5 7B via Ollama) as one of the analysts, a static web feed.
+Python (web3.py), SEC EDGAR, Robinhood Chain testnet, a mock USDG on testnet
+(tUSDG; Paxos USDG on mainnet is the plan), an open model (Qwen 2.5 7B via
+Ollama) as one of the analysts, a static web feed.
 
 **Honest about trust.** The simulation writes through Chainlink's mock
-forwarder, which checks no signatures; that market proves the path. In
-production the market points at the `KeystoneForwarder` and a pinned
-workflow. The check states its own limits: it cannot tell a borrowing limit
-from a balance; human challengers can dispute within the window.
+forwarder, which checks no signatures: anyone can settle a claim on a
+simulation market, and one local node runs the workflow. That market proves
+the path, not the security. In production the market points at the
+`KeystoneForwarder` and a pinned workflow; before that can run, SEC's demand
+for a User-Agent (which a DON's gateway refuses to send) and the gateway's
+response-size default need answers. The check states its own limits: it
+cannot tell a borrowing limit from a balance; human challengers can dispute
+within the window.
 
 ## What's next
 
@@ -133,7 +156,7 @@ journal, and the legal framing. The list is in
 ## Links
 
 - Repository: https://github.com/ubmids/vouch-research (branch `first-place`; public at submission)
-- Live feed: https://vouch-feed.vercel.app · the journal: https://vouch-feed.vercel.app/?journal
+- Live feed: https://vouch-feed.vercel.app · the journal: https://vouch-feed.vercel.app/?journal [pending: Subomi's `vercel deploy --prod`; the live site has no journal until then]
 - For lawyers: docs/bli/LEGAL.md · Architecture: docs/bli/ARCHITECTURE.md
 - Chainlink CRE workflow: cre/README.md (every file that uses Chainlink is listed in the README)
 - Demo video: (paste once recorded; script in docs/bli/DEMO_SCRIPT.md)

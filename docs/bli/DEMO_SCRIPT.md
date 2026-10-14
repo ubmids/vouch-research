@@ -1,20 +1,28 @@
 # Vouch, BLI demo script (2:30)
 
 Hard ceiling 3:00; aim for 2:30. **The payoff is on screen by 0:20**: an AI's
-wrong claim, slashed by Chainlink, and a trading agent refused, on-chain.
-Then why lawyers should care, then Chainlink, then the journal.
+wrong claim, slashed by the check, and a trading agent refused, on-chain.
+Then why lawyers should care, then the Chainlink CRE workflow, then the journal.
+
+**Which round you film decides two captions.** Everything said aloud below is
+true for both; the captions say which one is on screen.
+
+| | Round **A** (after `cre login` and `scripts/cre_round.sh`) | Round **B** (fallback, works today) |
+|---|---|---|
+| Feed | `https://vouch-feed.vercel.app/?journal` after `vercel deploy --prod` | `web/` served locally (`python3 -m http.server -d web 8000`), `http://localhost:8000/?feed=feed-local.json&journal` |
+| Caption, whole video | "Robinhood Chain testnet · Chainlink CRE CLI simulation" | "Local devnet · the CRE workflow's code in Chainlink's SDK test runtime" |
+| 0:45 terminal | `cre/runs/<run>/claim-<id>.log` (the `[USER LOG]` lines) | `bash scripts/sdk_round.sh` output, then `cre workflow build` (the WASM hash) |
+| 0:45 caption | **SIMULATION** | **SDK TEST RUNTIME, NOT A CRE SIMULATION** |
+| The AI's claim | written live by Qwen if the preflight dry run reproduced it; otherwise re-posted from 24 Sep (the page labels it "replayed") | re-posted from 24 Sep, labelled "replayed" |
 
 **Before recording**
 
-- Run `bash scripts/cre_round.sh` so the live feed is a round settled by the
-  CRE workflow on Robinhood Chain testnet, with a journal. Publish it
-  (`cd web && vercel deploy --prod`).
-- Have three tabs ready: **A** `https://vouch-feed.vercel.app/?journal`,
-  **B** the explorer tab of the lead claim's verdict transaction, **C**
+- Round A: `bash scripts/cre_round.sh --preflight`, then `bash scripts/cre_round.sh`,
+  then publish (`cd web && vercel deploy --prod`). Round B: `bash scripts/sdk_round.sh`.
+- Have three tabs ready: **A** the feed above with `?journal`, **B** (round A
+  only) the explorer tab of the lead claim's verdict transaction, **C**
   `docs/bli/LEGAL.md` on GitHub, scrolled to section 6.
-- A terminal with one claim's log from `cre/runs/<run>/claim-<id>.log`, or run
-  one simulation live (about 20 s): the `cre workflow simulate ... --evm-tx-hash` line is in
-  `scripts/cre_round.sh`.
+- A terminal with the 0:45 output from the table.
 - 1920x1080, browser full screen. **Your face in a small corner bubble for the
   first 10 seconds and the last 10** (a real person on camera). One voice, unhurried.
 
@@ -29,9 +37,9 @@ in the trading-agent box. Point at each as you say it.
 **Say:**
 
 > An AI analyst wrote that Tesla's depreciation for Q3 was 1.37 billion
-> dollars. Tesla's own filing says that quarter ended in June. A Chainlink workflow
-> checked it against the SEC filing and took the AI's 25-dollar stake. And
-> the trading agent that tried to act on it? Refused, on-chain.
+> dollars. Tesla's own filing says that quarter ended in June. Vouch's check,
+> a Chainlink CRE workflow, caught it against the SEC filing and took the AI's
+> 25-dollar stake. And the trading agent that tried to act on it? Refused, on-chain.
 
 ## 0:20 to 0:45, why a lawyer should care
 
@@ -48,19 +56,30 @@ section 3 (the table).
 
 ## 0:45 to 1:15, the check is a Chainlink CRE workflow
 
-**On screen:** the terminal: the `cre workflow simulate` run for the lead claim,
-the `[USER LOG]` lines (claim, "verdict: SLASH (wrong quarter …)", "verdict
-for claim … written: 0x…"). Then tab B: the verdict transaction on the
-Robinhood Chain explorer, the `Checked` and `Slashed` events.
+**On screen:** the terminal output from the table, with the caption from the
+table (**SIMULATION**, or **SDK TEST RUNTIME, NOT A CRE SIMULATION**) for the
+whole segment. Round A: the `[USER LOG]` lines (claim, "verdict: SLASH (wrong
+quarter …)", "verdict for claim … written: 0x…"), then tab B, the verdict
+transaction on the Robinhood Chain explorer with the `Checked` and `Slashed`
+events (the explorer shows Chainlink's mock forwarder: that is expected).
 
-**Say:**
+**Say (round A):**
 
-> This is the check, running as a Chainlink Runtime Environment workflow. When
-> a claim is posted, every node fetches the filing from SEC EDGAR, runs the
-> same deterministic check, and they have to agree. The verdict goes through
-> Chainlink's forwarder to the contract, with the hash of the exact filing it
-> read. The contract takes verdicts from nowhere else. There's no admin key
-> that can settle a dispute.
+> This is the check as a Chainlink Runtime Environment workflow, in the CRE
+> CLI simulation: one node runs the exact workflow, fetches the filing from SEC
+> EDGAR, and writes the verdict through Chainlink's test forwarder, with the
+> hash of the filing it read. On a live network, the forwarder only accepts
+> reports the nodes signed, and the contract checks the workflow's owner, name
+> and pinned id.
+
+**Say (round B):**
+
+> This is the check as a Chainlink Runtime Environment workflow. Here its own
+> code runs in Chainlink's SDK test runtime, on a local chain: it fetches the
+> filing, runs the check, and builds the report the contract takes. The CLI
+> simulation on testnet is the next step. On a live network, the forwarder
+> only accepts reports the nodes signed, and the contract checks the
+> workflow's owner, name and pinned id.
 
 ## 1:15 to 1:55, the agent's reasoning trail
 
@@ -97,9 +116,8 @@ agent trades and refusals), then the end card of the tour: "That's Vouch."
 
 **Say:**
 
-> Vouch. Every claim checked by Chainlink against the SEC filing. Every trade
-> with its receipts. If it's wrong, it costs you. If you trade on it, the
-> record shows why.
+> Vouch. Every claim checked against the SEC filing. Every trade with its
+> receipts. If it's wrong, it costs you. If you trade on it, the record shows why.
 
 Cut.
 
@@ -115,7 +133,12 @@ Cut.
   wording.
 - Name **Regulation AC** and **FINRA Rule 2241**, once each, correctly. Don't say Vouch
   makes a firm "compliant"; say it is evidence for the firm's procedures.
-- If the CRE round has not been run, record the same flow on
-  `?feed=feed-local.json&journal` (a local devnet round) and, for 0:45, the
-  `cre workflow build` output plus `bun test`. Say "simulated locally". Never
-  show a local-devnet screen and call it testnet.
+- Never say "every node", "the network agreed" or "no admin key" over a
+  simulation: on a simulation market anyone can call the mock forwarder.
+- Round B is not a CRE CLI simulation and does not meet the Chainlink bounty's
+  minimum on its own; say "SDK test runtime", never "simulated on testnet".
+  Never show a local-devnet screen and call it testnet.
+- Optional, for the RYO judges (10 s, cut from 1:55 if needed):
+  `?feed=feed-kol.json`, one wrong post refused. Say: "The same agent works as a
+  news checker on posts by market voices. These twenty are written fixtures;
+  a loud post with the wrong quarter moves nothing."

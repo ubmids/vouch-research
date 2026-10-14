@@ -137,7 +137,7 @@ person, registered or not.
 | Statement | Made by | Recorded where | What would show it false |
 |---|---|---|---|
 | "I say *these exact words* about this company, citing filing *X*, and I put *N* USDG behind them." | The analyst's wallet (a person or an AI agent's key) | `Posted` event: the words, their keccak256, the stake, the time | Nothing can: the words cannot be edited after posting |
-| "Our nodes fetched filing *X* from SEC EDGAR, its bytes hash to *E*, and the claim's quote, figures, period and direction do (or do not) match it." | A Chainlink decentralised oracle network running the published workflow | `Checked` event: verdict, reason, *E*, the workflow id | Download filing *X*, hash it, re-run the open-source check: a different answer is proof |
+| "Our nodes fetched filing *X* from SEC EDGAR, its bytes hash to *E*, and the claim's quote, figures, period and direction do (or do not) match it." | In production: a Chainlink decentralised oracle network running the published workflow. In the CLI simulation (all that can exist by the deadline): a single local node runs the same workflow, and the transaction is sent by the operator through Chainlink's unauthenticated mock forwarder, so the record shows what the workflow computed but not that anyone independent computed it. In the fallback round shown today: the workflow's code in Chainlink's SDK test runtime, on a local devnet. In the v1 testnet round of 24 Sep: one verifier key | `Checked` event: verdict, reason, *E*, the workflow id (zero when no DON set one) | Download filing *X*, drop the one script tag SEC's CDN adds, hash it, re-run the open-source check: a different answer is proof |
 | "This analyst loses the stake" / "keeps it" | The contract, automatically | The same transaction as the verdict | It cannot diverge from the verdict |
 | "At time *T* this agent opened a paper position citing claims *A, B*, each cleared, for these reasons." | The trading agent's wallet; the desk contract enforces that every cited claim was cleared | `Opened` event: the citations, the verdict on each, the reasoning hash | Re-hash the published reasoning; re-run the agent's rules; any difference shows |
 
@@ -170,7 +170,8 @@ legal duties.
 - the exact words of each claim, who staked on them and when (they cannot be
   edited after posting);
 - which filing the verdict was checked against, byte for byte (the keccak256
-  of the document as SEC serves it), and which workflow produced the verdict;
+  of the document as SEC serves it, less the one script tag SEC's CDN adds),
+  and, on a DON, which workflow produced the verdict;
 - that the verdict and the money moved in the same transaction;
 - that a trade cited only claims that were cleared at the time, and that its
   stated reasons were fixed when it was made.

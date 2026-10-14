@@ -6,7 +6,7 @@
 |---|---|---|---|
 | `BondedClaims` | [`src/BondedClaims.sol`](../../src/BondedClaims.sol) | Robinhood Chain (Arbitrum Orbit) | Holding stakes; accepting verdicts only from the Chainlink forwarder; moving money in the same transaction as a verdict |
 | `AgentDesk` | [`src/AgentDesk.sol`](../../src/AgentDesk.sol) | Robinhood Chain | Refusing any trade that cites a claim that is not cleared; storing each trade's citations and reasoning hash |
-| `vouch-verifier` CRE workflow | [`cre/vouch-verifier/`](../../cre/vouch-verifier) | A Chainlink decentralised oracle network (simulated with the CRE CLI) | Fetching the filing from SEC EDGAR, running the check, agreeing on the verdict, signing the report |
+| `vouch-verifier` CRE workflow | [`cre/vouch-verifier/`](../../cre/vouch-verifier) | A Chainlink decentralised oracle network in production; one local node in the CRE CLI simulation (not yet run); Chainlink's SDK test runtime in the fallback round (run) | Fetching the filing from SEC EDGAR, running the check, agreeing on the verdict, signing the report (a DON only) |
 | Chainlink forwarder | `KeystoneForwarder` (production) / `MockKeystoneForwarder` (simulation) | Robinhood Chain | Delivering only DON-signed reports (production) |
 | Analysts | [`agent/vouchrh/analysts.py`](../../agent/vouchrh/analysts.py), [`llm.py`](../../agent/vouchrh/llm.py) | Anywhere (a laptop for the AI analyst) | Nothing: everything they post is checked |
 | Trading agent | [`agent/vouchrh/journal.py`](../../agent/vouchrh/journal.py), [`policy.py`](../../agent/vouchrh/policy.py) | Anywhere | Nothing: the desk gates it, and its reasoning is re-runnable |
@@ -89,7 +89,7 @@ the same bytes.
 | SEC EDGAR is down | The workflow throws; no report; the claim waits |
 | The analyst cites a filing the company never made | Slashed: "filing … is not one of TSLA's recent filings" |
 | The check is wrong on a nuance (limit vs balance) | A human challenger disputes within the window; stated as a limit |
-| Simulation | The mock forwarder checks no signatures: the simulation market demonstrates the path only |
+| Simulation | The mock forwarder is permissionless and checks no signatures, and passes on caller-chosen workflow metadata: anyone can settle a claim on the simulation market. It demonstrates the path only |
 
 ## Limits of the platform (CRE)
 
