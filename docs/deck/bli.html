@@ -64,8 +64,8 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
 
 <section class="s" data-n="01" style="justify-content:center">
   <div class="k">BLI Legal Tech Hackathon 2 · Chainlink CRE · Robinhood Chain</div>
-  <h1>Accountability for <span class="f">AI-written</span> research.</h1>
-  <p class="big">Every claim checked against the company's SEC filing by a Chainlink CRE workflow. A wrong claim costs its author. A trading agent can only act on what held, and every trade shows its receipts.</p>
+  <h1>A citation check for <span class="f">AI-written</span> research.</h1>
+  <p class="big">Courts have logged 1,116 US filings with AI-fabricated content (1,600 worldwide). Research is drafted by the same models. Here, every figure is checked against the SEC filing by a Chainlink CRE workflow, a wrong claim costs its author, and a trading agent can only act on what held.</p>
   <div class="mark">vouch<i>.</i></div>
 </section>
 
@@ -91,6 +91,7 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
     <div><b>FINRA Regulatory Notice 24-09</b><span>FINRA's rules "are intended to be <i>technology neutral</i>" and "continue to apply when member firms use Gen AI"</span></div>
     <div><b>FINRA 2026 oversight report · AI agents</b><span>consider "how to <i>track agent actions and decisions</i>; or how to establish <i>guardrails</i>"</span></div>
   </div>
+  <p class="ran" style="margin-top:22px"><b>Courts already know the failure:</b> 1,116 US court filings with AI-fabricated content, 1,600 worldwide (Charlotin database, reported by AFP, June 2026).</p>
   <div class="mark">vouch<i>.</i></div>
 </section>
 
@@ -100,7 +101,7 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
   <div class="steps5">
     <div class="step"><div class="n">01</div><h3>Stake</h3><p>An analyst, human or AI, posts one figure, the 10-Q sentence behind it and a USDG stake. The exact words go on-chain.</p></div>
     <div class="step"><div class="n">02</div><h3>Check</h3><p>A <span class="v">Chainlink CRE</span> workflow fetches the filing from SEC EDGAR and runs the check (on a DON, on every node). The contract has no verifier key.</p></div>
-    <div class="step"><div class="n">03</div><h3>Pay</h3><p>Wrong: the stake goes to a pool that backs readers, in the same transaction as the verdict. Right: it comes back.</p></div>
+    <div class="step"><div class="n">03</div><h3>Pay</h3><p>Wrong: the stake goes to a readers' fund fixed at deploy, in the same transaction as the verdict; each payee withdraws its share (<code>claimReaderShare</code>). Right: it comes back.</p></div>
     <div class="step"><div class="n">04</div><h3>Gate</h3><p>A trading agent cannot cite research that failed. The trade reverts, naming the claim.</p></div>
     <div class="step"><div class="n">05</div><h3>Journal</h3><p>Each trade keeps the claims it cites, the verdict on each and the agent's reasoning; the record's hash is on-chain.</p></div>
   </div>
@@ -124,7 +125,7 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
   <div class="k">The reasoning trail</div>
   <h2 style="font-size:64px">Every trade keeps its reasons. <em>Re-verify redoes them in the browser.</em></h2>
   <div class="shot2" style="height:560px"><img src="journal.png" alt="A journal entry: refused claims, cleared claims, the decision, the reasoning hash, and the re-verify checks"></div>
-  <p class="ran"><b>News Checker (RYO):</b> the same agent reads posts by market voices, finds each figure in the 10-Q and checks the story as a staked claim. A loud post with the wrong quarter moves nothing. Demo posts: 20, written fixtures by fictional accounts.</p>
+  <p class="ran"><b>News Checker (RYO):</b> the same agent reads posts by market voices, finds each figure in the 10-Q and checks the story as a staked claim. A loud post with the wrong quarter moves nothing. Demo posts: 20, written fixtures by fictional accounts. <b>Decisions:</b> fixed rules by default (re-run in the browser); optionally a model behind an OpenAI-compatible endpoint, its exact reply hashed into the record (tested, not used in the demo round).</p>
   <div class="mark">vouch<i>.</i></div>
 </section>
 
@@ -162,8 +163,8 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
   <div class="k">Proof it works</div>
   <h2>Tested end to end, on real SEC filings.</h2>
   <div class="nums">
-    <div class="num"><b>48</b><span>Foundry tests: forwarder-only verdicts, forged workflow refused, money conserved through fuzzed disputes, unchecked claims refused by the desk, claims sized for CRE's log limit</span></div>
-    <div class="num"><b>77</b><span>Python and Bun tests: rounds on a real EVM, the journal re-verified and tamper-checked, the CRE handler in the SDK's test runtime, the KOL mode, the round script's failure handling</span></div>
+    <div class="num"><b>57</b><span>Foundry tests: forwarder-only verdicts, the readers' fund payout (double claim, rounding, re-entry), forged workflow refused, money conserved through fuzzed disputes, unchecked claims refused by the desk, claims sized for CRE's log limit</span></div>
+    <div class="num"><b>87</b><span>Python and Bun tests: rounds on a real EVM, the agent's model path against a fake server, the journal re-verified and tamper-checked, the CRE handler in the SDK's test runtime, the KOL mode, the round script's failure handling</span></div>
     <div class="num"><b class="v">87/87</b><span>journal checks hold in the local round: nothing left out, record hashes, claim words, verdict transactions, filing bytes from EDGAR, a fresh check, the agent's rules re-run</span></div>
   </div>
   <div class="mark">vouch<i>.</i></div>
@@ -176,7 +177,8 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
     <div><h3>Today</h3><ul>
       <li>Simulation writes through Chainlink's mock forwarder: anyone can settle there. It proves the path, not the security</li>
       <li>The filing is what SEC EDGAR serves; its hash (less the CDN's script tag) is on-chain</li>
-      <li>The check says what it cannot do: a limit versus a balance</li></ul></div>
+      <li>The check says what it cannot do: a limit versus a balance</li>
+      <li>On the test market the deployer stands in for the readers' fund; who it is in production is a legal choice</li></ul></div>
     <div><h3>Next</h3><ul>
       <li>A live DON, the KeystoneForwarder, a pinned workflow id (after SEC's User-Agent rule is solved)</li>
       <li>Robinhood Chain mainnet, bonded in USDG</li>

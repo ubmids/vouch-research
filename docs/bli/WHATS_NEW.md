@@ -19,7 +19,7 @@ Vouch was first built for Arbitrum Open House Singapore (from 24 September
 | Market voices | None | KOL mode: 20 written fixture posts by fictional accounts, read by fixed rules (token, figure, period, sentiment, conviction, urgency), checked as staked stories against the 10-Q; only the ones that held move the agent |
 | Running a round | One script, failures swallowed | `cre_round.sh --preflight` (wallet, login, SEC, the AI's hero claim, the WASM build, before any gas), a dry run without broadcast, no silent failures, `env.txt` in the evidence folder. A fallback round whose verdicts come from the workflow's handler in the CRE SDK test runtime (`sdk_round.sh`) |
 | Legal framing | None | [LEGAL.md](LEGAL.md): Regulation AC, FINRA Rules 2241 and 2210, Notice 24-09, the 2026 oversight report on AI agents, Rule 17a-4; what the record proves and does not prove; who is liable |
-| Tests | 24 Foundry, 21 pytest | 57 Foundry, 53 pytest (+1 fork test), 24 Bun |
+| Tests | 24 Foundry, 21 pytest | 57 Foundry, 62 pytest (+1 fork test), 24 Bun |
 
 Not done yet, and said so: the CRE-settled contracts are not deployed on
 Robinhood Chain testnet, and `cre workflow simulate` has not been run. Both
