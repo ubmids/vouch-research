@@ -58,7 +58,7 @@ function boot() {
     k("", "claims", cs.length, "Claims posted in this round, each with USDG at stake") +
     k("c", "true", cleared, "Checked against the SEC filing and found true: cleared") +
     k("s", "wrong", cs.length - cleared, "Wrong in a way the check can prove: the analyst lost its stake (slashed)") +
-    k("opt", "lost by wrong claims", `${money(lost)} USDG`, F.settled_by ? "Stake taken from wrong claims, to the pool that backs readers" : "Stake taken from wrong claims: half to whoever caught them, half to the reader pool") +
+    k("opt", "lost by wrong claims", `${money(lost)} USDG`, F.settled_by ? "Stake taken from wrong claims, paid to the readers' fund named when the market was deployed" : "Stake taken from wrong claims: half to whoever caught them, half to the reader pool") +
     (J.length ? k("opt", "agent", `${trades} trades · ${refusals} refused`, "A trading agent read every claim. The desk refused every trade that cited a wrong one; each trade it made is in the journal below") : "");
   // On a phone, three numbers under the bar rather than six in it.
   $("#mkpis").innerHTML = `<span>claims<b>${cs.length}</b></span><span class="c">true<b>${cleared}</b></span><span class="s">wrong<b>${cs.length - cleared}</b></span>`;
@@ -167,9 +167,10 @@ function diff(a, b) {
 }
 
 // Where a slashed stake went. Rounds settled through the forwarder (v2) have no
-// challenger, so all of it backs readers; v1 rounds paid half to a challenger.
+// challenger, so all of it goes to the readers' fund named at deploy (payees
+// withdraw it with claimReaderShare); v1 rounds paid half to a challenger.
 function split(c, sep = " · ") {
-  return F.settled_by ? `all ${money(c.stake)} to the pool that backs readers`
+  return F.settled_by ? `all ${money(c.stake)} to the readers' fund${F.readers_fund && F.readers_fund.stand_in ? " (a test stand-in: the deployer)" : ""}`
     : `${money(c.stake / 2)} to whoever caught it${sep}${money(c.stake / 2)} to a pool that protects readers`;
 }
 

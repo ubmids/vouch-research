@@ -53,7 +53,7 @@ that record. [What it proves, and what it does not →](docs/bli/LEGAL.md)
      fetch the filing from SEC EDGAR → the deterministic check → {verdict, reason, keccak256(filing)}
             │  on a DON: nodes must agree and sign; in simulation: nothing is signed
             ▼
- Chainlink forwarder → BondedClaims.onReport  ── wrong: stake slashed to the reader pool
+ Chainlink forwarder → BondedClaims.onReport  ── wrong: stake slashed to the readers' fund
             │                                      right: stake returned
             ▼
  AgentDesk ── a trading agent opens a paper position citing claims; any claim that failed reverts the trade
@@ -193,9 +193,12 @@ v1.38.0). What has and has not been run is listed in [cre/README.md](cre/README.
   clears by default after its window, marked unchecked, and the desk refuses to
   let an agent cite it. Malformed words, or words naming another stock or filing
   than the one posted under, are slashed by the workflow without a fetch.
-- **The reader pool only accumulates** in this version: there is no payout
-  function and no admin key to add one. Paying it out to insured readers is
-  roadmap work and needs its own rules.
+- **Where a slashed stake goes:** to the readers' fund, whose payees and shares
+  are fixed in the constructor before any claim exists. Each payee withdraws its
+  own share with `claimReaderShare()` (pull, rounded down, reentrancy-locked). On
+  a test market the deployer stands in for the fund, and the feed says so; in
+  production it would be a restitution or investor-protection account named at
+  deploy. Choosing that account is a legal question, not a code one.
 - **The check has limits it states:** it cannot tell a borrowing limit from a
   balance, or an inflow from an outflow described in words.
 
