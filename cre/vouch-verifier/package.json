@@ -6,6 +6,7 @@
   "main": "dist/main.js",
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "fixtures": "bun fetch-filings.ts",
     "test": "bun test"
   },
   "license": "MIT",
