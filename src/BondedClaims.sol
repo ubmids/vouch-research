@@ -116,7 +116,11 @@ contract BondedClaims is IReceiver, IERC165 {
 
     mapping(address => uint256) public bonded; // everything an analyst has deposited
     mapping(address => uint256) public locked; // the part currently at stake on pending claims
+    // A claim counts as cleared only when the workflow checked it and found it
+    // true. One that cleared by default, with no verdict, is counted apart, so a
+    // record of unchecked claims cannot pass for a record of true ones.
     mapping(address => uint32) public cleared;
+    mapping(address => uint32) public clearedUnchecked;
     mapping(address => uint32) public slashedCount;
     Claim[] private _claims;
     mapping(uint256 => Verdict) private _verdicts;
@@ -255,7 +259,7 @@ contract BondedClaims is IReceiver, IERC165 {
     function finalize(uint256 id) external {
         Claim storage c = _pending(id);
         if (block.timestamp <= c.postedAt + window) revert WindowOpen();
-        _clear(id, c, Verdict(_now(), bytes32(0), bytes32(0)));
+        _clear(id, c, Verdict(_now(), bytes32(0), bytes32(0)), false);
     }
 
     /// @notice If no verdict ever answers a challenge, nobody's money stays
@@ -308,22 +312,25 @@ contract BondedClaims is IReceiver, IERC165 {
                 // a true claim keeps its stake and is paid for the trouble
                 bonded[c.analyst] += challengeBond;
                 emit Upheld(id, who, challengeBond);
-                _clear(id, c, v);
+                _clear(id, c, v, true);
             }
         } else if (c.status == Status.Pending) {
             emit Checked(id, r.fraudulent, r.evidence, wid, r.reason);
             if (r.fraudulent) _slash(id, c, address(0), r.reason, v);
-            else _clear(id, c, v);
+            else _clear(id, c, v, true);
         } else {
             emit ReportIgnored(id, c.status);
         }
     }
 
-    function _clear(uint256 id, Claim storage c, Verdict memory v) private {
+    /// `checked` is true when a workflow verdict cleared the claim, false when
+    /// it cleared by default because its window passed with no verdict.
+    function _clear(uint256 id, Claim storage c, Verdict memory v, bool checked) private {
         c.status = Status.Cleared;
         _verdicts[id] = v;
         locked[c.analyst] -= c.atStake;
-        cleared[c.analyst] += 1;
+        if (checked) cleared[c.analyst] += 1;
+        else clearedUnchecked[c.analyst] += 1;
         emit Cleared(id, c.analyst);
     }
 

@@ -162,6 +162,26 @@ contract BondedClaimsTest is Reports {
         assertEq(uint8(market.claim(id).status), uint8(BondedClaims.Status.Cleared));
     }
 
+    function test_a_claim_cleared_by_default_counts_as_unchecked_not_cleared() public {
+        uint256 id = _post(liar, 20 * USD);
+        vm.warp(block.timestamp + 1 hours + 1);
+        market.finalize(id);
+        assertEq(market.cleared(liar), 0, "no verdict, so not on the record as true");
+        assertEq(market.clearedUnchecked(liar), 1, "but not hidden either");
+    }
+
+    function test_a_claim_the_workflow_cleared_counts_as_checked() public {
+        uint256 id = _post(honest, 20 * USD);
+        _verdict(market, id, false, "quote verified and value grounded");
+        address c = _challenger();
+        uint256 disputed = _post(honest, 20 * USD);
+        vm.prank(c);
+        market.challenge(disputed);
+        _verdict(market, disputed, false, "quote verified"); // the upheld path counts too
+        assertEq(market.cleared(honest), 2);
+        assertEq(market.clearedUnchecked(honest), 0);
+    }
+
     function test_challenging_your_own_wrong_claim_gains_nothing() public {
         address sock = makeAddr("sock puppet");
         usdg.mint(sock, 100 * USD);
