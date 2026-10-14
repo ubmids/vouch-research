@@ -27,7 +27,7 @@ Analyst            BondedClaims          CRE workflow (each DON node)          S
   │                    │                     │ writeReport ───────────────────────────────────────►│
   │                    │◄──────────────────── onReport(metadata, report) ───────────────────────────┘
   │                    │ checks: sender == forwarder; workflow owner, name (and pinned id); claimHash matches
-  │                    │ slash (stake → reader pool) or clear; Checked + Slashed/Cleared events; verdict stored
+  │                    │ slash (stake → readers' fund) or clear; Checked + Slashed/Cleared events; verdict stored
   │
 Trading agent ── open(ticker, side, notional, [claim ids], reasoningHash) ─────────────────────────────────────────►│
                                                                      every cited claim cleared? same ticker? none twice?
@@ -83,7 +83,9 @@ the same bytes.
 | A second verdict arrives for a settled claim | Recorded as `ReportIgnored`; nothing changes |
 | The DON never answers | Unchallenged: the claim clears by default after the window, with no filing evidence, and `AgentDesk` refuses it (`NotChecked`). Challenged: `unwind` after 7 days refunds both sides; the claim never counts as cleared |
 | An analyst posts malformed words, or words naming another stock or filing | The workflow reports it slashed without fetching anything; it never waits |
-| An analyst challenges their own wrong claim | Gains nothing: a slash sends the whole stake to the reader pool; the challenger only gets the deposit back |
+| An analyst challenges their own wrong claim | Gains nothing: a slash sends the whole stake to the readers' fund; the challenger only gets the deposit back |
+| A slashed analyst tries to get the stake back | Cannot: the fund's payees and shares are fixed in the constructor before any claim; a non-payee's `claimReaderShare()` reverts `NothingDue` |
+| A payee claims twice, or re-enters on transfer | Paid once: records are written before the transfer, behind a reentrancy lock; shares round down, so the fund never owes more than it holds |
 | The same words are posted twice | The desk treats them as one piece of evidence (`CitedTwice` on the hash) |
 | A verdict arrives after the window | A slash still applies while the claim is unsettled |
 | SEC EDGAR is down | The workflow throws; no report; the claim waits |

@@ -11,14 +11,15 @@ Vouch was first built for Arbitrum Open House Singapore (from 24 September
 | Where the claim's words live | Off-chain, committed by hash | In the `Posted` event itself, so the workflow reads them from the chain and the record holds exactly what was said |
 | The check | Python, run by the key holder | The same check, ported to TypeScript as the CRE workflow's handler (on a DON every node would run it; so far it has run in Chainlink's SDK test runtime, under QuickJS and as a WASM build, not on a DON); parity with the Python on 3,249 claims, on Bun and on QuickJS |
 | Stuck disputes | A challenge waited for the key | A challenge no verdict answers unwinds after 7 days and refunds both sides; a claim that cleared only by default cannot back a trade |
-| Challenger bounty | Half the slashed stake | None: the workflow checks every claim, so a bounty would only pay an analyst to challenge their own wrong claim (found in review). The whole stake backs readers |
+| Where a slashed stake goes | Counted in `readerPool`, never paid out | A **readers' fund** fixed at deploy (payees and shares); each payee withdraws its share with `claimReaderShare()`. On the test market the deployer stands in |
+| Challenger bounty | Half the slashed stake | None: the workflow checks every claim, so a bounty would only pay an analyst to challenge their own wrong claim (found in review). The whole stake goes to the readers' fund |
 | The trading agent | Opened one position per claim, moving test tokens | Reads every claim about a stock, forms a thesis by fixed rules, is refused on-chain for each failed claim it cites, and opens one **paper** trade on what held |
 | The record of a trade | Which claim ids backed it | A **journal**: the cited claims, the verdict on each (workflow, filing hash, transaction), the agent's per-claim reading, the refusals, and the hash of the whole reasoning record stored with the trade |
 | Re-verifying | Recompute a claim's hash in the browser | Re-verify a whole trade in the browser (hashes, verdicts, refusals, a re-run of the agent's rules, receipts from the chain's RPC) or from the command line (also re-fetches every filing and re-runs the check) |
 | Market voices | None | KOL mode: 20 written fixture posts by fictional accounts, read by fixed rules (token, figure, period, sentiment, conviction, urgency), checked as staked stories against the 10-Q; only the ones that held move the agent |
 | Running a round | One script, failures swallowed | `cre_round.sh --preflight` (wallet, login, SEC, the AI's hero claim, the WASM build, before any gas), a dry run without broadcast, no silent failures, `env.txt` in the evidence folder. A fallback round whose verdicts come from the workflow's handler in the CRE SDK test runtime (`sdk_round.sh`) |
 | Legal framing | None | [LEGAL.md](LEGAL.md): Regulation AC, FINRA Rules 2241 and 2210, Notice 24-09, the 2026 oversight report on AI agents, Rule 17a-4; what the record proves and does not prove; who is liable |
-| Tests | 24 Foundry, 21 pytest | 48 Foundry, 53 pytest (+1 fork test), 24 Bun |
+| Tests | 24 Foundry, 21 pytest | 57 Foundry, 53 pytest (+1 fork test), 24 Bun |
 
 Not done yet, and said so: the CRE-settled contracts are not deployed on
 Robinhood Chain testnet, and `cre workflow simulate` has not been run. Both
