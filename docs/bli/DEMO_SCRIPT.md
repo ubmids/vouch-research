@@ -39,7 +39,7 @@ in the trading-agent box. Point at each as you say it.
 > An AI analyst wrote that Tesla's depreciation for Q3 was 1.37 billion
 > dollars. Tesla's own filing says that quarter ended in June. Vouch's check,
 > a Chainlink CRE workflow, caught it against the SEC filing and took the AI's
-> 25-dollar stake. And the trading agent that tried to act on it? Refused, on-chain.
+> stake. And the trading agent that tried to act on it? Refused, on-chain.
 
 ## 0:20 to 0:45, why a lawyer should care
 
@@ -96,7 +96,12 @@ on-chain checks.
 > naming the claim. What's left are claims that held. Its rules turn those
 > into a position, and the whole reasoning, with every verdict and every
 > refusal, is hashed on-chain with the trade. Re-verify redoes all of it in
-> the browser and checks it against the chain. Cause, effect, and receipts.
+> the browser. Cause, effect, and receipts.
+
+(Round A only, once the page is deployed: add "and checks it against the
+chain", because the page reads the receipts from Robinhood Chain's RPC. On the
+local round B the page says the on-chain links need the command line; show
+`python -m vouchrh.journal verify` instead if you want that shot.)
 
 ## 1:55 to 2:15, what it proves, and what it doesn't
 
