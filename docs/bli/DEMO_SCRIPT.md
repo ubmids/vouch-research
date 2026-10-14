@@ -4,7 +4,9 @@ Hard ceiling 3:00; aim for 2:30. **The payoff is on screen by 0:20**: an AI's
 wrong claim, slashed by the check, and a trading agent refused, on-chain.
 Then why lawyers should care, then the Chainlink CRE workflow, then the journal.
 
-**Which round you film decides two captions.** Everything said aloud below is
+**Film round A.** Round B is a fallback only if the testnet round cannot run
+by 22 Oct: it does not meet the Chainlink bounty's minimum and reads as
+unfinished. **Which round you film decides two captions.** Everything said aloud below is
 true for both; the captions say which one is on screen.
 
 | | Round **A** (after `cre login` and `scripts/cre_round.sh`) | Round **B** (fallback, works today) |
@@ -32,14 +34,17 @@ true for both; the captions say which one is on screen.
 
 **On screen:** tab A. It opens on the AI's claim in the inspector: the claim
 says Q3, the filing's sentence says June, **Slashed**, and "It was refused"
-in the trading-agent box. Point at each as you say it.
+in the trading-agent box. Point at each as you say it. Caption for this
+segment: **"AI claim: Qwen 2.5's own words from 24 Sep, replayed"** (the page
+labels it "replayed" too).
 
 **Say:**
 
 > An AI analyst wrote that Tesla's depreciation for Q3 was 1.37 billion
 > dollars. Tesla's own filing says that quarter ended in June. Vouch's check,
-> a Chainlink CRE workflow, caught it against the SEC filing and took the AI's
-> stake. And the trading agent that tried to act on it? Refused, on-chain.
+> a Chainlink CRE workflow, caught it against the SEC filing, and the AI's
+> stake went to the readers' fund. The trading agent that tried to act on it?
+> Refused, on-chain.
 
 ## 0:20 to 0:45, why a lawyer should care
 
@@ -48,6 +53,8 @@ section 3 (the table).
 
 **Say:**
 
+> You've seen lawyers sanctioned for AI-invented case citations: over a
+> thousand US filings so far. Research has the same problem.
 > Research rules were written for people. Regulation AC has a natural person
 > certify their personal views. FINRA Rule 2241 says the facts in research
 > must be based on reliable information. AI now drafts research, and it can't
@@ -87,16 +94,19 @@ events (the explorer shows Chainlink's mock forwarder: that is expected).
 entry for the lead claim's stock. Walk the steps: Read, Refused (point at
 the AI's claim in the list), Kept what held, Decided, Committed. Click
 **Re-verify this trade** and let the green ticks fill in, ending with the
-on-chain checks.
+on-chain checks. Then click **Download the audit record** and show the file
+open for two seconds (the claims, the verdicts, the filing hash, the steps to
+re-check).
 
 **Say:**
 
 > The trading agent read every claim about this stock. It tried to trade on
 > all of them, and the desk refused it each time it cited one that failed,
 > naming the claim. What's left are claims that held. Its rules turn those
-> into a position, and the whole reasoning, with every verdict and every
-> refusal, is hashed on-chain with the trade. Re-verify redoes all of it in
-> the browser. Cause, effect, and receipts.
+> into a position. These are fixed, written rules, not a model, so anyone can
+> re-run them. The whole reasoning, with every verdict and every refusal, is
+> hashed on-chain with the trade. Re-verify redoes all of it in the browser,
+> and the audit record is one file counsel can keep.
 
 (Round A only, once the page is deployed: add "and checks it against the
 chain", because the page reads the receipts from Robinhood Chain's RPC. On the
@@ -143,6 +153,9 @@ Cut.
 - Round B is not a CRE CLI simulation and does not meet the Chainlink bounty's
   minimum on its own; say "SDK test runtime", never "simulated on testnet".
   Never show a local-devnet screen and call it testnet.
+- Show only what the code does: the readers' fund on the test market is the
+  deployer standing in; don't name a real fund. Don't say the agent "thinks"
+  or "uses AI" to decide: its decisions are rules; the AI is the analyst.
 - Optional, for the RYO judges (10 s, cut from 1:55 if needed):
   `?feed=feed-kol.json`, one wrong post refused. Say: "The same agent works as a
   news checker on posts by market voices. These twenty are written fixtures;
