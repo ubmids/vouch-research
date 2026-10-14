@@ -103,8 +103,9 @@ re-check).
 > The trading agent read every claim about this stock. It tried to trade on
 > all of them, and the desk refused it each time it cited one that failed,
 > naming the claim. What's left are claims that held. Its rules turn those
-> into a position. These are fixed, written rules, not a model, so anyone can
-> re-run them. The whole reasoning, with every verdict and every refusal, is
+> into a position. In this round they're fixed, written rules, so anyone can
+> re-run them; a model can make the call instead, with its exact reply in the
+> record. The whole reasoning, with every verdict and every refusal, is
 > hashed on-chain with the trade. Re-verify redoes all of it in the browser,
 > and the audit record is one file counsel can keep.
 
@@ -154,8 +155,10 @@ Cut.
   minimum on its own; say "SDK test runtime", never "simulated on testnet".
   Never show a local-devnet screen and call it testnet.
 - Show only what the code does: the readers' fund on the test market is the
-  deployer standing in; don't name a real fund. Don't say the agent "thinks"
-  or "uses AI" to decide: its decisions are rules; the AI is the analyst.
+  deployer standing in; don't name a real fund. The round is run with the
+  default rules, so say "rules". Say "a model can make the decision instead"
+  only as a capability, and say a model decided only if the round was run with
+  `VOUCH_DECIDER=model` and the journal entry shows "Decided by a model".
 - Optional, for the RYO judges (10 s, cut from 1:55 if needed):
   `?feed=feed-kol.json`, one wrong post refused. Say: "The same agent works as a
   news checker on posts by market voices. These twenty are written fixtures;

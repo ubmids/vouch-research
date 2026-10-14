@@ -86,10 +86,14 @@ market posts for token, figure, period, sentiment, conviction and urgency,
 finds the 10-Q sentence each figure must come from, and checks the story as a
 staked claim. A loud post with the wrong quarter is slashed and moves nothing.
 Then it forms a thesis from what held, is refused on-chain for anything that
-failed, and opens a paper trade. Its reading and its decisions are fixed,
-written rules, not a language model, chosen so that **Re-verify** can re-run
-every step in the browser and get the same answer. The only model in the
-system is the analyst being checked.
+failed, and opens a paper trade. It decides in one of two ways. By default,
+fixed written rules, so **Re-verify** re-runs every step in the browser and
+gets the same answer. Or, with `VOUCH_DECIDER=model`, a language model behind
+any OpenAI-compatible endpoint reads the claims and picks the side; the exact
+messages and reply are hashed into the record with the trade, Re-verify checks
+the reply gives exactly that trade, and any failure falls back to the rules.
+Whatever the model says, the desk still refuses a claim that failed. The post
+reader itself is rules (word lists), not a model.
 
 **For Chainlink: CRE is the orchestration layer.** EVM log trigger on
 Robinhood Chain → HTTP capability to SEC EDGAR → deterministic check →
@@ -103,7 +107,7 @@ QuickJS (the engine CRE runs). One script runs the CLI simulation per claim
 
 > **What ran, and what is trusted (one place for every caveat)**
 > - **Ran:** 57 Foundry tests (including the readers' fund payout), the Python
->   suite, and the Bun suite (parity and the workflow handler); `cre workflow build`; the handler in Chainlink's
+>   suite (including the model decision path against a fake server), and the Bun suite (parity and the workflow handler); `cre workflow build`; the handler in Chainlink's
 >   SDK test runtime, settling a 50-claim local round.
 > - **CRE CLI simulation on Robinhood Chain testnet:** [pending: replace with
 >   the run folder, claim count and an explorer link once the 18 Oct round runs].
@@ -113,6 +117,8 @@ QuickJS (the engine CRE runs). One script runs the CLI simulation per claim
 >   have only run in tests.
 > - **Before a live DON:** SEC requires a User-Agent the DON gateway will not
 >   send, and the gateway's default response size is below a 10-Q.
+> - **The agent's model path** is tested against a fake server only. The demo
+>   round's decisions are made by the rules unless a model run is added here.
 > - **Fiction, labelled:** the hero AI claim is the Qwen analyst's words from
 >   24 Sep, replayed word for word; the 20 market posts in KOL mode are written
 >   fixtures by fictional accounts. No live X posts are read.
@@ -132,9 +138,8 @@ static web page.
 Deploy the workflow on a live DON, pin its id, and move to Robinhood Chain
 mainnet with USDG. Extend the check to 8-Ks and 10-Ks. Pilot with one
 compliance team distributing AI-drafted research, using cleared-only
-publication as a 2241(c)(1)(A) control. Let the agent use a model to read
-posts, with the model's input and output hashed into the journal so the trail
-stays repeatable.
+publication as a 2241(c)(1)(A) control. Run the agent's model decision path
+in a published round, and give the post reader a model too.
 
 ## Prior work, disclosed
 
