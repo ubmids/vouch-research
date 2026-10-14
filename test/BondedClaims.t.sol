@@ -17,7 +17,8 @@ contract BondedClaimsTest is Reports {
 
     function setUp() public {
         usdg = new MockUSDG();
-        market = new BondedClaims(IERC20(address(usdg)), 10 * USD, 5 * USD, 1 hours, address(fwd), OWNER, NAME);
+        (address[] memory p, uint256[] memory sh) = _fund();
+        market = new BondedClaims(IERC20(address(usdg)), 10 * USD, 5 * USD, 1 hours, address(fwd), OWNER, NAME, p, sh);
         for (uint256 i; i < 2; i++) {
             address a = i == 0 ? honest : liar;
             usdg.mint(a, 1_000 * USD);
@@ -79,7 +80,7 @@ contract BondedClaimsTest is Reports {
         vm.prank(honest);
         market.withdraw(500 * USD);
         uint256 held = usdg.balanceOf(address(market));
-        assertEq(held, market.bonded(liar) + market.bonded(honest) + market.readerPool());
+        assertEq(held, market.bonded(liar) + market.bonded(honest) + market.readerPool() - market.readerPaid());
     }
 
     // ---- who may settle: no key, only the workflow through the forwarder -----
@@ -197,8 +198,10 @@ contract BondedClaimsTest is Reports {
     }
 
     function test_simulation_market_checks_only_the_forwarder() public {
-        BondedClaims sim =
-            new BondedClaims(IERC20(address(usdg)), 10 * USD, 5 * USD, 1 hours, address(fwd), address(0), bytes10(0));
+        (address[] memory p, uint256[] memory sh) = _fund();
+        BondedClaims sim = new BondedClaims(
+            IERC20(address(usdg)), 10 * USD, 5 * USD, 1 hours, address(fwd), address(0), bytes10(0), p, sh
+        );
         vm.startPrank(honest);
         usdg.approve(address(sim), type(uint256).max);
         sim.bond(100 * USD);
@@ -374,7 +377,7 @@ contract BondedClaimsTest is Reports {
         market.challenge(id);
         _verdict(market, id, fraudulent, "fuzz");
         uint256 held = usdg.balanceOf(address(market));
-        assertEq(held, market.bonded(liar) + market.bonded(honest) + market.readerPool());
+        assertEq(held, market.bonded(liar) + market.bonded(honest) + market.readerPool() - market.readerPaid());
         assertEq(held + usdg.balanceOf(c), before);
     }
 }

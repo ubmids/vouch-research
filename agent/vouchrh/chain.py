@@ -98,11 +98,16 @@ class Chain:
     # ---- deploy -------------------------------------------------------------
     def deploy(self, min_stake: int = 10 * USD, challenge_bond: int = 5 * USD, window: int = 3600,
                token: str | None = None, forwarder: str | None = None, owner: str | None = None,
-               name: bytes = bytes(10)) -> Deployed:
+               name: bytes = bytes(10), readers_fund: list[tuple[str, int]] | None = None) -> Deployed:
         """Deploy the market. With `token`, bond in that ERC-20 (Paxos USDG on
         Robinhood Chain testnet); without, deploy the test stand-in. Verdicts
         are accepted from `forwarder` only: Chainlink's on a public chain, a
-        local stand-in laid out the same way when none is given."""
+        local stand-in laid out the same way when none is given.
+
+        `readers_fund` is who a wrong claim's stake is paid to, as (address,
+        shares) pairs fixed for the life of the market. Without one, the
+        deployer's own address stands in for the fund (a test market only; the
+        feed labels it so)."""
         if not forwarder:
             f = artifact("LocalForwarder")
             cf = self.w3.eth.contract(abi=f["abi"], bytecode=f["bytecode"]["object"])
@@ -115,8 +120,10 @@ class Chain:
             cu = self.w3.eth.contract(abi=a["abi"], bytecode=a["bytecode"]["object"])
             usdg = self.send(self.verifier, (), deploy=cu).contractAddress
         cm = self.w3.eth.contract(abi=b["abi"], bytecode=b["bytecode"]["object"])
+        fund = readers_fund or [(self.verifier.address, 1)]
         args = (usdg, min_stake, challenge_bond, window, Web3.to_checksum_address(forwarder),
-                Web3.to_checksum_address(owner or "0x" + "00" * 20), name)
+                Web3.to_checksum_address(owner or "0x" + "00" * 20), name,
+                [Web3.to_checksum_address(a) for a, _ in fund], [int(n) for _, n in fund])
         r2 = self.send(self.verifier, args, deploy=cm)
         c = artifact("AgentDesk")
         cd = self.w3.eth.contract(abi=c["abi"], bytecode=c["bytecode"]["object"])
@@ -226,3 +233,16 @@ class Chain:
 
     def reader_pool(self) -> int:
         return self.market.functions.readerPool().call()
+
+    def readers_fund(self) -> dict:
+        """Who the forfeited stakes are paid to, and how much each is owed and has taken."""
+        f = self.market.functions
+        payees = f.payees().call()
+        return {"payees": [{"address": a, "shares": f.shares(a).call(), "due": f.readerDue(a).call() / USD,
+                            "paid": f.readerReleased(a).call() / USD} for a in payees],
+                "total_shares": f.totalShares().call(), "paid": f.readerPaid().call() / USD,
+                "stand_in": payees == [self.verifier.address]}
+
+    def claim_reader_share(self, acct) -> dict:
+        """A payee of the readers' fund withdraws what it is owed."""
+        return self.send(acct, self.market.functions.claimReaderShare())

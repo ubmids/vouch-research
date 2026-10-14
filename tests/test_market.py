@@ -27,8 +27,10 @@ def test_honest_research_keeps_its_bond_and_every_lie_loses_it(chain):
         assert by[liar]["slashed"] == 4, liar
     slashed_total = sum(f["stake"] for f in r["claims"] if f["verdict"] == "slashed")
     held = chain.usdg.functions.balanceOf(chain.market.address).call() / USD
-    assert r["reader_pool"] == slashed_total          # nobody challenged: every slashed unit backs readers
+    assert r["reader_pool"] == slashed_total          # nobody challenged: every slashed unit goes to the readers' fund
     assert held == sum(s["bonded"] for s in r["standings"]) + r["reader_pool"]
+    fund = r["readers_fund"]                         # and all of it is owed to the readers' fund named at deploy
+    assert fund["stand_in"] and fund["paid"] == 0 and fund["payees"][0]["due"] == r["reader_pool"]
 
 
 def test_every_verdict_arrived_through_the_forwarder_and_says_which_filing(chain):

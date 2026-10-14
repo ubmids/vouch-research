@@ -21,8 +21,14 @@ contract GoNoGo is Script {
         vm.startBroadcast();
         MockUSDG usdg = new MockUSDG();
         LocalForwarder fwd = new LocalForwarder();
-        BondedClaims market =
-            new BondedClaims(IERC20(address(usdg)), 10 * USD, 5 * USD, 1 hours, address(fwd), address(0), bytes10(0));
+        // the readers' fund: the deployer stands in for it on this test market
+        address[] memory fund = new address[](1);
+        uint256[] memory fundShares = new uint256[](1);
+        fund[0] = me;
+        fundShares[0] = 1;
+        BondedClaims market = new BondedClaims(
+            IERC20(address(usdg)), 10 * USD, 5 * USD, 1 hours, address(fwd), address(0), bytes10(0), fund, fundShares
+        );
         usdg.mint(me, 1_000 * USD);
         usdg.approve(address(market), type(uint256).max);
         market.bond(500 * USD);

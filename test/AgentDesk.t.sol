@@ -22,7 +22,8 @@ contract AgentDeskTest is Reports {
 
     function setUp() public {
         usdg = new MockUSDG();
-        vouch = new BondedClaims(IERC20(address(usdg)), 10 * USD, 5 * USD, 1 hours, address(fwd), OWNER, NAME);
+        (address[] memory p, uint256[] memory sh) = _fund();
+        vouch = new BondedClaims(IERC20(address(usdg)), 10 * USD, 5 * USD, 1 hours, address(fwd), OWNER, NAME, p, sh);
         desk = new AgentDesk(vouch);
         usdg.mint(analyst, 1_000 * USD);
         vm.startPrank(analyst);

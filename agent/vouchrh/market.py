@@ -221,6 +221,7 @@ def finish(chain: Chain, feed: dict, log=print, quote=None) -> dict:
                           "slashed": sum(1 for f in feed["claims"] if f["analyst"] == s["analyst"] and f["verdict"] == "slashed")}
                          for s in feed["standings"]]
     feed["reader_pool"] = chain.reader_pool() / USD
+    feed["readers_fund"] = chain.readers_fund()
     return feed
 
 

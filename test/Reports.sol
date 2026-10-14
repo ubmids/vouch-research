@@ -14,6 +14,15 @@ abstract contract Reports is Test {
     // forge-lint: disable-next-line(unsafe-typecast)
     bytes10 constant NAME = bytes10("a1b2c3d4e5");
     bytes32 constant FILING_HASH = keccak256("the bytes EDGAR served");
+    // The readers' fund the test markets are deployed with: one payee, one share.
+    address constant FUND = address(0xF00D);
+
+    function _fund() internal pure returns (address[] memory p, uint256[] memory s) {
+        p = new address[](1);
+        s = new uint256[](1);
+        p[0] = FUND;
+        s[0] = 1;
+    }
 
     function _raw(bytes32 wid, bytes10 name, address owner, bytes memory payload) internal view returns (bytes memory) {
         return abi.encodePacked(

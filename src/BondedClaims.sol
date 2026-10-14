@@ -38,8 +38,12 @@ interface IERC165 {
 /// (Until the deployer pins one compiled workflow id, the workflow owner can
 /// replace the workflow's code under the same name; once pinned, nobody can.)
 ///
-/// A false claim loses its whole stake to the reader pool. A true claim keeps
-/// it, and takes the deposit of anyone who challenged it. A challenge stops the
+/// A false claim loses its whole stake to the readers' fund. The fund's payees
+/// and their shares are fixed when the market is deployed (in production, a
+/// restitution or investor-protection account named in the deployment; on a test
+/// market, a labelled stand-in) and nobody can change them afterwards. Each payee
+/// withdraws its own share whenever it likes (claimReaderShare). A true claim keeps
+/// its stake, and takes the deposit of anyone who challenged it. A challenge stops the
 /// clock: a challenged claim cannot clear by default. If no verdict comes, an
 /// unchallenged claim clears itself once its window passes, but it is marked
 /// unchecked (no filing evidence) and AgentDesk will not let an agent cite it.
@@ -125,7 +129,20 @@ contract BondedClaims is IReceiver, IERC165 {
     Claim[] private _claims;
     mapping(uint256 => Verdict) private _verdicts;
     mapping(uint256 => uint64) public challengedAt;
+
+    // The readers' fund. readerPool is everything ever forfeited by wrong claims;
+    // readerPaid is how much of it payees have withdrawn. A payee is owed
+    // readerPool * its shares / totalShares, less what it already took. That is
+    // rounded down, so the contract never owes more than it holds; the remainder
+    // (under one unit per payee) is paid out as later forfeits raise the total.
     uint256 public readerPool;
+    uint256 public readerPaid;
+    uint256 public immutable totalShares;
+    uint256 public constant MAX_PAYEES = 16;
+    address[] private _payees;
+    mapping(address => uint256) public shares;
+    mapping(address => uint256) public readerReleased;
+    uint256 private _entered = 1;
 
     event Bonded(address indexed analyst, uint256 amount, uint256 total);
     event Posted(
@@ -148,6 +165,8 @@ contract BondedClaims is IReceiver, IERC165 {
     event Upheld(uint256 indexed id, address indexed challenger, uint256 deposit);
     event Unwound(uint256 indexed id, address indexed challenger);
     event WorkflowPinned(bytes32 workflowId);
+    event ReaderPayee(address indexed payee, uint256 shares);
+    event ReaderPaid(address indexed payee, uint256 amount);
 
     error StakeTooSmall();
     error NotEnoughFreeBond();
@@ -166,6 +185,16 @@ contract BondedClaims is IReceiver, IERC165 {
     error ClaimTooLong();
     error TickerTooLong();
     error FilingTooLong();
+    error BadPayees();
+    error NothingDue();
+    error Reentrant();
+
+    modifier nonReentrant() {
+        if (_entered != 1) revert Reentrant();
+        _entered = 2;
+        _;
+        _entered = 1;
+    }
 
     constructor(
         IERC20 token,
@@ -174,9 +203,26 @@ contract BondedClaims is IReceiver, IERC165 {
         uint64 challengeWindow,
         address chainlinkForwarder,
         address owner_,
-        bytes10 name_
+        bytes10 name_,
+        address[] memory fundPayees,
+        uint256[] memory payeeShares
     ) {
         if (chainlinkForwarder == address(0)) revert ZeroAddress();
+        // The readers' fund is fixed here, in public, before any claim exists: an
+        // analyst cannot later route a forfeited stake back to themselves.
+        if (fundPayees.length == 0 || fundPayees.length > MAX_PAYEES || fundPayees.length != payeeShares.length) {
+            revert BadPayees();
+        }
+        uint256 total;
+        for (uint256 i; i < fundPayees.length; i++) {
+            address p = fundPayees[i];
+            if (p == address(0) || payeeShares[i] == 0 || shares[p] != 0) revert BadPayees();
+            shares[p] = payeeShares[i];
+            _payees.push(p);
+            total += payeeShares[i];
+            emit ReaderPayee(p, payeeShares[i]);
+        }
+        totalShares = total;
         bondToken = token;
         minStake = minimumStake;
         challengeBond = challengeDeposit;
@@ -237,6 +283,32 @@ contract BondedClaims is IReceiver, IERC165 {
         bonded[msg.sender] -= amount;
         emit Withdrawn(msg.sender, amount);
         if (!bondToken.transfer(msg.sender, amount)) revert TransferFailed();
+    }
+
+    // ---- the readers' fund ---------------------------------------------------
+
+    /// @notice What `payee` can withdraw now: its share of everything forfeited,
+    /// less what it already took. Zero for anyone who is not a payee.
+    function readerDue(address payee) public view returns (uint256) {
+        return readerPool * shares[payee] / totalShares - readerReleased[payee];
+    }
+
+    /// @notice A payee withdraws its share of the forfeited stakes. Pull, not
+    /// push: a payee that cannot receive blocks nobody else. Records first, then
+    /// the transfer, behind a reentrancy lock; a second call with nothing new
+    /// forfeited reverts with NothingDue.
+    function claimReaderShare() external nonReentrant returns (uint256 amount) {
+        amount = readerDue(msg.sender);
+        if (amount == 0) revert NothingDue();
+        readerReleased[msg.sender] += amount;
+        readerPaid += amount;
+        emit ReaderPaid(msg.sender, amount);
+        if (!bondToken.transfer(msg.sender, amount)) revert TransferFailed();
+    }
+
+    /// @notice The fund's payees, in deployment order.
+    function payees() external view returns (address[] memory) {
+        return _payees;
     }
 
     // ---- anyone -----------------------------------------------------------
@@ -341,8 +413,8 @@ contract BondedClaims is IReceiver, IERC165 {
         locked[c.analyst] -= amount;
         bonded[c.analyst] -= amount;
         slashedCount[c.analyst] += 1;
-        // All of it backs readers. No bounty: the workflow checks every claim, so a
-        // bounty would only pay an analyst to challenge their own wrong claim.
+        // All of it goes to the readers' fund. No bounty: the workflow checks every
+        // claim, so a bounty would only pay an analyst to challenge their own wrong claim.
         readerPool += amount;
         emit Slashed(id, c.analyst, challenger, amount, reason);
     }
