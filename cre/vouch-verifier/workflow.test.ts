@@ -116,6 +116,24 @@ describe("the Vouch verifier workflow", () => {
     expect(a.fraudulent).toBe(false)
   })
 
+  // A DON's HTTP gateway refuses a User-Agent header, and SEC refuses a request
+  // without a contact in one (403), so production needs this switch and a way
+  // around it (cre/README.md, Production). The simulator config keeps it on.
+  test("a production config sends no User-Agent header", () => {
+    const sent: Record<string, unknown>[] = []
+    const http = HttpActionsMock.testInstance()
+    http.sendRequest = (req) => {
+      sent.push(req.multiHeaders ?? {})
+      return { statusCode: req.multiHeaders?.["User-Agent"] ? 200 : 403 }
+    }
+    EvmMock.testInstance(CHAIN)
+    const runtime = newTestRuntime<Config>(null, {}, { ...config, sendUserAgent: false } as Config)
+    expect(() => onPosted(runtime as any, postedLog(13n, canonical(claimOf("$1.37 billion", SENTENCE, ""))))).toThrow("EDGAR 403")
+    expect(sent).toHaveLength(1)
+    expect(Object.keys(sent[0])).toEqual(["Accept-Encoding"])
+    expect(config.sendUserAgent).toBe(true)
+  })
+
   withFilings("slashes a quote with one figure changed", () => {
     const r = run(8n, "$1.47 billion", SENTENCE.replace("$1.37", "$1.47"), "")
     expect(r.fraudulent).toBe(true)

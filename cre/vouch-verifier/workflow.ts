@@ -33,6 +33,10 @@ export const configSchema = z.object({
   chainSelectorName: z.string(),
   market: z.string(),                       // BondedClaims: emits Posted, receives verdicts
   userAgent: z.string(),                    // SEC fair access: a contact in every request
+  // The CLI simulator sends request headers as given. A DON's HTTP gateway
+  // refuses a User-Agent header ("gateway controls its own identification"),
+  // so a production config sets this false; see cre/README.md, Production.
+  sendUserAgent: z.boolean().default(true),
   ciks: z.record(z.string(), z.string()),   // the stock tokens' SEC registrants, e.g. TSLA -> 0001318605
   gasLimit: z.string().default("1000000"),
 })
@@ -59,15 +63,12 @@ export const claimSchema = z.object({
 })
 export type ClaimWords = z.infer<typeof claimSchema>
 
-const get = (req: HTTPSendRequester, url: string, ua: string): Uint8Array => {
+const get = (req: HTTPSendRequester, url: string, config: Config): Uint8Array => {
+  // gzip keeps a 1.5 MB 10-Q near 100 KB, under the 250 KB response limit
+  const headers: Record<string, { values: string[] }> = { "Accept-Encoding": { values: ["gzip"] } }
+  if (config.sendUserAgent) headers["User-Agent"] = { values: [config.userAgent] }
   const r = req
-    .sendRequest({
-      url,
-      method: "GET",
-      timeout: "10s",
-      // gzip keeps a 1.5 MB 10-Q near 100 KB, under the 250 KB response limit
-      multiHeaders: { "User-Agent": { values: [ua] }, "Accept-Encoding": { values: ["gzip"] } },
-    })
+    .sendRequest({ url, method: "GET", timeout: "10s", multiHeaders: headers })
     .result()
   if (r.statusCode !== 200) throw new Error(`EDGAR ${r.statusCode} for ${url}`)
   return inflate(r.body)
@@ -80,10 +81,10 @@ export const checkOnNode = (req: HTTPSendRequester, claim: ClaimWords, config: C
   const NONE = "0x" + "00".repeat(32)
   const cik = Object.hasOwn(config.ciks, claim.ticker) ? config.ciks[claim.ticker] : undefined
   if (!cik) return { fraudulent: true, reason: `no SEC registrant on record for ${claim.ticker}`, evidence: NONE }
-  const index = JSON.parse(decodeUtf8(get(req, `https://data.sec.gov/submissions/CIK${cik}.json`, config.userAgent)))
+  const index = JSON.parse(decodeUtf8(get(req, `https://data.sec.gov/submissions/CIK${cik}.json`, config)))
   const doc = primaryDocument(index, cik, claim.accession)
   if (!doc) return { fraudulent: true, reason: `filing ${claim.accession} is not one of ${claim.ticker}'s recent filings`, evidence: NONE }
-  const raw = get(req, doc.url, config.userAgent)
+  const raw = get(req, doc.url, config)
   const text = toText(decodeUtf8(raw))
   const v = auditClaim(claim.value, claim.quote, text, claim.summary, claim.metric)
   // Every node must report the same evidence, and SEC's CDN tag varies by time

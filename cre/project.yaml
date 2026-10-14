@@ -7,3 +7,7 @@ staging-settings:
       url: https://rpc.testnet.chain.robinhood.com
     - chain-name: ethereum-testnet-sepolia-arbitrum-1
       url: https://sepolia-rollup.arbitrum.io/rpc
+production-settings:
+  rpcs:
+    - chain-name: robinhood-testnet
+      url: https://rpc.testnet.chain.robinhood.com

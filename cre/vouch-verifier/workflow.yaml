@@ -6,3 +6,12 @@ staging-settings:
     workflow-path: "./main.ts"
     config-path: "./config.staging.json"
     secrets-path: ""
+# Production (a DON, after CRE deploy access): no User-Agent header, which the
+# gateway refuses. SEC answers 403 without one; see cre/README.md, Production.
+production-settings:
+  user-workflow:
+    workflow-name: "vouch-verifier"
+  workflow-artifacts:
+    workflow-path: "./main.ts"
+    config-path: "./config.production.json"
+    secrets-path: ""
