@@ -14,7 +14,7 @@ Vouch
 
 ## Tagline (under 80 characters)
 
-Accountability for AI-written research, checked by Chainlink against the SEC.
+Accountability for AI-written research: a Chainlink CRE check against the SEC.
 
 ## One-liner
 
