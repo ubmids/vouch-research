@@ -6,6 +6,8 @@
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const short = (h, a = 6, b = 4) => h ? `${h.slice(0, a)}…${h.slice(-b)}` : "";
+// Who an author is, said the same way everywhere: a scripted analyst, a language model, or (KOL mode) a market voice.
+const KIND = { kol: "a market voice (a written fixture post, not a real account)" };
 // A model claim re-posted from an earlier round, word for word (its words hash to the same claim hash).
 const replayed = (c) => c.replayed_from ? `replayed: the model wrote these words in ${c.replayed_from.round} (claim #${c.replayed_from.claim} there); posted again here word for word` : "";
 const money = (n) => Number(n).toLocaleString("en-US", { maximumFractionDigits: 2 });
@@ -50,6 +52,7 @@ function boot() {
   $("#net").title = `chain id ${F.chain_id}`;
   $("#footChain").textContent = F.chain.name;
   $("#footSettle").textContent = F.settled_by || "one verifier key (this round predates the Chainlink CRE workflow)";
+  if (F.fixture) $("#footChain").textContent = `${F.chain.name}. ${F.fixture}`;
   const k = (cls, label, val, tip) => `<span class="${cls}" title="${esc(tip)}">${label}<b>${val}</b></span>`;
   $("#kpis").innerHTML =
     k("", "claims", cs.length, "Claims posted in this round, each with USDG at stake") +
@@ -124,7 +127,7 @@ function rows() {
     const p = plain(c);
     return `<tr data-id="${c.id}" class="${c.verdict}" aria-selected="${c.id === selected}" tabindex="0">
       <td class="tk">${esc(c.ticker)}<span>${esc(NAMES[c.ticker] || "")}</span></td>
-      <td class="an">${esc(c.analyst)}${c.analyst_kind === "model" ? ` <span class="ai" title="${esc(replayed(c) || "A language model, running locally")}">AI${c.replayed_from ? " · replayed" : ""}</span>` : ""}</td>
+      <td class="an">${esc(c.analyst)}${c.analyst_kind === "model" ? ` <span class="ai" title="${esc(replayed(c) || "A language model, running locally")}">AI${c.replayed_from ? " · replayed" : ""}</span>` : c.analyst_kind === "kol" ? ` <span class="ai" title="${esc(KIND.kol)}">KOL · fixture</span>` : ""}</td>
       <td class="claim"><span class="v">${esc(c.value)}</span><span class="q">${esc(headline(c))}</span></td>
       <td class="vd"><span class="pill ${c.verdict[0]}">${c.verdict === "cleared" ? "TRUE" : "WRONG"}</span><span class="why">${esc(p.short)}</span></td></tr>`;
   }).join("") || `<tr class="none"><td colspan="4">No claims match. <button id="reset">Clear the filters</button></td></tr>`;
@@ -207,6 +210,9 @@ function select(id, scroll) {
 
     <div class="box"><div class="k"><span>What ${esc(c.analyst)}${c.analyst_kind === "model" ? " (AI)" : ""} claimed</span><span>${money(c.stake)} USDG at stake</span></div>
       <div class="v said">${c.summary ? esc(c.summary) : `The figure is <b>${esc(c.value)}</b>.`}</div>${c.replayed_from ? `<div class="hash">${esc(replayed(c))} · claim hash ${esc(short(c.replayed_from.hash, 10, 6))}</div>` : ""}</div>
+    ${c.post ? `<div class="box"><div class="k"><span>The post it came from (${esc(c.post.handle)})</span><span>written fixture, not a real account</span></div>
+      <div class="v">${esc(c.post.text)}</div>
+      <div class="hash">the agent's reading: ${esc(c.reading.ticker)} · ${esc(c.reading.value || "no figure")} · ${esc(c.reading.sentiment)} · ${esc(c.reading.conviction)} conviction · ${esc(c.reading.urgency)}. What it checked is the story above, with each figure written as the filing writes it.</div></div>` : ""}
 
     <div class="box"><div class="k"><span>The sentence it quoted</span><span>${src && c.quote !== src.match ? "differences marked" : "as quoted"}</span></div><div class="v">${quoted}</div></div>
 
@@ -276,7 +282,7 @@ function board() {
   $("#board").innerHTML = F.standings.slice().sort((a, b) => b.bonded - a.bonded).map((s) => {
     const lost = s.slashed > 0;
     return `<button class="ana" data-a="${esc(s.analyst)}" title="Show ${esc(s.analyst)}'s claims">
-      <div class="nm">${esc(s.analyst)}${s.kind === "model" ? ' <i class="ai">AI</i>' : ""}<span>${s.kind === "model" ? (F.claims.some((c) => c.analyst === s.analyst && c.replayed_from) ? "an open model; its claims replayed from an earlier round" : "an open model, running locally") : "a scripted analyst"}</span></div>
+      <div class="nm">${esc(s.analyst)}${s.kind === "model" ? ' <i class="ai">AI</i>' : ""}<span>${s.kind === "model" ? (F.claims.some((c) => c.analyst === s.analyst && c.replayed_from) ? "an open model; its claims replayed from an earlier round" : "an open model, running locally") : KIND[s.kind] || "a scripted analyst"}</span></div>
       <div class="bb"><i style="width:${(s.bonded / max * 100).toFixed(1)}%;background:${lost ? "var(--flare)" : "var(--volt)"}"></i></div>
       <div class="val">${money(s.bonded)}<span>${s.cleared} true · ${s.slashed} wrong</span></div></button>`;
   }).join("");
@@ -502,6 +508,8 @@ function auditRecord(j) {
     const c = by[e.claim];
     L.push(`### Claim #${c.id}, by ${c.analyst}${c.analyst_kind === "model" ? " (a language model)" : ""}`, "",
       ...(c.replayed_from ? [`- Replayed: ${replayed(c)}; the same words hashed to ${c.replayed_from.hash} on market ${c.replayed_from.market} (chain ${c.replayed_from.chain_id})`] : []),
+      ...(c.post ? [`- From a post by ${c.post.handle} (a written fixture, not a real account): "${c.post.text}"`,
+                    `- The agent's reading: ${c.reading.sentiment}, ${c.reading.conviction} conviction, ${c.reading.urgency} (${c.reading.rule})`] : []),
       `- Analyst wallet: ${c.analyst_address}`, `- Stake: ${money(c.stake)} USDG`, `- Figure claimed: ${c.value}`,
       `- Summary as published: ${c.summary || "(none)"}`, `- Sentence quoted: "${c.quote}"`,
       `- keccak256 of the claim's canonical words (on-chain): ${c.hash}`, `- Posted: ${tx(c.tx_post)}`,
@@ -554,12 +562,13 @@ function story(lead) {
   const acted = cs.filter((c) => c.desk && c.desk.acted).length, refused = cs.length - acted;
   const company = NAMES[wrong.ticker] || wrong.ticker;
   const bond = Math.max(...F.standings.map((s) => s.bonded));      // what each analyst started with
-  const who = (c) => `<div class="who2">${c.analyst_kind === "model" ? '<i class="ai">AI</i>' : ""}<b>${esc(c.analyst)}</b><span>${c.analyst_kind === "model" ? (c.replayed_from ? `a language model; ${esc(replayed(c))}` : "a language model, running on a laptop") : "a scripted analyst"}</span></div>`;
+  const who = (c) => `<div class="who2">${c.analyst_kind === "model" ? '<i class="ai">AI</i>' : ""}<b>${esc(c.analyst)}</b><span>${c.analyst_kind === "model" ? (c.replayed_from ? `a language model; ${esc(replayed(c))}` : "a language model, running on a laptop") : esc(KIND[c.analyst_kind] || "a scripted analyst")}</span></div>`;
   const period = (t) => esc(t).replace(/\b((?:three|six|nine|twelve)(?: and (?:three|six|nine|twelve))? months ended [A-Z][a-z]+ \d{1,2}, \d{4})/, '<mark class="g">$1</mark>');
   const said = (c) => c.summary ? esc(c.summary).replace(/\b(Q[1-4](?: \d{4})?)/, c.verdict === "slashed" ? '<mark class="r">$1</mark>' : '$1') : `${esc(company)}'s figure is <b>${esc(c.value)}</b>.`;
   const S = {
     wrong: [
-      [`An AI read ${esc(company)}'s quarterly report and wrote this.`,
+      [wrong.analyst_kind === "model" ? `An AI read ${esc(company)}'s quarterly report and wrote this.`
+        : wrong.analyst_kind === "kol" ? `A market voice posted this about ${esc(company)}.` : `An analyst read ${esc(company)}'s quarterly report and wrote this.`,
         `${who(wrong)}<blockquote>${said(wrong)}</blockquote><div class="chip">citing ${esc(company)}'s ${esc(f.form || "10-Q")}, filed ${esc(f.filed || "")}</div>`],
       [`It put ${money(wrong.stake)} USDG of its own money behind that sentence.`,
         `<div class="stakeViz"><div><span>its bond</span><b>${money(bond)} USDG</b></div><div class="arrow">→</div><div class="lockd"><span>locked on this claim</span><b>${money(wrong.stake)} USDG</b></div></div>
@@ -578,10 +587,10 @@ function story(lead) {
         `<div class="jmini">${je.attempts.slice(0, 4).map((a) => `<div class="s">✕ #${a.claim} refused · ${esc(plain(cs.find((c) => c.id === a.claim)).short)}</div>`).join("")}
            ${(je.reasoning.evidence || []).map((e) => `<div class="c">✓ #${e.claim} cleared · ${esc(e.value)} · ${e.signal > 0 ? "bullish" : e.signal < 0 ? "bearish" : "no signal"}</div>`).join("")}
            <div class="d">${je.status === "opened" ? `→ ${SIDE[je.side]} ${esc(je.ticker)} ${money(je.notional / 1e6)} USD paper · reasoning hash ${esc(short(je.reasoning_hash, 8, 6))} on-chain` : "→ no trade: what held points nowhere"}</div></div>
-         <p class="small">The journal names the claims behind each trade, the Chainlink verdict on each, and the rules that turned them into a position. Anyone can re-run it.</p>`]] : []),
+         <p class="small">The journal names the claims behind each trade, the verdict on each and who wrote it, and the rules that turned them into a position. Anyone can re-run it.</p>`]] : []),
     ],
     right: [
-      [`Another analyst read the same report and quoted the same sentence.`,
+      [right.analyst_kind === "kol" ? `Another voice posted about the same report.` : `Another analyst read the same report and quoted the same sentence.`,
         `${who(right)}<blockquote>${said(right)}</blockquote><div class="chip">citing the same ${esc(f.form || "10-Q")}</div>`],
       [`It staked ${money(right.stake)} USDG too.`,
         `<div class="stakeViz"><div><span>its bond</span><b>${money(bond)} USDG</b></div><div class="arrow">→</div><div class="lockd"><span>locked on this claim</span><b>${money(right.stake)} USDG</b></div></div>${tx(right.tx_post, "the stake")}`],
@@ -595,7 +604,7 @@ function story(lead) {
     ],
   };
   let which = "wrong", i = 0, opener = null;
-  const KICK = { wrong: "How Vouch works · one real claim", right: "The same sentence, told right" };
+  const KICK = { wrong: F.fixture ? "How Vouch works · one claim (a written fixture post)" : "How Vouch works · one real claim", right: "The same sentence, told right" };
   const end = () => which === "wrong"
     ? `<div class="endCard"><h3>That's Vouch: research that costs money to get wrong.</h3>
         <p>AI analysts are fast and fluent, and sometimes wrong about numbers. Here, being wrong has a price, and agents only act on what survived the check.</p>

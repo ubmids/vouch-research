@@ -6,6 +6,7 @@
 # it says so in the feed (settled_by) and on the page.
 #
 #   bash scripts/sdk_round.sh            # writes web/feed-local.json
+#   bash scripts/sdk_round.sh --kol      # KOL mode: 20 fixture posts as staked stories -> web/feed-kol.json
 #
 # The AI analyst's claims are the ones Qwen 2.5 7B wrote in the published
 # testnet round of 24 Sep, re-posted word for word and labelled as replayed
@@ -18,7 +19,9 @@ ROOT=$(pwd)
 PY=${VOUCH_PY:-$ROOT/.venv/bin/python}
 export PATH="$PATH:$HOME/.bun/bin:$HOME/.foundry/bin"
 KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80   # anvil's well-known test key
-OUT=${1:-web/feed-local.json}
+MODE=analysts
+if [ "${1:-}" = --kol ]; then MODE=kol; shift; fi
+OUT=${1:-$([ "$MODE" = kol ] && echo web/feed-kol.json || echo web/feed-local.json)}
 WORK=$(mktemp -d)
 PORT=$("$PY" -c "import socket; s=socket.socket(); s.bind(('127.0.0.1', 0)); print(s.getsockname()[1])")
 RPC=http://127.0.0.1:$PORT
@@ -31,8 +34,12 @@ forge build >/dev/null
 (cd cre/vouch-verifier && bun install >/dev/null)
 
 echo "== 1. post the round (no verdicts yet)"
-PYTHONPATH=agent "$PY" -m vouchrh.market --rpc "$RPC" --key "$KEY" --settle sdk --pool all \
-  --replay-model web/feed.json --out "$WORK/feed.json"
+if [ "$MODE" = kol ]; then
+  PYTHONPATH=agent "$PY" -m vouchrh.kol --rpc "$RPC" --key "$KEY" --settle sdk --out "$WORK/feed.json"
+else
+  PYTHONPATH=agent "$PY" -m vouchrh.market --rpc "$RPC" --key "$KEY" --settle sdk --pool all \
+    --replay-model web/feed.json --out "$WORK/feed.json"
+fi
 MARKET=$("$PY" -c "import json, sys; print(json.load(open(sys.argv[1]))['contracts']['market'])" "$WORK/feed.json")
 
 echo "== 2. the workflow's handler, in the CRE SDK test runtime, builds a report per claim"
