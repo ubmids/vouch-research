@@ -100,8 +100,8 @@ on everything it read, is refused for each claim that failed, drops it, and
 tries again. Each journal entry is cause and effect in order (claim → filing
 sentence → verdict → signal → decision → trade), and it is repeatable: the
 reasoning record's hash is on-chain, and **Re-verify** in the page recomputes
-every hash, every verdict link and the agent's rules, and reads the receipts
-back from the chain. Run on the published round's AMD claims, the rules give
+every hash, every verdict link and the agent's rules, and, for a round on a
+public chain, reads the receipts back from its RPC. Run on the published round's AMD claims, the rules give
 a short on everything read, because a fabricated "expenses rose" story tips
 it, and a long on what cleared.
 
