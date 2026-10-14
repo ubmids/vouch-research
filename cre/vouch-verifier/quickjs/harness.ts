@@ -3,7 +3,7 @@
 // only on Bun's JavaScriptCore. stdin: one JSON line {claims:[...]} then the
 // filing's raw bytes. stdout: JSON {raw, text, n, verdicts:[...]}.
 import { keccak256 } from "viem"
-import { decodeUtf8, toText } from "../check/edgar"
+import { canonical, decodeUtf8, toText } from "../check/edgar"
 import { auditClaim } from "../check/verifier"
 
 declare const Javy: { IO: { readSync(fd: number, buf: Uint8Array): number; writeSync(fd: number, buf: Uint8Array): void } }
@@ -48,4 +48,4 @@ const verdicts = header.claims.map((c: any) => {
   const v = auditClaim(c.value, c.quote, text, c.summary, c.metric)
   return { fraudulent: v.fraudulent, reason: v.reason, method: v.quoteCheck.method, score: v.quoteCheck.score }
 })
-Javy.IO.writeSync(1, utf8(JSON.stringify({ raw: keccak256(raw), text: keccak256(utf8(text)), n: text.length, verdicts })))
+Javy.IO.writeSync(1, utf8(JSON.stringify({ raw: keccak256(canonical(raw)), text: keccak256(utf8(text)), n: text.length, verdicts })))

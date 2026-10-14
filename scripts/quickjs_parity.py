@@ -59,7 +59,7 @@ def main():
             ok = False
             continue
         got = json.loads(r.stdout)
-        same_bytes = got["raw"] == fx["raw_keccak"]
+        same_bytes = got["raw"] == fx["evidence_keccak"]      # canonical bytes: SEC's CDN tag dropped, in QuickJS
         same_text = got["text"] == "0x" + keccak(text.encode()).hex() and got["n"] == len(text)
         diffs = [(c, v) for c, v in zip(fx["claims"], got["verdicts"]) if v != c["want"]]
         ok &= same_bytes and same_text and not diffs and len(got["verdicts"]) == len(claims)
