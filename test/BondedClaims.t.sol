@@ -212,6 +212,51 @@ contract BondedClaimsTest is Reports {
         market.post("TSLA", FILING, CLAIM, 200 * USD);
     }
 
+    // ---- what fits in one Posted log ------------------------------------------
+
+    function _words(uint256 n) internal pure returns (bytes memory w) {
+        w = new bytes(n);
+        for (uint256 i; i < n; i++) {
+            w[i] = "a";
+        }
+    }
+
+    function test_a_claim_of_exactly_the_longest_allowed_words_posts() public {
+        bytes memory words = _words(market.MAX_WORDS());
+        vm.prank(honest);
+        uint256 id = market.post("TSLA", FILING, words, 20 * USD);
+        assertEq(market.claim(id).claimHash, keccak256(words));
+    }
+
+    function test_one_byte_more_than_the_longest_allowed_words_is_refused() public {
+        bytes memory words = _words(market.MAX_WORDS() + 1);
+        vm.prank(honest);
+        vm.expectRevert(BondedClaims.ClaimTooLong.selector);
+        market.post("TSLA", FILING, words, 20 * USD);
+    }
+
+    function test_a_ticker_too_long_for_the_log_is_refused() public {
+        vm.prank(honest);
+        market.post("ABCDEFGHIJKLMNOP", FILING, CLAIM, 20 * USD); // 16 bytes is fine
+        vm.prank(honest);
+        vm.expectRevert(BondedClaims.TickerTooLong.selector);
+        market.post("ABCDEFGHIJKLMNOPQ", FILING, CLAIM, 20 * USD);
+    }
+
+    function test_a_filing_too_long_for_the_log_is_refused() public {
+        vm.prank(honest);
+        market.post("TSLA", "0001628280-26-049270-0123456789a", CLAIM, 20 * USD); // 32 bytes is fine
+        vm.prank(honest);
+        vm.expectRevert(BondedClaims.FilingTooLong.selector);
+        market.post("TSLA", "0001628280-26-049270-0123456789ab", CLAIM, 20 * USD);
+    }
+
+    function test_a_claim_with_no_words_is_refused() public {
+        vm.prank(honest);
+        vm.expectRevert(BondedClaims.EmptyClaim.selector);
+        market.post("TSLA", FILING, "", 20 * USD);
+    }
+
     function testFuzz_slashing_never_touches_other_analysts(uint96 stake) public {
         stake = uint96(bound(stake, 10 * USD, 500 * USD));
         uint256 id = _post(liar, stake);

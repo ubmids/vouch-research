@@ -93,6 +93,13 @@ contract BondedClaims is IReceiver, IERC165 {
     uint64 public immutable window;
     // A challenge nobody's verdict answers in this long can be unwound.
     uint64 public constant UNWIND_AFTER = 7 days;
+    // Posted carries the ticker, the filing and the words, and the workflow
+    // only sees a claim through that log. A Chainlink CRE log trigger takes
+    // logs up to about 5 KB, so a longer claim would never be checked. These
+    // caps keep the whole event under 4 KB. An SEC accession is 20 characters.
+    uint256 public constant MAX_WORDS = 3500;
+    uint256 public constant MAX_TICKER = 16;
+    uint256 public constant MAX_FILING = 32;
 
     // Who may settle: the Chainlink forwarder on this chain, carrying a report
     // from this owner's workflow of this name, and, once pinned, only the
@@ -151,6 +158,10 @@ contract BondedClaims is IReceiver, IERC165 {
     error WrongClaim();
     error AlreadyPinned();
     error ZeroAddress();
+    error EmptyClaim();
+    error ClaimTooLong();
+    error TickerTooLong();
+    error FilingTooLong();
 
     constructor(
         IERC20 token,
@@ -201,6 +212,11 @@ contract BondedClaims is IReceiver, IERC165 {
         external
         returns (uint256 id)
     {
+        // a claim the workflow cannot read could only ever clear unchecked
+        if (words.length == 0) revert EmptyClaim();
+        if (words.length > MAX_WORDS) revert ClaimTooLong();
+        if (bytes(ticker).length > MAX_TICKER) revert TickerTooLong();
+        if (bytes(filing).length > MAX_FILING) revert FilingTooLong();
         if (atStake < minStake) revert StakeTooSmall();
         if (freeBond(msg.sender) < atStake) revert NotEnoughFreeBond();
         locked[msg.sender] += atStake;
