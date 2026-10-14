@@ -31,6 +31,12 @@ from .verifier import audit_claim
 
 TOKENS = ("TSLA", "AMZN", "PLTR", "NFLX", "AMD")    # the stock tokens on Robinhood Chain testnet
 KEYS = Path(os.path.expanduser("~/.config/vouch-rh/analysts.json"))
+# Who wrote the verdicts, said the same way on the page, in the feed and in the docs.
+SETTLED_BY = {
+    "local": "the Python check, through a local forwarder",
+    "cre": "the Chainlink CRE workflow (CRE CLI simulation, one local node, through Chainlink's mock forwarder)",
+    "sdk": "the CRE workflow in Chainlink's SDK test runtime, via a local forwarder",
+}
 
 
 def _wallet(chain: Chain, name: str, index: int):
@@ -48,16 +54,51 @@ def _wallet(chain: Chain, name: str, index: int):
     return Account.from_key(keys[name])
 
 
+def choose_facts(tickers=TOKENS, per_ticker: int = 2, seed: int = 7, pool: str = "tradable") -> list:
+    """The facts a round's analysts write about: (ticker, filing, text, every
+    fact, the picks) per stock. pool="tradable" prefers figures a trader moves
+    on (revenue, income, costs that rose or fell). pool="all" samples every
+    fact, as the published testnet round of 24 September did: with the same
+    seed it picks the same ten facts, so the AI analyst sees the prompts it saw
+    then (tests/test_preflight.py holds this to the published feed)."""
+    rng = random.Random(seed)
+    out = []
+    for t in tickers:
+        filing = edgar.latest(t)
+        text = filing.text()
+        found = facts(text)
+        if pool == "all":
+            candidates = found
+        else:
+            tradable = [f for f in found if signal({"value": f.value, "quote": f.sentence, "metric": f.metric})["signal"]]
+            candidates = tradable if len(tradable) >= per_ticker else found
+        out.append((t, filing, text, found, rng.sample(candidates, min(per_ticker, len(candidates)))))
+    return out
+
+
 def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD, bond: int = 500 * USD,
         seed: int = 7, fund_wei: int | None = None, log=print, with_model: bool = False,
         token: str | None = None, trade: int = 100 * USD, forwarder: str | None = None, settle: str = "local",
-        window: int = 3600, workflow_owner: str | None = None, workflow_name: str | None = None) -> dict:
+        window: int = 3600, workflow_owner: str | None = None, workflow_name: str | None = None,
+        pool: str = "tradable", cast: list | None = None, settled_by: str | None = None) -> dict:
     """Post a round of claims. With settle="local" the verdicts are delivered at
     once through the forwarder, computed by the Python check (anvil, or a
     public chain without the CRE CLI). With settle="cre" the claims are only
     posted; the Chainlink CRE workflow settles them (cre/), and finish() picks
-    the round up from the chain afterwards."""
-    rng = random.Random(seed)
+    the round up from the chain afterwards. settle="sdk" also only posts: the
+    workflow's own handler, in the CRE SDK's test runtime, then builds every
+    verdict report (scripts/sdk_round.sh)."""
+    # Read every filing before anything is spent: a round that cannot fetch
+    # its evidence should fail here, not after the deploy.
+    chosen = choose_facts(tickers, per_ticker, seed, pool)
+    cast = list(cast or CAST)
+    if with_model:
+        # Asked for the model and it is not there: stop, rather than run a round
+        # without the AI analyst and find out after the gas is spent.
+        from . import llm
+        if not llm.available():
+            raise SystemExit(f"no {llm.MODEL} at {llm.HOST}: start Ollama with it, or run without --model")
+        cast.insert(1, llm.Model)
     # On a public chain the market lives at one address, so its record builds
     # up round after round. The addresses are public and live in the repo.
     record = Path(__file__).resolve().parents[2] / "deployments" / f"{chain.chain_id}.json"
@@ -74,13 +115,6 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
             record.parent.mkdir(exist_ok=True)
             record.write_text(json.dumps(asdict(deployed), indent=1))
         log(f"  market deployed at {deployed.market}, verdicts only from forwarder {deployed.forwarder}")
-    cast = list(CAST)
-    if with_model:
-        from . import llm
-        if llm.available():
-            cast.insert(1, llm.Model)
-        else:
-            log(f"  (no local model at {llm.HOST}; running the scripted analysts only)")
     analysts = []
     for i, A in enumerate(cast):
         acct = _wallet(chain, A.name, i)
@@ -94,15 +128,8 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
 
     start_block = chain.w3.eth.block_number
     feed = []
-    for t in tickers:
-        filing = edgar.latest(t)
-        raw, text = filing.raw(), filing.text()
-        found = facts(text)
-        # Analysts cover the figures traders move on (revenue, income, costs
-        # that rose or fell) when the filing has enough of them.
-        tradable = [f for f in found if signal({"value": f.value, "quote": f.sentence, "metric": f.metric})["signal"]]
-        pool = tradable if len(tradable) >= per_ticker else found
-        picks = rng.sample(pool, min(per_ticker, len(pool)))
+    for t, filing, text, found, picks in chosen:
+        raw = filing.raw()
         for fact in picks:
             for agent, acct in analysts:
                 c = agent.claim(t, filing.accession, fact, found)
@@ -115,13 +142,15 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
                     "reason": verdict.reason, "match": verdict.quote_check.method, "score": verdict.quote_check.score,
                     "tx_post": posted,
                 }
+                if getattr(agent, "provenance", None):
+                    row["replayed_from"] = agent.provenance(c)
                 if settle == "local":
                     row["tx_judge"] = chain.report(cid, c.digest(), verdict.fraudulent, keccak(edgar.canonical(raw)), verdict.reason)
                 feed.append(row)
                 log(f"  #{cid:<3} {t:5} {agent.name:12} {c.value:>16}  {'SLASH ' if verdict.fraudulent else 'clear '} {verdict.reason}")
     standings = [{"analyst": a.name, "kind": a.kind, "address": acct.address} for a, acct in analysts]
     return {"chain_id": chain.chain_id, "contracts": asdict(deployed), "generated": int(time.time()),
-            "settled_by": "the Python check, through a local forwarder" if settle == "local" else "the Chainlink CRE workflow (CRE CLI simulation)",
+            "settled_by": settled_by or SETTLED_BY[settle],
             "from_block": start_block, "standings": standings, "claims": feed, "trade_size": trade, "fund_wei": fund_wei}
 
 
@@ -185,9 +214,15 @@ def main(argv=None):
     ap.add_argument("--model", action="store_true", help="add the local language-model analyst (Ollama)")
     ap.add_argument("--token", help="bond in this ERC-20 (e.g. Paxos USDG) instead of deploying the test stand-in")
     ap.add_argument("--forwarder", help="accept verdicts from this forwarder (Chainlink's on a public chain)")
-    ap.add_argument("--settle", choices=("local", "cre"), default="local",
+    ap.add_argument("--settle", choices=("local", "cre", "sdk"), default="local",
                     help="local: deliver the Python check's verdicts through the forwarder now; cre: post only, "
-                         "the CRE workflow settles, then run again with --finish")
+                         "the CRE workflow settles (cre workflow simulate), then run again with --finish; "
+                         "sdk: post only, the workflow's handler in the CRE SDK test runtime builds the reports "
+                         "(scripts/sdk_round.sh)")
+    ap.add_argument("--pool", choices=("tradable", "all"), default="tradable",
+                    help="which facts the analysts write about; 'all' picks the published 24 Sep round's facts")
+    ap.add_argument("--replay-model", metavar="FEED",
+                    help="re-post the language model's claims recorded in FEED, word for word, labelled as replayed")
     ap.add_argument("--finish", help="a posted round's feed: read its verdicts from the chain and trade on them")
     ap.add_argument("--window", type=int, default=3600, help="challenge window in seconds (a CRE round needs time to settle)")
     ap.add_argument("--workflow-owner", help="production: accept reports only from this CRE workflow owner")
@@ -204,12 +239,20 @@ def main(argv=None):
         chain.attach(Deployed(**result["contracts"]))
         result = finish(chain, result)
     else:
+        cast = None
+        if args.replay_model:
+            from . import analysts, llm
+            cast = list(analysts.CAST)
+            cast.insert(1, llm.replayed(args.replay_model))
         result = run(chain, per_ticker=args.per_ticker, with_model=args.model, token=args.token,
                      bond=int(args.bond * USD), stake=int(args.stake * USD), trade=int(args.trade * USD),
                      forwarder=args.forwarder, settle=args.settle, window=args.window,
-                     workflow_owner=args.workflow_owner, workflow_name=args.workflow_name)
+                     workflow_owner=args.workflow_owner, workflow_name=args.workflow_name,
+                     pool=args.pool, cast=cast)
         if args.settle == "local":
             result = finish(chain, result)
+        elif args.model and not any(c["analyst_kind"] == "model" for c in result["claims"]):
+            raise SystemExit("--model was asked for but the model wrote no claims; stopping before any verdict")
         else:
             txs = Path(args.out).with_suffix(".posts.txt")
             txs.write_text("".join(f"{c['id']} {c['tx_post']}\n" for c in result["claims"]))

@@ -3,6 +3,9 @@ import os, shutil, socket, subprocess, sys, time
 import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "agent"))
 os.environ.setdefault("VOUCH_PRICES", "off")      # never call a price endpoint from the tests
+# Never ask a real model from the tests: whatever Ollama runs on this machine is
+# not ours to load. Tests that need one start a stub and point at it.
+os.environ["OLLAMA_HOST"] = "http://127.0.0.1:9"
 
 ANVIL = shutil.which("anvil") or os.path.expanduser("~/.foundry/bin/anvil")
 KEY0 = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"

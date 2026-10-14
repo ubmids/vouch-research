@@ -87,3 +87,95 @@ class Model(Analyst):
         value = str(out.get("value", "")).strip()
         metric = str(out.get("metric", "")).strip() or fact.metric
         return Claim(ticker, accession, metric, value, quote, self.name, str(out.get("summary", "")).strip())
+
+
+# The claim that opens the demo: on 24 September Qwen 2.5 7B, given Tesla's
+# depreciation sentence, wrote "Depreciation for Q3 2026 was $1.37 billion."
+# for a quarter that ended in June (claim #6 on the v1 market). A round only
+# has that moment if the model writes it again.
+HERO_TICKER = "TSLA"
+HERO_SENTENCE = ("Depreciation expense during the three and six months ended June 30, 2026 was "
+                 "$1.37 billion and $2.71 billion, respectively.")
+HERO_REASON = "wrong quarter: the period ended in June, the claim says Q3 2026"
+
+
+def dry_run(per_ticker: int = 2, seed: int = 7, log=print) -> bool:
+    """Ask the model exactly what the round will ask it about Tesla's
+    depreciation sentence (same facts, same window, same options) and say
+    whether it writes the published wrong-quarter claim again. Spends no gas;
+    scripts/cre_round.sh runs it before deploying anything."""
+    from .market import choose_facts
+    from .verifier import audit_claim
+    if not available():
+        log(f"no {MODEL} at {HOST}: start Ollama with it (ollama pull {MODEL}), or set OLLAMA_HOST")
+        return False
+    (t, filing, text, found, picks), = choose_facts((HERO_TICKER,), per_ticker, seed, pool="all")
+    fact = next((f for f in picks if f.sentence == HERO_SENTENCE), None)
+    if fact is None:
+        log("the round would not ask about the depreciation sentence (facts or seed changed)")
+        return False
+    c = Model(seed=seed).claim(t, filing.accession, fact, found)
+    v = audit_claim(c.value, c.quote, text, c.summary, c.metric)
+    log(f"model {MODEL} at {HOST} wrote: value {c.value!r}, summary {c.summary!r}")
+    log(f"  the check: {'SLASH' if v.fraudulent else 'clear'} ({v.reason})")
+    hero = c.value == "$1.37 billion" and c.quote == HERO_SENTENCE and v.fraudulent and v.reason == HERO_REASON
+    log("  the hero claim reproduces" if hero else "  NOT the published claim: the round would have no wrong-quarter hero")
+    return hero
+
+
+def replayed(feed_path: str, label: str = "the published testnet round of 24 September 2026"):
+    """The language model's claims from a recorded round, posted again word for
+    word, for a round that runs without the model. Each one keeps its
+    provenance: the round, the claim id there, and the hash the market stored
+    for it then, which the same words must still produce."""
+    feed = json.loads(open(feed_path).read())
+    recorded: dict[str, list] = {}
+    for r in feed["claims"]:
+        if r.get("analyst_kind") == "model":
+            recorded.setdefault(r["ticker"], []).append(r)
+    if not recorded:
+        raise ValueError(f"{feed_path} has no language-model claims to replay")
+
+    class Replayed(Analyst):
+        name = next(iter(recorded.values()))[0]["analyst"]
+        kind = "model"
+
+        def __init__(self, seed: int = 0):
+            super().__init__(seed)
+            self.asked: dict[str, int] = {}
+            self.last = None
+
+        def claim(self, ticker, accession, fact, others):
+            # The recorded claims are in the order that round asked for them:
+            # one per fact, per stock. choose_facts(pool="all") asks the same.
+            k = self.asked.get(ticker, 0)
+            self.asked[ticker] = k + 1
+            r = self.last = recorded[ticker][k]
+            if r["accession"] != accession:
+                raise ValueError(f"recorded claim #{r['id']} cites {r['accession']}, the round cites {accession}")
+            c = Claim(ticker, accession, r["metric"], r["value"], r["quote"], r["analyst"], r.get("summary", ""))
+            if "0x" + c.digest().hex() != r["hash"]:
+                raise ValueError(f"recorded claim #{r['id']} no longer hashes to {r['hash']}")
+            return c
+
+        def provenance(self, claim: Claim) -> dict:
+            r = self.last
+            return {"round": label, "claim": r["id"], "hash": r["hash"], "tx_post": r.get("tx_post"),
+                    "market": feed.get("contracts", {}).get("market"), "chain_id": feed.get("chain_id")}
+
+    return Replayed
+
+
+def main(argv=None):
+    import argparse
+    import sys
+    ap = argparse.ArgumentParser(prog="python -m vouchrh.llm")
+    ap.add_argument("--dry-run", action="store_true", help="check the model writes the hero claim again; no gas")
+    args = ap.parse_args(argv)
+    if args.dry_run:
+        sys.exit(0 if dry_run() else 1)
+    ap.print_help()
+
+
+if __name__ == "__main__":
+    main()
