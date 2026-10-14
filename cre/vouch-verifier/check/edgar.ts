@@ -14,6 +14,24 @@ export function inflate(body: Uint8Array): Uint8Array {
   return body.length > 2 && body[0] === 0x1f && body[1] === 0x8b ? gunzipSync(body) : body
 }
 
+// SEC's CDN appends a bot-check script whose path changes over time, so a
+// filing's raw bytes do not hash the same twice. A verdict's evidence is the
+// keccak256 of the document without that tag, as edgar.canonical does in Python.
+const CDN_SCRIPT = /<script type="text\/javascript"[ \t\n\r\f\v]+src="\/[^"<>]*"><\/script>/g
+
+/** The filing without the CDN's tag. Bytes go through a one-char-per-byte
+ * string, so everything else is kept exactly. */
+export function canonical(raw: Uint8Array): Uint8Array {
+  const parts: string[] = []
+  for (let i = 0; i < raw.length; i += 8192) parts.push(String.fromCharCode(...raw.subarray(i, i + 8192)))
+  const s = parts.join("")
+  const kept = s.replace(CDN_SCRIPT, "")
+  if (kept.length === s.length) return raw
+  const out = new Uint8Array(kept.length)
+  for (let i = 0; i < kept.length; i++) out[i] = kept.charCodeAt(i)
+  return out
+}
+
 /** bytes.decode("utf-8", "ignore"): invalid sequences are dropped, not replaced. */
 export function decodeUtf8(b: Uint8Array): string {
   const out: string[] = []

@@ -59,7 +59,7 @@ def main():
                          "score": v.quote_check.score}
             c["signal"] = signal(c)          # the trading agent's reading of it (policy.ts must agree)
         fixture = {"ticker": t, "accession": f.accession, "url": f.url, "cache_key": edgar.CACHE.name,
-                   "raw_keccak": "0x" + keccak(raw).hex(), "text_sha256": hashlib.sha256(text.encode()).hexdigest(),
+                   "evidence_keccak": "0x" + keccak(edgar.canonical(raw)).hex(), "text_sha256": hashlib.sha256(text.encode()).hexdigest(),
                    "text_length": len(text), "claims": claims}
         (OUT / f"{t}.json").write_text(json.dumps(fixture, separators=(",", ":"), ensure_ascii=False))
         bad = sum(c["want"]["fraudulent"] for c in claims)

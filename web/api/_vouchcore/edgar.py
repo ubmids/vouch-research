@@ -51,12 +51,25 @@ class Filing:
     url: str
 
     def raw(self) -> bytes:
-        """The document exactly as EDGAR serves it. Its keccak256 is the evidence
-        a verdict commits to: anyone can download the same bytes and hash them."""
+        """The document as EDGAR serves it. A verdict commits to the keccak256
+        of canonical(raw): anyone can download the document, drop the one tag
+        SEC's CDN adds, and get the same hash."""
         return _get(self.url)
 
     def text(self) -> str:
         return to_text(self.raw().decode("utf-8", "ignore"))
+
+
+# SEC's CDN appends a bot-check script to every document it serves, and its path
+# changes over time (seen 13-14 Oct 2026: two paths for the same 10-Q, 45
+# minutes apart), so the raw bytes of a filing do not hash the same twice.
+# The canonical bytes are the document without that tag. Filings themselves
+# carry no scripts; to_text drops every script anyway, so the text is unchanged.
+_CDN_SCRIPT = re.compile(rb'<script type="text/javascript"[ \t\n\r\f\v]+src="/[^"<>]*"></script>')
+
+
+def canonical(raw: bytes) -> bytes:
+    return _CDN_SCRIPT.sub(b"", raw)
 
 
 def to_text(raw_html: str) -> str:

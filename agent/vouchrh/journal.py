@@ -151,7 +151,7 @@ def verify(feed: dict, chain: Chain, edgar_check: bool = True) -> list[dict]:
                     texts[c["accession"]] = (f.raw(), f.text())
                 raw, text = texts[c["accession"]]
                 if v[1] != bytes(32):
-                    check(tag, f"claim #{c['id']} verdict evidence is the filing EDGAR serves", v[1] == keccak(raw))
+                    check(tag, f"claim #{c['id']} verdict evidence is the filing EDGAR serves", v[1] == keccak(edgar.canonical(raw)))
                 again = audit_claim(c["value"], c["quote"], text, c.get("summary", ""), c.get("metric", ""))
                 check(tag, f"claim #{c['id']} re-checked against the filing: holds", not again.fraudulent, again.reason)
         again = policy.thesis(j["ticker"], [claims[e["claim"]] for e in rec["evidence"]], rec["per_claim"])

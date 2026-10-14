@@ -116,7 +116,7 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
                     "tx_post": posted,
                 }
                 if settle == "local":
-                    row["tx_judge"] = chain.report(cid, c.digest(), verdict.fraudulent, keccak(raw), verdict.reason)
+                    row["tx_judge"] = chain.report(cid, c.digest(), verdict.fraudulent, keccak(edgar.canonical(raw)), verdict.reason)
                 feed.append(row)
                 log(f"  #{cid:<3} {t:5} {agent.name:12} {c.value:>16}  {'SLASH ' if verdict.fraudulent else 'clear '} {verdict.reason}")
     standings = [{"analyst": a.name, "kind": a.kind, "address": acct.address} for a, acct in analysts]

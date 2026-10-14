@@ -11,6 +11,7 @@ import { EvmMock, HttpActionsMock, newTestRuntime, REPORT_METADATA_HEADER_LENGTH
 import { gzipSync } from "fflate"
 import { bytesToHex, decodeAbiParameters, encodeAbiParameters, encodeEventTopics, hexToBytes, keccak256, toBytes } from "viem"
 import { type Config, POSTED, REPORT, initWorkflow, onPosted } from "./workflow"
+import { canonical as canonicalFiling } from "./check/edgar"
 import config from "./config.staging.json"
 
 const CACHE = join(import.meta.dir, "..", "..", ".cache", "edgar")
@@ -42,7 +43,7 @@ function postedLog(id: bigint, words: string, ticker = "TSLA", filing = "0001628
   return { address: hexToBytes(config.market as `0x${string}`), topics: topics.map((t) => hexToBytes(t as `0x${string}`)), data: hexToBytes(data) } as any
 }
 
-function serveEdgar(seen: string[]) {
+function serveEdgar(seen: string[], cdnPath?: string) {
   const http = HttpActionsMock.testInstance()
   http.sendRequest = (req) => {
     seen.push(req.url)
@@ -51,16 +52,19 @@ function serveEdgar(seen: string[]) {
     if (!ua.includes("@") || gz !== "gzip") return { statusCode: 403 }
     const path = join(CACHE, cacheKey(req.url))
     if (!existsSync(path)) return { statusCode: 404 }
-    const body = gzipSync(new Uint8Array(readFileSync(path)))
+    let file = new Uint8Array(readFileSync(path))
+    // SEC's CDN tags each document with a script whose path changes over time
+    if (cdnPath) file = new TextEncoder().encode(new TextDecoder().decode(file).replace(/src="\/[^"]*"><\/script>/, `src="/${cdnPath}"></script>`))
+    const body = gzipSync(file)
     if (body.length > 250_000) return { statusCode: 413 } // CRE's response limit
     return { statusCode: 200, body: Buffer.from(body).toString("base64") }
   }
   return http
 }
 
-function run(id: bigint, value: string, quote: string, summary: string) {
+function run(id: bigint, value: string, quote: string, summary: string, cdnPath?: string) {
   const seen: string[] = []
-  serveEdgar(seen)
+  serveEdgar(seen, cdnPath)
   const evm = EvmMock.testInstance(CHAIN)
   let written: any = null
   evm.writeReport = (input) => {
@@ -88,8 +92,8 @@ describe("the Vouch verifier workflow", () => {
     expect(r.reason).toBe("quote verified and value grounded")
     expect(r.claimId).toBe(4n)
     expect(r.claimHash).toBe(keccak256(toBytes(r.words)))
-    // the evidence is the keccak256 of the exact bytes EDGAR serves for this accession
-    expect(r.evidence).toBe(keccak256(new Uint8Array(readFileSync(join(CACHE, cacheKey(TSLA_10Q))))))
+    // the evidence is the keccak256 of the bytes EDGAR serves for this accession, less the CDN's tag
+    expect(r.evidence).toBe(keccak256(canonicalFiling(new Uint8Array(readFileSync(join(CACHE, cacheKey(TSLA_10Q)))))))
     expect(r.seen).toEqual([TSLA_INDEX, TSLA_10Q])
     expect(bytesToHex(r.written.receiver)).toBe(config.market.toLowerCase())
   })
@@ -103,6 +107,13 @@ describe("the Vouch verifier workflow", () => {
       mkdirSync(process.env.VOUCH_REPORT_OUT, { recursive: true })
       writeFileSync(join(process.env.VOUCH_REPORT_OUT, "wrong-quarter.json"), JSON.stringify({ raw: bytesToHex(r.raw), claim: r.words }))
     }
+  })
+
+  withFilings("every node reports the same evidence, whatever script SEC's CDN adds", () => {
+    const a = run(4n, "$1.37 billion", SENTENCE, "", "AAAA/one/path")
+    const b = run(4n, "$1.37 billion", SENTENCE, "", "zz/another/path/9")
+    expect(a.evidence).toBe(b.evidence)
+    expect(a.fraudulent).toBe(false)
   })
 
   withFilings("slashes a quote with one figure changed", () => {

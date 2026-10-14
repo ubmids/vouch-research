@@ -35,10 +35,10 @@ def test_every_verdict_arrived_through_the_forwarder_and_says_which_filing(chain
     from eth_utils import keccak
     from vouchrh import edgar
     r = round_(chain, tickers=("NFLX",), per_ticker=1)
-    raw = keccak(edgar.latest("NFLX").raw())
+    raw = keccak(edgar.canonical(edgar.latest("NFLX").raw()))
     for f in r["claims"]:
         assert f["agrees"], f                         # the chain holds what the check said
-        assert f["evidence"] == "0x" + raw.hex()      # and commits to the exact bytes EDGAR served
+        assert f["evidence"] == "0x" + raw.hex()      # and commits to the bytes EDGAR served, less its CDN tag
         receipt = chain.w3.eth.get_transaction_receipt(f["tx_judge"])
         assert receipt["to"] == chain.forwarder.address
 
@@ -81,7 +81,7 @@ def test_a_cre_round_posts_first_and_reads_its_verdicts_back_from_the_chain(chai
     raw, text = f.raw(), f.text()
     for c in posted["claims"]:                       # what each DON node computes, then the report
         v = audit_claim(c["value"], c["quote"], text, c["summary"], c["metric"])
-        chain.report(c["id"], bytes.fromhex(c["hash"][2:]), v.fraudulent, keccak(raw), v.reason)
+        chain.report(c["id"], bytes.fromhex(c["hash"][2:]), v.fraudulent, keccak(edgar.canonical(raw)), v.reason)
     done = finish(chain, posted, log=lambda *_: None, quote=quote)
     for c in done["claims"]:
         assert c["verdict"] in ("cleared", "slashed") and c["agrees"], c

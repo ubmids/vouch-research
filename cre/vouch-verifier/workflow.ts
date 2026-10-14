@@ -4,7 +4,7 @@
 //     -> (EVM log trigger) every node of the DON, independently:
 //          fetches the company's EDGAR submissions index and the cited filing,
 //          runs the deterministic check on the claim's exact words,
-//          returns {fraudulent, reason, evidence = keccak256(filing bytes)}
+//          returns {fraudulent, reason, evidence = keccak256(the filing's canonical bytes)}
 //     -> the nodes must agree exactly (identical consensus)
 //     -> a signed report abi.encode(id, claimHash, fraudulent, evidence, reason)
 //     -> the Chainlink forwarder calls BondedClaims.onReport, which slashes or clears.
@@ -26,7 +26,7 @@ import {
 } from "@chainlink/cre-sdk"
 import { type Hex, decodeEventLog, encodeAbiParameters, hexToBytes, keccak256, parseAbi, parseAbiParameters, toEventSelector } from "viem"
 import { z } from "zod"
-import { decodeUtf8, inflate, primaryDocument, toText } from "./check/edgar"
+import { canonical, decodeUtf8, inflate, primaryDocument, toText } from "./check/edgar"
 import { auditClaim } from "./check/verifier"
 
 export const configSchema = z.object({
@@ -86,7 +86,9 @@ export const checkOnNode = (req: HTTPSendRequester, claim: ClaimWords, config: C
   const raw = get(req, doc.url, config.userAgent)
   const text = toText(decodeUtf8(raw))
   const v = auditClaim(claim.value, claim.quote, text, claim.summary, claim.metric)
-  return { fraudulent: v.fraudulent, reason: v.reason, evidence: keccak256(raw) }
+  // Every node must report the same evidence, and SEC's CDN tag varies by time
+  // and place, so the hash is of the filing without it.
+  return { fraudulent: v.fraudulent, reason: v.reason, evidence: keccak256(canonical(raw)) }
 }
 
 export const decodePosted = (log: EVMLog) => {

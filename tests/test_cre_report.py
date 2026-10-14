@@ -52,7 +52,7 @@ def test_the_sdk_built_report_settles_the_claim_through_the_forwarder(chain, rep
     s = chain.settlement(cid)
     assert s["status"] == "slashed"
     assert s["reason"] == "wrong quarter: the period ended in June, the claim says Q3 2026"
-    assert s["evidence"] == "0x" + keccak(edgar.latest("TSLA").raw()).hex()
+    assert s["evidence"] == "0x" + keccak(edgar.canonical(edgar.latest("TSLA").raw())).hex()
 
 
 MOCK_FORWARDER = "0x0b93082D9b3C7C97fAcd250082899BAcf3af3885"   # Chainlink CRE, Robinhood Chain testnet
