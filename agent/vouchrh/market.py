@@ -168,7 +168,9 @@ def finish(chain: Chain, feed: dict, log=print, quote=None) -> dict:
 
     feed["trader"] = trader.address
     feed["standings"] = [{**s, "bonded": chain.bonded(s["address"]) / USD,
-                          "cleared": sum(1 for f in feed["claims"] if f["analyst"] == s["analyst"] and f["verdict"] == "cleared"),
+                          # as the contract counts: cleared means checked and true
+                          "cleared": sum(1 for f in feed["claims"] if f["analyst"] == s["analyst"] and f["verdict"] == "cleared" and f["checked"]),
+                          "cleared_unchecked": sum(1 for f in feed["claims"] if f["analyst"] == s["analyst"] and f["verdict"] == "cleared" and not f["checked"]),
                           "slashed": sum(1 for f in feed["claims"] if f["analyst"] == s["analyst"] and f["verdict"] == "slashed")}
                          for s in feed["standings"]]
     feed["reader_pool"] = chain.reader_pool() / USD

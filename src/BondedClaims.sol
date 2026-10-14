@@ -375,7 +375,8 @@ contract BondedClaims is IReceiver, IERC165 {
     /// @notice For other contracts: did this claim survive the check? Pending
     /// and challenged claims are not cleared; only a settled truth is.
     function isCleared(uint256 id) external view returns (bool) {
-        // slither-disable-next-line incorrect-equality
+        // compares a status, not a time (slither reads it as a timestamp check)
+        // slither-disable-next-line incorrect-equality,timestamp
         return id < _claims.length && _claims[id].status == Status.Cleared;
     }
 
