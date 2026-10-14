@@ -6,6 +6,8 @@
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const short = (h, a = 6, b = 4) => h ? `${h.slice(0, a)}…${h.slice(-b)}` : "";
+// A model claim re-posted from an earlier round, word for word (its words hash to the same claim hash).
+const replayed = (c) => c.replayed_from ? `replayed: the model wrote these words in ${c.replayed_from.round} (claim #${c.replayed_from.claim} there); posted again here word for word` : "";
 const money = (n) => Number(n).toLocaleString("en-US", { maximumFractionDigits: 2 });
 const NAMES = { TSLA: "Tesla", AMZN: "Amazon", PLTR: "Palantir", NFLX: "Netflix", AMD: "AMD" };
 let F, filter = "all", ticker = null, analyst = "", query = "", selected = null;
@@ -122,7 +124,7 @@ function rows() {
     const p = plain(c);
     return `<tr data-id="${c.id}" class="${c.verdict}" aria-selected="${c.id === selected}" tabindex="0">
       <td class="tk">${esc(c.ticker)}<span>${esc(NAMES[c.ticker] || "")}</span></td>
-      <td class="an">${esc(c.analyst)}${c.analyst_kind === "model" ? ' <span class="ai" title="A language model, running locally">AI</span>' : ""}</td>
+      <td class="an">${esc(c.analyst)}${c.analyst_kind === "model" ? ` <span class="ai" title="${esc(replayed(c) || "A language model, running locally")}">AI${c.replayed_from ? " · replayed" : ""}</span>` : ""}</td>
       <td class="claim"><span class="v">${esc(c.value)}</span><span class="q">${esc(headline(c))}</span></td>
       <td class="vd"><span class="pill ${c.verdict[0]}">${c.verdict === "cleared" ? "TRUE" : "WRONG"}</span><span class="why">${esc(p.short)}</span></td></tr>`;
   }).join("") || `<tr class="none"><td colspan="4">No claims match. <button id="reset">Clear the filters</button></td></tr>`;
@@ -204,7 +206,7 @@ function select(id, scroll) {
     <p class="sub">${p.why}${p.rule ? `<span class="rule">${esc(p.rule)}</span>` : ""}</p>
 
     <div class="box"><div class="k"><span>What ${esc(c.analyst)}${c.analyst_kind === "model" ? " (AI)" : ""} claimed</span><span>${money(c.stake)} USDG at stake</span></div>
-      <div class="v said">${c.summary ? esc(c.summary) : `The figure is <b>${esc(c.value)}</b>.`}</div></div>
+      <div class="v said">${c.summary ? esc(c.summary) : `The figure is <b>${esc(c.value)}</b>.`}</div>${c.replayed_from ? `<div class="hash">${esc(replayed(c))} · claim hash ${esc(short(c.replayed_from.hash, 10, 6))}</div>` : ""}</div>
 
     <div class="box"><div class="k"><span>The sentence it quoted</span><span>${src && c.quote !== src.match ? "differences marked" : "as quoted"}</span></div><div class="v">${quoted}</div></div>
 
@@ -274,7 +276,7 @@ function board() {
   $("#board").innerHTML = F.standings.slice().sort((a, b) => b.bonded - a.bonded).map((s) => {
     const lost = s.slashed > 0;
     return `<button class="ana" data-a="${esc(s.analyst)}" title="Show ${esc(s.analyst)}'s claims">
-      <div class="nm">${esc(s.analyst)}${s.kind === "model" ? ' <i class="ai">AI</i>' : ""}<span>${s.kind === "model" ? "an open model, running locally" : "a scripted analyst"}</span></div>
+      <div class="nm">${esc(s.analyst)}${s.kind === "model" ? ' <i class="ai">AI</i>' : ""}<span>${s.kind === "model" ? (F.claims.some((c) => c.analyst === s.analyst && c.replayed_from) ? "an open model; its claims replayed from an earlier round" : "an open model, running locally") : "a scripted analyst"}</span></div>
       <div class="bb"><i style="width:${(s.bonded / max * 100).toFixed(1)}%;background:${lost ? "var(--flare)" : "var(--volt)"}"></i></div>
       <div class="val">${money(s.bonded)}<span>${s.cleared} true · ${s.slashed} wrong</span></div></button>`;
   }).join("");
@@ -499,6 +501,7 @@ function auditRecord(j) {
   for (const e of r.evidence) {
     const c = by[e.claim];
     L.push(`### Claim #${c.id}, by ${c.analyst}${c.analyst_kind === "model" ? " (a language model)" : ""}`, "",
+      ...(c.replayed_from ? [`- Replayed: ${replayed(c)}; the same words hashed to ${c.replayed_from.hash} on market ${c.replayed_from.market} (chain ${c.replayed_from.chain_id})`] : []),
       `- Analyst wallet: ${c.analyst_address}`, `- Stake: ${money(c.stake)} USDG`, `- Figure claimed: ${c.value}`,
       `- Summary as published: ${c.summary || "(none)"}`, `- Sentence quoted: "${c.quote}"`,
       `- keccak256 of the claim's canonical words (on-chain): ${c.hash}`, `- Posted: ${tx(c.tx_post)}`,
@@ -551,7 +554,7 @@ function story(lead) {
   const acted = cs.filter((c) => c.desk && c.desk.acted).length, refused = cs.length - acted;
   const company = NAMES[wrong.ticker] || wrong.ticker;
   const bond = Math.max(...F.standings.map((s) => s.bonded));      // what each analyst started with
-  const who = (c) => `<div class="who2">${c.analyst_kind === "model" ? '<i class="ai">AI</i>' : ""}<b>${esc(c.analyst)}</b><span>${c.analyst_kind === "model" ? "a language model, running on a laptop" : "a scripted analyst"}</span></div>`;
+  const who = (c) => `<div class="who2">${c.analyst_kind === "model" ? '<i class="ai">AI</i>' : ""}<b>${esc(c.analyst)}</b><span>${c.analyst_kind === "model" ? (c.replayed_from ? `a language model; ${esc(replayed(c))}` : "a language model, running on a laptop") : "a scripted analyst"}</span></div>`;
   const period = (t) => esc(t).replace(/\b((?:three|six|nine|twelve)(?: and (?:three|six|nine|twelve))? months ended [A-Z][a-z]+ \d{1,2}, \d{4})/, '<mark class="g">$1</mark>');
   const said = (c) => c.summary ? esc(c.summary).replace(/\b(Q[1-4](?: \d{4})?)/, c.verdict === "slashed" ? '<mark class="r">$1</mark>' : '$1') : `${esc(company)}'s figure is <b>${esc(c.value)}</b>.`;
   const S = {

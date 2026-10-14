@@ -154,6 +154,24 @@ def run(chain: Chain, tickers=TOKENS, per_ticker: int = 2, stake: int = 25 * USD
             "from_block": start_block, "standings": standings, "claims": feed, "trade_size": trade, "fund_wei": fund_wei}
 
 
+def deliver(chain: Chain, feed: dict, reports: list, log=print) -> None:
+    """Send reports the workflow's handler built (in the CRE SDK test runtime)
+    through the forwarder, byte for byte as the SDK produced them. Each claim
+    keeps the workflow's own log lines from that run."""
+    by = {c["id"]: c for c in feed["claims"]}
+    feed["sdk_runtime"] = ("Every verdict is a report built by the CRE workflow's handler (cre/vouch-verifier/workflow.ts) "
+                           "in Chainlink's CRE SDK test runtime: one process plays every node, SEC's files come from "
+                           "the round's EDGAR cache, nothing is signed. The runtime's EVM write is a mock (its log says "
+                           "0x00…); the report was then sent through the local forwarder in tx_judge. "
+                           "Not a CRE CLI simulation and not a DON.")
+    for r in reports:
+        c = by[r["id"]]
+        tx = chain.send(chain.verifier, chain.forwarder.functions.report(chain.market.address, bytes.fromhex(r["raw"][2:]), b"", []))
+        c["tx_judge"] = "0x" + tx.transactionHash.hex().removeprefix("0x")
+        c["workflow_log"] = r.get("logs", [])
+        log(f"  #{r['id']:<3} {'SLASH ' if r['fraudulent'] else 'clear '} {r['reason']}  (report from the SDK runtime)")
+
+
 def finish(chain: Chain, feed: dict, log=print, quote=None) -> dict:
     """Read every verdict back from the chain, then let the trading agent work.
     Whoever settled the claims, what the feed shows is what the chain holds."""
@@ -224,6 +242,9 @@ def main(argv=None):
     ap.add_argument("--replay-model", metavar="FEED",
                     help="re-post the language model's claims recorded in FEED, word for word, labelled as replayed")
     ap.add_argument("--finish", help="a posted round's feed: read its verdicts from the chain and trade on them")
+    ap.add_argument("--deliver", metavar="REPORTS",
+                    help="with --finish: first send each report the workflow built in the CRE SDK test runtime "
+                         "(cre/vouch-verifier/sdk-round.ts) through the forwarder")
     ap.add_argument("--window", type=int, default=3600, help="challenge window in seconds (a CRE round needs time to settle)")
     ap.add_argument("--workflow-owner", help="production: accept reports only from this CRE workflow owner")
     ap.add_argument("--workflow-name", help="production: ... and this workflow name")
@@ -237,6 +258,8 @@ def main(argv=None):
         from .chain import Deployed
         result = json.loads(Path(args.finish).read_text())
         chain.attach(Deployed(**result["contracts"]))
+        if args.deliver:
+            deliver(chain, result, json.loads(Path(args.deliver).read_text()))
         result = finish(chain, result)
     else:
         cast = None
