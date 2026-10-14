@@ -58,24 +58,27 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
 .shot2 img { width: 100%; display: block; }
 .duo { display: grid; grid-template-columns: 1.1fr 1fr; gap: 60px; align-items: start; margin-top: 30px; }
 .duo .shot2 { height: 760px; margin-top: 0; }
+.ran { margin-top: 34px; font: 400 21px/1.55 "JetBrains Mono", monospace; color: var(--soft); max-width: 1640px; }
+.ran b { color: var(--ink2); font-weight: 500; }
 </style></head><body>
 
 <section class="s" data-n="01" style="justify-content:center">
   <div class="k">BLI Legal Tech Hackathon 2 · Chainlink CRE · Robinhood Chain</div>
   <h1>Accountability for <span class="f">AI-written</span> research.</h1>
-  <p class="big">Every claim checked by Chainlink against the company's SEC filing. A wrong claim costs its author. A trading agent can only act on what held, and every trade shows its receipts.</p>
+  <p class="big">Every claim checked against the company's SEC filing by a Chainlink CRE workflow. A wrong claim costs its author. A trading agent can only act on what held, and every trade shows its receipts.</p>
   <div class="mark">vouch<i>.</i></div>
 </section>
 
 <section class="s" data-n="02">
   <div class="k">Twenty seconds</div>
   <h2>An AI got the quarter wrong. <em>It paid, and the trading agent was refused, on-chain.</em></h2>
-  <div class="cmp">
+  <div class="cmp" style="margin-top:30px;gap:12px">
     <div class="row"><b>The AI wrote</b><span>Depreciation for <del>Q3</del> 2026 was $1.37 billion. <em style="color:var(--soft)">(about Tesla)</em></span></div>
     <div class="row"><b>The 10-Q says</b><span>Depreciation expense during the three and six months ended <ins>June 30, 2026</ins> was $1.37 billion and $2.71 billion, respectively.</span></div>
-    <div class="row"><b>Chainlink CRE</b><span>wrong quarter: the period ended in June, the claim says Q3 2026 → <del>−25 USDG</del></span></div>
+    <div class="row"><b>The check</b><span>wrong quarter: the period ended in June, the claim says Q3 2026 → <del>−25 USDG</del> (test USDG)</span></div>
     <div class="row"><b>AgentDesk</b><span>a trade citing it: <del>reverted</del>, naming the claim. The journal records why the agent traded what it did instead.</span></div>
   </div>
+  <p class="ran" style="margin-top:20px"><b>Where it ran:</b> Robinhood Chain testnet, 24 Sep, settled by one verifier key (v1) · the same words on a local devnet, settled by the CRE workflow's own code in Chainlink's SDK test runtime (14 Oct) · a CRE CLI simulation on testnet: pending.</p>
   <div class="mark">vouch<i>.</i></div>
 </section>
 
@@ -96,30 +99,32 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
   <h2>A record of what was said, what the filing says, and what was done about it.</h2>
   <div class="steps5">
     <div class="step"><div class="n">01</div><h3>Stake</h3><p>An analyst, human or AI, posts one figure, the 10-Q sentence behind it and a USDG stake. The exact words go on-chain.</p></div>
-    <div class="step"><div class="n">02</div><h3>Check</h3><p>A <span class="v">Chainlink CRE</span> workflow fetches the filing from SEC EDGAR on every node and runs the check. No verifier key.</p></div>
+    <div class="step"><div class="n">02</div><h3>Check</h3><p>A <span class="v">Chainlink CRE</span> workflow fetches the filing from SEC EDGAR and runs the check (on a DON, on every node). The contract has no verifier key.</p></div>
     <div class="step"><div class="n">03</div><h3>Pay</h3><p>Wrong: the stake goes to a pool that backs readers, in the same transaction as the verdict. Right: it comes back.</p></div>
     <div class="step"><div class="n">04</div><h3>Gate</h3><p>A trading agent cannot cite research that failed. The trade reverts, naming the claim.</p></div>
-    <div class="step"><div class="n">05</div><h3>Journal</h3><p>Each trade keeps the claims it cites, the verdict on each and the agent's reasoning, hashed on-chain.</p></div>
+    <div class="step"><div class="n">05</div><h3>Journal</h3><p>Each trade keeps the claims it cites, the verdict on each and the agent's reasoning; the record's hash is on-chain.</p></div>
   </div>
   <div class="mark">vouch<i>.</i></div>
 </section>
 
 <section class="s" data-n="05">
   <div class="k">Chainlink Runtime Environment</div>
-  <h2>The check runs on a Chainlink DON. <em>The contract takes verdicts from nowhere else.</em></h2>
-  <div class="flowline"><b>Posted</b> event → EVM log trigger → HTTP: SEC EDGAR (gzip, ~100 KB) → the check on every node → identical consensus → signed report → <b>forwarder</b> → <b>BondedClaims.onReport</b>: owner, name, pinned workflow id, claim hash</div>
+  <h2>The check is a Chainlink CRE workflow. <em>The contract has no verifier key.</em></h2>
+  <div class="flowline"><b>Posted</b> event → EVM log trigger → HTTP: SEC EDGAR (gzip, ~100 KB) → the check (on a DON, on every node) → identical consensus → report → <b>forwarder</b> → <b>BondedClaims.onReport</b>: owner, name, pinned workflow id, claim hash</div>
   <div class="nums">
     <div class="num"><b class="v">3,249</b><span>claims on five real 10-Qs: same verdict, reason and score as the Python check, on Bun and on QuickJS (the engine CRE runs)</span></div>
-    <div class="num"><b>0</b><span>keys that can settle a dispute. One compiled workflow id can be pinned, forever</span></div>
-    <div class="num"><b>7 s</b><span>per claim on QuickJS, under 32 MB of WASM memory (limits: 5 min, 100 MB)</span></div>
+    <div class="num"><b>50/50</b><span>verdicts in a local round built by the workflow's own handler in Chainlink's SDK test runtime, each matching the Python check</span></div>
+    <div class="num"><b>0</b><span>verifier keys in the contract. On a DON only signed reports land; one compiled workflow id can be pinned, forever</span></div>
   </div>
+  <p class="ran"><b>Run:</b> WASM build (cre workflow build), the SDK test runtime, QuickJS parity. <b>Not yet:</b> the CRE CLI simulation on testnet (pending login), a DON. In simulation, Chainlink's mock forwarder takes anyone's report.</p>
   <div class="mark">vouch<i>.</i></div>
 </section>
 
 <section class="s" data-n="06">
   <div class="k">The reasoning trail</div>
   <h2 style="font-size:64px">Every trade keeps its reasons. <em>Re-verify redoes them in the browser.</em></h2>
-  <div class="shot2"><img src="journal.png" alt="A journal entry: refused claims, cleared claims, the decision, the reasoning hash, and the re-verify checks"></div>
+  <div class="shot2" style="height:560px"><img src="journal.png" alt="A journal entry: refused claims, cleared claims, the decision, the reasoning hash, and the re-verify checks"></div>
+  <p class="ran"><b>News Checker (RYO):</b> the same agent reads posts by market voices, finds each figure in the 10-Q and checks the story as a staked claim. A loud post with the wrong quarter moves nothing. Demo posts: 20, written fixtures by fictional accounts.</p>
   <div class="mark">vouch<i>.</i></div>
 </section>
 
@@ -157,9 +162,9 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
   <div class="k">Proof it works</div>
   <h2>Tested end to end, on real SEC filings.</h2>
   <div class="nums">
-    <div class="num"><b>41</b><span>Foundry tests: forwarder-only verdicts, forged workflow refused, money conserved through fuzzed disputes, unchecked claims refused by the desk</span></div>
-    <div class="num"><b>56</b><span>Python and Bun tests: a round on a real EVM, the journal re-verified and tamper-checked, the CRE handler in the SDK's test runtime</span></div>
-    <div class="num"><b class="v">104/104</b><span>journal checks hold: nothing left out, record hashes, claim words, verdict transactions, filing bytes from EDGAR, a fresh check, the agent's rules re-run</span></div>
+    <div class="num"><b>48</b><span>Foundry tests: forwarder-only verdicts, forged workflow refused, money conserved through fuzzed disputes, unchecked claims refused by the desk, claims sized for CRE's log limit</span></div>
+    <div class="num"><b>77</b><span>Python and Bun tests: rounds on a real EVM, the journal re-verified and tamper-checked, the CRE handler in the SDK's test runtime, the KOL mode, the round script's failure handling</span></div>
+    <div class="num"><b class="v">87/87</b><span>journal checks hold in the local round: nothing left out, record hashes, claim words, verdict transactions, filing bytes from EDGAR, a fresh check, the agent's rules re-run</span></div>
   </div>
   <div class="mark">vouch<i>.</i></div>
 </section>
@@ -169,11 +174,11 @@ p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380p
   <h2>What is trusted today, and what is next.</h2>
   <div class="two">
     <div><h3>Today</h3><ul>
-      <li>Simulation writes through Chainlink's mock forwarder: it proves the path, not the security</li>
-      <li>The filing is what SEC EDGAR serves; its hash is on-chain</li>
+      <li>Simulation writes through Chainlink's mock forwarder: anyone can settle there. It proves the path, not the security</li>
+      <li>The filing is what SEC EDGAR serves; its hash (less the CDN's script tag) is on-chain</li>
       <li>The check says what it cannot do: a limit versus a balance</li></ul></div>
     <div><h3>Next</h3><ul>
-      <li>A live DON, the KeystoneForwarder, a pinned workflow id</li>
+      <li>A live DON, the KeystoneForwarder, a pinned workflow id (after SEC's User-Agent rule is solved)</li>
       <li>Robinhood Chain mainnet, bonded in USDG</li>
       <li>8-Ks and 10-Ks; one compliance team piloting cleared-only publication</li></ul></div>
   </div>
