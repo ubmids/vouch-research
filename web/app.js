@@ -446,9 +446,15 @@ async function reverify(ticker, button) {
   }
   const accounted = [...r.evidence.map((e) => e.claim), ...r.dropped.map((d) => d.claim)].sort((x, y) => x - y);
   add(JSON.stringify([...j.read].sort((x, y) => x - y)) === JSON.stringify(accounted), "Every claim the agent read is either cited or refused: none was quietly left out.");
-  const again = VouchPolicy.thesis(ticker, r.evidence.map((e) => by[e.claim]), r.per_claim);
-  const same = again.side === r.side && again.notional === r.notional && again.evidence.every((e, i) => e.signal === r.evidence[i].signal && e.why === r.evidence[i].why);
-  add(same, `Re-running the agent's rules on these claims gives the same ${j.status === "opened" ? `trade: ${SIDE[again.side] || "no trade"} ${money(again.notional / 1e6)} USD` : "decision: no trade"}.`);
+  if (r.decider && r.decider.kind === "model") {
+    // A model is not re-run: its recorded reply must give exactly this decision.
+    // (python -m vouchrh.journal verify also rebuilds the messages it was sent.)
+    add(modelReplay(r), `Decided by a model (${esc(r.decider.model)}): its recorded reply gives exactly this ${j.status === "opened" ? "side, size and reading per claim" : "decision: no trade"}. The reply is part of the hashed record; the model itself cannot be re-run to prove it would answer the same.`);
+  } else {
+    const again = VouchPolicy.thesis(ticker, r.evidence.map((e) => by[e.claim]), r.per_claim);
+    const same = again.side === r.side && again.notional === r.notional && again.evidence.every((e, i) => e.signal === r.evidence[i].signal && e.why === r.evidence[i].why);
+    add(same, `Re-running the agent's rules on these claims gives the same ${j.status === "opened" ? `trade: ${SIDE[again.side] || "no trade"} ${money(again.notional / 1e6)} USD` : "decision: no trade"}.`);
+  }
   if (!F.chain.rpc) {
     rows.push(`<li class="na">· On-chain: this round ran on a local devnet the browser cannot reach. <code>python -m vouchrh.journal verify</code> checks the chain and re-fetches the filing.</li>`);
     list.innerHTML = rows.join("");
@@ -476,6 +482,22 @@ async function reverify(ticker, button) {
   rows.push(`<li class="sum ${bad ? "no" : "ok"}">${bad ? `${bad} check${bad > 1 ? "s" : ""} failed.` : F.chain.rpc ? "Every link in the chain of reasons holds, on-chain too." : "Every link checked here holds. The on-chain links need the command line."}</li>`);
   list.innerHTML = rows.join("");
   button.disabled = false;
+}
+
+// The side, size and per-claim readings a model's recorded reply gives (decide.py's _parse and _decision).
+function modelReplay(r) {
+  try {
+    const out = JSON.parse(r.decider.output.replace(/^\s*```(?:json)?\s*|\s*```\s*$/g, ""));
+    const R = { bullish: 1, bearish: -1, neutral: 0 }, read = new Map();
+    for (const c of out.claims || []) {
+      if (!(c.reading in R) || read.has(c.id)) return false;
+      read.set(c.id, R[c.reading]);
+    }
+    if (read.size !== r.evidence.length || !r.evidence.every((e) => read.get(e.claim) === e.signal)) return false;
+    const carrying = r.evidence.filter((e) => e.signal).length;
+    const side = carrying && out.side !== "none" ? out.side : null;
+    return side === r.side && (side ? r.per_claim * carrying : 0) === r.notional;
+  } catch { return false; }
 }
 
 // ---- the audit record ------------------------------------------------------------

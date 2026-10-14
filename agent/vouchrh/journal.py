@@ -29,7 +29,7 @@ import sys
 from eth_utils import keccak
 from web3.logs import DISCARD
 
-from . import edgar, policy, prices
+from . import decide, edgar, policy, prices
 from .chain import USD, Chain
 from .verifier import audit_claim
 
@@ -38,7 +38,9 @@ SIDE = {"long": 0, "short": 1}
 
 def trade(chain: Chain, agent, claims: list[dict], per_claim: int = 100 * USD, log=print,
           quote=prices.latest) -> list[dict]:
-    """Run the agent over a round's claims, stock by stock. Returns the journal."""
+    """Run the agent over a round's claims, stock by stock. Returns the journal.
+    It decides by the rules unless VOUCH_DECIDER=model (see decide.py)."""
+    cfg = decide.config()
     by: dict[str, list[dict]] = {}
     for c in claims:
         by.setdefault(c["ticker"], []).append(c)
@@ -50,12 +52,12 @@ def trade(chain: Chain, agent, claims: list[dict], per_claim: int = 100 * USD, l
         price = quote(ticker)
         entry = {"ticker": ticker, "read": [c["id"] for c in read], "status": "no trade", "attempts": []}
         while cited:
-            t = policy.thesis(ticker, cited, per_claim)
+            t = decide.thesis(ticker, cited, per_claim, cfg)
             if not t["side"]:
                 break
             for e in t["evidence"]:
                 e["verdict_tx"] = verdict_tx.get(e["claim"])
-            rec = policy.record(t, price, dropped)
+            rec = decide.record(t, price, dropped)
             h = policy.digest(rec)
             ids = [e["claim"] for e in t["evidence"]]
             out = chain.act(agent, ticker, SIDE[t["side"]], t["notional"], ids, h)
@@ -80,8 +82,8 @@ def trade(chain: Chain, agent, claims: list[dict], per_claim: int = 100 * USD, l
             entry["attempts"].append({"cited": ids, "side": t["side"], **miss})
             cited = [c for c in cited if c["id"] != refused]
         if entry["status"] != "opened":
-            final = policy.thesis(ticker, cited, per_claim)
-            entry["reasoning"] = policy.record(final, price, dropped)
+            final = t if cited and not t["side"] else decide.thesis(ticker, cited, per_claim, cfg)
+            entry["reasoning"] = decide.record(final, price, dropped)
             log(f"  {ticker:5} no trade: what is left gives no direction ({len(dropped)} refusals)")
         journal.append(entry)
     return journal
@@ -118,9 +120,14 @@ def verify(feed: dict, chain: Chain, edgar_check: bool = True) -> list[dict]:
         if j["status"] == "error":
             check(tag, "the agent stopped on a refusal that named no claim", False, str(j.get("error")))
             continue
+        by_model = rec.get("decider", {}).get("kind") == "model"
+        if by_model:   # a model is not re-run; its recorded input and reply are checked instead
+            for name, ok in decide.replay(rec, claims):
+                check(tag, name, ok)
         if j["status"] != "opened":
-            again = policy.thesis(j["ticker"], [claims[e["claim"]] for e in rec["evidence"]], 0)
-            check(tag, "re-running the policy gives no trade too", again["side"] is None)
+            if not by_model:
+                again = policy.thesis(j["ticker"], [claims[e["claim"]] for e in rec["evidence"]], 0)
+                check(tag, "re-running the policy gives no trade too", again["side"] is None)
             continue
         on = chain.desk.functions.journal(j["entry"]).call()
         h = policy.digest(rec)
@@ -154,6 +161,8 @@ def verify(feed: dict, chain: Chain, edgar_check: bool = True) -> list[dict]:
                     check(tag, f"claim #{c['id']} verdict evidence is the filing EDGAR serves", v[1] == keccak(edgar.canonical(raw)))
                 again = audit_claim(c["value"], c["quote"], text, c.get("summary", ""), c.get("metric", ""))
                 check(tag, f"claim #{c['id']} re-checked against the filing: holds", not again.fraudulent, again.reason)
+        if by_model:
+            continue
         again = policy.thesis(j["ticker"], [claims[e["claim"]] for e in rec["evidence"]], rec["per_claim"])
         check(tag, "re-running the policy gives the same trade", (again["side"], again["notional"]) == (rec["side"], rec["notional"]),
               f"{again['side']} {again['notional'] / USD:.0f} USD")
