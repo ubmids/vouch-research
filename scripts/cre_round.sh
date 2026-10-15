@@ -8,6 +8,11 @@
 #   PER_TICKER=1 bash scripts/cre_round.sh   # a quicker round
 #   bash scripts/cre_round.sh --new-wallet   # make a testnet wallet if this machine has none
 #
+# In two halves, when the CRE login comes later (claims wait, unsettled, for the
+# 7-day window; a verdict lands whenever it arrives while a claim is pending):
+#   bash scripts/cre_round.sh --post                    # no CRE login needed: deploy and post on testnet
+#   bash scripts/cre_round.sh --settle cre/runs/<run>   # after `cre login`: the workflow settles them
+#
 # The AI analyst (ANALYST_MODEL):
 #   live    (default) Qwen 2.5 7B through Ollama writes its claims now. The
 #           preflight first asks it the exact question behind the published
@@ -58,8 +63,12 @@ case "${1:-}" in
   "") ;;
   --preflight) MODE=preflight ;;
   --new-wallet) MODE=wallet ;;
-  *) fail "usage: bash scripts/cre_round.sh [--preflight | --new-wallet]" ;;
+  --post) MODE=post ;;
+  --settle) MODE=settle; SETTLE_RUN=${2:-}; [ -d "$SETTLE_RUN" ] || fail "usage: bash scripts/cre_round.sh --settle cre/runs/<run>" ;;
+  *) fail "usage: bash scripts/cre_round.sh [--preflight | --new-wallet | --post | --settle cre/runs/<run>]" ;;
 esac
+WINDOW=${WINDOW:-21600}
+[ "$MODE" = post ] && WINDOW=${WINDOW_POST:-604800}
 
 [ -x "$PY" ] || fail "no Python at $PY: python3 -m venv .venv && .venv/bin/pip install 'web3>=7,<8' pytest"
 
@@ -73,6 +82,17 @@ if [ "$MODE" = wallet ]; then
   exit 0
 fi
 
+if [ "$MODE" = settle ]; then
+  RUN=$(cd "$SETTLE_RUN" && pwd)
+  [ -s "$RUN/round.env" ] || fail "$RUN has no round.env: was it made with --post?"
+  # shellcheck disable=SC1091
+  . "$RUN/round.env"
+  command -v cre >/dev/null || fail "install the CRE CLI: curl -sSL https://app.chain.link/cre/install.sh | bash"
+  WHO=$(cre whoami 2>&1) || fail "not logged in to CRE: run 'cre login' (docs/bli/OWNER_TODO.md)"
+  ok "CRE account: $(echo "$WHO" | grep -iE "email|org|user" | head -2 | tr -s ' ' | tr '\n' ' ')"
+  { echo "settled_utc: $(date -u +%FT%TZ)"; echo "cre_whoami: |"; echo "$WHO" | sed 's/^/  /'; } >> "$RUN/env.txt"
+  echo "settling market $MARKET from $RUN"
+else
 # ---- 0. preflight: nothing below spends gas until step 1 --------------------------
 command -v cre >/dev/null || fail "install the CRE CLI: curl -sSL https://app.chain.link/cre/install.sh | bash"
 command -v bun >/dev/null || fail "install bun: curl -fsSL https://bun.sh/install | bash"
@@ -86,8 +106,13 @@ BAL=$(cast balance "$ADDR" --rpc-url "$RPC") || fail "cannot reach $RPC"
   || fail "wallet $ADDR has $BAL wei; a round needs about $MIN_WEI. Faucet: https://faucet.testnet.chain.robinhood.com"
 ok "wallet $ADDR: $BAL wei"
 
-WHO=$(cre whoami 2>&1) || fail "not logged in to CRE: run 'cre login', or export CRE_API_KEY (app.chain.link, Account Settings)"
-ok "CRE account: $(echo "$WHO" | grep -iE "email|org|user" | head -2 | tr -s ' ' | tr '\n' ' ')"
+if [ "$MODE" = post ]; then
+  WHO="(not logged in: --post needs no CRE login; --settle does)"
+  ok "CRE login: not needed to post"
+else
+  WHO=$(cre whoami 2>&1) || fail "not logged in to CRE: run 'cre login', or export CRE_API_KEY (app.chain.link, Account Settings)"
+  ok "CRE account: $(echo "$WHO" | grep -iE "email|org|user" | head -2 | tr -s ' ' | tr '\n' ' ')"
+fi
 
 if [ -z "${VOUCH_SKIP_SEC_CHECK:-}" ]; then   # (the script's own tests skip it)
   UA=$("$PY" -c "import json; print(json.load(open('cre/vouch-verifier/config.staging.json'))['userAgent'])")
@@ -119,7 +144,7 @@ esac
 forge build >/dev/null
 (cd cre/vouch-verifier && bun install >/dev/null)
 RUNS=${VOUCH_RUNS:-$ROOT/cre/runs}
-SUFFIX=; [ "$MODE" = preflight ] && SUFFIX=-preflight
+SUFFIX=; [ "$MODE" = preflight ] && SUFFIX=-preflight; [ "$MODE" = post ] && SUFFIX=-posted
 RUN=$RUNS/$(date -u +%Y%m%dT%H%M%SZ)$SUFFIX
 mkdir -p "$RUN"
 (cd cre && cre workflow build ./vouch-verifier -o "$RUN/vouch-verifier.wasm") > "$RUN/build.log" 2>&1 \
@@ -158,11 +183,22 @@ CHAIN_ID=$(cast chain-id --rpc-url "$RPC")
 REC=deployments/$CHAIN_ID.json
 if [ -f "$REC" ]; then mv "$REC" "deployments/$CHAIN_ID-$(date -u +%Y%m%d%H%M%S).json"; fi
 # --pool all: the published round's facts, so the AI analyst gets the same questions.
+# A two-half round keeps its own feed in the run folder until it is settled.
+if [ "$MODE" = post ]; then FEED=$RUN/feed.json; POSTS=${FEED%.json}.posts.txt; fi
 PYTHONPATH=agent "$PY" -m vouchrh.market --rpc "$RPC" --key "$(cat "$KEYFILE")" --forwarder "$MOCK_FORWARDER" \
-  --settle cre --window 21600 --per-ticker "$PER_TICKER" --pool all ${MODEL_FLAGS[@]+"${MODEL_FLAGS[@]}"} --out "$FEED" | tee "$RUN/post.log"
+  --settle cre --window "$WINDOW" --per-ticker "$PER_TICKER" --pool all ${MODEL_FLAGS[@]+"${MODEL_FLAGS[@]}"} --out "$FEED" | tee "$RUN/post.log"
 MARKET=$("$PY" -c "import json, sys; print(json.load(open(sys.argv[1]))['contracts']['market'])" "$FEED")
 echo "market: $MARKET" >> "$RUN/env.txt"
+echo "window_seconds: $WINDOW" >> "$RUN/env.txt"
 echo "market $MARKET  ($EXPLORER/address/$MARKET)"
+printf 'MARKET=%s\nFEED=%s\nPOSTS=%s\n' "$MARKET" "$FEED" "$POSTS" > "$RUN/round.env"
+if [ "$MODE" = post ]; then
+  echo "posted: $(wc -l < "$POSTS" | tr -d ' ') claims (claim id and transaction in $POSTS)"
+  ok "posted; nothing is settled yet. After 'cre login', within the $((WINDOW / 86400))-day window:"
+  echo "   bash scripts/cre_round.sh --settle ${RUN#$ROOT/}"
+  exit 0
+fi
+fi   # end of: not --settle
 
 # ---- 2. the workflow settles every claim ----------------------------------------
 # The workflow's config for this round (the staging config, pointed at this
@@ -215,7 +251,8 @@ fi
 # ---- 3. read the chain, trade, verify, publish -----------------------------------
 PYTHONPATH=agent "$PY" -m vouchrh.market --rpc "$RPC" --key "$(cat "$KEYFILE")" --finish "$FEED" --out "$FEED" \
   | tee "$RUN/finish.log"
-PYTHONPATH=agent "$PY" -m vouchrh.publish "$FEED" web/feed.json
+[ "$FEED" = feed/feed.json ] || cp "$FEED" feed/feed.json
+PYTHONPATH=agent "$PY" -m vouchrh.publish feed/feed.json web/feed.json
 PYTHONPATH=agent "$PY" -m vouchrh.journal verify "$FEED" --rpc "$RPC" | tee "$RUN/journal-verify.txt"
 echo
 echo "CRE evidence: $RUN (env.txt, one simulation log per claim, the dry run)"
