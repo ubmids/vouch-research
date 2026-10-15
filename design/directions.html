@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vouch design directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  /* the page around the mocks */
+  --pg-bg:#E9ECF0; --pg-card:#FFFFFF; --pg-ink:#14171C; --pg-ink2:#4A5260; --pg-rule:#CDD2DA; --pg-rec:#1D4E89; --pg-recbg:#E7EEF7;
+
+  /* A, The Record */
+  --a-bg:#FFFFFF; --a-surf:#F5F6F8; --a-ink:#14171C; --a-ink2:#4A5260; --a-rule:#D5D9E0; --a-cite:#1D4E89;
+  --a-red:#B42318; --a-redbg:#FDECEA; --a-green:#1E6B3A; --a-greenbg:#E8F3EC; --a-amber:#7A4F00; --a-amberbg:#FFF4D6; --a-mark:#FFF1A8;
+
+  /* B, Redline */
+  --b-bg:#F3F4F6; --b-surf:#FFFFFF; --b-ink:#111827; --b-ink2:#4B5563; --b-rule:#D1D5DB; --b-cite:#1F4FD1;
+  --b-red:#C0262D; --b-redbg:#FDECEC; --b-green:#0F7B4A; --b-greenbg:#E6F4EC; --b-amber:#8A5A00; --b-amberbg:#FFF4D6; --b-mark:#E8EEFF; --b-bar:#111827; --b-barink:#F9FAFB;
+
+  /* C, Workpaper */
+  --c-bg:#FFFFFF; --c-surf:#F4F7FA; --c-ink:#0B1F33; --c-ink2:#3E5568; --c-rule:#C9D3DD; --c-cite:#005EA2;
+  --c-red:#A4161A; --c-redbg:#FBE9E9; --c-green:#00703C; --c-greenbg:#E5F3EA; --c-amber:#7A4F00; --c-amberbg:#FFF4D6; --c-mark:#FFF1A8; --c-band:#0B1F33; --c-bandink:#FFFFFF;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --pg-bg:#0B0D10; --pg-card:#14171C; --pg-ink:#E8EAED; --pg-ink2:#A6ADB8; --pg-rule:#2C333D; --pg-rec:#8DB4E8; --pg-recbg:#16243A;
+    --a-bg:#111418; --a-surf:#181C22; --a-ink:#E8EAED; --a-ink2:#A6ADB8; --a-rule:#2C333D; --a-cite:#8DB4E8;
+    --a-red:#F2827A; --a-redbg:#3A1D1B; --a-green:#6CC58F; --a-greenbg:#16301F; --a-amber:#E6B656; --a-amberbg:#3A2E10; --a-mark:#4A4214;
+    --b-bg:#0E1116; --b-surf:#161B22; --b-ink:#E6EDF3; --b-ink2:#9DA7B3; --b-rule:#30363D; --b-cite:#79A8FF;
+    --b-red:#FF7B72; --b-redbg:#3B1A1A; --b-green:#56D68C; --b-greenbg:#13301F; --b-amber:#E3B341; --b-amberbg:#3A2E10; --b-mark:#1C2B4A; --b-bar:#010409; --b-barink:#E6EDF3;
+    --c-bg:#0A1622; --c-surf:#10202F; --c-ink:#E3EBF2; --c-ink2:#9FB3C4; --c-rule:#23384B; --c-cite:#73B3E7;
+    --c-red:#FF8A80; --c-redbg:#3A1A1C; --c-green:#4FC38A; --c-greenbg:#112F22; --c-amber:#E6B656; --c-amberbg:#3A2E10; --c-mark:#3D3A12; --c-band:#15293B; --c-bandink:#E3EBF2;
+  }
+}
+:root[data-theme="dark"]{
+  --pg-bg:#0B0D10; --pg-card:#14171C; --pg-ink:#E8EAED; --pg-ink2:#A6ADB8; --pg-rule:#2C333D; --pg-rec:#8DB4E8; --pg-recbg:#16243A;
+  --a-bg:#111418; --a-surf:#181C22; --a-ink:#E8EAED; --a-ink2:#A6ADB8; --a-rule:#2C333D; --a-cite:#8DB4E8;
+  --a-red:#F2827A; --a-redbg:#3A1D1B; --a-green:#6CC58F; --a-greenbg:#16301F; --a-amber:#E6B656; --a-amberbg:#3A2E10; --a-mark:#4A4214;
+  --b-bg:#0E1116; --b-surf:#161B22; --b-ink:#E6EDF3; --b-ink2:#9DA7B3; --b-rule:#30363D; --b-cite:#79A8FF;
+  --b-red:#FF7B72; --b-redbg:#3B1A1A; --b-green:#56D68C; --b-greenbg:#13301F; --b-amber:#E3B341; --b-amberbg:#3A2E10; --b-mark:#1C2B4A; --b-bar:#010409; --b-barink:#E6EDF3;
+  --c-bg:#0A1622; --c-surf:#10202F; --c-ink:#E3EBF2; --c-ink2:#9FB3C4; --c-rule:#23384B; --c-cite:#73B3E7;
+  --c-red:#FF8A80; --c-redbg:#3A1A1C; --c-green:#4FC38A; --c-greenbg:#112F22; --c-amber:#E6B656; --c-amberbg:#3A2E10; --c-mark:#3D3A12; --c-band:#15293B; --c-bandink:#E3EBF2;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--pg-bg);color:var(--pg-ink);font:16px/1.55 "IBM Plex Sans",system-ui,sans-serif;overflow-x:hidden}
+.wrap{max-width:1180px;margin:0 auto;padding:40px 16px 80px}
+h1{font:600 30px/1.2 "IBM Plex Sans",sans-serif;margin:0 0 10px;letter-spacing:-.01em}
+.lede{color:var(--pg-ink2);max-width:72ch;margin:0 0 8px}
+.themes{display:flex;gap:6px;margin:18px 0 28px;flex-wrap:wrap}
+.themes button{font:500 13px "IBM Plex Sans",sans-serif;padding:6px 12px;border:1px solid var(--pg-rule);background:var(--pg-card);color:var(--pg-ink);border-radius:4px;cursor:pointer}
+.themes button[aria-pressed="true"]{border-color:var(--pg-rec);color:var(--pg-rec)}
+.rec{background:var(--pg-recbg);border-left:3px solid var(--pg-rec);padding:16px 18px;border-radius:2px;margin:0 0 40px}
+.rec b{color:var(--pg-rec)}
+.rec p{margin:6px 0 0}
+section.dir{margin:0 0 72px}
+.dirHead{display:grid;grid-template-columns:1fr;gap:6px;margin-bottom:18px;border-top:1px solid var(--pg-rule);padding-top:22px}
+.dirHead h2{font:600 22px/1.25 "IBM Plex Sans",sans-serif;margin:0}
+.dirHead h2 small{font-weight:400;color:var(--pg-ink2);font-size:15px;margin-left:8px}
+.dirHead .tag{display:inline-block;font:500 12px "IBM Plex Sans";color:var(--pg-rec);border:1px solid var(--pg-rec);padding:1px 8px;border-radius:3px;margin-left:8px;vertical-align:3px}
+.dirHead p{margin:0;color:var(--pg-ink2);max-width:80ch}
+.spec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 20px}
+.spec div{background:var(--pg-card);border:1px solid var(--pg-rule);padding:12px 14px;border-radius:4px;font-size:14px}
+.spec b{display:block;font-size:12px;font-weight:600;color:var(--pg-ink2);margin-bottom:4px;letter-spacing:.02em}
+.sw{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.sw i{width:22px;height:22px;border-radius:3px;border:1px solid var(--pg-rule);display:block}
+.label{font:500 12px "IBM Plex Sans";color:var(--pg-ink2);margin:20px 0 6px;letter-spacing:.02em}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.screen{border:1px solid var(--pg-rule);border-radius:6px;overflow:hidden}
+svg.ic{width:14px;height:14px;flex:none;vertical-align:-2px}
+code,.mono{overflow-wrap:anywhere}
+
+/* ---------- A, The Record ---------- */
+.dA{--bg:var(--a-bg);--surf:var(--a-surf);--ink:var(--a-ink);--ink2:var(--a-ink2);--rule:var(--a-rule);--cite:var(--a-cite);--red:var(--a-red);--redbg:var(--a-redbg);--green:var(--a-green);--greenbg:var(--a-greenbg);--amber:var(--a-amber);--amberbg:var(--a-amberbg);--mark:var(--a-mark);
+  background:var(--bg);color:var(--ink);font:15px/1.6 "IBM Plex Sans",sans-serif}
+.dA .top{display:flex;align-items:center;gap:20px;padding:12px 24px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.dA .wm{font:700 21px/1 "Source Serif 4",serif;letter-spacing:-.01em;display:flex;align-items:center;gap:6px}
+.dA .wm svg{color:var(--red)}
+.dA .top nav{display:flex;gap:18px;font-size:14px;color:var(--ink2)}
+.dA .top nav b{color:var(--ink);font-weight:500;border-bottom:2px solid var(--ink);padding-bottom:2px}
+.dA .page{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:40px;padding:32px 40px 36px;max-width:1040px}
+.dA .run{font:400 12.5px/1.5 "IBM Plex Sans";color:var(--ink2);border-bottom:1px solid var(--rule);padding-bottom:10px;margin:0 0 18px}
+.dA .signal{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:3px;margin:0 0 24px}
+.dA .signal.red{background:var(--redbg);color:var(--red)}
+.dA .signal.green{background:var(--greenbg);color:var(--green)}
+.dA .signal svg{width:18px;height:18px;margin-top:2px}
+.dA .signal p{margin:0;color:var(--ink)}
+.dA .signal b{color:var(--red)}
+.dA h3{font:600 12.5px/1.3 "IBM Plex Sans";letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin:26px 0 8px}
+.dA h3:first-of-type{margin-top:0}
+.dA .meta{font-size:13.5px;color:var(--ink2);margin:0 0 8px}
+.dA blockquote{margin:0;font:400 21px/1.5 "Source Serif 4",serif;padding-left:18px;border-left:2px solid var(--ink)}
+.dA blockquote.src{font-size:17.5px;line-height:1.65;border-left-color:var(--rule);color:var(--ink2)}
+.dA blockquote.src mark{background:var(--mark);color:var(--ink);padding:1px 0}
+.dA .bad{text-decoration:underline wavy var(--red);text-underline-offset:5px;text-decoration-thickness:1.5px;color:var(--red)}
+.dA ol.find{margin:0;padding:0;list-style:none;counter-reset:f}
+.dA ol.find li{display:grid;grid-template-columns:28px 18px 1fr;gap:6px;padding:7px 0;border-bottom:1px solid var(--rule);counter-increment:f}
+.dA ol.find li::before{content:counter(f) ".";color:var(--ink2);font-variant-numeric:tabular-nums}
+.dA ol.find .ok{color:var(--green)} .dA ol.find .no{color:var(--red)}
+.dA dl.cons{display:grid;grid-template-columns:96px 1fr;gap:6px 14px;margin:0}
+.dA dl.cons dt{font-weight:600}
+.dA dl.cons dd{margin:0}
+.dA .fn{font-size:12.5px;color:var(--ink2);border-top:1px solid var(--rule);margin-top:26px;padding-top:10px}
+.dA .fn code{font:400 12px "IBM Plex Mono",monospace}
+.dA aside{font-size:13px;border-left:1px solid var(--rule);padding-left:20px}
+.dA aside h4{font:600 12px "IBM Plex Sans";letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin:0 0 8px}
+.dA aside dl{margin:0 0 20px}
+.dA aside dt{color:var(--ink2);font-size:12px}
+.dA aside dd{margin:0 0 8px;font:400 12.5px/1.45 "IBM Plex Mono",monospace;overflow-wrap:anywhere}
+.dA aside dd a{color:var(--cite)}
+.dA .btn{display:inline-block;font:500 13.5px "IBM Plex Sans";padding:8px 12px;border:1px solid var(--ink);color:var(--ink);border-radius:3px;text-decoration:none;margin:0 6px 6px 0}
+.dA .btn.pri{background:var(--ink);color:var(--bg)}
+.dA table{width:100%;border-collapse:collapse;font-size:14px}
+.dA th{font:600 11.5px "IBM Plex Sans";letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);text-align:left;padding:10px 12px;border-bottom:1px solid var(--ink)}
+.dA td{padding:11px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+.dA td:first-child,.dB td:first-child,.dC .scrollX td:first-child{white-space:nowrap}
+.dA td.q{font-family:"Source Serif 4",serif;font-size:15.5px}
+.dA .flag{display:inline-flex;align-items:center;gap:5px;font-weight:600;font-size:13px;white-space:nowrap}
+.dA .flag.r{color:var(--red)} .dA .flag.g{color:var(--green)}
+.dA .flag small{display:block;font-weight:400;color:var(--ink2)}
+.dA .num{font-variant-numeric:tabular-nums}
+.dA .listWrap{padding:18px 24px 22px}
+.dA .exhibit{padding:26px 30px;font-size:14px}
+.dA .exhibit .cap{font:600 13px "IBM Plex Sans";letter-spacing:.08em;text-transform:uppercase;text-align:center;margin:0 0 4px}
+.dA .exhibit .sub{text-align:center;color:var(--ink2);font-size:13px;margin:0 0 18px}
+.dA .exhibit ol{margin:0;padding-left:20px}
+.dA .exhibit li{margin:0 0 8px}
+.dA .exhibit li b{font-weight:600}
+
+/* ---------- B, Redline ---------- */
+.dB{--bg:var(--b-bg);--surf:var(--b-surf);--ink:var(--b-ink);--ink2:var(--b-ink2);--rule:var(--b-rule);--cite:var(--b-cite);--red:var(--b-red);--redbg:var(--b-redbg);--green:var(--b-green);--greenbg:var(--b-greenbg);--mark:var(--b-mark);
+  background:var(--bg);color:var(--ink);font:14px/1.55 "IBM Plex Sans",sans-serif}
+.dB .bar{background:var(--b-bar);color:var(--b-barink);display:flex;align-items:center;gap:16px;padding:9px 16px;font-size:13px;flex-wrap:wrap}
+.dB .bar .wm{font:600 15px "IBM Plex Sans";letter-spacing:-.01em}
+.dB .bar .wm span{opacity:.6;font-weight:400}
+.dB .bar .crumbs{opacity:.8}
+.dB .bar .sp{flex:1}
+.dB .chip{font:600 11.5px "IBM Plex Mono",monospace;letter-spacing:.04em;padding:3px 8px;border-radius:3px;text-transform:uppercase}
+.dB .chip.r{background:var(--red);color:#fff} .dB .chip.g{background:var(--green);color:#fff}
+:root[data-theme="dark"] .dB .chip{color:#0E1116}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .dB .chip{color:#0E1116}}
+.dB .tool{display:flex;gap:14px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--rule);background:var(--surf);font-size:13px;color:var(--ink2);flex-wrap:wrap}
+.dB .tool b{color:var(--ink)}
+.dB .legend{display:flex;gap:12px;margin-left:auto}
+.dB .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1px;background:var(--rule)}
+.dB .col{background:var(--surf);padding:16px 20px 20px}
+.dB .col h4{margin:0 0 10px;font:600 12px "IBM Plex Sans";color:var(--ink2);display:flex;gap:8px;justify-content:space-between}
+.dB .col h4 span{font-weight:400}
+.dB .col p{margin:0;font-size:16px;line-height:1.7}
+.dB .col p.ctx{color:var(--ink2);font-size:14px;margin-top:8px}
+.dB del{color:var(--red);text-decoration:line-through 2px;background:var(--redbg);padding:0 2px}
+.dB ins{color:var(--cite);text-decoration:underline double;text-underline-offset:3px;background:var(--mark);padding:0 2px}
+.dB .gut{font:400 12px "IBM Plex Mono";color:var(--ink2);margin-right:8px}
+.dB table{width:100%;border-collapse:collapse;background:var(--surf)}
+.dB th,.dB td{text-align:left;padding:9px 16px;border-bottom:1px solid var(--rule);font-size:13.5px;vertical-align:top}
+.dB th{font:500 12px "IBM Plex Sans";color:var(--ink2);background:var(--bg)}
+.dB td.st{font:600 12px "IBM Plex Mono";white-space:nowrap}
+.dB .pass{color:var(--green)} .dB .fail{color:var(--red)}
+.dB .cons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);border-top:1px solid var(--rule)}
+.dB .cons div{background:var(--surf);padding:12px 16px;font-size:13px}
+.dB .cons b{display:block;font:500 12px "IBM Plex Sans";color:var(--ink2);margin-bottom:2px}
+.dB .cons .v{font:500 13px "IBM Plex Mono";overflow-wrap:anywhere}
+.dB .list td.q{font-size:14px}
+.dB .log{background:var(--surf);padding:14px 18px;font:400 13px/1.7 "IBM Plex Mono",monospace}
+.dB .log div{display:grid;grid-template-columns:92px 1fr;gap:10px}
+.dB .log .k{color:var(--ink2)}
+
+/* ---------- C, Workpaper ---------- */
+.dC{--bg:var(--c-bg);--surf:var(--c-surf);--ink:var(--c-ink);--ink2:var(--c-ink2);--rule:var(--c-rule);--cite:var(--c-cite);--red:var(--c-red);--redbg:var(--c-redbg);--green:var(--c-green);--greenbg:var(--c-greenbg);--mark:var(--c-mark);
+  background:var(--bg);color:var(--ink);font:14.5px/1.55 "Public Sans",sans-serif}
+.dC .band{background:var(--c-band);color:var(--c-bandink);display:flex;align-items:center;gap:14px;padding:12px 20px;flex-wrap:wrap}
+.dC .band .wm{font:700 15px "Public Sans";letter-spacing:.14em;display:flex;gap:6px;align-items:center}
+.dC .band .t{font-size:13.5px;opacity:.85}
+.dC .band .sp{flex:1}
+.dC .exc{font:700 12px "Public Sans";letter-spacing:.08em;text-transform:uppercase;border:1.5px solid currentColor;padding:3px 8px;border-radius:2px}
+.dC .exc.r{color:#FFB4AE} .dC .exc.g{color:#9FE3BE}
+.dC .body{padding:20px 24px 24px}
+.dC .sign{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--rule);margin-bottom:18px}
+.dC .sign div{padding:9px 12px;border-right:1px solid var(--rule);font-size:13px}
+.dC .sign div:last-child{border-right:0}
+.dC .sign b{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.dC table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.dC th{background:var(--surf);font:600 11.5px "Public Sans";letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);text-align:left;padding:8px 10px;border:1px solid var(--rule)}
+.dC td{padding:9px 10px;border:1px solid var(--rule);vertical-align:top}
+.dC td.ref{font:500 12.5px "Source Code Pro",monospace;color:var(--ink2);width:34px}
+.dC td.tk{width:44px;text-align:center;font-weight:700}
+.dC .tk.ok{color:var(--green)} .dC .tk.no{color:var(--red);background:var(--redbg)}
+.dC .extract{margin:16px 0;padding:12px 14px;border:1px dashed var(--rule);background:var(--surf);font-size:15px;line-height:1.7}
+.dC .extract .h{font:600 11px "Public Sans";letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);display:block;margin-bottom:4px}
+.dC .tmk{font:700 11px "Public Sans";vertical-align:super;margin-left:1px}
+.dC .tmk.ok{color:var(--green)} .dC .tmk.no{color:var(--red)}
+.dC .hl{background:var(--mark)}
+.dC .concl{border-left:4px solid var(--red);padding:8px 12px;background:var(--redbg);font-size:14px}
+.dC .concl b{color:var(--red)}
+.dC .legendC{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);margin-top:12px;border-top:1px solid var(--rule);padding-top:10px}
+.dC .legendC span b{margin-right:4px}
+.dC .mono{font:400 12.5px "Source Code Pro",monospace}
+
+/* ---------- thumbnails (16:9) ---------- */
+.thumb{aspect-ratio:16/9;position:relative;overflow:hidden;border:1px solid var(--pg-rule);border-radius:6px;container-type:inline-size}
+.thumb .in{position:absolute;inset:0;padding:6cqw 6.5cqw;display:flex;flex-direction:column;justify-content:space-between}
+.tA{background:var(--a-bg);color:var(--a-ink)}
+.tA .k{font:500 1.7cqw "IBM Plex Sans";letter-spacing:.08em;text-transform:uppercase;color:var(--a-ink2)}
+.tA h5{margin:0;font:600 5.6cqw/1.12 "Source Serif 4",serif;letter-spacing:-.01em;max-width:80%}
+.tA h5 mark{background:var(--a-mark);color:inherit}
+.tA .f{display:flex;align-items:center;gap:1.4cqw;font:500 2cqw "IBM Plex Sans";color:var(--a-red)}
+.tA .f svg{width:2.6cqw;height:2.6cqw}
+.tA .wmT{position:absolute;right:6.5cqw;bottom:6cqw;font:700 3cqw "Source Serif 4",serif}
+.tB{background:var(--b-bg);color:var(--b-ink)}
+.tB .in{padding:0}
+.tB .tb{background:var(--b-bar);color:var(--b-barink);font:600 2cqw "IBM Plex Sans";padding:2cqw 4cqw;display:flex;justify-content:space-between}
+.tB .tc{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--b-rule);flex:1}
+.tB .tc div{background:var(--b-surf);padding:4cqw;display:flex;flex-direction:column;justify-content:center;font:400 3.4cqw/1.45 "IBM Plex Sans"}
+.tB .tc small{display:block;font:500 1.6cqw "IBM Plex Sans";color:var(--b-ink2);margin-bottom:1.5cqw}
+.tB del{color:var(--b-red);text-decoration:line-through .4cqw;background:var(--b-redbg)}
+.tB ins{color:var(--b-cite);text-decoration:underline double;background:var(--b-mark)}
+.tB .tf{font:600 2.6cqw "IBM Plex Sans";padding:2.6cqw 4cqw;background:var(--b-surf);border-top:1px solid var(--b-rule)}
+.tC{background:var(--c-bg);color:var(--c-ink)}
+.tC .in{padding:0}
+.tC .tb{background:var(--c-band);color:var(--c-bandink);font:700 2cqw "Public Sans";letter-spacing:.14em;padding:2.4cqw 5cqw}
+.tC .tbody{padding:4cqw 5cqw;flex:1;display:flex;flex-direction:column;justify-content:center;gap:2cqw}
+.tC h5{margin:0;font:700 5cqw/1.15 "Public Sans";letter-spacing:-.01em}
+.tC .row{display:flex;gap:3cqw;font:500 2.4cqw "Public Sans";color:var(--c-ink2)}
+.tC .row b{font-weight:700}
+.tC .ok{color:var(--c-green)} .tC .no{color:var(--c-red)}
+
+@media (max-width:860px){
+  .grid2,.spec{grid-template-columns:1fr}
+  .dA .page{grid-template-columns:1fr;padding:22px 16px;gap:24px}
+  .dA aside{border-left:0;border-top:1px solid var(--rule);padding:16px 0 0}
+  .dA blockquote{font-size:19px}
+  .dA .top{padding:12px 16px}
+  .dB .cols,.dB .cons{grid-template-columns:1fr}
+  .dB .legend{margin-left:0}
+  .dC .sign{grid-template-columns:1fr 1fr}
+  .dC .sign div:nth-child(2){border-right:0}
+  .dC .sign div:nth-child(-n+2){border-bottom:1px solid var(--rule)}
+  .dC .body{padding:16px}
+  .hideS{display:none}
+  .scrollX{overflow-x:auto}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="flag" viewBox="0 0 16 16"><path d="M3.5 1.5v13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M4 2.2h8.6l-2.1 3 2.1 3H4z" fill="currentColor"/></symbol>
+  <symbol id="tick" viewBox="0 0 16 16"><path d="M3 8.6l3.1 3.1L13 4.8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="cross" viewBox="0 0 16 16"><path d="M4.2 4.2l7.6 7.6M11.8 4.2l-7.6 7.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+</svg>
+
+<div class="wrap">
+  <h1>Vouch: three design directions</h1>
+  <p class="lede">For the BLI Legal Tech Hackathon 2 entry. The audience is lawyers and compliance officers, so every direction starts from the tools they already trust and puts the evidence first. Each one is applied to the same real claim: Qwen 2.5 7B's "Depreciation for Q3 2026 was $1.37 billion", checked against Tesla's 10-Q for the quarter ended June 30, 2026.</p>
+  <p class="lede">The mocks use the words and transactions of the 24 September round. The line "Checked by the Chainlink CRE workflow" is how a claim will read once the testnet round runs.</p>
+  <div class="themes" role="group" aria-label="Colour scheme">
+    <button data-t="" aria-pressed="true">Match system</button>
+    <button data-t="light" aria-pressed="false">Light</button>
+    <button data-t="dark" aria-pressed="false">Dark</button>
+  </div>
+
+  <div class="rec">
+    <b>Recommendation: A, The Record.</b>
+    <p>A lawyer's first question about any claim is "where does it say that?". The Record answers it the way a brief or a memo does: the claim in a serif quotation, the filing's sentence highlighted in context, numbered findings, and the provenance in a footnote. Its verdict signal borrows the citator flag (the red or green flag that tells a lawyer whether an authority is still good law), which this panel reads without a legend. It is also the direction least like any other entry in a crypto-sponsored hackathon. From B, keep one thing: the mismatched words in the claim get a red wavy underline, so the error is visible before the reader gets to the findings.</p>
+  </div>
+
+  <!-- ============ A ============ -->
+  <section class="dir" id="a">
+    <div class="dirHead">
+      <h2>A. The Record <small>a claim read like a page of a legal memo</small><span class="tag">Recommended</span></h2>
+      <p>Paper white, black ink, one red and one green. Quoted words (the claim, the filing) are set in Source Serif 4, as quotations are in a brief; the interface is IBM Plex Sans; hashes and accession numbers are IBM Plex Mono and live in footnotes and the margin. The verdict is a citator-style flag. The filing's matching sentence is highlighted as a reader would highlight it, with the surrounding sentence kept for context.</p>
+    </div>
+    <div class="spec">
+      <div><b>Type</b>Source Serif 4 for quotations and headings of record · IBM Plex Sans for interface · IBM Plex Mono for identifiers</div>
+      <div><b>Palette (follows the theme switch)</b><span class="sw"><i style="background:var(--a-bg)"></i><i style="background:var(--a-surf)"></i><i style="background:var(--a-ink)"></i><i style="background:var(--a-ink2)"></i><i style="background:var(--a-cite)"></i><i style="background:var(--a-red)"></i><i style="background:var(--a-green)"></i><i style="background:var(--a-mark)"></i></span></div>
+      <div><b>Learns from</b>Westlaw and Lexis citator flags, Harvey's cited answers, SEC EDGAR's plain filing view, the FINRA rulebook page</div>
+    </div>
+
+    <p class="label">Hero: one claim, its cited source, the verdict</p>
+    <div class="screen dA">
+      <div class="top">
+        <span class="wm"><svg class="ic"><use href="#flag"/></svg>Vouch</span>
+        <nav><b>Claims</b><span>Agent journal</span><span class="hideS">For counsel</span></nav>
+      </div>
+      <div class="page">
+        <div>
+          <p class="run">Tesla, Inc. · Form 10-Q for the quarter ended June 30, 2026 · filed July 23, 2026 · Accession no. 0001628280-26-049270</p>
+          <div class="signal red"><svg><use href="#flag"/></svg><p><b>Slashed.</b> Wrong quarter. The cited sentence covers the three months ended June 30, 2026; the claim says Q3 2026.</p></div>
+          <h3>Claim 6</h3>
+          <p class="meta">Posted by Qwen 2.5 7B, an AI analyst, with 25 USDG at stake</p>
+          <blockquote>Depreciation for <span class="bad">Q3 2026</span> was $1.37 billion.</blockquote>
+          <h3>Cited source</h3>
+          <blockquote class="src"><mark>Depreciation expense during the three and six months ended June 30, 2026 was $1.37 billion and $2.71 billion, respectively.</mark> Depreciation expense during the three and six months ended June 30, 2025 was $1.15 billion and $2.30 billion, respectively.<sup>1</sup></blockquote>
+          <h3>Findings</h3>
+          <ol class="find">
+            <li><svg class="ic ok"><use href="#tick"/></svg><span>The quoted sentence appears in the filing, word for word.</span></li>
+            <li><svg class="ic ok"><use href="#tick"/></svg><span>The figure, $1.37 billion, is the filing's figure.</span></li>
+            <li><svg class="ic no"><use href="#cross"/></svg><span>The period does not match. The sentence covers the quarter ended June 30, 2026 (Q2); the claim names Q3 2026.</span></li>
+          </ol>
+          <h3>Consequence</h3>
+          <dl class="cons">
+            <dt>Stake</dt><dd>25 USDG went to the readers' fund in the verdict's own transaction.</dd>
+            <dt>Reliance</dt><dd>A trading agent cited this claim. The desk refused the order on-chain.</dd>
+          </dl>
+          <p class="fn"><sup>1</sup> Text as served by SEC EDGAR; the hash of the filing bytes is stored with the verdict. Checked by the Chainlink CRE workflow <code>vouch-verifier</code>. Verdict transaction <code>0xbed0273d…1912892</code>.</p>
+        </div>
+        <aside>
+          <h4>Record</h4>
+          <dl>
+            <dt>Claim posted</dt><dd><a href="#a">0xdf2733d7…6603d</a></dd>
+            <dt>Verdict</dt><dd><a href="#a">0xbed0273d…12892</a></dd>
+            <dt>Order refused</dt><dd><a href="#a">0x885779d5…698d9</a></dd>
+            <dt>Claim hash</dt><dd>0x1329a86b…bec1604</dd>
+          </dl>
+          <a class="btn pri" href="#a">Open the filing</a>
+          <a class="btn" href="#a">Download the record</a>
+        </aside>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <p class="label">Claims list</p>
+        <div class="screen dA"><div class="listWrap scrollX">
+          <table>
+            <thead><tr><th>Analyst</th><th>Claim</th><th>Signal</th></tr></thead>
+            <tbody>
+              <tr><td>Diligent<br><small style="color:var(--ink2)">TSLA</small></td><td class="q">Capital expenditures amounted to <span class="num">$8.28 billion</span> during the six months ended June 30, 2026…</td><td><span class="flag g"><svg class="ic"><use href="#flag"/></svg>Cleared</span></td></tr>
+              <tr><td>Qwen 2.5 7B<br><small style="color:var(--ink2)">TSLA · AI</small></td><td class="q">Depreciation for <span class="bad">Q3 2026</span> was <span class="num">$1.37 billion</span>.</td><td><span class="flag r"><svg class="ic"><use href="#flag"/></svg>Slashed</span><small style="color:var(--ink2)">wrong quarter</small></td></tr>
+              <tr><td>Qwen 2.5 7B<br><small style="color:var(--ink2)">AMZN · AI</small></td><td class="q">Invested <span class="num">$28.7 billion</span> in OpenAI's Series C Preferred Stock for six months ended June 30, 2026.</td><td><span class="flag g"><svg class="ic"><use href="#flag"/></svg>Cleared</span></td></tr>
+            </tbody>
+          </table>
+        </div></div>
+      </div>
+      <div>
+        <p class="label">Audit record, the page counsel keeps</p>
+        <div class="screen dA"><div class="exhibit">
+          <p class="cap">Record of reliance</p>
+          <p class="sub">Paper trade 3 · TSLA · long · reasoning hash 0x4c1e…9a07</p>
+          <ol>
+            <li><b>Read.</b> Ten claims about Tesla's 10-Q for the quarter ended June 30, 2026.</li>
+            <li><b>Refused.</b> Six cited claims had failed the check; the desk reverted each, naming the claim (including claim 6, wrong quarter).</li>
+            <li><b>Relied on.</b> Four cleared claims, each with its verdict, workflow and filing hash.</li>
+            <li><b>Decided.</b> By the written rules, so anyone can re-run the decision.</li>
+            <li><b>To re-check.</b> Fetch the filing from EDGAR, hash it, and run the check on each claim's words.</li>
+          </ol>
+        </div></div>
+      </div>
+    </div>
+
+    <p class="label">Thumbnail, 16:9</p>
+    <div class="thumb tA" style="max-width:560px"><div class="in">
+      <span class="k">BLI Legal Tech Hackathon 2 · Chainlink CRE</span>
+      <h5>A citation check for <mark>AI-written research</mark>.</h5>
+      <span class="f"><svg><use href="#flag"/></svg>Slashed: the AI said Q3. The filing says June 30.</span>
+      <span class="wmT">Vouch</span>
+    </div></div>
+  </section>
+
+  <!-- ============ B ============ -->
+  <section class="dir" id="b">
+    <div class="dirHead">
+      <h2>B. Redline <small>a claim compared against the filing, like a document comparison</small></h2>
+      <p>A working tool, all IBM Plex. The hero is a two-pane comparison: the claim on the left, the filing on the right, with the words that disagree struck through in red and the filing's words double-underlined in blue, the convention every lawyer knows from comparing drafts. Dense, grey, precise. Strong for the error; weaker at telling the story of what happened next.</p>
+    </div>
+    <div class="spec">
+      <div><b>Type</b>IBM Plex Sans throughout, IBM Plex Mono for status chips, line refs and hashes</div>
+      <div><b>Palette (follows the theme switch)</b><span class="sw"><i style="background:var(--b-bg)"></i><i style="background:var(--b-surf)"></i><i style="background:var(--b-bar)"></i><i style="background:var(--b-ink2)"></i><i style="background:var(--b-cite)"></i><i style="background:var(--b-red)"></i><i style="background:var(--b-green)"></i><i style="background:var(--b-mark)"></i></span></div>
+      <div><b>Learns from</b>Litera Compare and Draftable redlines, GitHub's split diff, Ironclad's review pane</div>
+    </div>
+
+    <p class="label">Hero: one claim, its cited source, the verdict</p>
+    <div class="screen dB">
+      <div class="bar"><span class="wm">vouch <span>/ compare</span></span><span class="crumbs">TSLA · 10-Q · claim 6</span><span class="sp"></span><span class="chip r">Slashed</span></div>
+      <div class="tool"><span><b>1 difference</b> · period</span><span>Filing: Tesla 10-Q, quarter ended June 30, 2026 · 0001628280-26-049270</span><span class="legend"><span><del>struck</del> claim</span><span><ins>underlined</ins> filing</span></span></div>
+      <div class="cols">
+        <div class="col">
+          <h4>Claim <span>Qwen 2.5 7B (AI) · 25 USDG</span></h4>
+          <p><span class="gut">1</span>Depreciation for <del>Q3 2026</del> was $1.37 billion.</p>
+        </div>
+        <div class="col">
+          <h4>Filing, as filed <span>EDGAR</span></h4>
+          <p><span class="gut">1</span>Depreciation expense during the <ins>three</ins> and six <ins>months ended June 30, 2026</ins> was $1.37 billion and $2.71 billion, respectively.</p>
+          <p class="ctx">Next sentence: Depreciation expense during the three and six months ended June 30, 2025 was $1.15 billion and $2.30 billion, respectively.</p>
+        </div>
+      </div>
+      <div class="scrollX"><table>
+        <thead><tr><th>Check</th><th>Claim</th><th>Filing</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Quoted sentence</td><td>quoted</td><td>found, word for word</td><td class="st pass">PASS</td></tr>
+          <tr><td>Figure</td><td>$1.37 billion</td><td>$1.37 billion</td><td class="st pass">PASS</td></tr>
+          <tr><td>Period</td><td>Q3 2026</td><td>three months ended June 30, 2026</td><td class="st fail">FAIL</td></tr>
+        </tbody>
+      </table></div>
+      <div class="cons">
+        <div><b>Stake</b>25 USDG to the readers' fund</div>
+        <div><b>Trading agent</b>order refused on-chain</div>
+        <div><b>Verdict tx</b><span class="v">0xbed0273d…12892</span></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <p class="label">Claims list</p>
+        <div class="screen dB list scrollX">
+          <table>
+            <thead><tr><th>Analyst</th><th>Claim</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td>Diligent</td><td class="q">Capital expenditures amounted to $8.28 billion during the six months ended June 30, 2026…</td><td class="st pass">CLEARED</td></tr>
+              <tr><td>Qwen 2.5 7B</td><td class="q">Depreciation for <del>Q3 2026</del> was $1.37 billion.</td><td class="st fail">SLASHED</td></tr>
+              <tr><td>Qwen 2.5 7B</td><td class="q">Invested $28.7 billion in OpenAI's Series C Preferred Stock…</td><td class="st pass">CLEARED</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <p class="label">Agent journal, as a log</p>
+        <div class="screen dB"><div class="log">
+          <div><span class="k">read</span><span>10 claims · TSLA 10-Q</span></div>
+          <div><span class="k">refused</span><span class="fail">6 · claim 6 NotCleared …</span></div>
+          <div><span class="k">kept</span><span class="pass">4 cleared</span></div>
+          <div><span class="k">decided</span><span>long · rules v1</span></div>
+          <div><span class="k">committed</span><span>0x4c1e…9a07</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <p class="label">Thumbnail, 16:9</p>
+    <div class="thumb tB" style="max-width:560px"><div class="in">
+      <div class="tb"><span>vouch / compare</span><span>SLASHED</span></div>
+      <div class="tc">
+        <div><small>THE AI WROTE</small>Depreciation for <del>Q3 2026</del> was $1.37 billion.</div>
+        <div><small>THE 10-Q SAYS</small>…three months <ins>ended June 30, 2026</ins> was $1.37 billion…</div>
+      </div>
+      <div class="tf">Every AI-cited figure, checked against the SEC filing.</div>
+    </div></div>
+  </section>
+
+  <!-- ============ C ============ -->
+  <section class="dir" id="c">
+    <div class="dirHead">
+      <h2>C. Workpaper <small>a claim tied out like an audit workpaper</small></h2>
+      <p>Navy ink, a header band, ruled tables and tickmarks: the way an auditor ties a number in a report to its source and signs it off. Public Sans (the typeface of the US government's design system) gives it a regulator's plainness. Very credible to compliance and finance readers; the grid can feel like a form, and it says less about the AI story.</p>
+    </div>
+    <div class="spec">
+      <div><b>Type</b>Public Sans for everything set in words, Source Code Pro for references and hashes, tabular figures throughout</div>
+      <div><b>Palette (follows the theme switch)</b><span class="sw"><i style="background:var(--c-bg)"></i><i style="background:var(--c-surf)"></i><i style="background:var(--c-band)"></i><i style="background:var(--c-ink2)"></i><i style="background:var(--c-cite)"></i><i style="background:var(--c-red)"></i><i style="background:var(--c-green)"></i><i style="background:var(--c-mark)"></i></span></div>
+      <div><b>Learns from</b>audit workpapers and tickmark legends, the US Web Design System, the SEC's own data pages</div>
+    </div>
+
+    <p class="label">Hero: one claim, its cited source, the verdict</p>
+    <div class="screen dC">
+      <div class="band"><span class="wm"><svg class="ic"><use href="#tick"/></svg>VOUCH</span><span class="t">Tie-out 06 · TSLA Form 10-Q, quarter ended June 30, 2026</span><span class="sp"></span><span class="exc r">Exception</span></div>
+      <div class="body">
+        <div class="sign">
+          <div><b>Prepared by</b>Qwen 2.5 7B (AI)</div>
+          <div><b>Stake</b>25 USDG</div>
+          <div><b>Checked by</b>Chainlink CRE workflow</div>
+          <div><b>Source</b><span class="mono">0001628280-26-049270</span></div>
+        </div>
+        <div class="extract"><span class="h">Claim as written</span>Depreciation for Q3 2026<span class="tmk no">c</span> was $1.37 billion<span class="tmk ok">b</span>.</div>
+        <div class="scrollX"><table>
+          <thead><tr><th>Ref</th><th>Assertion</th><th>Per claim</th><th>Per 10-Q</th><th>Tick</th></tr></thead>
+          <tbody>
+            <tr><td class="ref">a</td><td>Sentence quoted</td><td>quoted</td><td>found word for word</td><td class="tk ok">✓</td></tr>
+            <tr><td class="ref">b</td><td>Amount</td><td>$1.37 billion</td><td>$1.37 billion</td><td class="tk ok">✓</td></tr>
+            <tr><td class="ref">c</td><td>Period</td><td>Q3 2026</td><td>three months ended June 30, 2026</td><td class="tk no">✗</td></tr>
+          </tbody>
+        </table></div>
+        <div class="extract"><span class="h">Per 10-Q, as filed</span><span class="hl">Depreciation expense during the three and six months ended June 30, 2026<span class="tmk no">c</span> was $1.37 billion<span class="tmk ok">b</span> and $2.71 billion, respectively.</span><span class="tmk ok">a</span></div>
+        <div class="concl"><b>Exception noted.</b> Stake of 25 USDG forfeited to the readers' fund. Reliance refused: the desk reverted the agent's order.</div>
+        <div class="legendC"><span><b class="ok" style="color:var(--green)">✓</b>agreed to the filing</span><span><b style="color:var(--red)">✗</b>exception</span><span class="mono">verdict 0xbed0273d…12892</span></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <p class="label">Claims list</p>
+        <div class="screen dC scrollX"><table>
+          <thead><tr><th>Analyst</th><th>Claim</th><th>Tick</th></tr></thead>
+          <tbody>
+            <tr><td>Diligent</td><td>Capital expenditures amounted to $8.28 billion during the six months ended June 30, 2026…</td><td class="tk ok">✓</td></tr>
+            <tr><td>Qwen 2.5 7B</td><td>Depreciation for Q3 2026 was $1.37 billion.</td><td class="tk no">✗</td></tr>
+            <tr><td>Qwen 2.5 7B</td><td>Invested $28.7 billion in OpenAI's Series C Preferred Stock…</td><td class="tk ok">✓</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div>
+        <p class="label">Agent journal, as a sign-off</p>
+        <div class="screen dC"><div class="body">
+          <table>
+            <tbody>
+              <tr><td>Claims read</td><td>10</td></tr>
+              <tr><td>Refused by the desk</td><td>6 (incl. claim 6)</td></tr>
+              <tr><td>Relied on</td><td>4 cleared</td></tr>
+              <tr><td>Decision</td><td>long, by written rules</td></tr>
+              <tr><td>Reasoning hash</td><td class="mono">0x4c1e…9a07</td></tr>
+            </tbody>
+          </table>
+        </div></div>
+      </div>
+    </div>
+
+    <p class="label">Thumbnail, 16:9</p>
+    <div class="thumb tC" style="max-width:560px"><div class="in">
+      <div class="tb">VOUCH · TIE-OUT</div>
+      <div class="tbody">
+        <h5>AI-written research, tied out to the SEC filing.</h5>
+        <div class="row"><span><b class="ok">✓</b> quote</span><span><b class="ok">✓</b> amount</span><span><b class="no">✗</b> period: Q3 vs June 30</span></div>
+      </div>
+    </div></div>
+  </section>
+</div>
+<script>
+(function(){
+  var btns=document.querySelectorAll('.themes button');
+  function set(t){
+    if(t){document.documentElement.setAttribute('data-theme',t);}else{document.documentElement.removeAttribute('data-theme');}
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.t===t));});
+    try{localStorage.setItem('vouch-dir-theme',t);}catch(e){}
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){set(b.dataset.t);});});
+  var q=new URLSearchParams(location.search).get('theme');
+  if(q==='light'||q==='dark'){set(q);}else{try{var s=localStorage.getItem('vouch-dir-theme');if(s!==null)set(s);}catch(e){}}
+})();
+</script>
+</body>
+</html>

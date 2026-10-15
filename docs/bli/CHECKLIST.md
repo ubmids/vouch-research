@@ -17,13 +17,11 @@ its own `PATH`. The testnet wallet key is already at
 `~/.config/vouch-rh/testnet.key` (address `0x950d00BA837cD285e6d8a0F3f02d69434a775808`,
 0.0062 test ETH on 14 Oct). Never print or commit that file.
 
-1. **By 16 Oct: bun, once.** `curl -fsSL https://bun.sh/install | bash`, then open a new terminal.
-   (Chainlink's CLI needs bun to compile a TypeScript workflow; checked 14 Oct: `cre workflow build`
-   stops with "bun is required".)
-2. **By 16 Oct: a Chainlink account and the CLI logged in.** Sign up at https://app.chain.link (free),
-   then in the repo run `~/.cre/bin/cre login` and sign in in the browser it opens. Or create an API key
-   (app.chain.link → Account Settings) and `export CRE_API_KEY=<key>` in the terminal that runs the
-   round (never commit it). Check: `~/.cre/bin/cre whoami` prints your account. Checked 14 Oct: without
+1. **bun: done.** bun 1.4.3 is installed at `~/.bun/bin` (checked 15 Oct); `scripts/cre_round.sh`
+   puts it on its own `PATH`.
+2. **By 16 Oct: a Chainlink account and the CLI logged in.** Sign up at https://app.chain.link (free, 2FA
+   required), then in the repo run `~/.cre/bin/cre login` and sign in in the browser it opens. (An API
+   key is not an alternative: Chainlink's docs reserve API-key auth for accounts with deploy access.) Check: `~/.cre/bin/cre whoami` prints your account. Checked 14 Oct: without
    this, `cre workflow simulate` stops with "Authentication required"; nothing else is missing.
 3. **By 16 Oct: the wallet's balance.** The preflight checks it. If it says the wallet is short, fund
    `0x950d00BA837cD285e6d8a0F3f02d69434a775808` at https://faucet.testnet.chain.robinhood.com in your browser
