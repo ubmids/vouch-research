@@ -19,7 +19,8 @@ Where each part of that has run, as of 15 October 2026:
 |---|---|---|
 | The AI wrote it; stake slashed; trade refused | Robinhood Chain testnet, 24 Sep ([slash](https://explorer.testnet.chain.robinhood.com/tx/0xbed0273dfe767314c80bdad33187044bfcda94f68b6853ef9c1e2b33a1912892), [refused trade](https://explorer.testnet.chain.robinhood.com/tx/0x885779d54f221e655c1c2242fef7361383d11eaaf123cd6aea2f7fbd5b9698d9)) | v1: one verifier key, before the CRE work |
 | The same words, re-posted (their hash matches v1's), slashed; trade refused; journal | a local devnet (anvil), [`web/feed-local.json`](web/feed-local.json) | **the CRE workflow's own handler, in Chainlink's CRE SDK test runtime** ([`scripts/sdk_round.sh`](scripts/sdk_round.sh)) |
-| A round settled by `cre workflow simulate --broadcast` | Robinhood Chain testnet: market deployed and 50 claims posted on 15 Oct ([the round](docs/bli/TESTNET_ROUND.md)) | **pending Subomi's `cre login`**; then one command settles it ([OWNER_TODO](docs/bli/OWNER_TODO.md)) |
+
+<!-- round:readme -->**On Robinhood Chain testnet with the CRE CLI simulation:** the round's market is deployed and its 50 claims were posted on 15 Oct ([the round](docs/bli/TESTNET_ROUND.md), market [0x3234bd…3E1a33](https://explorer.testnet.chain.robinhood.com/address/0x3234bd274FF76aB2eB3487eC91cD14cbAc3E1a33)). The verdicts wait on the CRE login; then one command settles them.<!-- /round:readme -->
 
 **[Live feed](https://vouch-feed.vercel.app)** (the 24 Sep round) ·
 **The agent's journal** (on the live site after the next deploy, pending Subomi; today: serve `web/` and open `?feed=feed-local.json&journal`) ·

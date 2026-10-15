@@ -1,35 +1,33 @@
-# Robinhood Chain testnet round, 15 Oct 2026
+# Robinhood Chain testnet round
 
 The first half of the CRE round: the market is deployed and every claim is posted
-on Robinhood Chain testnet (chain id 46630). Nothing is settled yet. The verdicts
-come from the Chainlink CRE workflow in the CRE CLI simulation, which needs
-`cre login`; the claims wait, pending, for the 7-day window (until 22 Oct 2026,
-16:32 UTC). After the login, one command settles them:
+on Robinhood Chain testnet (chain id 46630). Nothing is settled yet: the verdicts come
+from the Chainlink CRE workflow in the CRE CLI simulation, which needs `cre login`.
+The claims wait, pending, for the 7-day window (until 22 Oct 2026, 16:32 UTC). After
+the login, one command settles them and rewrites this page:
 
 ```
-bash scripts/cre_round.sh --settle cre/runs/20261015T163010Z-posted
+bash scripts/after_login.sh
 ```
 
-Evidence folder: `cre/runs/20261015T163010Z-posted/` (env.txt, post.log, the claims
-and their transactions). Analysts' claims: the scripted analysts plus Qwen 2.5 7B's
-claims from the 24 Sep round, replayed word for word (labelled replayed).
+Evidence folder: `cre/runs/20261015T163010Z-posted/`. Workflow WASM: `077ae634fa6419380c91bba594a9205db996434c427a92005492e9b829fb73eb`. The AI analyst's claims are
+Qwen 2.5 7B's words from the 24 Sep round, replayed word for word (labelled replayed).
 
 ## Contracts
 
 | Contract | Address |
 |---|---|
-| BondedClaims (the market; verdicts only from the forwarder) | [0x3234bd274FF76aB2eB3487eC91cD14cbAc3E1a33](https://explorer.testnet.chain.robinhood.com/address/0x3234bd274FF76aB2eB3487eC91cD14cbAc3E1a33) |
+| BondedClaims (verdicts only from the forwarder) | [0x3234bd274FF76aB2eB3487eC91cD14cbAc3E1a33](https://explorer.testnet.chain.robinhood.com/address/0x3234bd274FF76aB2eB3487eC91cD14cbAc3E1a33) |
 | AgentDesk | [0x59Cd19438CDAe1eDBa5F3045aF3a01B1D33b4039](https://explorer.testnet.chain.robinhood.com/address/0x59Cd19438CDAe1eDBa5F3045aF3a01B1D33b4039) |
 | Test USDG (tUSDG) | [0xD1c5756B52914bA790E613198D69458C972FA90F](https://explorer.testnet.chain.robinhood.com/address/0xD1c5756B52914bA790E613198D69458C972FA90F) |
 | Chainlink MockKeystoneForwarder (simulation) | [0x0b93082D9b3C7C97fAcd250082899BAcf3af3885](https://explorer.testnet.chain.robinhood.com/address/0x0b93082D9b3C7C97fAcd250082899BAcf3af3885) |
 
-Deployer and analysts' funder: `0x950d00BA837cD285e6d8a0F3f02d69434a775808` (test wallet).
-Workflow WASM built for this round: `077ae634fa6419380c91bba594a9205db996434c427a92005492e9b829fb73eb`.
+Deployer and funder: `0x950d00BA837cD285e6d8a0F3f02d69434a775808` (test wallet).
 
-## The 50 claims, as posted
+## The claims
 
 All 50 posting transactions succeeded (receipts checked 15 Oct). "Expected" is what the
-same check gives locally before any gas; the on-chain verdict is the workflow's.
+same check gives locally before any gas; the on-chain verdict will be the workflow's.
 
 | Claim | Stock | Analyst | Figure | Expected | Posted in |
 |---|---|---|---|---|---|
@@ -83,11 +81,3 @@ same check gives locally before any gas; the on-chain verdict is the workflow's.
 | 47 | AMD | Misreader | $222 million | slashed | [0xa0cb9119…c5b7b4](https://explorer.testnet.chain.robinhood.com/tx/0xa0cb9119cf0a4ed16ec527b6197dae6d6c1129fdf10b2e9420cd3b760cc5b7b4) |
 | 48 | AMD | Embellisher | $39 million | slashed | [0xe5ff0666…4d9d77](https://explorer.testnet.chain.robinhood.com/tx/0xe5ff0666acaa43ab09fce3bba4ac43b1b78bb14648ad0b2333bf14c1704d9d77) |
 | 49 | AMD | Fabricator | $39 million | slashed | [0xd40a73cf…c73e58](https://explorer.testnet.chain.robinhood.com/tx/0xd40a73cf7e37ae437e319642d9b8e5db58866a55f588ad45b780d70476c73e58) |
-
-## Still to do (needs `cre login`)
-
-1. `bash scripts/cre_round.sh --settle cre/runs/20261015T163010Z-posted`: a dry run on claim 0,
-   then one `cre workflow simulate --broadcast` per claim (EDGAR fetch, the check, a verdict
-   through the forwarder), then the trading agent, the journal check and the feed.
-2. Commit the run folder's logs and `feed/feed.json`, `web/feed.json`; replace the
-   "pending" lines in README, BUIDL and the deck with the verdict transactions.
