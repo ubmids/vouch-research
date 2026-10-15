@@ -168,6 +168,7 @@ details summary { cursor: pointer; font: var(--label); font-stretch: 75%; letter
 
 /* ---- the agent's case files ----------------------------------------------- */
 .journal { padding: 8px 0 12px; }
+.journal .tally { margin: 10px 0 0; border-left: 5px solid var(--yellow); padding-left: 12px; }
 #entries { padding: 0 24px; display: grid; gap: 16px; }
 .jnote { background: var(--paper); padding: 16px 18px; margin: 0; }
 details.jentry { background: var(--paper); box-shadow: 0 1px 0 var(--faint), 0 6px 0 -3px var(--faint); }
@@ -266,6 +267,13 @@ b.r { color: var(--red); } b.c { color: var(--blue); }
 .endCard h3 { font: 900 38px/1.05 "Archivo"; font-stretch: 62%; text-transform: uppercase; margin: 0 0 12px; }
 .endCard .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .nav { display: flex; gap: 8px; margin-top: 16px; } .nav #next { margin-left: auto; }
+
+/* ---- one part alone (?view=claim, ?view=journal) ------------------------ */
+body.view-claim .intro, body.view-claim .folderTabs, body.view-claim .book, body.view-claim .journal, body.view-claim .lower, body.view-claim .mkpis { display: none; }
+body.view-claim .main { grid-template-columns: minmax(0, 980px); justify-content: center; }
+body.view-claim .inspect { position: static; max-height: none; overflow: visible; display: block; }
+body.view-claim .sheetClose { display: none; }
+body.view-journal .intro#claims, body.view-journal .folderTabs, body.view-journal .main, body.view-journal .lower { display: none; }
 
 /* ---- the record of reliance (?record=) ------------------------------------ */
 .recordPage { max-width: 1120px; margin: 0 auto; padding: 0 24px 40px; }

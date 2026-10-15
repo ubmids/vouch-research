@@ -33,8 +33,13 @@ function ring(c, text) {
   if (c.verdict !== "slashed") return t;
   const m = (c.reason || "").match(/the claim says (.+)$/);
   const bad = m ? m[1].trim() : (c.check && c.check.method === "figures-differ") || /^claimed value not grounded/.test(c.reason || "") ? c.value : "";
-  if (!bad || !text.includes(bad)) return t;
-  return t.replace(esc(bad), `<span class="ring">${esc(bad)}</span>`);
+  if (bad && text.includes(bad)) return t.replace(esc(bad), `<span class="ring">${esc(bad)}</span>`);
+  // a wrong period or quarter: ring the period the claim names, however it is written
+  if (/^wrong (period|quarter|date)/.test(c.reason || "")) {
+    const p = t.match(/\b(Q[1-4](?: \d{4})?|(?:three|six|nine|twelve) months|(?:first|second|third|fourth) quarter|quarter)\b/i);
+    if (p) return t.replace(p[0], `<span class="ring">${p[0]}</span>`);
+  }
+  return t;
 }
 
 // ?feed=feed-local.json shows another published round (same page, another file).
@@ -119,6 +124,9 @@ function boot() {
     const j = (F.journal || []).find((x) => x.ticker === qs.get("record")) || (F.journal || [])[0];
     if (j) { recordPage(j); return; }
   }
+  // ?view=claim (with ?claim=<id>) or ?view=journal: one part of the page alone, for links, the video and the gallery.
+  const view = qs.get("view");
+  if (view === "claim" || view === "journal") document.body.classList.add(`view-${view}`);
   story(lead);
   if (qs.has("journal")) openEntry(lead.ticker);
   // ?claim (the lead) or ?claim=<id>: open on one claim, no tour (for links and the video)
@@ -148,7 +156,7 @@ function rows() {
   $("#rows").innerHTML = list.map((c) => {
     const p = plain(c), v = verdictOf(c);
     const who = c.analyst_kind === "model" ? ` <span class="ai" title="${esc(replayed(c) || "A language model, running locally")}">AI${c.replayed_from ? " · replayed" : ""}</span>`
-      : c.analyst_kind === "kol" ? ` <span class="ai" title="${esc(c.post && c.post.real ? "A real public post, linked in the record" : KIND.kol)}">${c.post && c.post.real ? "post" : "post · fixture"}</span>` : "";
+      : (c.analyst_kind || "").startsWith("kol") ? ` <span class="ai" title="${esc(c.post && c.post.real ? "A real public post, linked in the record" : KIND.kol)}">${c.post && c.post.real ? "post" : "post · fixture"}</span>` : "";
     return `<tr data-id="${c.id}" class="${v}" aria-selected="${c.id === selected}" tabindex="0">
       <td class="ex"><span class="sticker sm"><small>EXH</small><b>${c.id}</b></span></td>
       <td class="an">${esc(c.analyst)}${who}<span>${esc(c.ticker)} · ${esc(NAMES[c.ticker] || "")}</span></td>
@@ -228,7 +236,7 @@ function recordHtml(c, f) {
     ? `<b>It was refused.</b> The trading agent cited this exhibit. The desk asked ${esc(BRAND)} first, and a claim that failed the check cannot back a trade, so the transaction reverted on-chain.${toEntry}`
     : je ? `The trading agent read it${je.status === "opened" ? ", but the trade did not need it" : `. What it was left with on ${esc(NAMES[c.ticker] || c.ticker)} pointed nowhere, so it did not trade`}.${toEntry}`
     : "";
-  const who = `${esc(c.analyst)}${c.analyst_kind === "model" ? " (AI analyst)" : c.analyst_kind === "kol" ? " (news checker, staking on a post)" : ""}`;
+  const who = `${esc(c.analyst)}${c.analyst_kind === "model" ? " (AI analyst)" : (c.analyst_kind || "").startsWith("kol") ? " (news checker, staking on a post)" : ""}`;
   const finding = (ok, text) => `<li><span class="bx ${ok ? "" : "no"}" aria-hidden="true">${ok ? "✓" : "✗"}</span><span>${text}</span></li>`;
   const findings = [
     finding(quoteOk, !src ? "No sentence in the filing resembles the quote." : c.quote === src.match ? "The quoted sentence is in the filing, word for word." : quoteOk ? "The quoted sentence is in the filing, allowing for spacing and punctuation." : `The closest sentence in the filing is only ${(simPct * 100).toFixed(1)}% identical: the quote was altered.`),
@@ -245,7 +253,7 @@ function recordHtml(c, f) {
 
   return `<article class="record ${v}">
     <header class="recHead">
-      <div><h2>Claim record</h2><p>${esc(NAMES[c.ticker] || c.ticker)} · ${esc(f.form || "10-Q")} for the period ended ${esc(f.period || "")} · checked against the filing by ${esc(cre ? "the Chainlink CRE workflow" : F.settled_by || "the verifier key")}</p></div>
+      <div><h2>Claim record</h2><p>${esc(NAMES[c.ticker] || c.ticker)} · ${esc(f.form || "10-Q")} for the period ended ${esc(f.period || "")} · checked against the filing by ${esc(F.settled_by || (cre ? "the Chainlink CRE workflow" : "the verifier key"))}</p></div>
       <span class="sticker"><small>EXHIBIT</small><b>${c.id}</b><span>${esc(c.ticker)}</span></span>
     </header>
     <p class="headline">${p.title}</p>
@@ -407,6 +415,12 @@ const byId = () => Object.fromEntries(F.claims.map((c) => [c.id, c]));
 
 function journal() {
   const J = F.journal || [], el = $("#entries");
+  // A news-checker round on real posts: say how many were read and why most were not staked.
+  if (F.posts_read && F.posts_read.length) {
+    const read = F.posts_read, fig = read.filter((p) => p.reading && p.reading.checkable).length, staked = read.filter((p) => p.staked).length;
+    const intro = document.querySelector("#journal .intro p");
+    if (intro) intro.insertAdjacentHTML("afterend", `<p class="tally">The agent read <b>${read.length}</b> real public posts (${esc((F.snapshot && F.snapshot.source || "Mastodon").replace(/\s*\(.*\)$/, ""))}, ${esc(F.snapshot && F.snapshot.window ? `${F.snapshot.window.since} to ${F.snapshot.window.until}` : "")}), read by ${esc(F.reader && F.reader.kind === "model" ? `a model (${F.reader.model})` : "fixed word-list rules")}. <b>${fig}</b> stated a figure the 10-Q could confirm; it staked on the <b>${staked}</b> that a sentence of the filing states. The rest give a figure the filing has only in a table, or not at all: read, recorded, not staked.</p>`);
+  }
   if (!J.length) {
     el.innerHTML = `<p class="jnote">This round was published before the agent kept a journal. <a href="?feed=feed-local.json&journal">See a round with one</a> (run on a local devnet).</p>`;
     return;
@@ -457,7 +471,7 @@ function entryHtml(j) {
       <span class="what">${opened ? `${money(j.notional / 1e6)} USD paper · cites ${r.evidence.length} cleared claims · ${j.attempts.length} refusals` : `${j.attempts.length} refusals · nothing left that points anywhere`}</span>
       <span class="when">${opened ? `entry #${j.entry}` : ""}</span></summary>
     <ol class="trail">
-      <li><div><b>Read.</b> ${j.read.length} claims about ${esc(company)} from ${analysts} analysts, each citing ${esc(company)}'s 10-Q.</div></li>
+      <li><div><b>Read.</b> ${j.read.length} claim${j.read.length === 1 ? "" : "s"} about ${esc(company)} from ${analysts} analyst${analysts === 1 ? "" : "s"}, each citing ${esc(company)}'s 10-Q.</div></li>
       ${j.attempts.length ? `<li><div><b>Refused.</b> It tried to trade citing everything it read. The desk asked ${esc(BRAND)} about each claim and reverted the trade ${j.attempts.length} time${j.attempts.length > 1 ? "s" : ""}, each time naming a claim that failed the check:<ul class="refused">${refused}</ul></div></li>` : ""}
       <li><div><b>${opened ? "Kept what held." : "What was left."}</b> ${opened ? "The desk accepted every one of these: each cleared the check." : "Read by the agent's rules, these point nowhere, so it stopped before testing the rest against the desk."}<div class="scrollx"><table class="cited"><thead><tr><th>Claim</th><th>Analyst</th><th>What it says</th><th>Verdict</th><th>Read as</th></tr></thead><tbody>${cited || `<tr><td colspan="5" class="none">nothing left</td></tr>`}</tbody></table></div></div></li>
       <li><div><b>Decided.</b> ${decision} <span class="rule">${esc(r.rule || "")}</span></div></li>
@@ -814,5 +828,9 @@ function story(lead) {
   let first = true;
   try { first = localStorage.getItem("tour.seen") !== "1"; } catch (e) {}
   const qs = new URLSearchParams(location.search);
-  if ((first && !qs.has("journal") && !qs.has("claim")) || qs.has("tour")) openTour();
+  if ((first && !qs.has("journal") && !qs.has("claim") && !qs.has("view")) || qs.has("tour")) {
+    openTour();
+    const n = parseInt(qs.get("tour"), 10);   // ?tour=3 opens on step 3
+    if (n > 1) { i = Math.min(S[which].length, n - 1); draw(); }
+  }
 }
