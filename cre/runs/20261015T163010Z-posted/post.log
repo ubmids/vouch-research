@@ -1,0 +1,58 @@
+  market deployed at 0x3234bd274FF76aB2eB3487eC91cD14cbAc3E1a33, verdicts only from forwarder 0x0b93082D9b3C7C97fAcd250082899BAcf3af3885
+  Diligent     0x1618A08FA335DBe562526033D839E90E0D2e400b  bonded 500 tUSDG
+  Qwen 2.5 7B  0x86f1C3F69Dd007F918364E2861CF389B35f33ea8  bonded 500 tUSDG
+  Misreader    0x82d77bf44e3501499fE1Cc65f19609389c9653B9  bonded 500 tUSDG
+  Embellisher  0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94  bonded 500 tUSDG
+  Fabricator   0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477  bonded 500 tUSDG
+  #0   TSLA  Diligent        $8.28 billion  clear  quote verified and value grounded
+  #1   TSLA  Qwen 2.5 7B     $8.63 billion  clear  quote verified and value grounded
+  #2   TSLA  Misreader       $4.05 billion  SLASH  claimed value not grounded in the cited quote
+  #3   TSLA  Embellisher     $8.29 billion  SLASH  supporting quote not found in source document
+  #4   TSLA  Fabricator      $0.28 billion  SLASH  supporting quote not found in source document
+  #5   TSLA  Diligent        $1.37 billion  clear  quote verified and value grounded
+  #6   TSLA  Qwen 2.5 7B     $1.37 billion  SLASH  wrong quarter: the period ended in June, the claim says Q3 2026
+  #7   TSLA  Misreader       $4.05 billion  SLASH  claimed value not grounded in the cited quote
+  #8   TSLA  Embellisher     $1.47 billion  SLASH  supporting quote not found in source document
+  #9   TSLA  Fabricator      $4.37 billion  SLASH  supporting quote not found in source document
+  #10  AMZN  Diligent        $28.7 billion  clear  quote verified and value grounded
+  #11  AMZN  Qwen 2.5 7B     $28.7 billion  clear  quote verified and value grounded
+  #12  AMZN  Misreader        $640 million  SLASH  claimed value not grounded in the cited quote
+  #13  AMZN  Embellisher     $38.7 billion  SLASH  supporting quote not found in source document
+  #14  AMZN  Fabricator      $38.7 billion  SLASH  supporting quote not found in source document
+  #15  AMZN  Diligent        $21.3 billion  clear  quote verified and value grounded
+  #16  AMZN  Qwen 2.5 7B     $21.3 billion  clear  quote verified and value grounded
+  #17  AMZN  Misreader        $640 million  SLASH  claimed value not grounded in the cited quote
+  #18  AMZN  Embellisher     $28.3 billion  SLASH  supporting quote not found in source document
+  #19  AMZN  Fabricator      $21.0 billion  SLASH  supporting quote not found in source document
+  #20  PLTR  Diligent          $50 million  clear  quote verified and value grounded
+  #21  PLTR  Qwen 2.5 7B      $5.6 billion  clear  quote verified and value grounded
+  #22  PLTR  Misreader        $1.5 billion  SLASH  claimed value not grounded in the cited quote
+  #23  PLTR  Embellisher       $70 million  SLASH  supporting quote not found in source document
+  #24  PLTR  Fabricator        $51 million  SLASH  supporting quote not found in source document
+  #25  PLTR  Diligent         $916 million  clear  quote verified and value grounded
+  #26  PLTR  Qwen 2.5 7B      $361 million  clear  quote verified and value grounded
+  #27  PLTR  Misreader        $1.5 billion  SLASH  claimed value not grounded in the cited quote
+  #28  PLTR  Embellisher      $917 million  SLASH  supporting quote not found in source document
+  #29  PLTR  Fabricator       $913 million  SLASH  supporting quote not found in source document
+  #30  NFLX  Diligent         $5.1 billion  clear  quote verified and value grounded
+  #31  NFLX  Qwen 2.5 7B      $5.1 billion  clear  quote verified and value grounded
+  #32  NFLX  Misreader        $127 million  SLASH  claimed value not grounded in the cited quote
+  #33  NFLX  Embellisher      $7.1 billion  SLASH  supporting quote not found in source document
+  #34  NFLX  Fabricator       $5.2 billion  SLASH  supporting quote not found in source document
+  #35  NFLX  Diligent           $9 million  clear  quote verified and value grounded
+  #36  NFLX  Qwen 2.5 7B       $17 million  clear  quote verified and value grounded
+  #37  NFLX  Misreader        $127 million  SLASH  claimed value not grounded in the cited quote
+  #38  NFLX  Embellisher        $0 million  SLASH  supporting quote not found in source document
+  #39  NFLX  Fabricator         $2 million  SLASH  supporting quote not found in source document
+  #40  AMD   Diligent         $544 million  clear  quote verified and value grounded
+  #41  AMD   Qwen 2.5 7B      $544 million  SLASH  wrong quarter: the period ended in June, the claim says Q3 2026
+  #42  AMD   Misreader        $222 million  SLASH  claimed value not grounded in the cited quote
+  #43  AMD   Embellisher      $644 million  SLASH  supporting quote not found in source document
+  #44  AMD   Fabricator       $554 million  SLASH  supporting quote not found in source document
+  #45  AMD   Diligent          $37 million  clear  quote verified and value grounded
+  #46  AMD   Qwen 2.5 7B    $1,095 million  clear  quote verified and value grounded
+  #47  AMD   Misreader        $222 million  SLASH  claimed value not grounded in the cited quote
+  #48  AMD   Embellisher       $39 million  SLASH  supporting quote not found in source document
+  #49  AMD   Fabricator        $39 million  SLASH  supporting quote not found in source document
+posted 50 claims; their transactions are in /Users/subomi/Desktop/hackathons/fix-20261014/vouch-research/cre/runs/20261015T163010Z-posted/feed.posts.txt for the CRE workflow
+-> /Users/subomi/Desktop/hackathons/fix-20261014/vouch-research/cre/runs/20261015T163010Z-posted/feed.json  (50 claims, reader pool 0 tUSDG)
