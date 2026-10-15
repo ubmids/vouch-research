@@ -1,0 +1,1846 @@
+{
+ "label": "REAL. Public posts from Mastodon hashtag timelines (no account used), fetched by agent/vouchrh/posts_fetch.py. Each is a real post by a real account; the url is the source. Kept: posts in the window that name Tesla, Amazon, Netflix, Palantir or AMD and state a dollar figure. The posters did not stake anything: the agent stakes on each story itself.",
+ "source": "Mastodon public tag timelines (GET /api/v1/timelines/tag/<tag>)",
+ "window": {
+  "since": "2026-07-15",
+  "until": "2026-09-15"
+ },
+ "counts": {
+  "statuses_seen": 3160,
+  "naming_a_company": 1316,
+  "kept": 130
+ },
+ "requests": [
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/NFLX?limit=40&max_id=117272110694400000",
+   "statuses": 40,
+   "at": "2026-10-15T15:59:53Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/TSLA?limit=40&max_id=117272110694400000",
+   "statuses": 40,
+   "at": "2026-10-15T15:59:56Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/TSLA?limit=40&max_id=117213396771204202",
+   "statuses": 40,
+   "at": "2026-10-15T15:59:59Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/TSLA?limit=40&max_id=117133827697514673",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:02Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/TSLA?limit=40&max_id=117047567732193273",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:06Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/AMZN?limit=40&max_id=117272110694400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:09Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/PLTR?limit=40&max_id=117272110694400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:12Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/AMD?limit=40&max_id=117272110694400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:16Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/AMD?limit=40&max_id=117244178768367247",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:19Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/AMD?limit=40&max_id=117223548805417000",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:22Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/AMD?limit=40&max_id=117213003864009869",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:27Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Netflix?limit=40&max_id=116949359001600000",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:30Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Netflix?limit=40&max_id=116943885220205504",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:33Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Netflix?limit=40&max_id=116939701929788125",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:36Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Netflix?limit=40&max_id=116937227052723050",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:39Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Netflix?limit=40&max_id=116935467131749130",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:44Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Tesla?limit=40&max_id=116983332864000000",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:47Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Tesla?limit=40&max_id=116976213432574206",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:51Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Tesla?limit=40&max_id=116971551074589878",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:54Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Tesla?limit=40&max_id=116969064583293791",
+   "statuses": 40,
+   "at": "2026-10-15T16:00:58Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Tesla?limit=40&max_id=116964451107924879",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:03Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Amazon?limit=40&max_id=117028631347200000",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:06Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Amazon?limit=40&max_id=117024358727552419",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:14Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Amazon?limit=40&max_id=117019384432204282",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:20Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Amazon?limit=40&max_id=117016246257257662",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:24Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Amazon?limit=40&max_id=117013995282065324",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:27Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Palantir?limit=40&max_id=117051280588800000",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:30Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Palantir?limit=40&max_id=117043014245195763",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:33Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Palantir?limit=40&max_id=117038510681440109",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:36Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Palantir?limit=40&max_id=117034280847999198",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:41Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/Palantir?limit=40&max_id=117020217607594886",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:44Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/AMD?limit=40&max_id=117062605209600000",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:47Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/AMD?limit=40&max_id=117047505782217321",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:51Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/AMD?limit=40&max_id=117036662458021792",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:54Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/AMD?limit=40&max_id=117019057041318169",
+   "statuses": 40,
+   "at": "2026-10-15T16:01:59Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/earnings?limit=40&max_id=116943696691200000",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:02Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/earnings?limit=40&max_id=116977670553600000",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:05Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/earnings?limit=40&max_id=117022969036800000",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:08Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/earnings?limit=40&max_id=116975890083309833",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:11Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/earnings?limit=40&max_id=117045618278400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:14Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/earnings?limit=40&max_id=117013238460471208",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:16Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/earnings?limit=40&max_id=117051280588800000",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:19Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/earnings?limit=40&max_id=117034738157398073",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:22Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/stocks?limit=40&max_id=116943696691200000",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:25Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/stocks?limit=40&max_id=116925879924985738",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:28Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/stocks?limit=40&max_id=116977670553600000",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:31Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/stocks?limit=40&max_id=116960370513994426",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:34Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/stocks?limit=40&max_id=117022969036800000",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:38Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/stocks?limit=40&max_id=117009843948173364",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:41Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/stocks?limit=40&max_id=117045618278400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:43Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/stocks?limit=40&max_id=117030463777318545",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:46Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/stocks?limit=40&max_id=117051280588800000",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:49Z"
+  },
+  {
+   "url": "https://mastodon.social/api/v1/timelines/tag/stocks?limit=40&max_id=117032342636597598",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:54Z"
+  },
+  {
+   "url": "https://mstdn.social/api/v1/timelines/tag/NFLX?limit=40&max_id=117272110694400000",
+   "error": "HTTP Error 422: Unprocessable Content"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/NFLX?limit=40&max_id=117272110694400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:02:59Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/TSLA?limit=40&max_id=117272110694400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:01Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/AMZN?limit=40&max_id=117272110694400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:04Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/PLTR?limit=40&max_id=117272110694400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:07Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/AMD?limit=40&max_id=117272110694400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:10Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/AMD?limit=40&max_id=117241912387463669",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:12Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/Netflix?limit=40&max_id=116949359001600000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:15Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/Netflix?limit=40&max_id=116939701954657963",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:17Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/Tesla?limit=40&max_id=116983332864000000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:20Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/Tesla?limit=40&max_id=116975595946228228",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:23Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/Amazon?limit=40&max_id=117028631347200000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:25Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/Amazon?limit=40&max_id=117018823765826171",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:28Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/Palantir?limit=40&max_id=117051280588800000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:31Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/Palantir?limit=40&max_id=117042278186674904",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:33Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/AMD?limit=40&max_id=117062605209600000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:36Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/AMD?limit=40&max_id=117045467300795301",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:39Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/earnings?limit=40&max_id=116943696691200000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:42Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/earnings?limit=40&max_id=116977670553600000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:44Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/earnings?limit=40&max_id=117022969036800000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:47Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/earnings?limit=40&max_id=117045618278400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:50Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/earnings?limit=40&max_id=117051280588800000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:53Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/stocks?limit=40&max_id=116943696691200000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:56Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/stocks?limit=40&max_id=116977670553600000",
+   "statuses": 40,
+   "at": "2026-10-15T16:03:59Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/stocks?limit=40&max_id=117022969036800000",
+   "statuses": 40,
+   "at": "2026-10-15T16:04:01Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/stocks?limit=40&max_id=117045618278400000",
+   "statuses": 40,
+   "at": "2026-10-15T16:04:04Z"
+  },
+  {
+   "url": "https://mastodon.online/api/v1/timelines/tag/stocks?limit=40&max_id=117051280588800000",
+   "statuses": 40,
+   "at": "2026-10-15T16:04:06Z"
+  }
+ ],
+ "posts": [
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:pnx2fjuannbdpy3337ggthpp/post/3mqrzpq55ac2q",
+   "instance": "bsky.brid.gy",
+   "account": "peark.es@bsky.brid.gy",
+   "created_at": "2026-07-16T20:02:28.046Z",
+   "language": "en",
+   "text": "Big whiff for $NFLX earnings. Raised FY rev guide but...\n\n*NETFLIX 2Q REV. $12.56B, EST. $12.58B\n*NETFLIX 2Q EPS 80C, EST. 79C\n*NETFLIX 2Q FREE CASH FLOW $1.53B, EST. $2.72B\n\n*NETFLIX SEES 3Q REV. $12.86B, EST. $13B\n*NETFLIX SEES 3Q EPS 82C, EST. 84C",
+   "fetched_at": "2026-10-15T15:59:53Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "f6fdab7568777c7271239e7ba6a0a37f51a90e242ddca3f13f6186d17c3e4634"
+  },
+  {
+   "url": "https://mastodon.social/@indiegenius/116934707582325033",
+   "instance": "mastodon.social",
+   "account": "indiegenius@mastodon.social",
+   "created_at": "2026-07-17T09:53:57.087Z",
+   "language": "en",
+   "text": "Movie TV Tech Geeks #MovieNews #OldHenry #F9 #Netflix A $1.5M Western Gem Is Challenging a $225M Action Blockbuster on Netflix http://dlvr.it/TTZjlT",
+   "fetched_at": "2026-10-15T16:00:44Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "a084fe1b0a45d142a23ac30f7403ba5f040d02241fe28dd9537ad6fec289695c"
+  },
+  {
+   "url": "https://mastodon.social/@geospart/116934943764134784",
+   "instance": "mastodon.social",
+   "account": "geospart@mastodon.social",
+   "created_at": "2026-07-17T10:54:00.935Z",
+   "language": "en",
+   "text": "Stocks & Trading Update – July 17, 2026\nArticles of Interest while having coffee at Panera.\n\n4:30 a.m. EST [Yawn] Fri: US futures 📉\n\nS&P 500, Dow, NASDAQ all ⬇️ ~2.5%. Asian markets mostly red too.\n“Orange Man” accuses China of election interference.\nEuropean markets open sharply lower.\n\nhttps://geospart.substack.com/p/stocks-and-trading-update-july-17\n\n#Stocks: pre-market\n🎬 #Netflix -8% → +1%\n🍎 #aapl +2% p\n📈 #SPCX $131\n🧠 #ATAI +33% -Eli Lilly\n🔍 #Google -1.8%\n💻 #IBM: -3%\n⚡ #TSLA -2%\n\n#DayTrading #fintech #aapl\n#Tech #Trading",
+   "fetched_at": "2026-10-15T16:00:06Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "eb97d9c58e875ac6be4f06925f709af6e007970245666e60ad8dd7fac1b535d1"
+  },
+  {
+   "url": "https://mastodon.social/@MarketForcesA/116935087190139336",
+   "instance": "mastodon.social",
+   "account": "MarketForcesA@mastodon.social",
+   "created_at": "2026-07-17T11:30:29.458Z",
+   "language": "en",
+   "text": "Netflix revenue climbs in the second quarter (Q2) of financial year 2026 as the company’s global subscribers watch more than 97 billion hours in the first six months.\n\nhttps://dmarketforces.com/earnings-surged-as-subscribers-watch-netflix-for-97-billion-hours/\n\n#Netflix",
+   "fetched_at": "2026-10-15T16:00:44Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "700274ee00b1bf0ec9c8d8617c14c0d01caf5c40a01765d165b27b564adf31cf"
+  },
+  {
+   "url": "https://mastodon.social/@NewOnNetflixUSA/116935205589699517",
+   "instance": "mastodon.social",
+   "account": "NewOnNetflixUSA@mastodon.social",
+   "created_at": "2026-07-17T12:00:36.104Z",
+   "language": "en",
+   "text": "Heartstopper Forever (2026) 1hr 54m [TV-MA]\n\nIt's a new school year for the Truham-Higgs gang. As Nick and Charlie's relationship deepens, their thoughts turn to life after the last bell rings.\n\nhttps://usa.newonnetflix.info/info/82040750\n\n#NowStreaming #Netflix #NetflixUSA",
+   "fetched_at": "2026-10-15T16:00:44Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "8d27af9aeecfe3366c4b75d61baa0bf9c926f808bd187bf046d103c42600a951"
+  },
+  {
+   "url": "https://mastodon.social/@NewOnNetflixUSA/116935236466784507",
+   "instance": "mastodon.social",
+   "account": "NewOnNetflixUSA@mastodon.social",
+   "created_at": "2026-07-17T12:08:27.226Z",
+   "language": "en",
+   "text": "23 000 Lives (2026) 1hr 54m [TV-MA]\n\nA group of young people sets sail for the Mediterranean to save the lives of refugees -- a mission that puts their ideas of law and justice to the test.\n\nhttps://usa.newonnetflix.info/info/81660283\n\n#NowStreaming #Netflix #NetflixUSA",
+   "fetched_at": "2026-10-15T16:00:44Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "f7852d37f1f87658a132775b87584299b7581dfbaa4e09dcc71d1dc7e19dbfce"
+  },
+  {
+   "url": "https://mastodon.social/@NewOnNetflixUSA/116935243784301296",
+   "instance": "mastodon.social",
+   "account": "NewOnNetflixUSA@mastodon.social",
+   "created_at": "2026-07-17T12:10:18.889Z",
+   "language": "en",
+   "text": "Desire (2026) 1hr 39m [TV-MA]\n\nWhen a married lawyer starts an affair with her daughter's swim coach, a torrid romance turns into a twisted game where everyone loses control.\n\nhttps://usa.newonnetflix.info/info/81984117\n\n#NowStreaming #Netflix #NetflixUSA",
+   "fetched_at": "2026-10-15T16:00:44Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "ccfd38331faedf29b607c0687623dbf4b276fe75ad2ca3a61c243f46fea8e30b"
+  },
+  {
+   "url": "https://mastodon.social/@dmtalkies/116935596534335894",
+   "instance": "mastodon.social",
+   "account": "dmtalkies@mastodon.social",
+   "created_at": "2026-07-17T13:40:01.419Z",
+   "language": "en",
+   "text": "Four months after its release on #Netflix, Alan Ritchson's #WarMachine has officially become the platform's most-watched movie of 2026, amassing an incredible 147 million views worldwide.\n\nThe sci-fi thriller has continued to dominate the streaming charts thanks to strong word of mouth, intense action, and Alan Ritchson's standout performance. Reaching the top spot just months after its debut, War Machine has cemented itself as one of Netflix's biggest hits of the year.",
+   "fetched_at": "2026-10-15T16:00:39Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "340e5451a73d3c42f4533f1daef1da391f583f4714b72376a199c229f7ee44da"
+  },
+  {
+   "url": "https://mastodon.social/@mackansfilm/116936636798408447",
+   "instance": "mastodon.social",
+   "account": "mackansfilm@mastodon.social",
+   "created_at": "2026-07-17T18:04:34.595Z",
+   "language": "en",
+   "text": "One Hundred Years of Solitude (2024-2026): Part Two - Official Trailer #1\n#OneHundredYearsofSolitude #Netflix #GabrielGarciaMarquez #Cienañosdesoledad http://youtube.com/watch?v=F7iKrcc5L3M&feature=youtu.be https://mackansfilm.wordpress.com/2026/07/17/one-hundred-years-of-solitude-2024-2026-part-two-official-trailer-1/?utm_source=mastodon&utm_medium=jetpack_social",
+   "fetched_at": "2026-10-15T16:00:39Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "9d117b90cf77b8aaccc8f4edaab7a3f05b4039d0156fec37a51bc066d5402d32"
+  },
+  {
+   "url": "https://mastodon.radio/@VE3RWJ/116936864905623655",
+   "instance": "mastodon.radio",
+   "account": "VE3RWJ@mastodon.radio",
+   "created_at": "2026-07-17T19:02:35.000Z",
+   "language": "en",
+   "text": "The Collapse at #Netflix Signals the End of Audience Capture:\nThe most popular strategy in the #tech world has stopped working. That's good news for all of us.\nhttps://www.honest-broker.com/p/the-collapse-at-netflix-signals-the?utm_source=post-email-title&publication_id=296132&post_id=207450495&utm_campaign=email-post-title&isFreemail=false&r=y7b5m&triedRedirect=true&utm_medium=email",
+   "fetched_at": "2026-10-15T16:00:39Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "47ea69551d8f160fa818b16f07509bcfa8a03ace9a5b6a5dc17d87965fa066e8"
+  },
+  {
+   "url": "https://mastodon.social/@hollywoodreporter/116937346716177165",
+   "instance": "mastodon.social",
+   "account": "hollywoodreporter@mastodon.social",
+   "created_at": "2026-07-17T21:05:07.073Z",
+   "language": "en",
+   "text": "Netflix Paid $587 Million for Ben Affleck’s AI Company\n#Business #BusinessNews #AI #Netflix\n\nhttps://www.hollywoodreporter.com/business/business-news/netflix-price-ben-affleck-ai-company-revealed-1236651217/",
+   "fetched_at": "2026-10-15T16:00:36Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "283efd52f20e63fe9aeff7449359f5cb14099d6c3346bda18ebc34a2e76ee01a"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://variety.com/2026/film/news/netflix-paid-587-million-ben-affleck-ai-interpositive-1236815111/",
+   "instance": "web.brid.gy",
+   "account": "variety.com@web.brid.gy",
+   "created_at": "2026-07-17T21:39:49.000Z",
+   "language": "en",
+   "text": "Netflix Paid $587 Million for Ben Affleck’s AI Startup InterPositive\n\nhttps://fed.brid.gy/r/https://variety.com/2026/film/news/netflix-paid-587-million-ben-affleck-ai-interpositive-1236815111/",
+   "fetched_at": "2026-10-15T16:00:36Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "0c923d5a8f3a0820eebb29983ca7c7126ba4d0acce89d802345a4730d3e33786"
+  },
+  {
+   "url": "https://mastodon.social/@variety_feed/116937484423053136",
+   "instance": "mastodon.social",
+   "account": "variety_feed@mastodon.social",
+   "created_at": "2026-07-17T21:40:08.314Z",
+   "language": "en",
+   "text": "Netflix Paid $587 Million for Ben Affleck’s AI Startup InterPositive\n#Variety #News #BenAffleck #InterPositive #Netflix\n\nhttps://variety.com/2026/film/news/netflix-paid-587-million-ben-affleck-ai-interpositive-1236815111/",
+   "fetched_at": "2026-10-15T16:00:36Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "3611cc278c6d9f6ed0d85cfbeb03a5a925b0141a3e711a58b4cec8bc8abf523b"
+  },
+  {
+   "url": "https://mastodon.social/@deadline/116937583296993866",
+   "instance": "mastodon.social",
+   "account": "deadline@mastodon.social",
+   "created_at": "2026-07-17T22:05:17.037Z",
+   "language": "en",
+   "text": "Netflix Says It Paid $587 Million For Ben Affleck AI Firm InterPositive, Confirming Previously Reported Estimate\n#News #AI #BenAffleck #InterPositive #Mergersandacquisitions #Netflix\n\nhttps://deadline.com/2026/07/netflix-paid-587-million-for-ben-affleck-ai-firm-interpositive-1236997198/",
+   "fetched_at": "2026-10-15T16:00:36Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "31c05f57860cb876a4facad6327df94e7cc624f3c38b7f908ea549c4a629cbb5"
+  },
+  {
+   "url": "https://mastodon.social/@newsevoce/116938733496830274",
+   "instance": "mastodon.social",
+   "account": "newsevoce@mastodon.social",
+   "created_at": "2026-07-18T02:57:47.792Z",
+   "language": "pt",
+   "text": "Netflix desaponta em receita no 2T26 e reduz guidance para o ano; ação tomba 8% em NY: A receita da gigante de streaming ficou em US$ 12,56 bilhões, abaixo dos US$ 12,58 bilhões previstos pelos analistas https://www.infomoney.com.br/mercados/netflix-desaponta-em-receita-no-2t26-e-reduz-guidance-para-o-ano-acao-tomba-8-em-ny/ #Netflix #Streaming",
+   "fetched_at": "2026-10-15T16:00:36Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "1f8345839d126b245b3448b2479ae841c29f0970777c5075a054b451b638884b"
+  },
+  {
+   "url": "https://mastodon.social/@NewOnNetflixUK/116939701929788125",
+   "instance": "mastodon.social",
+   "account": "NewOnNetflixUK@mastodon.social",
+   "created_at": "2026-07-18T07:04:04.783Z",
+   "language": "en",
+   "text": "Go (1999) 1hr 42m [18]\n\nIn this brisk follow-up to Swingers, events conspire to bring together a disparate group of characters as a day in their intertwining lives plays out. #StreamingAgain\n\nhttps://uk.newonnetflix.info/info/18958014\n\n#NowStreaming #Netflix #NetflixUK",
+   "fetched_at": "2026-10-15T16:00:33Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "bafcf024590d99f6feeda8aba58aa1e7cd14bb28fd1272c0fbbc395f11d7f79a"
+  },
+  {
+   "url": "https://mastodon.social/@ppcland/116940125390674127",
+   "instance": "mastodon.social",
+   "account": "ppcland@mastodon.social",
+   "created_at": "2026-07-18T08:51:46.286Z",
+   "language": "en",
+   "text": "Netflix ad revenue tracks to $3B as stock drops 8% on Q2 growth slowdown: Pause Ads and live sports inventory open to programmatic DSP buyers this summer for smaller advertisers, even as first-half viewing growth held at 2 percent. https://ppc.land/netflix-ad-revenue-tracks-to-3b-as-stock-drops-8-on-q2-growth-slowdown/ #Netflix #AdRevenue #DigitalMarketing #ProgrammaticAdvertising #StockMarket",
+   "fetched_at": "2026-10-15T16:00:33Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "7cb1eb35ad1a3bb0ffc94fc74801515ed51f36077a5cde44467833eae338b5fc"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://www.comingsoon.net/movies/news/2163163-bruce-campbell-spider-man-trilogy-leaving-netflix",
+   "instance": "web.brid.gy",
+   "account": "comingsoon.net@web.brid.gy",
+   "created_at": "2026-07-18T12:00:00.000Z",
+   "language": "en",
+   "text": "Watch Bruce Campbell’s $2.5 Billion Trilogy Before It Leaves Netflix\n\nhttps://fed.brid.gy/r/https://www.comingsoon.net/movies/news/2163163-bruce-campbell-spider-man-trilogy-leaving-netflix",
+   "fetched_at": "2026-10-15T16:00:30Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "a3518bed413d9fa0f056c059cb8da4516bfefe4fe2f6668fec8f5fbb8cc8866d"
+  },
+  {
+   "url": "https://mastodon.social/@TheBusinessBehindTheNews/116941654713213039",
+   "instance": "mastodon.social",
+   "account": "TheBusinessBehindTheNews@mastodon.social",
+   "created_at": "2026-07-18T15:20:41.897Z",
+   "language": "en",
+   "text": "🎥 𝐁𝐞𝐧 𝐀𝐟𝐟𝐥𝐞𝐜𝐤 𝐌𝐚𝐝𝐞 $587 𝐒𝐞𝐥𝐥𝐢𝐧𝐠 𝐇𝐢𝐬 𝐀𝐈 𝐒𝐭𝐚𝐫𝐭𝐮𝐩 𝐈𝐧𝐭𝐞𝐫𝐏𝐨𝐬𝐢𝐭𝐢𝐯𝐞 𝐭𝐨 𝐍𝐞𝐭𝐟𝐥𝐢𝐱\nBack when Netflix announced the acquisition of Ben Affleck's AI film making startup InterPositive back in March 2026 the company was mum on how much they were paying, but in their recent earnings report they revealed they paid $587 million dollars in cash!\n\nHoly payday Batman! (pun)\n\n#startup #ai #artificialintelligence #benaffleck #netflix #interpositive #movies #film #filmmaking",
+   "fetched_at": "2026-10-15T16:00:33Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "17bac88c7c810dc1b6d8bc765629f7c45b0abe311dc016f9dde9d5fe641e32e0"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://www.comingsoon.net/movies/news/2163812-kevin-hart-the-secret-life-of-pets-leaving-netflix",
+   "instance": "web.brid.gy",
+   "account": "comingsoon.net@web.brid.gy",
+   "created_at": "2026-07-18T17:00:00.000Z",
+   "language": "en",
+   "text": "Kevin Hart’s $875M Blockbuster Comedy Is Leaving Netflix\n\nhttps://fed.brid.gy/r/https://www.comingsoon.net/movies/news/2163812-kevin-hart-the-secret-life-of-pets-leaving-netflix",
+   "fetched_at": "2026-10-15T16:00:30Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "20006b2598697d7718388d05f28b868d12e9430978736b002e1157865fd3f0f4"
+  },
+  {
+   "url": "https://mastodon.social/@AI_BEAR_NEWS/116943002274532579",
+   "instance": "mastodon.social",
+   "account": "AI_BEAR_NEWS@mastodon.social",
+   "created_at": "2026-07-18T21:03:24.046Z",
+   "language": "it",
+   "text": "🎬 Netflix compra startup AI di Ben Affleck per 587M$\n\nNetflix ha acquisito InterPositive, la startup AI di produzione cinematografica di Ben Affleck. La tech riduce costi VFX del 50% e tempi di produzione del 20%.\n\nFonte: Mashable\nSegui 👇\n#Netflix #BenAffleck #AI\n\n🎬🤖💰",
+   "fetched_at": "2026-10-15T16:00:33Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "cf085f337f06177da595e3f230c94c74495c62a3b3e4a0a6da8d9929860cc76e"
+  },
+  {
+   "url": "https://mastodon.social/@indiegenius/116943217086647466",
+   "instance": "mastodon.social",
+   "account": "indiegenius@mastodon.social",
+   "created_at": "2026-07-18T21:58:01.821Z",
+   "language": "en",
+   "text": "Movie TV Tech Geeks #BooksandComics #Heartstopper #Netflix #Books Netflix Already Has the Perfect 'Heartstopper' Replacement After the 'Forever' Movie http://dlvr.it/TTbs7M",
+   "fetched_at": "2026-10-15T16:00:33Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "83fef355811d1568a6b6aaf2dca75a437da9d0791cfedb54f5e34ffa4a8a24e7"
+  },
+  {
+   "url": "https://mastodon.social/@ppcland/116945789965496784",
+   "instance": "mastodon.social",
+   "account": "ppcland@mastodon.social",
+   "created_at": "2026-07-19T08:52:20.835Z",
+   "language": "en",
+   "text": "ICYMI: Netflix ad revenue tracks to $3B as stock drops 8% on Q2 growth slowdown: Pause Ads and live sports inventory open to programmatic DSP buyers this summer for smaller advertisers, even as first-half viewing growth held at 2 percent. https://ppc.land/netflix-ad-revenue-tracks-to-3b-as-stock-drops-8-on-q2-growth-slowdown/ #Netflix #Advertising #AdRevenue #StockMarket #ProgrammaticAds",
+   "fetched_at": "2026-10-15T16:00:30Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "bd5a79521a2d67424791b95b96f3d33c3b248fa8d304ad61db6985e9d790a5d7"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://cordcuttersnews.com/netflix-leans-into-ai-to-help-make-tv-shows-movies-with-a-587-million-deal-to-buy-ben-afflecks-ai-company/",
+   "instance": "web.brid.gy",
+   "account": "cordcuttersnews.com@web.brid.gy",
+   "created_at": "2026-07-19T14:42:44.000Z",
+   "language": "en",
+   "text": "Netflix Leans Into AI to Help Make TV Shows & Movies With a $587 Million Deal to Buy Ben Affleck’s AI Company\n\nhttps://fed.brid.gy/r/https://cordcuttersnews.com/netflix-leans-into-ai-to-help-make-tv-shows-movies-with-a-587-million-deal-to-buy-ben-afflecks-ai-company/",
+   "fetched_at": "2026-10-15T16:00:30Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "1f35986df56da6259dcbff8028c39f03952e38970de3eeacf6df8859adee6021"
+  },
+  {
+   "url": "https://mastodon.world/@killbait_uk/116947694551539523",
+   "instance": "mastodon.world",
+   "account": "killbait_uk@mastodon.world",
+   "created_at": "2026-07-19T16:56:42.000Z",
+   "language": "en",
+   "text": "Netflix acquires Ben Affleck's AI startup for $587 million\n\n📰 Original title: Netflix paid over $500million in cash for Ben Affleck’s AI company\n\n🤖 IA: It's clickbait ⚠️\n👥 Users: It's clickbait ⚠️\n\nView full AI summary https://en.killbait.com/netflix-acquires-ben-affleck-s-ai-startup-for-587-million.html?utm_source=mastodon_world&utm_medium=social&utm_campaign=killbait_uk.mastodon_world\n\n#artificialintelligence #ai #netflix #benaffleck",
+   "fetched_at": "2026-10-15T16:00:30Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "0500dfd4f8c93adba8e21762ff16f5f0917545c46d415dc0d30a9953fa6f55c3"
+  },
+  {
+   "url": "https://mastodon.social/@newsevoce/116949322026712021",
+   "instance": "mastodon.social",
+   "account": "newsevoce@mastodon.social",
+   "created_at": "2026-07-19T23:50:35.812Z",
+   "language": "pt",
+   "text": "Netflix compra Startup de IA de Ben Affleck por US$ 587 Milhões: A Netflix oficializou a compra da InterPositive, startup de inteligência artificial fundada pelo ator e diretor Ben Affleck. Segundo documentos enviados à https://cinepop.com.br/netflix-compra-startup-de-ia-de-ben-affleck-por-us-587-milhoes-759226/ #Netflix #BenAffleck",
+   "fetched_at": "2026-10-15T16:00:30Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "03102c97bb18ad50398a6f3cdb6253ec6cb872cecb79af6ede2ac8a79a8c8b2c"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://electrek.co/2026/07/20/florida-ag-tesla-243m-autopilot-verdict/",
+   "instance": "web.brid.gy",
+   "account": "electrek.co@web.brid.gy",
+   "created_at": "2026-07-20T14:20:41.000Z",
+   "language": "en",
+   "text": "Florida AG asks court to erase Tesla’s $243M Autopilot crash verdict\n\nhttps://fed.brid.gy/r/https://electrek.co/2026/07/20/florida-ag-tesla-243m-autopilot-verdict/",
+   "fetched_at": "2026-10-15T16:01:03Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "5d1bc878e5511065fa6932a8835d1600efa668cb6949364b21b16b4f73aff009"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:pnx2fjuannbdpy3337ggthpp/post/3mrb4ozdxb22e",
+   "instance": "bsky.brid.gy",
+   "account": "peark.es@bsky.brid.gy",
+   "created_at": "2026-07-22T20:05:41.453Z",
+   "language": "en",
+   "text": "$TSLA:\n\n*TESLA 2Q AUTOMOTIVE REV. $20.52B, EST. $18.68B\n*TESLA 2Q SERVICES AND OTHER REVENUE $4.58B, EST. $3.72B\n*TESLA 2Q ACTIVE FSD SUBSCRIPTIONS 1.48M, EST. 1.40M\n\n*TESLA 2Q GROSS MARGIN 16.8%, EST. 19.4%\n*TESLA 2Q ADJ EPS 33C, EST. 51C\n*TESLA 2Q NEG FREE CASH FLOW $1.09B, EST. NEGATIVE $3.64B",
+   "fetched_at": "2026-10-15T16:00:06Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "73dc46d51fe395000936afd6cc1e269f586ba839711be9f33563c02718722814"
+  },
+  {
+   "url": "https://bsky.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3mrba6w4xxk2x",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-07-22T21:08:16.174Z",
+   "language": "en",
+   "text": "FrUD's Take:\n\nTesla’s regulatory credits collapse\n\n\"The clearest driver of that shrinking profit is regulatory credits. Tesla booked just $146 million in credit revenue in Q2, down 67% from $439 million a year ago and less than half the $380 million it reported in Q1.\"\n\n$TSLA $SPCX #SpaceX #xAI\n\nRE: https://bsky.app/profile/did:plc:7qwkxkh4lz2unhehubhbhpt5/post/3mrb734bhec2t",
+   "fetched_at": "2026-10-15T16:00:06Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "5a99a35f48a20fb0b94843c8e2ffd2d203da59984a745fcbea64cc5319da1d3f"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:zm64jthu5rlho6qjjwem4qq7/post/3mrbavzvv622l",
+   "instance": "bsky.brid.gy",
+   "account": "thomashansen.bsky.social@bsky.brid.gy",
+   "created_at": "2026-07-22T21:21:11.888Z",
+   "language": "nb",
+   "text": "Tesla's free cash flow fell for the first time in more than two years as the electric-vehicle maker supercharged spending with $5.8 billion in capital expenditures (also add discounted swasticars)\n\nThe ponzi company reported negative free cash flow of $1.1 billion for Q2\n\n#TeslaTakedown\n$TSLA\n$TSLAQ\n\nRE: https://bsky.app/profile/did:plc:zm64jthu5rlho6qjjwem4qq7/post/3mq4uoq5txs2k\n\nTesla’s Second-Quarter Revenue...",
+   "fetched_at": "2026-10-15T16:00:06Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "9e98d5a3e794db9b79e54fa80e2a74ce38226c8edf7c09fc89651f3d28e2d520"
+  },
+  {
+   "url": "https://universeodon.com/@digyoursoul/116966204453394618",
+   "instance": "universeodon.com",
+   "account": "digyoursoul@universeodon.com",
+   "created_at": "2026-07-22T23:24:01.000Z",
+   "language": "en",
+   "text": "MAGA MURDER👇\n\n22 year old is dead.\n\nA jury said Tesla owes $243 million.\n\nThe man supposed to represent the people of Florida is instead representing Elon Musk. #maga #musk #elonmusk #florida #tesla\n\nhttps://jasongarcia.substack.com/p/floridas-attorney-general-is-trying",
+   "fetched_at": "2026-10-15T16:00:58Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "64fd550a9c337c5dca6f2c157a06cd9d263e3450b208691c4d0eeec989cddfd0"
+  },
+  {
+   "url": "https://mastodon.social/@top_news/116966490912185058",
+   "instance": "mastodon.social",
+   "account": "top_news@mastodon.social",
+   "created_at": "2026-07-23T00:36:52.248Z",
+   "language": "en",
+   "text": "Tesla Q2 earnings recap: Stock falls after profit misses estimates\n\nTesla's record Q2 vehicle deliveries helped drive $28.24 billion in revenue, but EPS came in far lower than expected. The stock slide 4% after hours.\n\nhttps://www.businessinsider.com/tesla-q2-earnings-updates-tsla-stock-elon-musk-spacex-2026-7\n\n#TopNews #News #Tesla #AI #Musk",
+   "fetched_at": "2026-10-15T16:00:58Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "ac43ddf443c8439660682320e614343601a3bc741b8ccfa97e56b7c9a0099718"
+  },
+  {
+   "url": "https://mastodon.social/@schuler/116969290241147057",
+   "instance": "mastodon.social",
+   "account": "schuler@mastodon.social",
+   "created_at": "2026-07-23T12:28:46.584Z",
+   "language": "en",
+   "text": "Tesla swung to negative free cash flow of $1.1B in Q2 after capital spending nearly doubled. The company is now arranging up to $30B in debt capacity as spending accelerates further. A shift worth watching for a historically cash-generative business. https://www.implicator.ai/tesla-arranges-up-to-30-billion-in-debt-as-free-cash-flow-turns-negative/ #Tesla #CapitalSpending #CashFlow",
+   "fetched_at": "2026-10-15T16:00:54Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "906d5ae052eb66f3a358f07f2c779fe2838afc995e91d53ab13c22aaea005337"
+  },
+  {
+   "url": "https://mastodon.social/@top_news/116970713305022162",
+   "instance": "mastodon.social",
+   "account": "top_news@mastodon.social",
+   "created_at": "2026-07-23T18:30:40.825Z",
+   "language": "en",
+   "text": "Tesla (TSLA) crashes 12%, sheds $140B as Elon Musk's 'just trust me' doesn't hold anymore\n\nTesla (TSLA) crashed 12% after Q2 2026 earnings missed on profit, free cash flow turned negative, and Musk’s robotaxi and Optimus pitch fell flat.\n\nhttps://electrek.co/2026/07/23/tesla-tsla-crashes-12-q2-2026-earnings-miss/\n\n#TopNews #News #Tesla #Optimus #AI",
+   "fetched_at": "2026-10-15T16:00:54Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "a775fc67f96d6e30c91e6d755063813cf9582573510486ac68ba7794e860159f"
+  },
+  {
+   "url": "https://mastodon.social/@paul_denton/116971532741710534",
+   "instance": "mastodon.social",
+   "account": "paul_denton@mastodon.social",
+   "created_at": "2026-07-23T21:59:04.430Z",
+   "language": "fr",
+   "text": "L'action de Tesla chute de 11 % après que des remises ont impacté les bénéfices. Les dépenses d'investissement ont plus que doublé, l'entreprise de Musk accélérant sa transition vers l'IA et la robotique. Mais les livraisons de véhicules ont atteint un niveau record au cours du trimestre, ce qui a permis une hausse de 26 % du chiffre d'affaires, à 28,2 milliards de dollars, un résultat supérieur aux attentes. https://www.ft.com/content/dc5e629b-562c-41e3-8b89-350af6960adc?syn-25a6b1a6=1\n\n#Politique #Musk #EtatsUnis #Tesla #IA #Tech",
+   "fetched_at": "2026-10-15T16:00:54Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "a3d2904c9c3f2e95e689e0caca750b27a9c3e1546e7368eb37ed29d271258997"
+  },
+  {
+   "url": "https://mastodon.social/@newsevoce/116972065816341238",
+   "instance": "mastodon.social",
+   "account": "newsevoce@mastodon.social",
+   "created_at": "2026-07-24T00:14:38.523Z",
+   "language": "pt",
+   "text": "Lucro da Tesla cai 17% após descontos em carros elétricos: O lucro líquido ajustado da Tesla caiu 17% no segundo trimestre, atingindo US$ 1,2 bilhão, devido aos descontos oferecidos em seus modelos de veículos elétricos.O que aconteceuA Tesla registrou um lucro líquido ajustado de US$ 1,2 bilhão no período, fi https://economia.uol.com.br/noticias/redacao/2026/07/22/tesla-balanco-lucro-2-trimestre-de-2026.ghtm #Tesla #lucro",
+   "fetched_at": "2026-10-15T16:00:51Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "e3a438a801c7ac652d66b962d208a94546002ef23576b5004ee1ffe6ce7a0b0b"
+  },
+  {
+   "url": "https://mastodon.social/@top_news/116972387490476664",
+   "instance": "mastodon.social",
+   "account": "top_news@mastodon.social",
+   "created_at": "2026-07-24T01:36:26.858Z",
+   "language": "en",
+   "text": "Brent oil tops $100 per barrel, as tumbles for Tesla and Alphabet yank Wall Street lower\n\nBrent oil shot to its highest price since May after increased fighting in the Middle East threatened to slow the global flow of crude.\n\nhttps://apnews.com/article/stocks-markets-iran-trump-ai-inflation-45b9165d6c518f5bea668b6ba7a89838\n\n#TopNews #News #Alphabet #Tesla #Brent",
+   "fetched_at": "2026-10-15T16:00:51Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "bf5f29a245fa6e6abe4716d8db325e4ce4b73ba9d6342fb050ae98c7764ec50b"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:zm64jthu5rlho6qjjwem4qq7/post/3mrewcpfy4k2g",
+   "instance": "bsky.brid.gy",
+   "account": "thomashansen.bsky.social@bsky.brid.gy",
+   "created_at": "2026-07-24T08:22:04.882Z",
+   "language": "nb",
+   "text": "In the year of \"Tesla shame\": Sold for 18 billion NOK (1.88bn USD) in Norway\n\nRevenue 18.627bn in 2025, up from 13.577 bn in 2024\n\nProfit at 279 million NOK, compared to 204 mill previous year\n\nThe operating margin has been exactly the same at 1.5% for many years\n\n#TeslaTakedown\n$TSLA\n$TSLAQ\n\nRE: https://bsky.app/profile/did:plc:zm64jthu5rlho6qjjwem4qq7/post/3lqncdcbt5c23\n\nI «Tesla-skammens» år: Omsatte...",
+   "fetched_at": "2026-10-15T16:00:06Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "e5857b270cb99867a3790aa8851c111490ab6bea0fe45815b9183c25a39933ea"
+  },
+  {
+   "url": "https://chaos.social/@weizenspreu/116974030178903765",
+   "instance": "chaos.social",
+   "account": "weizenspreu@chaos.social",
+   "created_at": "2026-07-24T08:34:12.000Z",
+   "language": "de",
+   "text": "Gibt noch mehr gute Nachrichten:\n\n#Tesla-Aktien haben seit Mittwoch 15% an Wert verloren.\n\n#SpaceX-Aktien notieren inzwischen 15% unter dem Ausgabepreis ($135) und sogar 25% unter dem Einstandspreis an der Börse (~$160).\n\n#fckMusk",
+   "fetched_at": "2026-10-15T16:00:51Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "1f0a3ad807e942bc7316406eace895b4b7b6a424db82a3e100aae56fc735bf3d"
+  },
+  {
+   "url": "https://mastodon.social/@top_news/116974429578902523",
+   "instance": "mastodon.social",
+   "account": "top_news@mastodon.social",
+   "created_at": "2026-07-24T10:15:46.701Z",
+   "language": "en",
+   "text": "Tesla Plummets 14%—Costing Elon Musk $18 Billion\n\nThe automaker reported earnings that disappointed Wall Street, with plans to spend billions more on AI.\n\nhttps://www.forbes.com/sites/tylerroush/2026/07/23/teslas-worst-day-in-a-year-cuts-elon-musks-net-worth-by-18-billion/\n\n#TopNews #News #Tesla #Musk #Canaccord",
+   "fetched_at": "2026-10-15T16:00:51Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "d067a8c0334f720e404bf7c702f90d6b113101c7bc7881cc28776057fab803f3"
+  },
+  {
+   "url": "https://mastodon.social/@automotivas/116974861998865374",
+   "instance": "mastodon.social",
+   "account": "automotivas@mastodon.social",
+   "created_at": "2026-07-24T12:05:44.941Z",
+   "language": "en",
+   "text": "Depois de focar em robotáxis e robôs humanóides, ações da Tesla perdem R$ 700 bilhões em valor de uma só vez https://www.noticiasautomotivas.com.br/depois-de-focar-em-robotaxis-e-robos-humanoides-acoes-da-tesla-perdem-r-700-bilhoes-em-valor-de-uma-so-vez/ #Tesla",
+   "fetched_at": "2026-10-15T16:00:51Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "cfeb5ebf2aad4cadae9ac5726f5c5b08e8b18cbd54a43f487a10a22699a7870e"
+  },
+  {
+   "url": "https://mastodon.social/@EVGas/116981249833851058",
+   "instance": "mastodon.social",
+   "account": "EVGas@mastodon.social",
+   "created_at": "2026-07-25T15:10:15.501Z",
+   "language": "en",
+   "text": "Fed up with overpaying for gas? With gas at $4.11 per gallon, you could be saving 76% with an EV. See your savings here: https://frequal.com/ev-gas/ #evgas #tesla #hyundai #cheapgas #DollarGas #ev #goelectric #carbon #globalwarming #electricvehicles #kickgas",
+   "fetched_at": "2026-10-15T16:00:47Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "6a4d1a6bd91920319dab99ee81de9a3b17666939e919ef1d7b5e9a4f78ee64f8"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:pnx2fjuannbdpy3337ggthpp/post/3mrp5rkgqic2i",
+   "instance": "bsky.brid.gy",
+   "account": "peark.es@bsky.brid.gy",
+   "created_at": "2026-07-28T10:02:16.557Z",
+   "language": "en",
+   "text": "UPS impressive beat, and very good forward looking because the end of $AMZN revenue is now in the rearview.\n\n*UPS 2Q REV. $22.8B, EST. $21.84B\n*UPS 2Q ADJ EPS $1.76, EST. $1.67\n*UPS SEES FY REV. ABOUT $91.2B, SAW ABOUT $89.7B, EST. $90.39B\n*UPS CEO SAYS SUCCESSFULLY COMPLETED AMAZON GLIDE DOWN",
+   "fetched_at": "2026-10-15T16:00:09Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "1a907ff9f330b60544b8e1379676b9cb8307366dafc68f95cf44cf253a0ed19c"
+  },
+  {
+   "url": "https://mastodon.social/@Brynawel/117005104747910681",
+   "instance": "mastodon.social",
+   "account": "Brynawel@mastodon.social",
+   "created_at": "2026-07-29T20:16:52.591Z",
+   "language": "en",
+   "text": "#Tesla closed below $300 today. And it still has a P/E of 276.\n\nFor a carmaker, a P/E of 30 is high.\nIf I show goodwill and assume a P/E of 35 (innovative company 🤪) with the current EPS of $1.08 we land at a fair price of $38.\n\nWho thinks this garbage is a good addition to a portfolio? #Bagholders\n\n#Musk #Stocks",
+   "fetched_at": "2026-10-15T16:02:41Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "c3068421b2f21a8b9bef3ea58396d5b25e3a9e5755dea3c6098c87c88eea6b2d"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:pnx2fjuannbdpy3337ggthpp/post/3mrva7cpne32i",
+   "instance": "bsky.brid.gy",
+   "account": "peark.es@bsky.brid.gy",
+   "created_at": "2026-07-30T20:01:44.137Z",
+   "language": "en",
+   "text": "$AMZN beat\n\n*AMAZON 2Q NET SALES $200.6B, EST. $197.01B\n*AMAZON 2Q AWS NET SALES EX FX +37%, EST. +31.3%\n*AMAZON 2Q OPER INCOME $27.46B, EST. $23.61B\n*AMAZON 2Q OPER MARGIN 13.7%, EST. 12%",
+   "fetched_at": "2026-10-15T16:00:09Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "de30a385288fb6e7706bf22c6d4e056ca02681c3052b57e390451d6a2cad9c9b"
+  },
+  {
+   "url": "https://mastodon.social/@deadline/117010859101666062",
+   "instance": "mastodon.social",
+   "account": "deadline@mastodon.social",
+   "created_at": "2026-07-30T20:40:17.064Z",
+   "language": "en",
+   "text": "Amazon Thrives On Big Q2 For AI, Advertising Revenue Climbs 26% To Near $20 Billion Mark\n#News #Advertising #Amazon #AWS #Bigtech #Earnings\n\nhttps://deadline.com/2026/07/amazon-q2-2026-earnings-ai-advertising-aws-growth-1237013723/",
+   "fetched_at": "2026-10-15T16:02:08Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "3450ba10cc0183e6323eeccd08742745f7336594e5c08a12e117bcbec8046539"
+  },
+  {
+   "url": "https://mastodon.social/@top_news/117011428501952135",
+   "instance": "mastodon.social",
+   "account": "top_news@mastodon.social",
+   "created_at": "2026-07-30T23:05:05.423Z",
+   "language": "en",
+   "text": "Amazon accidentally spent $1.8 million using Claude for menial coding task, went 860% over budget — 'catastrophically expensive' coding blunders discovered in internal Amazon AI usage metrics\n\nA million dollar \"whoopsie\"\n\nhttps://www.tomshardware.com/tech-industry/artificial-intelligence/amazon-accidentally-spent-usd1-8-million-using-claude-for-menial-coding-task-went-860-percent-over-budget-catastrophically-expensive-coding-blunders-discovered-in-internal-amazon-ai-usage-metrics\n\n#TopNews #News #AI #Amazon #AmazonAI",
+   "fetched_at": "2026-10-15T16:01:27Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "34517ecb270e74657f2abdcda0b21acd78bea2e1f90ce5814063d35d31887a1c"
+  },
+  {
+   "url": "https://mastodon.social/@top_news/117012199693609472",
+   "instance": "mastodon.social",
+   "account": "top_news@mastodon.social",
+   "created_at": "2026-07-31T02:21:12.866Z",
+   "language": "en",
+   "text": "Amazon got $600 million in Trump tariff refunds and will pass return along to some customers\n\nThe company previously hadn't disclosed whether it would recoup tariff costs after the Supreme Court ruled many of President Donald Trump's levies were illegal.\n\nhttps://www.cnbc.com/2026/07/30/amazon-trump-tariff-refunds.html\n\n#TopNews #News #Amazon #Trump #Olsavsky",
+   "fetched_at": "2026-10-15T16:01:27Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "33679b2a109a1acafb0252493ce513524f4ba1011acf2403c4c3c5cb854f1595"
+  },
+  {
+   "url": "https://mastodon.social/@top_news/117014652150968112",
+   "instance": "mastodon.social",
+   "account": "top_news@mastodon.social",
+   "created_at": "2026-07-31T12:44:54.398Z",
+   "language": "en",
+   "text": "Andy Jassy said Amazon will spend $220 billion this year—and still won't have enough capacity to meet demand | Fortune\n\nAWS revenue hit $42.2 billion in Q2, marking its fastest growth in 18 quarters as AI demand outpaces Amazon's ability to build more data centers.\n\nhttps://fortune.com/2026/07/30/andy-jassy-amazon-capex-demand-aws-pga-tour/\n\n#TopNews #News #Amazon #Jassy #AWS",
+   "fetched_at": "2026-10-15T16:01:24Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "1665454a2c6ff2bcebd9c5a9f3a66ba82ca9b2faca69fe5f6196676918f5788e"
+  },
+  {
+   "url": "https://mas.to/@cktodon/117015655792202122",
+   "instance": "mas.to",
+   "account": "cktodon@mas.to",
+   "created_at": "2026-07-31T17:00:08.000Z",
+   "language": "es",
+   "text": "Leaked #Amazon Documents Detail $1.8 Million Overrun on a Single #Claude #AI Task Missed for Five Months\n\nhttps://www.ghacks.net/2026/07/31/leaked-amazon-documents-detail-1-8-million-overrun-on-a-single-claude-ai-task-missed-for-five-months/",
+   "fetched_at": "2026-10-15T16:01:24Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "85f6f8c42e75f81418c8b83c133d9c2fc5866b014af2090b410a2ef1237d4a64"
+  },
+  {
+   "url": "https://mastodon.social/@ppcland/117016246257257662",
+   "instance": "mastodon.social",
+   "account": "ppcland@mastodon.social",
+   "created_at": "2026-07-31T19:30:18.530Z",
+   "language": "en",
+   "text": "ICYMI: Amazon forces 14-day review window on AI-rewritten product titles: Brand owners now get 14 days to approve AI-rewritten titles, after Amazon logged 984 million title updates since June. Mobile display parity arrives August 10. https://ppc.land/amazon-forces-14-day-review-window-on-ai-rewritten-product-titles/ #Amazon #AI #ProductTitles #Ecommerce #DigitalMarketing",
+   "fetched_at": "2026-10-15T16:01:20Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "d34c2b1b489a6975b84242bf88f6cf41a607c7dc03dbe37ab42405c4df9c1148"
+  },
+  {
+   "url": "https://mastodon.social/@geekrealmhub/117016262363248421",
+   "instance": "mastodon.social",
+   "account": "geekrealmhub@mastodon.social",
+   "created_at": "2026-07-31T19:34:24.288Z",
+   "language": "en",
+   "text": "AMD has officially introduced the Radeon RX 9050, and 4GB graphics cards are making a comeback.\n\nThe retail RX 9050 comes with 8GB of GDDR6 VRAM and starts at $279, while AMD confirmed that OEM and pre-built PC versions will be available with just 4GB of VRAM.\n\nThe RX 9050 is designed for entry-level 1080p gaming.\n\n#AMD #Radeon #PCGaming",
+   "fetched_at": "2026-10-15T16:01:59Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "996b2259bc9ae9657fecf958c0438d5c34e939b5b3d712b58035d280f469b67b"
+  },
+  {
+   "url": "https://www.wsj.com/finance/stocks/amazon-surges-and-apple-falls-on-latest-earnings-9f3f3c8b?mod=rss_markets_main",
+   "instance": "robot.villas",
+   "account": "wsj_markets@robot.villas",
+   "created_at": "2026-07-31T20:31:00.000Z",
+   "language": null,
+   "text": "Amazon Surges and Apple Falls on Latest Earnings\n\nhttps://www.wsj.com/finance/stocks/amazon-surges-and-apple-falls-on-latest-earnings-9f3f3c8b?mod=rss_markets_main\n\n#Finance #Stocks #Business",
+   "fetched_at": "2026-10-15T16:02:38Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "fc91217193978b403a38aa92c48fef8da2564b0f59ed04f0825126fb5aebc533"
+  },
+  {
+   "url": "https://mastodon.social/@WhisprNews/117016702929627636",
+   "instance": "mastodon.social",
+   "account": "WhisprNews@mastodon.social",
+   "created_at": "2026-07-31T21:26:26.795Z",
+   "language": "es",
+   "text": "🚀 #AWS dispara a #Amazon: +14% el 31 de julio. La nube factura $30.5B (+18.8% interanual) frente a los $29.7B que esperaba #WallStreet, con 36.7% de margen operativo. #JPMorgan sube su objetivo a $365 desde $330: un 40% de potencial.",
+   "fetched_at": "2026-10-15T16:01:20Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "4f1eb7ed221dc42b5e712e471f71fa2229f1f4a06450fce1643f4e31d58812ec"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:zm64jthu5rlho6qjjwem4qq7/post/3mrziob4usc2i",
+   "instance": "bsky.brid.gy",
+   "account": "thomashansen.bsky.social@bsky.brid.gy",
+   "created_at": "2026-08-01T12:43:54.677Z",
+   "language": "nb",
+   "text": "Oracle Exec Sues Tesla Over Full Self Driving Promises (scam) And Wins $10,600\n\nBasically, people (pronounced marks or suckers) who spent a lot of money expecting Full Self Driving to work within a reasonable period of time are arguing they got ripped off and conned:\n\n#TeslaTakedown\n$TSLA\n$TSLAQ\n\nRE: https://bsky.app/profile/did:plc:zm64jthu5rlho6qjjwem4qq7/post/3mn37dr25y22f\n\nOracle Exec Sues Tesla Over Fu...",
+   "fetched_at": "2026-10-15T16:00:06Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "b19f98110a6bcc0d0b2748ba9042e47825d07977fcc1dd17f0f363fdf044e5b1"
+  },
+  {
+   "url": "https://mastodon.social/@thomaster/117021327580468217",
+   "instance": "mastodon.social",
+   "account": "thomaster@mastodon.social",
+   "created_at": "2026-08-01T17:02:33.369Z",
+   "language": "en",
+   "text": "Andy Burnham says Britain’s £1.8bn Digital ID programme is dead. The official record tells a more complicated story.\n\nOne Login, GOV.UK Wallet, private verification firms and statutory data-sharing powers remain—alongside Palantir’s expanding NHS and defence footprint.\n\nI traced what was cancelled, and what quietly survived.\n\nhttps://thomaster.substack.com/p/burnham-cancelled-digital-id-britains\n\n#DigitalID #Palantir #Privacy #Surveillance #CivilLiberties #UKPolitics",
+   "fetched_at": "2026-10-15T16:01:41Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "b7d8497600e534936d697b7f5a0aa65860bdca806a1179cdec8e1dbf213878f6"
+  },
+  {
+   "url": "https://zhub.link/@habr/117022388246439260",
+   "instance": "zhub.link",
+   "account": "habr@zhub.link",
+   "created_at": "2026-08-01T21:32:17.000Z",
+   "language": "ru",
+   "text": "ИИ стал главной причиной увольнений в США. Инвесторы подозревают, что это отговорка\n\nКомпания monday.com, разработчик популярного таск-трекера, объявила о сокращении 20% штата — около 630 человек. Причина, по формулировке из SEC-филинга , — переход к \"более компактной и сфокусированной операционной модели\" ради \"стратегии роста на основе ИИ\". При этом у компании все хорошо: выручка за первый квартал выросла на 24%, до $351 млн, прогноз на год — плюс 19-20%. Тем не менее monday.com стала уже 21-й крупной технологической компанией, назвавшей ИИ фактором увольнений в 2026 году, — TechCrunch ведет их список.\n\nhttps://habr.com/ru/articles/1065668/\n\n#OpenAI #Microsoft #Amazon",
+   "fetched_at": "2026-10-15T16:01:14Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "fc44429427cc3123cf5462e681a2261dbd7a35d460f393f282684be2874f30db"
+  },
+  {
+   "url": "https://mastodon.ozioso.online/@ItalianNews/117022616327105032",
+   "instance": "mastodon.ozioso.online",
+   "account": "ItalianNews@mastodon.ozioso.online",
+   "created_at": "2026-08-01T22:30:18.000Z",
+   "language": "en",
+   "text": "Agenzia Nova: Business news: risultati sopra le attese per Amazon, ricavi di 200 miliardi di dollari\n\n02 ago 00:00 - (Agenzia Nova) - La multinazionale statunitense Amazon ha riportato risultati superiori alle attese per il secondo trimestre,... (Was)\n\nBusiness news: results exceeded expectations for Amazon, revenues of $200 billion dollars\n\nAugust 2 00:00 - (Agenzia Nova) - The U.S. multinational Amazon has reported results exceeding expectations for the second quarter, ...\n\n#Amazon #AgenziaNova\n\nhttps://www.agenzianova.com/a/6a6e6f5e107197.17018619/7661792/2026-08-02/business-news-risultati-sopra-le-attese-per-amazon-ricavi-di-200-miliardi-di-dollari",
+   "fetched_at": "2026-10-15T16:01:14Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "07e078106c7c0b93d73ff6556d3b155b8f7678ff7aa1e1503577fa71c10adbcc"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117024103537753563",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-08-02T04:48:31.121Z",
+   "language": "en",
+   "text": "Indiana Jones and the Great Circle FSR 4.1.1 - Kubuntu 26.04 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=SFh_-lqq-oE\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #MinisForum #Kubuntu",
+   "fetched_at": "2026-10-15T16:01:54Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "4c9029e3a71353c0bc89e862ec49dcb69040e557482091f19d986b41919bb94c"
+  },
+  {
+   "url": "https://mastodon.social/@newsevoce/117025764416704795",
+   "instance": "mastodon.social",
+   "account": "newsevoce@mastodon.social",
+   "created_at": "2026-08-02T11:50:54.128Z",
+   "language": "pt",
+   "text": "AWS voa, Amazon dispara - nuvem acelera pelo 5º trimestre e ação sobe 15%: Receita da nuvem salta 37%, para US$ 42,2 bi, maior ritmo desde 2021; empresa eleva capex para US$ 220 bi e fluxo de caixa vai ao negativo, mas investidores comemoram crescimento; ação tem maior alta intradia desde 2022 https://www.infomoney.com.br/mercados/aws-voa-amazon-dispara-nuvem-acelera-pelo-5o-trimestre-e-acao-sobe-15/ #Amazon #AWS",
+   "fetched_at": "2026-10-15T16:01:06Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "a74d791543b71b328d43599e0064029d573c4f5124de49d5fd68bbe6e2a5c63d"
+  },
+  {
+   "url": "https://mastodon.social/@1ban_news/117025900054848271",
+   "instance": "mastodon.social",
+   "account": "1ban_news@mastodon.social",
+   "created_at": "2026-08-02T12:25:23.807Z",
+   "language": "en",
+   "text": "The Claude Tool That Billed Amazon $1.8 Million and Never Launched\n\nFollow @1ban_news for daily coverage.\n\nhttps://1ban.news/amazon-18m-claude-coding-overspend/\n\n#1ban #amazon #18m #claude #coding #tech",
+   "fetched_at": "2026-10-15T16:01:06Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "7e9db86deba21345b007c640b4c1c0f29c43eacf0a6a2c983dd53b7798543e6b"
+  },
+  {
+   "url": "https://eltabanoeconomista.wordpress.com/2026/08/02/populismo-autoritario-el-atropello-como-marca-y-el-absurdo-como-modelo-de-negocio/",
+   "instance": "eltabanoeconomista.wordpress.com",
+   "account": "eltabanoeconomista.wordpress.com@eltabanoeconomista.wordpress.com",
+   "created_at": "2026-08-02T12:31:35.000Z",
+   "language": "en",
+   "text": "Populismo autoritario: el atropello como marca y el absurdo como modelo de negocio\n\nPor:Lic. Alejandro Marcó del Pont\n\nLas élites tecnológicas no solo financian proyectos, los diseñan, los amplifican y los instrumentalizan, son los arquitectos de la «Ilustración Oscura« (El Tábano Economista)\n\nVivimos bajo una ilusión óptica de proporciones históricas. Cuando observamos el ascenso de figuras como Donald Trump, Javier Milei o Itamar Ben-Gvir, la opinión pública tiende a interpretar sus gestos, insultos y políticas como síntomas de un caos incontrolable, el desborde de la irracionalidad o el regreso fantasmal de los espectros del siglo XX. Nada podría estar más lejos de la realidad. Estos líderes no son anomalías ni locos sueltos. Son gerentes de la destrucción sistemática, altavoces humanos de un proyecto meticulosamente diseñado desde las élites globales. Lo que presenciamos no es un accidente de la historia; es una convergencia sistémica.\n\nComo señalaba Karl Marx, las ideas dominantes de cada época no son más que las ideas de la clase dominante. Las élites tecnológicas ya no se limitan a financiar proyectos. Hoy diseñan la infraestructura misma sobre la que se produce, distribuye y consume el discurso. La genialidad perversa del momento actual es que esta dominación ya no se ejerce con el lenguaje técnico y moderado del neoliberalismo de los noventa. Se ejerce con un vocabulario beligerante, visceral y destructor que ha colonizado el sentido común sin generar inmunidad social alguna.\n\nPara comprender este fenómeno, debemos abandonar la etiqueta simplista de «fascismo clásico«. Lo que emerge hoy es un autoritarismo de nueva generación, un híbrido mutante donde cada líder defiende a una elite específica y a un proyecto concreto, adaptándose a las coordenadas locales, pero bebiendo de la misma fuente ideológica. Donald Trump, en este sentido, no fue una anomalía, sino el proveedor del molde comunicacional global: la política como espectáculo de realidad, la deslegitimación sistemática de las instituciones verificadoras y la transformación del adversario político en un enemigo existencial.\n\nBen-Gvir no es un fanático israelí suelto. Es el Ministro de Seguridad Nacional de un gobierno que ha convertido la expansión de asentamientos en su prioridad máxima. Los acuerdos de coalición de Netanyahu se comprometieron a «avanzar y desarrollar el asentamiento en todas las partes de la tierra de Israel«, incluyendo la anexión de Cisjordania. Él no representa un mero extremismo marginal; es la materialización de un proyecto de ingeniería demográfica y territorial que exporta un modelo de «seguridad» basado en la represión preventiva, la expansión colonial y la normalización de la violencia etnonacionalista como política de Estado. ¿Por qué necesita Ben-Gvir un léxico de «muerte a los terroristas», de armar civiles, de justificar la violencia de colonos? Porque la limpieza étnica requiere un lenguaje que la deshumanice.\n\nPara entender cómo este engaño prospera y logra tal adhesión, debemos recurrir al análisis de Ernesto Laclau y su concepto de «La razón populista«. Laclau nos enseñó que mientras cada reclamo social permanezca aislado y separado, el sistema puede absorberlos, fragmentarlos o ignorarlos sin mayores riesgos. Pero cuando las instituciones dejan de responder a las necesidades básicas de la población, esas demandas dispersas comienzan a unirse. Se forja lo que él denominó una «cadena de equivalencias«.\n\nEsto no significa que todos quieran exactamente lo mismo, sino que todos empiezan a percibir que tienen un enemigo común que frustra sus aspiraciones de vida digna. Aquí reside la genialidad perversa y el secuestro ideológico operado por la nueva derecha. Figuras como Trump, Milei o Ben-Gvir no crearon este malestar; lo interceptaron. Identificaron esa cadena de equivalencias en formación y, con precisión le asignaron un enemigo falso o parcial gritando en contra de, “inmigrantes” «el establishment», «la casta», «la oligarquía», «Bruselas» o «Wall Street», pero lo hacen de una manera calculada que desvía la ira hacia chivos expiatorios culturales o minoritarios, mientras protegen a los verdaderos arquitectos del despojo.\n\nLa toma del Estado por parte de estas élites deja expuesta la crudeza de esta operación y valida la advertencia de Laclau sobre la fragilidad de las cadenas de equivalencias mal dirigidas. Estos líderes no odian al Estado; odian al Estado democrático, regulador y redistributivo. Aman al Estado como botín de pago y brazo represivo. Primero, se promueven políticas de austeridad extrema y se despiden funcionarios técnicos competentes, provocando un deterioro intencional de los servicios públicos. Luego, se señala ese deterioro como la prueba irrefutable de que el Estado es inherentemente ineficiente, corrupto e inútil. Finalmente, se ofrece la «solución». La privatización de funciones estatales a sus propias empresas o aliados corporativos.\n\nEl resultado es tan cínico como brillante: Elon Musk se burla de la burocracia gubernamental mientras recibe miles de millones en subsidios y contratos del Estado. Peter Thiel predica el libertarismo mientras su empresa, Palantir, se convierte en el sistema operativo de facto de los servicios de inteligencia y la policía predictiva en Occidente.\n\nSi aceptamos que estos líderes son meros gerentes políticos o voceros de las élites económicas y tecnológicas, surge una pregunta inevitable: ¿por qué no utilizan el lenguaje técnico, pulcro y moderado del neoliberalismo clásico? ¿Por qué optan por un léxico tan beligerante, visceral y destructor? La respuesta es que la destrucción no es un error del sistema, sino una funcionalidad diseñada. Este léxico destructor cumple funciones estratégicas precisas.\n\nEn primer lugar, la destrucción actúa como requisito previo, una versión actualizada de la doctrina del shock. Para implementar proyectos de acumulación por desposesión, es necesario eliminar primero los obstáculos institucionales, legales y simbólicos que los frenan. El ariete simbólico del insulto y la amenaza demuele la legitimidad de las instituciones para que, cuando lleguen las medidas económicas, no haya nada que las frene. En segundo lugar, este discurso opera como un espacio ideológico destinado a desplazar la ira hacia abajo, desviando la rabia legítima contra la desigualdad estructural hacia minorías vulnerables o enemigos internos inventados creando chivos expiatorios: el inmigrante, el «comunista» o el «terrorista».\n\nTercero, y esto es lo más cínico: en la economía digital, el conflicto es el activo más rentable. Los algoritmos de las redes sociales están diseñados para priorizar la indignación y el miedo, porque son las emociones que generan más tiempo de pantalla y más datos. El léxico destructor de estos líderes es contenido de alto rendimiento. La polarización constante consolida el monopolio de las tecnológicas sobre la esfera pública. La irracionalidad es, literalmente, un modelo de negocio.\n\nFinalmente, la post-verdad se erige como una herramienta de dominio. El objetivo no es convencer, sino agotar. A través de la estrategia del fuego de saturación, se destruye la noción misma de verdad objetiva. Si la sociedad no puede ponerse de acuerdo sobre lo que es real, no puede organizarse para resistir, dejando como única brújula la fuerza bruta y la lealtad al líder.\n\nSi aceptamos que la destrucción no es un error, sino una herramienta, la pregunta obligada es: ¿quién cobra el seguro de esa destrucción? Los beneficiarios de esta demolición institucional y social son claramente identificables, como veremos, pero primero hay que definir que el neoliberalismo es la política de la destrucción. No es un error, no es una falla de diseño. Es un sistema construido para socavar la democracia, aumentar el poder corporativo, profundizar la desigualdad, permitir la extracción de rentas y mantener la pobreza como condición estructural.\n\nLa destrucción de servicios públicos, la privatización de la energía, el agua, la vivienda, la salud —no son «ineficiencias» que se corrigen. Son transferencias deliberadas de autoridad de los ciudadanos a las corporaciones. Y cuando esos servicios colapsan, el colapso mismo se usa como evidencia de que «el Estado no funciona», justificando más privatización. Es un ciclo de destrucción intencional.\n\nEntonces, he aquí a los beneficiarios de esta destrucción. En primer lugar, el capital financiero especulativo y los fondos buitre, que compran activos locales a precio de remate tras las devaluaciones y la incertidumbre institucional provocadas deliberadamente.\n\nEn segundo lugar, el oligopolio tecnológico y la industria de la vigilancia. Como ha documentado recientemente la prensa internacional, los multimillonarios detrás del estado de vigilancia de Trump no buscan el caos por si mismo, sino la consolidación de un aparato de control. Al debilitar las leyes de protección de datos y derechos civiles, empresas como Palantir, vinculada a Peter Thiel, obtienen contratos multimillonarios para proveer sistemas de vigilancia masiva y gestión de datos poblacionales.\n\nAnte este despliegue de poder, surge una paradoja desconcertante: ¿por qué las sociedades no contestan? La academia sociológica y política identifica cuatro factores estructurales que explican este asentimiento. El primero es la apropiación del discurso antisistema por parte de la extrema derecha, que ha logrado canalizar la rabia legítima contra las élites globalizadas, desviándola hacia minorías vulnerables, mientras que la izquierda y el liberalismo clásico son cuestionados por haber sido gestores del neoliberalismo durante décadas y, por lo tanto, carecen de credibilidad para liderar esta rebelión.\n\nEl segundo factor es el desplazamiento constante de la ventana de Overton (es un modelo teórico de comunicación y ciencia política que describe cómo cambia la percepción de la sociedad sobre las ideas); la extrema derecha utiliza su proximidad a conglomerados mediáticos y algoritmos para normalizar su discurso, haciendo que lo inaceptable de ayer sea el debate legítimo de hoy y la política de Estado de mañana.\n\nEl tercer factor es el agotamiento del imaginario alternativo. Los partidos tradicionales ofrecen solo gestión técnica en lugar de proyectos de sociedad. El cinismo autoritario resulta más atractivo que la resignación liberal. Finalmente, la fragmentación y alienación digital atrapan a la población en cámaras de eco diseñadas para la polarización, impidiendo la formación de una conciencia de clase o una resistencia civil coherente y organizada.\n\nHacia dónde conduce esta irracionalidad es la proyección geopolítica más sombría de nuestro tiempo. Si esta trayectoria no se frena, nos encaminamos hacia el colapso definitivo del multilateralismo, ya que estos actores sienten un profundo desprecio por los valores compartidos, considerándolos una amenaza para sus proyectos de homogeneidad nacional. Esto nos lleva a un mundo fragmentado, propenso a conflictos regionales y guerras comerciales.\n\nMás alarmante aún es el avance hacia un capitalismo autoritario híbrido, un sistema donde el capital tecnológico y financiero opera sin reglas, mientras que la fuerza laboral y la disidencia política son sometidas a un control estatal represivo y vigilancia masiva. Es la barbarie institucionalizada, donde la normalización del léxico de la brutalidad se traduce inevitablemente en políticas públicas que deshumanizan a sectores enteros de la población, erosionando irreversiblemente el Estado de derecho.\n\nEn este contexto, la metáfora de la colonización de Marte, promovida con tanto entusiasmo por algunos de estos magnates, revela su verdadera naturaleza ideológica. Conquistar dicho planeta es una utopía distractora; la verdadera colonización hay que hacerla en la Tierra. El discurso de los búnkeres de supervivencia y los viajes espaciales cumple la función de una fantasía del bote salvavidas, permitiendo que la élite se vea a sí misma como exploradora visionaria en lugar de lo que realmente es: una casta extractiva. La realidad es que la colonización ya está ocurriendo aquí y ahora.\n\nEs fundamental entender que el capitalismo de la vigilancia no se construye para proteger a la sociedad, sino para blindar a las élites. Los sistemas de reconocimiento facial, la minería de datos y la policía predictiva no son herramientas de seguridad ciudadana; son mecanismos de control social diseñados para gestionar a una población que, en la lógica de la automatización y la inteligencia artificial, comienza a ser considerada superflua.\n\nEn el capitalismo industrial, la élite necesitaba a las masas como trabajadores y consumidores. En la era actual, las élites tecnológicas están llegando a la conclusión de que las masas son prescindibles para la producción de alto valor. La respuesta del modelo no es el bienestar universal, sino la contención: guetos digitales, entretenimiento de bajo costo y, para los que se rebelan, represión algorítmica.\n\nLa historia demuestra que el autoritarismo no avanza sólo por la maldad de sus líderes, sino por el silencio cómplice de quienes, pudiendo nombrar el fenómeno y actuar, eligen la comodidad del cinismo. La única forma de desactivar este mecanismo no es debatiendo en el terreno del insulto que ellos eligen, sino exponiendo sistemáticamente, con frialdad geoeconómica, a quiénes benefician realmente sus políticas destructivas.\n\nColaborá con el Tábano Economista\n\nSi no estás en Argentina\n\nDonaciones El Tábano Economista (PayPal)\n\nhttps://paypal.me/tabanoeconomista?country.x=AR&locale.x=es_XC\n\nSi estas en Argentina\n\nIngresá al link para colaborar ($7.000) https://mpago.la/2DxZ4vC\n\nIngresá al link para colaborar (10.000) https://mpago.la/34map8M\n\nIngresá al link para colaborar (13.000) https://mpago.la/34map8M\n\nO una donación voluntaria al siguiente CBU del Banco Provincia de\n\nBuenos Aires: (Alias: SANTA.BANANA.MURO)\n\n#Alemania #Argentina #arquitecturaDePoder #autoritarismo #élitesEconómicas #Brasil #Bruselas #cadenaDeEquivalencias #capitalFinanciero #casta #castaExtractiva #China #Cisjordania #claseDominante #comunista #distribuye #DonaldTrump #EEUU #elites #ElonMusk #ErnestoLaclau #establishment #EstadoDemocrático #fascismoClásico #herramienta #herramientaDeDominio #ideasDominantes #inmigrantes #ItamarBenGvir #JavierMilei #KarlMarx #LaRazónPopulista #léxicoDeLaBrutalidad #MinistroDeSeguridadNacional #minoríasVulnerables #Occidente #Palantir #PeterThiel #privatización #produce #proyecciónGeopolítica #Tecnológicas #terroristas #tierraDeIsrael #vocabularioBeligerante #WallStree",
+   "fetched_at": "2026-10-15T16:01:41Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "8b5699c94285599de0204ff8f27f4770f95896c3354797ae14427db2d5269d20"
+  },
+  {
+   "url": "https://mastodon.social/@ppcland/117027574268384296",
+   "instance": "mastodon.social",
+   "account": "ppcland@mastodon.social",
+   "created_at": "2026-08-02T19:31:10.264Z",
+   "language": "en",
+   "text": "FYI: Amazon forces 14-day review window on AI-rewritten product titles: Brand owners now get 14 days to approve AI-rewritten titles, after Amazon logged 984 million title updates since June. Mobile display parity arrives August 10. https://ppc.land/amazon-forces-14-day-review-window-on-ai-rewritten-product-titles/ #Amazon #AI #ProductTitles #Ecommerce #DigitalMarketing",
+   "fetched_at": "2026-10-15T16:01:06Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "74df09138a4178957f90f28987a2bb553c7b6c5f89740f1bb5ee7eea9e520e0b"
+  },
+  {
+   "url": "https://mstdn.b-shock.org/@pooza/117028065591286956",
+   "instance": "mstdn.b-shock.org",
+   "account": "pooza@mstdn.b-shock.org",
+   "created_at": "2026-08-02T21:36:07.000Z",
+   "language": "ja",
+   "text": "https://www.amazon.co.jp/dp/B0956X785M\n\nアマゾンでいちばん安いのをぽちった。\nいや、これはこれでけっこう良さそうじゃないのw\n\n#Amazon",
+   "fetched_at": "2026-10-15T16:01:06Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "be17101e022bdde67754885ff9f3f2bdb625aa04c6e72674500c3564fe8b0c72"
+  },
+  {
+   "url": "https://mastodon.social/@geospart/117032342636597598",
+   "instance": "mastodon.social",
+   "account": "geospart@mastodon.social",
+   "created_at": "2026-08-03T15:43:49.789Z",
+   "language": "en",
+   "text": "Amazon hits $3T valuation for first time\n\nhttps://www.breakingthenews.net/Article/Amazon-hits-dollar3T-valuation-for-first-time/66837755\n\n#amzn #amazon #retail #daytrading #finance #fintech #stockmarket #stocks #wallstreet #nasdaq #tech #technology",
+   "fetched_at": "2026-10-15T16:00:09Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "f968d7529ae81c6071cf01606b8188bdc203fb21036962e523f1534cc6bfb4ed"
+  },
+  {
+   "url": "https://mastodon.vtip.me/@whatyoumissed/117034884930125692",
+   "instance": "mastodon.vtip.me",
+   "account": "whatyoumissed@mastodon.vtip.me",
+   "created_at": "2026-08-04T02:30:22.000Z",
+   "language": "en",
+   "text": "Lee Ying Shan and Tobias Burns report major market moves! The Dow hit a record high, Amazon topped $3 trillion, and tech stocks rebounded hard. Oil's 5% plunge on Iran de-escalation further fueled the rally, with Palantir surging post-hours. Dive into the details of these significant shifts. Thanks to Lee Ying Shan and Tobias Burns for this insightful reporting.\nhttps://www.cnbc.com/2026/08/03/stock-market-today-live-updates.html #Markets #Stocks #Economy",
+   "fetched_at": "2026-10-15T16:02:43Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "56fc7c01a96db22e20ab95da0bf61517041b0caf29754070c71ad1990cdb4deb"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117035688167021002",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-08-04T05:54:38.529Z",
+   "language": "en",
+   "text": "Nobody Wants to Die FSR 4.1.1 - Kubuntu 26.04 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=qX-HqRLfIW8\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #MinisForum #Kubuntu",
+   "fetched_at": "2026-10-15T16:01:54Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "e7906b9984505944c365e17a7ffa619cdf2e4d6a608d112ef25ed58296dacaa1"
+  },
+  {
+   "url": "https://mastodon.social/@yeandel/117035784252293907",
+   "instance": "mastodon.social",
+   "account": "yeandel@mastodon.social",
+   "created_at": "2026-08-04T06:19:04.682Z",
+   "language": "en",
+   "text": "The Palantir numbers are being recalculated.\n\nAn NHS England official asked whether the baseline was picking up seasonal patterns rather than the software. The two figures now being revised, 110,000 extra operations and a 15 per cent fall in discharge delays, are the two used to defend a £330m contract in Parliament.\n\nThe statistics regulator got there a fortnight earlier.\n\nhttps://www.yeandel.co.uk/22-q3-2026-updates/nhs-palantir-numbers-recalculated.html\n#NHS #Palantir #TechSovereignty",
+   "fetched_at": "2026-10-15T16:01:36Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "5eefbd3a093aee14b1e9f488450c4b2de60b1b005050ca6f48bda31a31fa525c"
+  },
+  {
+   "url": "https://mastodon.social/@walletsum95/117035884031611774",
+   "instance": "mastodon.social",
+   "account": "walletsum95@mastodon.social",
+   "created_at": "2026-08-04T06:44:27.184Z",
+   "language": "en",
+   "text": "This AI company made $1.5B in 3 months, and more than half of it isn't from you\n\nThis company's AI revenue is coming from somewhere few would expect\n\n#technews #palantir #aistocks",
+   "fetched_at": "2026-10-15T16:01:36Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "dda7643e8be158207422813c312160749751152e2b319e4b450e5f67961ff74b"
+  },
+  {
+   "url": "https://masto.es/@nachogazpachof/117039248474889079",
+   "instance": "masto.es",
+   "account": "nachogazpachof@masto.es",
+   "created_at": "2026-08-04T21:00:04.000Z",
+   "language": "es",
+   "text": "#US artificial intelligence and data analytics company #Palantir Technologies reported a 93% year-on-year rise in second-quarter revenue, reaching $1.94 billion, despite criticism over its support for #Israel and the reported use of its technology in the #Gaza #genocide.\n\nThe company’s net income more than tripled to $1.06 billion, while US revenue grew 115% to $1.57 billion. Palantir also raised its full-year revenue forecast after securing major contracts during the quarter.\n\nhttps://t.me/QudsNen/234106",
+   "fetched_at": "2026-10-15T16:03:33Z",
+   "fetched_from": "mastodon.online",
+   "sha256": "74dc8522b7ecc3af824eed811274a497110c205322674f55459ac1efcdc56a51"
+  },
+  {
+   "url": "https://mastodon.social/@sipirtu/117039978808390644",
+   "instance": "mastodon.social",
+   "account": "sipirtu@mastodon.social",
+   "created_at": "2026-08-05T00:05:48.534Z",
+   "language": "en",
+   "text": "AMD's data center revenue hit $6.7B, up 107% YoY, as gaming revenue fell 31%. A clear pivot toward AI infrastructure.\n\nSource: The Verge AI\nhttps://www.theverge.com/tech/975381/amd-q2-2026-earnings-ai-gaming-ryzen\n\n#AI #AMD",
+   "fetched_at": "2026-10-15T16:01:51Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "6d603adda7b0b0b4ddbacddc86488715c012ab7a7b81f6ffced3bd4b235b9303"
+  },
+  {
+   "url": "https://rssfeed.media/@guardianfeeds/117041214858701514",
+   "instance": "rssfeed.media",
+   "account": "guardianfeeds@rssfeed.media",
+   "created_at": "2026-08-05T05:20:09.000Z",
+   "language": "en",
+   "text": "Palantir paid just £2m corporation tax in UK in 2024 despite lucrative public sector contracts\nBy Juliette Garside\n\nSoftware group benefits from global systems and accounting practices ‘that enable tax to be shirked’, says union boss\n\nhttps://www.theguardian.com/technology/2026/aug/05/palantir-corporation-tax-uk-2024-accounting-practices\n\n#Palantir #Taxandspending #Outsourcing #Unison #Business #Technology #UKnews #USnews #TheGuardian #JulietteGarside",
+   "fetched_at": "2026-10-15T16:01:33Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "3cb40164163d4b567e057bdd5d9c5e0bbfee8e27c139d28e8aa1de338d616f18"
+  },
+  {
+   "url": "https://mstdn.social/@JugglingWithEggs/117041629633452153",
+   "instance": "mstdn.social",
+   "account": "JugglingWithEggs@mstdn.social",
+   "created_at": "2026-08-05T07:05:38.000Z",
+   "language": "en",
+   "text": "How about the UK government stop doing business with US companies that have no intention of ever properly paying taxes against the income they generate in the UK…would that be wild or just common sense?\n\nIn 2024 the company, #Palantir paid just £2.1m in UK corporation tax, despite declaring profits of over £25m, giving an effective tax rate of just over 8%, researchers found. The UK corporation tax rate was 25% that year and remains at that level.\n\n#EatTheRich\n#FairTax\n\nhttps://www.theguardian.com/technology/2026/aug/05/palantir-corporation-tax-uk-2024-accounting-practices",
+   "fetched_at": "2026-10-15T16:01:33Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "4e36e15d7b2ba6bec15425512c2021722aea8c9fe03da0e14d941b966113c41c"
+  },
+  {
+   "url": "https://tldr.nettime.org/@remixtures/117042064417276871",
+   "instance": "tldr.nettime.org",
+   "account": "remixtures@tldr.nettime.org",
+   "created_at": "2026-08-05T08:56:12.000Z",
+   "language": "en",
+   "text": "\"NHS England has admitted that a data protection document inaccurately stated who could access patient information, failing to disclose that Palantir staff could view identifiable data held within part of its Federated Data Platform.\n\nThe US spy-tech firm won a £330 million contract to provide the platform in 2023 after it was awarded £60 million in COVID-era contracts without competition. The system is designed to improve data sharing across the NHS in England and help tackle the backlog in patient care.\n\nIn May, NHS England confirmed that Palantir staff can access identifiable patient information within the platform's National Data Integration Tenant, an arrangement that was not accurately reflected in its Data Protection Impact Assessment (DPIA).\n\nFollowing a request for clarification from the National Data Guardian (NDG), an independent statutory office that advises England's health and care system, NHS England admitted the error.\"\n\nhttps://www.theregister.com/public-sector/2026/07/29/nhs-england-rapped-over-inaccurate-palantir-patient-data-disclosure/5280233\n\n#DataProtection #UK #NHS #PatientData #PublicHealth #Healthcare #Palantir #BigTech",
+   "fetched_at": "2026-10-15T16:01:33Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "dd628c9ea7c460132e958043f32236f76e9dc1826e05e80d4cc11ae226a28360"
+  },
+  {
+   "url": "https://mastodon.social/@h4ckernews/117042442183509899",
+   "instance": "mastodon.social",
+   "account": "h4ckernews@mastodon.social",
+   "created_at": "2026-08-05T10:32:16.642Z",
+   "language": "en",
+   "text": "The software group Palantir paid just £2M in corporation tax in the UK in 2024\n\nhttps://www.theguardian.com/technology/2026/aug/05/palantir-corporation-tax-uk-2024-accounting-practices\n\nComments: https://news.ycombinator.com/item?id=49180535\n\n#HackerNews #Palantir #CorporationTax #UK2024 #SoftwareIndustry #TaxationTransparency",
+   "fetched_at": "2026-10-15T16:01:33Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "7265e26d399d55bf6cbbed8c209188cc2e6336dc7023082bea81bc3030c76756"
+  },
+  {
+   "url": "https://mastodon.social/@1ban_news/117042693093216345",
+   "instance": "mastodon.social",
+   "account": "1ban_news@mastodon.social",
+   "created_at": "2026-08-05T11:36:05.223Z",
+   "language": "en",
+   "text": "AMD's data center business doubles to $6.7B, carrying the company to record revenue\n\nFollow @1ban_news for daily coverage.\n\nhttps://1ban.news/amd-q2-2026-record-data-center-revenue/\n\n#1ban #amd #record #data #center #tech",
+   "fetched_at": "2026-10-15T16:01:51Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "c7949214fbd99f50e3c87ebf7866167747e382a9d52bd1c923277ea4fc298d64"
+  },
+  {
+   "url": "https://pixelfed.social/p/sheepfreak/990655931785638844",
+   "instance": "pixelfed.social",
+   "account": "sheepfreak@pixelfed.social",
+   "created_at": "2026-08-05T16:32:59.000Z",
+   "language": null,
+   "text": "I spent some time testing IBM Granite 4.1 3B on my secondary PC and I think I've found the sweet spot!\n\nThe model was running in Q4_K_M quantization via Ollama with the Vulkan backend on Mesa drivers.\n\nThe model fits completely into the 4 GB VRAM of my AMD Radeon RX 570, reaching around 42-46 tokens/s.\n\nInstead of asking simple questions, I put it through a small \"university exam\" covering a variety of topics:\n\nMathematics:\n\n• Integration by parts\n\n• Integration by substitution\n\n• Product rule\n\n• Complex numbers\n\nPhysics:\n\n• Why is the sky blue?\n\n• Why are sunsets red?\n\n• Fermi-Dirac distribution\n\n• Density of states\n\nBiology:\n\n• Why are plants green?\n\n• Photorespiration\n\nProgramming:\n\n• A simple C \"Hello, World!\" program\n\nMy impression so far:\n\nSurprisingly good at explaining mathematics, physics, biology and programming concepts.\n\nVery fast and responsive thanks to the model fitting entirely into VRAM.\n\nEnglish responses are noticeably stronger than German ones.\n\nThere are still limitations. Creative writing with unusual constraints (for example, writing an English story while omitting all articles) is difficult for this 3B model because it has to work against the language patterns it learned during training. My Gemma 4 13B running on an RX 6700 XT follows those kinds of instructions much more reliably.\n\nOverall, I'm genuinely impressed. For a 3B model running entirely on a nearly decade-old GPU, the combination of response quality and 42-46 tokens/s is remarkable.\n\nSeeing a modern language model explain mathematics, physics, biology and programming at around 42-46 tokens/s on a nearly decade-old Radeon RX 570 is honestly pretty amazing. Open-source AI keeps proving that older hardware still has plenty of life left.\n\n#LocalAI #LLM #Granite4 #IBM #OpenSource #FOSS #Linux #AMD #Vulkan #Mesa #RX570 #Ollama #SelfHosted #AI #Programming #Physics #Mathematics #Biology #Upcycling #OldHardware #EdgeAI",
+   "fetched_at": "2026-10-15T16:01:51Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "055a6705738f64c766286871ee501354ef3cfd70db3366402d9f28786ad09996"
+  },
+  {
+   "url": "https://mastodon.social/@codorco/117044856150104444",
+   "instance": "mastodon.social",
+   "account": "codorco@mastodon.social",
+   "created_at": "2026-08-05T20:46:10.866Z",
+   "language": "pt",
+   "text": "📉 AMD viu suas receitas de games caírem 31% no Q2 FY2026, mas mais que compensou com um salto de 107% no segmento de data centers. Resultado: faturamento total de US$ 11,5 bi (≈ R$ 61 bi), alta de 50% ano a ano e 13% no trimestre. 🎮 A queda nos games era esperada, já que PS5 e Xbox estão no fim de seus ciclos e os preços altos dos componentes frearam o consumo. 💻 Já os data centers chegaram a US$ 6,7 bi (≈ R$ 35,5 bi) e a empresa mira US$ 13 bi (≈ R$ 68,9 bi) no próximo trimestre... #AMD",
+   "fetched_at": "2026-10-15T16:01:51Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "3898ee9073a816122c431e198e12e64f77aed3a42685f35de20edd0868b693f6"
+  },
+  {
+   "url": "https://mastodon.social/@yeandel/117046671797625065",
+   "instance": "mastodon.social",
+   "account": "yeandel@mastodon.social",
+   "created_at": "2026-08-06T04:27:55.438Z",
+   "language": "en",
+   "text": "Palantir told Wall Street its UK market was worth £247m in 2024. It told Companies House £159m, and paid £2.1m in corporation tax, an 8.3 per cent effective rate. An estimated £670m of its UK income is government contracts. Where the value of public spending ends up is a sovereignty question too.\n\nhttps://www.yeandel.co.uk/22-q3-2026-updates/palantir-uk-tax-transfer-pricing.html\n#TechSovereignty #Palantir",
+   "fetched_at": "2026-10-15T16:01:30Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "792cad9d58dcc9cae8bfed57d8b9eadf0ec550dc7769cbd66740c16fb863e087"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117046868607126334",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-08-06T05:17:58.592Z",
+   "language": "en",
+   "text": "Ace Combat 7: Skies Unknown - Kubuntu 26.04 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=oIunQsq81l8\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #MinisForum #Kubuntu",
+   "fetched_at": "2026-10-15T16:01:51Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "fb76cf63e0748b292cc4315592c5a433367157bb6db46dbea167385aae01a13b"
+  },
+  {
+   "url": "https://mastoturk.org/@armagan80/117047514201955965",
+   "instance": "mastoturk.org",
+   "account": "armagan80@mastoturk.org",
+   "created_at": "2026-08-06T08:02:09.000Z",
+   "language": "tr",
+   "text": "@teknofili AMD’nin hamlesi çok iyi. 16B toplam16B MoE yapısı ve MI300X optimizasyonu, açık kaynak ekosistemine ciddi bir soluk getirmiş. Özellikle tüm2.8B aktif parametre ile düşük-verim dengesi, edge cihazlar ve düşük malilatency senaryoları için ideal. Kod ve checkpoint’lerin açık olması, geliştiricilerin hemen test etmesini sağlayacak. NVIDIA’nın A100/H100 hegemonyasına karşı güzelAMD Instinct serisi için önemli bir adım. 🚀 #AMD #OpenSource #AI",
+   "fetched_at": "2026-10-15T16:01:47Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "f291b13dd25ed1b86241ea722e737d7a777bd3acc24598a4ca8050c4166be3d8"
+  },
+  {
+   "url": "https://rssfeed.media/@guardianfeeds/117048253257248468",
+   "instance": "rssfeed.media",
+   "account": "guardianfeeds@rssfeed.media",
+   "created_at": "2026-08-06T11:10:06.000Z",
+   "language": "en",
+   "text": "Exclusive: Emails reveal Palmer Luckey’s political fundraising as his company wins sole-source contracts\nBy Aram Roston in Washington\n\nCo-founder of defense firm Anduril has donated $5.9m to Republicans and bundled more, while reaping billions in Pentagon contracts\n\nhttps://www.theguardian.com/us-news/2026/aug/06/exclusive-palmer-luckey-political-fundraising\n\n#USnationalsecurity #Republicans #Weaponstechnology #Trumpadministration #DonaldTrump #PeteHegseth #KevinMcCarthy #TedCruz #PeterThiel #Palantir #Dronesmilitary #Virtualreality #Surveillance #USmilitary #Technology #California #USpolitics #USnews #WestCoast #TheGuardian #AramRostoninWashington",
+   "fetched_at": "2026-10-15T16:01:30Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "4e50cb2a63e75774f405778c79337b2d2f0362451d8f73d163c9b59bc42da99a"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://capitaldigital.com.br/fnde-descontinua-palantir-apos-polemico-contrato-de-r-216-milhoes-com-serpro-e-aws/",
+   "instance": "web.brid.gy",
+   "account": "capitaldigital.com.br@web.brid.gy",
+   "created_at": "2026-08-06T16:10:57.000Z",
+   "language": "en",
+   "text": "FNDE descontinua Palantir após polêmico contrato de R$ 21,6 milhões com Serpro e AWS\n\nhttps://fed.brid.gy/r/https://capitaldigital.com.br/fnde-descontinua-palantir-apos-polemico-contrato-de-r-216-milhoes-com-serpro-e-aws/",
+   "fetched_at": "2026-10-15T16:01:30Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "071896f4c9e2bece255b87821510d9b726a828d5141dc3f8217640572a1a7a76"
+  },
+  {
+   "url": "https://expressional.social/@GrumpyOldFart/117050119893098247",
+   "instance": "expressional.social",
+   "account": "GrumpyOldFart@expressional.social",
+   "created_at": "2026-08-06T19:04:49.000Z",
+   "language": "en",
+   "text": "Is Palantir the most evil company in the world?\n\n“Palantir’s European Tax Gap: Report Alleges Millions Lost Through Profit Shifting”\n\nby Ana Vračar in Savage Minds on Substack\n\n“Tech company Palantir has become widely known for the dystopian values espoused by its founders and their stated support for Israel throughout the genocide in Gaza. A new report now indicates the company may also be engaged in extensive tax dodging, allowing it to avoid contributing to the public services it profits from”\n\n[..]\n\n“The [UK] tax gap noted in the report stands at £7.2 million (approximately USD 8.41 million). ‘This suggests that Palantir may have avoided more tax in the UK—with growing revenue from government contracts—than in any other country besides the US,’ CICTAR wrote”\n\nhttps://open.substack.com/pub/savageminds/p/palantirs-european-tax-gap\n\n#Press #SocialMedia #Journalism #EU #Palantir #TaxAvoidance #Thiel #US #TaxHaven #Israel #Trump #UK #NHS #Contracts #Ideology #Donination",
+   "fetched_at": "2026-10-15T16:01:30Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "a172ca0128a54b22224c4843afe937e29c629be978e04333956087ee5674213b"
+  },
+  {
+   "url": "https://mastodon.social/@CuratedHackerNews/117050525884028864",
+   "instance": "mastodon.social",
+   "account": "CuratedHackerNews@mastodon.social",
+   "created_at": "2026-08-06T20:48:04.135Z",
+   "language": "en",
+   "text": "AMD Acquires Taalas. Startup that demoed Llama 3.1 8B at 17k tok/s\n\nhttps://ir.amd.com/news-events/press-releases/detail/1296/amd-acquires-taalas-to-advance-compute-solutions-for-rapidly-growing-ai-inference-market\n\n#ai #amd #llama",
+   "fetched_at": "2026-10-15T16:01:47Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "757c476bf9cd3f2891dacb17a4b1dc8010c3eadcbdc4f4debc297d4af149bfdc"
+  },
+  {
+   "url": "https://masto.ai/@unusual_whales/117050809268536907",
+   "instance": "masto.ai",
+   "account": "unusual_whales@masto.ai",
+   "created_at": "2026-08-06T22:00:08.000Z",
+   "language": "en",
+   "text": "Elon Musk has stated that Tesla, $TSLA, Terafab will be built in Grimes County, Texas, and that SpaceX and Tesla will invest $16.8 billion for the initial buildout.\n\n#news #finance #economics #stocks #options",
+   "fetched_at": "2026-10-15T16:04:06Z",
+   "fetched_from": "mastodon.online",
+   "sha256": "71706e59e456252d0b7163045b3028e0a3924a9f2bda084bd487040135f2c390"
+  },
+  {
+   "url": "https://mastodon.social/@martincidmag/117053935486226563",
+   "instance": "mastodon.social",
+   "account": "martincidmag@mastodon.social",
+   "created_at": "2026-08-07T11:15:10.533Z",
+   "language": "en",
+   "text": "AMD doubled its data-center revenue to $6.7 billion — its stock still fell 9%\n\nhttps://www.martincid.com/business/amd-data-center-record-stock-falls/\n\n#Semiconductor #Amd #LisaSu",
+   "fetched_at": "2026-10-15T16:01:47Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "35e2feee3096ed4c733604ed3eefddc74106ebd01001025fe558a30feb5268fa"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117057798412538948",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-08-08T03:37:34.121Z",
+   "language": "en",
+   "text": "Grand Theft Auto V Enhanced Edition FSR 4.1.1 - Kubuntu 26.04 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=rKWjx5xRc_8\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #MinisForum #Kubuntu",
+   "fetched_at": "2026-10-15T16:01:47Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "06919f6b640dd33148863c66526a7c92c8b7fec1452a3f650da1593206e88938"
+  },
+  {
+   "url": "https://tbc-news.com/what-is-driving-the-sell-off-in-amd-shares-after-a-strong-second-quarter/",
+   "instance": "tbc-news.com",
+   "account": "ramchristiansuperable@tbc-news.com",
+   "created_at": "2026-08-08T10:49:33.000Z",
+   "language": "en",
+   "text": "What is driving the sell-off in AMD shares after a strong second quarter\n\nAdvanced Micro Devices is facing a stock sell-off following its second-quarter earnings release, even as the chipmaker delivered doubling data center revenue and a strong margin recovery.\n\nThe pullback reflects a market where aggressive growth expectations were already priced into the stock after its value more than doubled earlier this year.\n\nDespite meeting key operational milestones, AMD shares slipped as high valuation multiples left little room for anything short of exceptional results. The stock, which traded near $483.36 with a market capitalization of $789 billion, has retreated from its 52-week high of $584.73.\n\nData Center Acceleration and Comparison Baseline\n\nAMD’s data center segment posted a 107% year-over-year revenue increase in the second quarter, marking a significant acceleration from the 57% growth recorded in the previous quarter. Sequential growth stood at 16%.\n\nThe massive year-over-year jump was partly amplified by weak comparisons from Q2 2025, when U.S. export restrictions on advanced chip sales to China weighed heavily on performance across the semiconductor sector.\n\nBy comparison, main rival Nvidia reported a 92% year-over-year surge and 21% quarter-over-quarter expansion in data center revenue during its fiscal first quarter of 2027, which ended April 26, 2026.\n\nFinancial Highlights and Operational MetricsData Center Growth: Expanded 107% year-over-year and 16% sequentially.Operating Margin: Improved to 17%, reversing an operating loss of 2% from the same period last year.Trading Multiples: AMD trades at nearly 70 times forward earnings and 37 times projected 2027 earnings.Competitor Valuation: Nvidia trades at approximately 32 times trailing earnings.Profitability Improves, but Valuation Creates a Gap\n\nAMD demonstrated meaningful headway on profitability, turning around last year’s 2% operating loss to achieve a 17% operating margin in Q2. Expanding operating margins have long been a key requirement for bullish investors seeking sustainable earnings expansion.\n\nHowever, valuation metrics continue to weigh on market sentiment. AMD currently trades at nearly 70 times forward earnings and 37 times estimated 2027 earnings. In contrast, Nvidia trades at approximately 32 times trailing earnings, offering investors existing profitability at a lower relative entry multiple.\n\nBecause AMD’s stock price had already factored in roughly 18 months of future growth, the solid second-quarter performance was insufficient to sustain the rally, leading investors to re-evaluate entry points relative to market competitors.\n\n#2026 #AI #AMD #BUSINESS #Finance #latest #news #Philippines #Technology",
+   "fetched_at": "2026-10-15T16:01:47Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "77866de145a9773e016a1f96c4a2303041b787b386804f8dbe388a5658679b65"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117062139542423950",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-08-08T22:01:34.488Z",
+   "language": "en",
+   "text": "Observer: System Redux (Full Playthrough) FSR 4.1.1 - Kubuntu 26.04 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=flDWo-1_lfo\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #MinisForum #Kubuntu",
+   "fetched_at": "2026-10-15T16:01:47Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "6b7439171612500c59621c25e972fc823593d62a09a296a6228ed737c66279b0"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3msr536qvlk2a",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-08-10T22:20:17.214Z",
+   "language": "en",
+   "text": "Tough but fair...\n\n$TSLA $SPCX\n\nRE: https://bsky.app/profile/did:plc:mmzku4tcjbexuctkmkjivhrk/post/3msr2ddbwa22m",
+   "fetched_at": "2026-10-15T16:00:02Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "551c7df1fcf11d9a8cda0113abceb01223fd045c64c08f461c476044f9050855"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3msz4vvypy22s",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-08-14T02:38:38.165Z",
+   "language": "en",
+   "text": "Elon's buddy Jensen is ratfucking him at every turn...\n\n$TSLA $SPCX $NVDA\n\nRE: https://bsky.app/profile/did:plc:43fdk46qa5gsokzygzildsaq/post/3msz4kyzs7n2b",
+   "fetched_at": "2026-10-15T16:00:02Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "9d53f4185a0516d9dce54b1c4c4f3141ba22f6396362733794af93fb71f7ea91"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3mt2ftohmkv2n",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-08-14T14:51:00.051Z",
+   "language": "en",
+   "text": "$1.35 trillion market cap company, folks...\n\n\"The version planned for the stunt will be remotely operated with no driver, won’t be street legal. Spectators will be positioned hundreds of yards from the vehicle because of the potential for hearing damage from the high-pressure gas thrusters\"\n\n$TSLA",
+   "fetched_at": "2026-10-15T16:00:02Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "db42777f63622afa145e0c3baadb630a5e86c652cc6eea6d5c93cdf26655f152"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3mti7rexdl22l",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-08-20T02:39:43.366Z",
+   "language": "pt",
+   "text": "Probably $15K more than Elon Musk paid for his botched-cock operation...\n\n$TSLA $SPCX $TSLAQ #SpaceX #XAI",
+   "fetched_at": "2026-10-15T16:00:02Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "c3d90ccf8cdc7fa0cbbe58d9e7b9f7be5246214979673972a168f7bb589a41fa"
+  },
+  {
+   "url": "https://mastodon.social/@itradeaims/117127958149979056",
+   "instance": "mastodon.social",
+   "account": "itradeaims@mastodon.social",
+   "created_at": "2026-08-20T13:00:06.770Z",
+   "language": "en",
+   "text": "R:R 6.11 on PLTR — Don't Believe It? Watch It Backwards\n\nPLTR 5m with the Banana Indicator.\n$100 risk / $610 in a day. Play it back.\n\n151.83 → 163.74 · stop 149.88 · R:R 6.11.\n\nhttps://youtu.be/XK2bXch2ATs\nhttps://itradeaims.net/banana-indicator/\n\nTrading involves risk. Not financial advice.\n\n#BananaIndicator #PLTR #DayTrading",
+   "fetched_at": "2026-10-15T16:00:12Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "8292adb2114eae633dad9ed9643c192e1d162ddfc2276c2a03337bff365a4874"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3mtkwibojbk2i",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-08-21T04:31:33.494Z",
+   "language": "pt",
+   "text": "Tesla is a big ball of shit somehow rolling uphill....\n\n$TSLA $SPCX #SpaceX #XAI $TSLAQ\n\nRE: https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3mtkvhuvde22b",
+   "fetched_at": "2026-10-15T16:00:02Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "d9685efe2b5dfb695eef1a767a741666c5deb0624d29e53646e2c34024fd239d"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3mtlvsqwois2f",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-08-21T13:52:11.032Z",
+   "language": "en",
+   "text": "Tesla recalls nearly 3 million vehicles in China over safety issues\n\n$TSLA $SPCX\n\nwww.streetinsider.com/Investing/Te...\n\nTesla recalls nearly 3 million...",
+   "fetched_at": "2026-10-15T15:59:59Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "3bf9dc9f89ad3c91f49c005942b13ddbf8cb90c136bf9703249c40690b37b260"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:zm64jthu5rlho6qjjwem4qq7/post/3mtmopqqjw224",
+   "instance": "bsky.brid.gy",
+   "account": "thomashansen.bsky.social@bsky.brid.gy",
+   "created_at": "2026-08-21T21:17:53.713Z",
+   "language": "nb",
+   "text": "Tesla is recalling 2,975,910 vehicles in China after the country’s market regulator determined that its emergency door release is too hard to find and operate in a crash.\n\n#TeslaTakedown\n#TeslaSafetyIssues\n$TSLA\n$TSLAQ\n\nRE: https://bsky.app/profile/did:plc:zm64jthu5rlho6qjjwem4qq7/post/3lyxa2w3ws22t\n\nTesla recalls nearly 3 million...",
+   "fetched_at": "2026-10-15T15:59:59Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "00959b0615d38480625c5ef5fb67290f2727bd75f75c9ca46786317df9024a33"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3mtwohj7rls2w",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-08-25T20:39:54.772Z",
+   "language": "en",
+   "text": "SpaceX must be buying a shitload more Cybertrucks this quarter...\n\n\"Tesla raises Cybertruck prices by $5,000 despite abysmal demand\"\n\n$TSLA $SPCX #XAI #SPACEX\n\nelectrek.co/2026/08/25/t...\n\nTesla raises Cybertruck prices...",
+   "fetched_at": "2026-10-15T15:59:59Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "6b570654775cdec8a9f8f553325c9f503532b0c848b358c1209ba707d4ce22bd"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3mtzn2dctzk25",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-08-27T00:52:37.843Z",
+   "language": "pt",
+   "text": "This sounds like antitrust time - if we had a functional government.\n\nLet's see if El Gordo whines...\n\n$TSLA $SPCX $NVDA\n\nRE: https://bsky.app/profile/did:plc:43fdk46qa5gsokzygzildsaq/post/3mtzmb26mgz2b",
+   "fetched_at": "2026-10-15T15:59:59Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "1b83827bf680207b5559fbbf3c9783665435adfe5e07accff8f1e5ad63fcab9e"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117182699840582130",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-08-30T05:01:38.647Z",
+   "language": "en",
+   "text": "Prey - Kubuntu 26.04.1 - Minisforum X1-255 Radeon 780m\n\nhttps://youtu.be/kNx5Ob4xhtU\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #MinisForum #Kubuntu",
+   "fetched_at": "2026-10-15T16:00:27Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "7d1c56fd9d64de5cbfb3c27670f567fd23281ba771821929112ff7e322d1550d"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117187166034898295",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-08-30T23:57:27.362Z",
+   "language": "en",
+   "text": "Titanfall 2 - Kubuntu 26.04.1 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=kt4jEEDBTpg\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #Kubuntu",
+   "fetched_at": "2026-10-15T16:00:27Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "47dd3e538a51f0567320a00a0d65764d8cacf7fcebd81cf4c4ecb603fd30fa8b"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3muiuk4cadc2j",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-09-02T02:16:39.622Z",
+   "language": "pt",
+   "text": "Optimus ftw...\n\n$TSLA $SPCX\n\nRE: https://bsky.app/profile/did:plc:43fdk46qa5gsokzygzildsaq/post/3muiuhvl2cy2m",
+   "fetched_at": "2026-10-15T15:59:59Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "ba4977e903a5c9b0e02eba2a2965739f6a41e2c076941328fc09b22f63a89197"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117200014620418675",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-09-02T06:25:01.227Z",
+   "language": "en",
+   "text": "Tom Clancy's Ghost Recon Wildlands - Kubuntu 26.04.1 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=9n1a-ijwhYk\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #Kubuntu",
+   "fetched_at": "2026-10-15T16:00:27Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "9a22101e1584123db2a1a3c2833d0fc33e85bdab4b6a6bce183f723887cac184"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117203508855565189",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-09-02T21:13:39.016Z",
+   "language": "en",
+   "text": "Bioshock Remastered - Kubuntu 26.04.1 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=xs7oU1lw59Q\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #Kubuntu",
+   "fetched_at": "2026-10-15T16:00:27Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "57f5c7ad5232c2ed47e17bfde856ca9488a3cd21c52e5c8c2a253b43abb63fee"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:pnx2fjuannbdpy3337ggthpp/post/3mul24vq7ks2f",
+   "instance": "bsky.brid.gy",
+   "account": "peark.es@bsky.brid.gy",
+   "created_at": "2026-09-02T23:01:58.464Z",
+   "language": "en",
+   "text": "$F setting the price for the Fathom at $30k and wants to move 100k units in its first year. For context that's more than half of $TSLA Model 3 sales.\n\nExclusive | Ford’s $30,000 EV ...",
+   "fetched_at": "2026-10-15T15:59:59Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "2bea7f95a6c0c4515a5754926f0eadb7ee1d7935463f6e6f97df826823a52a4a"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117204827888165499",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-09-03T02:49:05.882Z",
+   "language": "en",
+   "text": "Bioshock Remastered 2 - Kubuntu 26.04.1 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=H8pOqboV97E\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #Kubuntu",
+   "fetched_at": "2026-10-15T16:00:27Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "364e4f48a3ad846169cbff6d37c6fe3172caf7ed2ea1e4dc857d9f347b5e8821"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:zm64jthu5rlho6qjjwem4qq7/post/3mumt4tptzk24",
+   "instance": "bsky.brid.gy",
+   "account": "thomashansen.bsky.social@bsky.brid.gy",
+   "created_at": "2026-09-03T16:01:59.639Z",
+   "language": "nb",
+   "text": "A Florida federal jury hit Tesla with a historic $243 million verdict in a 2019 Autopilot death\n\nSince then, Tesla has moved to settle case after case\n\nThe pressure is only building. $TSLA is now facing up to $14.5 billion in Autopilot and FSD lawsuits:\n\n($TSLAQ told you over a year ago…)\n\nRE: https://bsky.app/profile/did:plc:zm64jthu5rlho6qjjwem4qq7/post/3lvxnu7j5bs2g\n\nTesla settles fatal Autopilot ...",
+   "fetched_at": "2026-10-15T15:59:59Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "9423eaa0bb39feed36e1f349f31527cf0545a1143d227f7c5b9bbf7ee4fd493f"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117209615883859013",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-09-03T23:06:44.873Z",
+   "language": "en",
+   "text": "Bioshock Infinite Burial at Sea Part 1 - Kubuntu 26.04.1 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=n32mbQhHkjs\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #Kubuntu",
+   "fetched_at": "2026-10-15T16:00:27Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "969ab0f53e459592350e770ade491ccd5cb615c102e8f26e6ebd82441bf8966d"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117215615113317721",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-09-05T00:32:25.863Z",
+   "language": "en",
+   "text": "Atomic Heart FSR 4.1.1 - Kubuntu 26.04.1 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=rt2foluJILU\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #Kubuntu",
+   "fetched_at": "2026-10-15T16:00:22Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "509426d854ba4bd2589a2aafbcfae427d6bbb19cbc7b9370db61ef00f0d50153"
+  },
+  {
+   "url": "https://mastodon.social/@h4ckernews/117218748434891705",
+   "instance": "mastodon.social",
+   "account": "h4ckernews@mastodon.social",
+   "created_at": "2026-09-05T13:49:16.541Z",
+   "language": "en",
+   "text": "The \"$60 Gaming PC\" – AMD BC-250 (2025)\n\nhttps://devquasar.com/hardware/the-60-gaming-pc-amd-bc-250/\n\nComments: https://news.ycombinator.com/item?id=49576386\n\n#HackerNews #GamingPC #AMD #BC250 #BudgetGaming #PCBuild #TechNews",
+   "fetched_at": "2026-10-15T16:00:22Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "64267758ebd808b085ab0f3d7f6ab8061a93ec8dde985c12ed9959134246d0c7"
+  },
+  {
+   "url": "https://mastodon.social/@hacker_news_bot/117218752433037666",
+   "instance": "mastodon.social",
+   "account": "hacker_news_bot@mastodon.social",
+   "created_at": "2026-09-05T13:50:17.603Z",
+   "language": "en",
+   "text": "📜 Latest Top Story on #HackerNews: The \"$60 Gaming PC\" – AMD BC-250 (2025)\n🔍 Original Story: https://devquasar.com/hardware/the-60-gaming-pc-amd-bc-250/\n👤 Author: networked\n⭐ Score: 5\n💬 Number of Comments: 1\n🕒 Posted At: 2026-09-05 13:36:38 UTC\n🔗 URL: https://news.ycombinator.com/item?id=49576386\n#news #bot #hackernewsbot #amd #hackernews",
+   "fetched_at": "2026-10-15T16:00:22Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "0f36be16e7ca53e97347fd2803940ed0b0725bb0e44389ba4ed65e4668030c19"
+  },
+  {
+   "url": "https://mastodon.social/@CuratedHackerNews/117218763350112969",
+   "instance": "mastodon.social",
+   "account": "CuratedHackerNews@mastodon.social",
+   "created_at": "2026-09-05T13:53:04.187Z",
+   "language": "en",
+   "text": "The \"$60 Gaming PC\" – AMD BC-250 (2025)\n\nhttps://devquasar.com/hardware/the-60-gaming-pc-amd-bc-250/\n\n#amd",
+   "fetched_at": "2026-10-15T16:00:22Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "b83d7936162ebdf970bfa2a71b8c9daef5d8e0586c87e273f4de3335a0d6a839"
+  },
+  {
+   "url": "https://mastodon.social/@hacker_news_bot/117219224864408032",
+   "instance": "mastodon.social",
+   "account": "hacker_news_bot@mastodon.social",
+   "created_at": "2026-09-05T15:50:26.280Z",
+   "language": "en",
+   "text": "📜 Latest Top Story on #HackerNews: The \"$60 Gaming PC\" – AMD BC-250 (2025)\n🔍 Original Story: https://devquasar.com/hardware/the-60-gaming-pc-amd-bc-250/\n👤 Author: networked\n⭐ Score: 90\n💬 Number of Comments: 16\n🕒 Posted At: 2026-09-05 13:36:38 UTC\n🔗 URL: https://news.ycombinator.com/item?id=49576386\n#amd #bot #news #hackernews #hackernewsbot",
+   "fetched_at": "2026-10-15T16:00:22Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "80cd9f5ea125c2971d1496b864ec39bb9846f6eb68766b626484f14bfc9f491f"
+  },
+  {
+   "url": "https://mastodon.social/@hacker_news_bot/117219501249477706",
+   "instance": "mastodon.social",
+   "account": "hacker_news_bot@mastodon.social",
+   "created_at": "2026-09-05T17:00:43.587Z",
+   "language": "en",
+   "text": "📜 Latest Top Story on #HackerNews: The \"$60 Gaming PC\" – AMD BC-250 (2025)\n🔍 Original Story: https://devquasar.com/hardware/the-60-gaming-pc-amd-bc-250/\n👤 Author: networked\n⭐ Score: 124\n💬 Number of Comments: 20\n🕒 Posted At: 2026-09-05 13:36:38 UTC\n🔗 URL: https://news.ycombinator.com/item?id=49576386\n#amd #news #hackernews #bot #hackernewsbot",
+   "fetched_at": "2026-10-15T16:00:22Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "e78b99c3515fa58a191927f3ef9d9f976231fad0fa70004f972c7c8a8e27a713"
+  },
+  {
+   "url": "https://mastodon.social/@hacker_news_bot/117219834242480532",
+   "instance": "mastodon.social",
+   "account": "hacker_news_bot@mastodon.social",
+   "created_at": "2026-09-05T18:25:24.664Z",
+   "language": "en",
+   "text": "📜 Latest Top Story on #HackerNews: The \"$60 Gaming PC\" – AMD BC-250 (2025)\n🔍 Original Story: https://devquasar.com/hardware/the-60-gaming-pc-amd-bc-250/\n👤 Author: networked\n⭐ Score: 163\n💬 Number of Comments: 24\n🕒 Posted At: 2026-09-05 13:36:38 UTC\n🔗 URL: https://news.ycombinator.com/item?id=49576386\n#bot #hackernewsbot #hackernews #amd #news",
+   "fetched_at": "2026-10-15T16:00:22Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "90abf7359c6fae7d3fce912a88a622756a3343a366549fcf05500bab0a6c74e4"
+  },
+  {
+   "url": "https://social.vivaldi.net/@michabbb/117220275654190065",
+   "instance": "vivaldi.net",
+   "account": "michabbb@vivaldi.net",
+   "created_at": "2026-09-05T20:17:40.000Z",
+   "language": "en",
+   "text": "Unconventional idea for cheap local #ai #LLM inference: repurposed PS5 chips.\n\nThe #AMD BC-250 is an ex-crypto-mining board (Zen2 CPU + RDNA2 GPU, 16GB unified GDDR6) built around the same \"Cyan Skillfish\" APU that powers the PS5. Grab one on eBay for ~$80-180 .\nCommunity results w/ llama.cpp + Vulkan:\n\n🔹 Single board: 8B models @ ~60 tok/s, Llama 2 7B @ 62 tok/s (rivals an RTX 3070 Mobile)\n🔹 2-board cluster (500W PSU): Qwen3.6-35B-A3B @ 70+ tok/s",
+   "fetched_at": "2026-10-15T16:00:22Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "ab2ec1d5840b08d2113719546b7da32f09d8d952d8a04e5be66e89d395b44e37"
+  },
+  {
+   "url": "https://mastodon.social/@CuratedHackerNews/117224130778158891",
+   "instance": "mastodon.social",
+   "account": "CuratedHackerNews@mastodon.social",
+   "created_at": "2026-09-06T12:38:04.620Z",
+   "language": "en",
+   "text": "The \"$60 Gaming PC\" – AMD BC-250 (2025)\n\nhttps://devquasar.com/hardware/the-60-gaming-pc-amd-bc-250/\n\n#amd",
+   "fetched_at": "2026-10-15T16:00:19Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "b83d7936162ebdf970bfa2a71b8c9daef5d8e0586c87e273f4de3335a0d6a839"
+  },
+  {
+   "url": "https://mastodon.social/@schuler/117224345452002147",
+   "instance": "mastodon.social",
+   "account": "schuler@mastodon.social",
+   "created_at": "2026-09-06T13:32:40.248Z",
+   "language": "en",
+   "text": "AMD unveiled a Threadripper Halo Station prototype in Berlin designed to run large AI models locally. Component costs alone exceed $100,000 at current prices. The company has set a 2027 availability window but disclosed no pricing, exact date, or manufacturing partner. https://www.implicator.ai/amd-shows-threadripper-halo-station-prototype-whose-parts-alone-top-100-000/ #AI #Hardware #AMD",
+   "fetched_at": "2026-10-15T16:00:19Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "38c4c2ba5d3000869943dcb227678b3bb8fb93a9de1fa4914f815eded94545f3"
+  },
+  {
+   "url": "https://mastodon.social/@codorco/117225711548107389",
+   "instance": "mastodon.social",
+   "account": "codorco@mastodon.social",
+   "created_at": "2026-09-06T19:20:05.228Z",
+   "language": "pt",
+   "text": "A AMD pode anunciar em breve o Ryzen 5 7500, novo processador de entrada para placas-mãe AM5. Segundo um vazamento, o chip teria 6 núcleos, 12 threads, clock de até 5 GHz, gráficos integrados, TDP de 65 W e 38 MB de cache.\n\nO possível preço de € 230 (cerca de R$ 1.369) gera dúvidas, já que o modelo ficaria próximo do Ryzen 5 7500X3D e custaria bem mais que o 7500F. As informações ainda não foram confirmadas oficialmente.\n\nMe siga para mais conteúdos como este. O que você achou?... #AMD",
+   "fetched_at": "2026-10-15T16:00:19Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "3e5d5e750351842665a2cfd603a7e87f7d3ee5e6cbe29715dd0807ffbddfe849"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117226127127324765",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-09-06T21:05:46.475Z",
+   "language": "en",
+   "text": "Alan Wake II Night Springs FSR 4.1.1 - Kubuntu 26.04.1 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=GDZB_ADZpus\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #Kubuntu",
+   "fetched_at": "2026-10-15T16:00:19Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "ed10a74ad1f149c8f93ca1739b616523e7009fbb99ecf270c08fa5a55b6e7642"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117239246531397099",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-09-09T04:42:12.675Z",
+   "language": "en",
+   "text": "Resident Evil 3 - Kubuntu 26.04.1 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=-KCLC6M3mpM\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #Kubuntu",
+   "fetched_at": "2026-10-15T16:00:19Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "133a873367035d6612ebd857602e237e4c81b15a04594f53a3856c1292f029ac"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3mv35oap5ds2l",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-09-09T08:47:57.427Z",
+   "language": "en",
+   "text": "\"Tesla on Monday announced cash rebates of 5,000 yuan ($745) for Model 3 buyers and 10,000 yuan for Model Y buyers who place orders by Sept. 30.\"\n\n$TSLA $SPCX\n\nRE: https://bsky.app/profile/did:plc:chrnwu7dgtrbnqjboekecqrg/post/3mv2hphx7lf2j",
+   "fetched_at": "2026-10-15T15:59:56Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "eeeee6dd63c207b0c6bd185d1b759e6bf706319dfe000d822f5e031ea2afdb1b"
+  },
+  {
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:qdfhbzwt6rqb5jh42cx5hbli/post/3mv3pf6kzky2e",
+   "instance": "bsky.brid.gy",
+   "account": "sleepindogo.bsky.social@bsky.brid.gy",
+   "created_at": "2026-09-09T14:04:58.408Z",
+   "language": "en",
+   "text": "Happy SpaceX stock unlock day, to those who celebrate...\n\n\"September 9, 2026: Timed release of up to 319 million additional insider shares hitting the tape today.\"\n\n$SPCX $TSLA",
+   "fetched_at": "2026-10-15T15:59:56Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "65560e46c7ab9d758bf38aa4b8ac95d8843a311b9f1d0b7a6c9d2023ba893d00"
+  },
+  {
+   "url": "https://mastodon.social/@michel_k/117243194761920887",
+   "instance": "mastodon.social",
+   "account": "michel_k@mastodon.social",
+   "created_at": "2026-09-09T21:26:17.890Z",
+   "language": "en",
+   "text": "Lenovo's ThinkCentre X Ultra looks like a serious mini workstation, packing Ryzen AI Max+ PRO 495 into a 1.6-liter desktop for local AI and creator workflows.\n\n#tech #technology #lenovo #amd #aiworkstation #minipc\n\nhttps://techshowup.com/News/Article/01a0880b-79d0-7a55-b2e8-e150031fdddb/lenovo-thinkcentre-x-ultra-brings-ryzen-ai-max-pro-495-to-a",
+   "fetched_at": "2026-10-15T16:00:19Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "fb3e3a6a23604bc69f1bc50798304890461bf264fad95737d923b9436b17fe85"
+  },
+  {
+   "url": "https://alsutton.social/@alsutton/117247264295041420",
+   "instance": "alsutton.social",
+   "account": "alsutton@alsutton.social",
+   "created_at": "2026-09-10T14:41:14.000Z",
+   "language": "en",
+   "text": "Radeon AI Pro R9700 (32GB) + Qwen 3.8 27B Q4_K_M for local coding support… thoughts anyone?\n\n#LLM #AI #AMD #QWEN",
+   "fetched_at": "2026-10-15T16:00:16Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "6a913dd373949a3a65d386e69e516af96af2987c5bcb30d7f57d1fe5aa8fe706"
+  },
+  {
+   "url": "https://mastodon.cl/@tarreo/117249016851739631",
+   "instance": "mastodon.cl",
+   "account": "tarreo@mastodon.cl",
+   "created_at": "2026-09-10T22:06:55.000Z",
+   "language": "es",
+   "text": "📰 Jugadores logran activar FSR 4.1.1b en tarjetas gráficas Radeon RX 6000 usando solo un archivo DLL, adelantando meses los planes de AMD\n🔗 https://www.tarreo.com/pc/jugadores-logran-activar-fsr-4-1-1b-en-tarjetas-graficas-radeon-rx-6000-usando-solo-un-archivo-dll-adelantando-meses-los-planes-de-amd/\n\n#fsr #radeon #amd #piloto",
+   "fetched_at": "2026-10-15T16:00:16Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "8eb8d32940f180ef4e515807fc0d4c368ef5e650a133225119ca645feaaa9711"
+  },
+  {
+   "url": "https://mastodon.social/@codorco/117254101738583601",
+   "instance": "mastodon.social",
+   "account": "codorco@mastodon.social",
+   "created_at": "2026-09-11T19:40:05.146Z",
+   "language": "pt",
+   "text": "A versão 4.1.1b do FSR 4 já pode ser ativada nas Radeon RX 6000, com GPUs RDNA 2, por meio da simples substituição de uma DLL na pasta do jogo. A alternativa não oficial promete mais estabilidade e ganho de 2% a 3% no desempenho em 1440p no preset equilibrado.\n\nApesar da facilidade, modificações em arquivos podem ser detectadas por sistemas anti-cheat e resultar em banimento. O suporte oficial da AMD para essas placas está previsto apenas para 2027.... #AMD",
+   "fetched_at": "2026-10-15T16:00:16Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "9b5bd8619af55104c8aeffd0aff350b8565353aa773690d68ae78c6b490f5735"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117255244371583767",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-09-12T00:30:40.344Z",
+   "language": "en",
+   "text": "REPLACED - Kubuntu 26.04.1 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=yE74RCmzNto\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #Kubuntu",
+   "fetched_at": "2026-10-15T16:00:16Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "9950837f4e8ed5b0d88edf204cc7b8e03ca117d3fc554f28514783f7a372dc02"
+  },
+  {
+   "url": "https://mastodon.social/@nebadon2025/117265917984779997",
+   "instance": "mastodon.social",
+   "account": "nebadon2025@mastodon.social",
+   "created_at": "2026-09-13T21:45:06.756Z",
+   "language": "en",
+   "text": "KARMA: The Dark World - Kubuntu 26.04.1 - Minisforum X1-255 Radeon 780m\n\nhttps://www.youtube.com/watch?v=mZaY5qU22E4\n\n#AMD #GamingOnLinux #Gaming #Linux #Radeon #Kubuntu",
+   "fetched_at": "2026-10-15T16:00:16Z",
+   "fetched_from": "mastodon.social",
+   "sha256": "eea7caa83a65bde8e3dc30c22c3586b008d7b993ca7df0ab208bcadd3403564c"
+  }
+ ]
+}

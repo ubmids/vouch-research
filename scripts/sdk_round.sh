@@ -7,6 +7,9 @@
 #
 #   bash scripts/sdk_round.sh            # writes web/feed-local.json
 #   bash scripts/sdk_round.sh --kol      # KOL mode: 20 fixture posts as staked stories -> web/feed-kol.json
+#   bash scripts/sdk_round.sh --kol-real # KOL mode on the real Mastodon snapshot (feed/kol/real/posts.json):
+#                                        # the agent stakes on each checkable story -> web/feed-kol-real.json
+#                                        # reads by VOUCH_READER (rules by default; model: see agent/vouchrh/reader.py)
 #
 # The AI analyst's claims are the ones Qwen 2.5 7B wrote in the published
 # testnet round of 24 Sep, re-posted word for word and labelled as replayed
@@ -21,7 +24,13 @@ export PATH="$PATH:$HOME/.bun/bin:$HOME/.foundry/bin"
 KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80   # anvil's well-known test key
 MODE=analysts
 if [ "${1:-}" = --kol ]; then MODE=kol; shift; fi
-OUT=${1:-$([ "$MODE" = kol ] && echo web/feed-kol.json || echo web/feed-local.json)}
+if [ "${1:-}" = --kol-real ]; then MODE=kol-real; shift; fi
+case $MODE in
+  kol) DEFAULT_OUT=web/feed-kol.json ;;
+  kol-real) DEFAULT_OUT=web/feed-kol-real.json ;;
+  *) DEFAULT_OUT=web/feed-local.json ;;
+esac
+OUT=${1:-$DEFAULT_OUT}
 WORK=$(mktemp -d)
 PORT=$("$PY" -c "import socket; s=socket.socket(); s.bind(('127.0.0.1', 0)); print(s.getsockname()[1])")
 RPC=http://127.0.0.1:$PORT
@@ -36,6 +45,10 @@ forge build >/dev/null
 echo "== 1. post the round (no verdicts yet)"
 if [ "$MODE" = kol ]; then
   PYTHONPATH=agent "$PY" -m vouchrh.kol --rpc "$RPC" --key "$KEY" --settle sdk --out "$WORK/feed.json"
+elif [ "$MODE" = kol-real ]; then
+  PYTHONPATH=agent "$PY" -m vouchrh.kol --posts real --rpc "$RPC" --key "$KEY" --settle sdk --out "$WORK/feed.json" \
+    | grep -v "^  read " || true
+  [ -s "$WORK/feed.json" ] || { echo "✗ the KOL round did not write a feed"; exit 1; }
 else
   PYTHONPATH=agent "$PY" -m vouchrh.market --rpc "$RPC" --key "$KEY" --settle sdk --pool all \
     --replay-model web/feed.json --out "$WORK/feed.json"
