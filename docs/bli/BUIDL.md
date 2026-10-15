@@ -82,18 +82,22 @@ filing is true, or that a record meets Rule 17a-4. The one-page brief is
 [docs/bli/LEGAL.md](LEGAL.md).
 
 **For RYO-CHAN: a news checker with a reasoning trail.** The agent reads
-market posts for token, figure, period, sentiment, conviction and urgency,
-finds the 10-Q sentence each figure must come from, and checks the story as a
-staked claim. A loud post with the wrong quarter is slashed and moves nothing.
-Then it forms a thesis from what held, is refused on-chain for anything that
-failed, and opens a paper trade. It decides in one of two ways. By default,
-fixed written rules, so **Re-verify** re-runs every step in the browser and
-gets the same answer. Or, with `VOUCH_DECIDER=model`, a language model behind
-any OpenAI-compatible endpoint reads the claims and picks the side; the exact
-messages and reply are hashed into the record with the trade, Re-verify checks
-the reply gives exactly that trade, and any failure falls back to the rules.
-Whatever the model says, the desk still refuses a claim that failed. The post
-reader itself is rules (word lists), not a model.
+real public posts about the five companies (130 posts from Mastodon's public
+tag timelines, July to September 2026, snapshot and hashes in the repo). A
+language model reads each one for ticker, figure, period, sentiment,
+conviction and urgency, and says whether the figure is one the 10-Q reports;
+the exact messages, the model id and its exact reply are hashed into the
+record, so Re-verify can check the reply gives exactly the reading. The agent
+then stakes on each story itself, but only where a sentence of the filing
+states the figure: the check reads sentences, so a figure the filing gives
+only in a table can be neither confirmed nor refuted, and the agent does not
+bet on its own blind spot. What held moves it; a refused claim cannot. It
+decides by fixed written rules (or, with `VOUCH_DECIDER=model`, a model whose
+reply is hashed the same way), and every paper trade keeps its reasoning
+on-chain. In the run with Claude Haiku 4.5 as the reader, 99 posts went to
+the model, 16 stated a checkable figure, 3 had a filing sentence, and all 3
+held. With the word-list reader instead, one real post's stale figure ("$1.5B
+in 3 months", Palantir's six-month 2025 gross profit) was caught and slashed.
 
 **For Chainlink: CRE is the orchestration layer.** EVM log trigger on
 Robinhood Chain → HTTP capability to SEC EDGAR → deterministic check →
@@ -109,19 +113,23 @@ QuickJS (the engine CRE runs). One script runs the CLI simulation per claim
 > - **Ran:** 57 Foundry tests (including the readers' fund payout), the Python
 >   suite (including the model decision path against a fake server), and the Bun suite (parity and the workflow handler); `cre workflow build`; the handler in Chainlink's
 >   SDK test runtime, settling a 50-claim local round.
-> - **CRE CLI simulation on Robinhood Chain testnet:** [pending: replace with
->   the run folder, claim count and an explorer link once the 18 Oct round runs].
+> - **Robinhood Chain testnet:** the market and its 50 claims are deployed and
+>   posted (docs/bli/TESTNET_ROUND.md, market 0x3234bd27…3E1a33). [pending: the CRE
+>   CLI simulation that settles them, once the CRE login is done.]
 > - **Trust in a simulation:** it writes through Chainlink's mock forwarder,
 >   which checks no signatures, so on that market anyone can settle a claim. It
 >   proves the path, not the security. The owner, name and pinned-id checks
 >   have only run in tests.
 > - **Before a live DON:** SEC requires a User-Agent the DON gateway will not
 >   send, and the gateway's default response size is below a 10-Q.
-> - **The agent's model path** is tested against a fake server only. The demo
->   round's decisions are made by the rules unless a model run is added here.
-> - **Fiction, labelled:** the hero AI claim is the Qwen analyst's words from
->   24 Sep, replayed word for word; the 20 market posts in KOL mode are written
->   fixtures by fictional accounts. No live X posts are read.
+> - **Models:** the post reader ran with Claude Haiku 4.5 (claude-haiku-4-5-20251001),
+>   its replies recorded and hashed; the trading decisions in the demo rounds are
+>   made by the written rules (the model decision path is tested, not used in them).
+> - **Real and labelled:** the hero AI claim is the Qwen analyst's words from
+>   24 Sep, replayed word for word. The news checker reads 130 real public
+>   Mastodon posts (a fixed snapshot, not a live feed; no X account was used);
+>   the 20 written fixture posts remain, labelled as fixtures. The real-post
+>   rounds ran on a local chain with the workflow's code in the SDK test runtime.
 > - **The readers' fund** on the test market is the deployer, standing in.
 >   Who it should be in production is a legal choice.
 

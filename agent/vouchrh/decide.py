@@ -25,6 +25,7 @@ import hashlib
 import json
 import os
 import re
+import urllib.error
 import urllib.request
 from urllib.parse import urlparse
 
@@ -96,15 +97,25 @@ def _decision(ticker: str, claims: list[dict], per_claim: int, d: dict) -> dict:
 
 
 def ask(cfg: dict, msgs: list[dict]) -> str:
-    """POST to an OpenAI-compatible chat endpoint; the reply's text."""
-    body = json.dumps({"model": cfg["model"], "messages": msgs, "temperature": 0, "seed": 7,
-                       "response_format": {"type": "json_object"}}).encode()
+    """POST to an OpenAI-compatible chat endpoint; the reply's text. Asks for a
+    JSON object; an endpoint that refuses that option (Anthropic's compatible
+    endpoint accepts only json_schema) is asked again without it: the prompt
+    already says to reply with JSON only, and the parser holds the reply to it."""
     headers = {"Content-Type": "application/json"}
     if cfg["key"]:
         headers["Authorization"] = f"Bearer {cfg['key']}"
-    req = urllib.request.Request(f"{cfg['url']}/chat/completions", data=body, headers=headers)
-    with urllib.request.urlopen(req, timeout=cfg["timeout"]) as r:
-        return json.load(r)["choices"][0]["message"]["content"]
+
+    def post(extra: dict) -> str:
+        body = json.dumps({"model": cfg["model"], "messages": msgs, "temperature": 0, "seed": 7, **extra}).encode()
+        req = urllib.request.Request(f"{cfg['url']}/chat/completions", data=body, headers=headers)
+        with urllib.request.urlopen(req, timeout=cfg["timeout"]) as r:
+            return json.load(r)["choices"][0]["message"]["content"]
+    try:
+        return post({"response_format": {"type": "json_object"}})
+    except urllib.error.HTTPError as e:
+        if e.code != 400 or b"response_format" not in e.read():
+            raise
+        return post({})
 
 
 def thesis(ticker: str, claims: list[dict], per_claim: int, cfg: dict | None = None) -> dict:

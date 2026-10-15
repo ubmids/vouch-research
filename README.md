@@ -134,7 +134,26 @@ on the page. 11 are true to the filing, 9 wrong on purpose; each gets the
 verdict it was written for (tested). `bash scripts/sdk_round.sh --kol` settles
 them with the CRE workflow's handler: 2 paper trades, 9 refusals, journal 85
 of 85 ([`web/feed-kol.json`](web/feed-kol.json), `?feed=feed-kol.json`).
-Live posts from X are not read.
+
+**Real posts.** [`agent/vouchrh/posts_fetch.py`](agent/vouchrh/posts_fetch.py)
+took a snapshot of 130 real public posts naming the five companies with a dollar
+figure, from Mastodon's public tag timelines, 15 Jul to 15 Sep 2026, no account
+used ([`feed/kol/real/posts.json`](feed/kol/real/posts.json), each with its url
+and sha256). [`agent/vouchrh/reader.py`](agent/vouchrh/reader.py) reads each
+post with a language model behind any OpenAI-compatible endpoint
+(`VOUCH_READER=model`), or the word lists by default; a model's exact messages
+and reply are hashed into the record and replayed by Re-verify. The agent
+stakes on a story itself, and only where a sentence of the 10-Q states the
+figure: the check reads sentences, not tables. `bash scripts/sdk_round.sh
+--kol-real` runs it on a local chain with the CRE workflow's handler:
+
+| Reader | Posts the model read | Checkable figure | Staked | Verdicts | Feed |
+|---|---|---|---|---|---|
+| Claude Haiku 4.5 (through an OpenAI-compatible relay) | 99 of 130 (the rest carry no amount in millions or billions; the word lists read those) | 16 | 3 | 3 cleared | `?feed=feed-kol-real.json` |
+| Word lists | none | 31 | 6 | 5 cleared, 1 slashed (Palantir "$1.5B in 3 months": the filing's $1.5 billion is six-month 2025 gross profit) | `?feed=feed-kol-real-rules.json` |
+
+Handles are shortened on the page; each post's url is in the record. Live
+posts from X are not read.
 
 ## Chainlink CRE
 
