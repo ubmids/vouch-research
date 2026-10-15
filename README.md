@@ -1,6 +1,8 @@
 # Vouch
 
-**Accountability for AI-written research.** Every claim an analyst, human
+![Vouch: a citation check for AI-written research. Exhibit 6, Qwen 2.5 7B's claim "Depreciation for Q3 2026 was $1.37 billion", slashed: wrong quarter.](docs/assets/cover.png)
+
+**A citation check for AI-written research.** Every claim an analyst, human
 or AI, makes about a public company is checked against the company's SEC
 filing, and the check is a **Chainlink CRE** workflow. A wrong claim costs its
 author its stake. An AI trading agent can only trade on claims that held, and its
@@ -11,13 +13,13 @@ journal shows the receipts for every trade.
 > its 25 USDG stake (test USDG), and a trading agent that cited the claim was **refused,
 > on-chain**.
 
-Where each part of that has run, as of 14 October 2026:
+Where each part of that has run, as of 15 October 2026:
 
 | | Where | Settled by |
 |---|---|---|
 | The AI wrote it; stake slashed; trade refused | Robinhood Chain testnet, 24 Sep ([slash](https://explorer.testnet.chain.robinhood.com/tx/0xbed0273dfe767314c80bdad33187044bfcda94f68b6853ef9c1e2b33a1912892), [refused trade](https://explorer.testnet.chain.robinhood.com/tx/0x885779d54f221e655c1c2242fef7361383d11eaaf123cd6aea2f7fbd5b9698d9)) | v1: one verifier key, before the CRE work |
 | The same words, re-posted (their hash matches v1's), slashed; trade refused; journal | a local devnet (anvil), [`web/feed-local.json`](web/feed-local.json) | **the CRE workflow's own handler, in Chainlink's CRE SDK test runtime** ([`scripts/sdk_round.sh`](scripts/sdk_round.sh)) |
-| A `cre workflow simulate --broadcast` round | Robinhood Chain testnet | **pending Subomi: `cre login` and the round** ([CHECKLIST step 1-2](docs/bli/CHECKLIST.md)) |
+| A round settled by `cre workflow simulate --broadcast` | Robinhood Chain testnet: market deployed and 50 claims posted on 15 Oct ([the round](docs/bli/TESTNET_ROUND.md)) | **pending Subomi's `cre login`**; then one command settles it ([OWNER_TODO](docs/bli/OWNER_TODO.md)) |
 
 **[Live feed](https://vouch-feed.vercel.app)** (the 24 Sep round) ·
 **The agent's journal** (on the live site after the next deploy, pending Subomi; today: serve `web/` and open `?feed=feed-local.json&journal`) ·
