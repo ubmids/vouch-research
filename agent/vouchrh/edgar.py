@@ -17,7 +17,10 @@ import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
-CONTACT = os.environ.get("VOUCH_SEC_CONTACT", "Vouch research prototype admin@vouch-feed.vercel.app")
+# SEC EDGAR's fair-access policy asks every client to name a contact in its
+# User-Agent. This is the one place it is set; it is sent to sec.gov only.
+SEC_CONTACT_EMAIL = os.environ.get("VOUCH_SEC_CONTACT_EMAIL", "solagoke21@gmail.com")
+CONTACT = os.environ.get("VOUCH_SEC_CONTACT", f"Vouch research prototype {SEC_CONTACT_EMAIL}")
 CACHE = Path(os.environ.get("VOUCH_CACHE", Path(__file__).resolve().parents[2] / ".cache" / "edgar"))
 _last = 0.0
 

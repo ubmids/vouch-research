@@ -115,7 +115,7 @@ else
 fi
 
 if [ -z "${VOUCH_SKIP_SEC_CHECK:-}" ]; then   # (the script's own tests skip it)
-  UA=$("$PY" -c "import json; print(json.load(open('cre/vouch-verifier/config.staging.json'))['userAgent'])")
+  UA=$(PYTHONPATH=agent "$PY" -c "from vouchrh.edgar import CONTACT; print(CONTACT)")
   SEC=$(curl -s -o /dev/null -w "%{http_code}" -A "$UA" https://data.sec.gov/submissions/CIK0001318605.json) || SEC=000
   [ "$SEC" = 200 ] || fail "SEC EDGAR answered $SEC for the TSLA index (with User-Agent \"$UA\")"
   ok "SEC EDGAR reachable"
@@ -203,19 +203,24 @@ fi   # end of: not --settle
 # ---- 2. the workflow settles every claim ----------------------------------------
 # The workflow's config for this round (the staging config, pointed at this
 # market) stays with the run's evidence.
-"$PY" - "$MARKET" "$RUN/config.json" <<'EOF'
+# The simulator reads cre/.config.run.json (git-ignored, removed on exit), which
+# carries the SEC contact from agent/vouchrh/edgar.py; the run folder keeps the
+# same config with that one field redacted.
+PYTHONPATH=agent "$PY" - "$MARKET" "$RUN/config.json" "$ROOT/cre/.config.run.json" <<'EOF'
 import json, sys
+from vouchrh.edgar import CONTACT
 c = json.load(open("cre/vouch-verifier/config.staging.json")); c["market"] = sys.argv[1]
-open(sys.argv[2], "w").write(json.dumps(c, indent=2) + "\n")
+open(sys.argv[3], "w").write(json.dumps({**c, "userAgent": CONTACT}, indent=2) + "\n")
+open(sys.argv[2], "w").write(json.dumps({**c, "userAgent": "Vouch research prototype (SEC contact, from agent/vouchrh/edgar.py)"}, indent=2) + "\n")
 EOF
 umask 077
 printf 'CRE_ETH_PRIVATE_KEY=%s\n' "$(sed 's/^0x//' "$KEYFILE")" > cre/.env
-trap 'rm -f "$ROOT/cre/.env"' EXIT
+trap 'rm -f "$ROOT/cre/.env" "$ROOT/cre/.config.run.json"' EXIT
 simulate() {   # claim tx, log file, extra flags...
   local tx=$1 log=$2; shift 2
   (cd cre && cre workflow simulate ./vouch-verifier --target staging-settings --non-interactive -e "$ROOT/cre/.env" \
     --trigger-index 0 --evm-tx-hash "$tx" --evm-event-index 0 --wasm "$RUN/vouch-verifier.wasm" \
-    --config "$RUN/config.json" "$@") \
+    --config "$ROOT/cre/.config.run.json" "$@") \
     < /dev/null > "$log" 2>&1
 }
 
@@ -244,8 +249,8 @@ echo "verdicts_written: $WRITTEN of $TOTAL" | tee -a "$RUN/env.txt"
 [ ${#FAILED[@]} -eq 0 ] || echo "no_verdict: ${FAILED[*]+${FAILED[*]}}" | tee -a "$RUN/env.txt"
 [ "$WRITTEN" -ge 1 ] || fail "the workflow wrote no verdict, so the round stops here (logs in $RUN)"
 if [ ${#FAILED[@]} -gt 0 ]; then
-  echo "Retry one: (cd cre && cre workflow simulate ./vouch-verifier --target staging-settings --non-interactive -e .env --trigger-index 0 --evm-tx-hash <tx> --evm-event-index 0 --config $RUN/config.json --broadcast)"
-  echo "(cre/.env is removed when this script exits; recreate it as in step 2.) Continuing: those claims show as pending."
+  echo "Retry one: (cd cre && cre workflow simulate ./vouch-verifier --target staging-settings --non-interactive -e .env --trigger-index 0 --evm-tx-hash <tx> --evm-event-index 0 --config .config.run.json --broadcast)"
+  echo "(cre/.env and cre/.config.run.json are removed when this script exits; recreate them as in step 2.) Continuing: those claims show as pending."
 fi
 
 # ---- 3. read the chain, trade, verify, publish -----------------------------------

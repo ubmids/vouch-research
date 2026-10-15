@@ -159,8 +159,11 @@ Or give an agent the MCP tool:
   "args": ["-m", "vouchrh.mcp_server"], "env": {"PYTHONPATH": "/path/to/vouch/agent"}}}}
 ```
 
-EDGAR requires a contact in every request's User-Agent; set
-`VOUCH_SEC_CONTACT="Your Name you@example.com"`. Add `--model` to include the
+EDGAR requires a contact in every request's User-Agent. The one place it is
+set is `agent/vouchrh/edgar.py` (`VOUCH_SEC_CONTACT_EMAIL`, default the
+maintainer's address, approved for SEC requests only); set
+`VOUCH_SEC_CONTACT_EMAIL=you@example.com` to use your own. It is sent to
+sec.gov and nowhere else. Add `--model` to include the
 language-model analyst (`ollama pull qwen2.5:7b-instruct` first).
 
 On a public chain, with a funded testnet wallet in `~/.config/vouch-rh/`:

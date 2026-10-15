@@ -10,7 +10,6 @@ steps 1 to 4 is in [CHECKLIST.md](CHECKLIST.md). All of it runs on the Mac.
 | ~~16 Oct~~ | ~~Design direction~~ | Done 15 Oct: Exhibit. The name stays Vouch | |
 | ~~16 Oct~~ | ~~Who runs the round~~ | Done 15 Oct: you said go. The round is deployed and its 50 claims are posted on Robinhood Chain testnet (docs/bli/TESTNET_ROUND.md); only the settling waits on the login | |
 | ~~16 Oct~~ | ~~Faucet~~ | Not needed: the wallet held 0.0062 test ETH on 15 Oct, about twice a round. The preflight still checks it | |
-| **Optional** | An inbox for SEC's User-Agent | SEC EDGAR asks every client to name a contact. The code now sends `Vouch research prototype admin@vouch-feed.vercel.app` (no personal email anywhere; SEC refuses GitHub noreply addresses). If you want SEC to be able to reach you, point that address at a real inbox, or give Claude another project address to use | |
 | **18 Oct** | Start the lawyer or compliance quote | Ask one securities or compliance lawyer, or a research publisher, to read [LEGAL.md](LEGAL.md) and give one sentence with name and role, ideally on camera. Cogent Law is a sponsor and BLI offers legal mentors: the event's Discord is the natural place to ask. Your call who to contact | |
 | **20 Oct** | Founder bio | Fill the two lines marked `[FOUNDER]` in [BUIDL.md](BUIDL.md) (who you are, why you can build this) | No `[FOUNDER]` left |
 | **22 Oct** | The quote, in hand | Paste it into BUIDL.md's "Who has read it" line, or delete that line | |

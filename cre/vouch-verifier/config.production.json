@@ -1,7 +1,7 @@
 {
   "chainSelectorName": "robinhood-testnet",
   "market": "0x0000000000000000000000000000000000000000",
-  "userAgent": "Vouch research prototype admin@vouch-feed.vercel.app",
+  "userAgent": "Vouch research prototype (SEC contact filled in by scripts/cre_round.sh from agent/vouchrh/edgar.py)",
   "sendUserAgent": false,
   "ciks": {
     "TSLA": "0001318605",

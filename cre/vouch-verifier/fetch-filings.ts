@@ -20,13 +20,19 @@ for (const name of readdirSync(FIXTURES).filter((f) => f.endsWith(".json")).sort
   urls.push(JSON.parse(readFileSync(join(FIXTURES, name), "utf8")).url)
 for (const cik of Object.values(config.ciks)) urls.push(`https://data.sec.gov/submissions/CIK${cik}.json`)
 
+// SEC wants a contact in the User-Agent; the one place it is set is agent/vouchrh/edgar.py.
+const UA = process.env.VOUCH_SEC_CONTACT ?? new TextDecoder().decode(Bun.spawnSync(
+  ["python3", "-c", "from vouchrh.edgar import CONTACT; print(CONTACT)"],
+  { cwd: join(import.meta.dir, "../.."), env: { ...process.env, PYTHONPATH: "agent" } }).stdout).trim()
+if (!UA.includes("@")) throw new Error("no SEC contact: set VOUCH_SEC_CONTACT, or check agent/vouchrh/edgar.py")
+
 mkdirSync(CACHE, { recursive: true })
 let fetched = 0
 for (const url of urls) {
   const path = join(CACHE, cacheKey(url))
   if (existsSync(path)) continue
   await Bun.sleep(200)
-  const r = await fetch(url, { headers: { "User-Agent": config.userAgent, "Accept-Encoding": "identity" } })
+  const r = await fetch(url, { headers: { "User-Agent": UA, "Accept-Encoding": "identity" } })
   if (!r.ok) throw new Error(`EDGAR ${r.status} for ${url}`)
   writeFileSync(path, new Uint8Array(await r.arrayBuffer()))
   fetched++
