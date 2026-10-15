@@ -12,7 +12,10 @@ import { gzipSync } from "fflate"
 import { bytesToHex, decodeAbiParameters, encodeAbiParameters, encodeEventTopics, hexToBytes, keccak256, toBytes } from "viem"
 import { type Config, POSTED, REPORT, initWorkflow, onPosted } from "./workflow"
 import { canonical as canonicalFiling } from "./check/edgar"
-import config from "./config.staging.json"
+import staging from "./config.staging.json"
+// The committed config leaves the SEC contact out (scripts/cre_round.sh fills it in
+// from agent/vouchrh/edgar.py); the tests use a placeholder contact.
+const config = { ...staging, userAgent: "Vouch test test@example.com" }
 
 const CACHE = join(import.meta.dir, "..", "..", ".cache", "edgar")
 const cacheKey = (url: string) => url.split("://")[1].replace(/[^A-Za-z0-9._-]/g, "_")

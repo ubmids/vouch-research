@@ -33,7 +33,11 @@ async function rpc(url: string, method: string, params: unknown[]) {
 test("settle a posted round with the workflow handler in the CRE SDK test runtime", async () => {
   const { VOUCH_RPC, VOUCH_MARKET, VOUCH_POSTS, VOUCH_SDK_OUT } = process.env
   if (!VOUCH_RPC || !VOUCH_MARKET || !VOUCH_POSTS || !VOUCH_SDK_OUT) throw new Error("set VOUCH_RPC, VOUCH_MARKET, VOUCH_POSTS and VOUCH_SDK_OUT")
-  const config = { ...staging, market: VOUCH_MARKET } as Config
+  // the SEC contact is filled in from agent/vouchrh/edgar.py, as scripts/cre_round.sh does
+  const ua = process.env.VOUCH_SEC_CONTACT ?? new TextDecoder().decode(Bun.spawnSync(
+    ["python3", "-c", "from vouchrh.edgar import CONTACT; print(CONTACT)"],
+    { cwd: new URL("../..", import.meta.url).pathname, env: { ...process.env, PYTHONPATH: "agent" } }).stdout).trim()
+  const config = { ...staging, market: VOUCH_MARKET, userAgent: ua } as Config
 
   // SEC, as the HTTP capability would see it: gzipped, under the 250 KB
   // response limit, and refused without a contact in the User-Agent.
