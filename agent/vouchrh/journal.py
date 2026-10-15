@@ -36,6 +36,33 @@ from .verifier import audit_claim
 SIDE = {"long": 0, "short": 1}
 
 
+def readings(claims: list[dict]) -> list[dict]:
+    """For claims the agent staked on real posts: how it read each post, by
+    hash. They go into the reasoning record, so the record's hash on-chain
+    also commits to the post (its url and text) and to the reading (and, for a
+    model, its exact messages and reply). Fixture rounds carry none, so their
+    records hash as before."""
+    from . import reader
+    out = []
+    for c in sorted(claims, key=lambda c: c["id"]):
+        post, r = c.get("post") or {}, c.get("reading") or {}
+        if not post.get("real"):
+            continue
+        rd = r.get("reader", {})
+        out.append({"claim": c["id"], "post_url": post["url"], "post_sha256": post["sha256"], "reader": rd.get("kind"),
+                    "model": rd.get("model"), "messages_sha256": rd.get("messages_sha256"),
+                    "output_sha256": rd.get("output_sha256"), "reading_sha256": reader.fingerprint(r)})
+    return out
+
+
+def _record(t: dict, price, dropped: list[dict], read: list[dict]) -> dict:
+    rec = decide.record(t, price, dropped)
+    bound = readings(read)
+    if bound:
+        rec["readings"] = bound
+    return rec
+
+
 def trade(chain: Chain, agent, claims: list[dict], per_claim: int = 100 * USD, log=print,
           quote=prices.latest) -> list[dict]:
     """Run the agent over a round's claims, stock by stock. Returns the journal.
@@ -57,7 +84,7 @@ def trade(chain: Chain, agent, claims: list[dict], per_claim: int = 100 * USD, l
                 break
             for e in t["evidence"]:
                 e["verdict_tx"] = verdict_tx.get(e["claim"])
-            rec = decide.record(t, price, dropped)
+            rec = _record(t, price, dropped, read)
             h = policy.digest(rec)
             ids = [e["claim"] for e in t["evidence"]]
             out = chain.act(agent, ticker, SIDE[t["side"]], t["notional"], ids, h)
@@ -83,7 +110,7 @@ def trade(chain: Chain, agent, claims: list[dict], per_claim: int = 100 * USD, l
             cited = [c for c in cited if c["id"] != refused]
         if entry["status"] != "opened":
             final = t if cited and not t["side"] else decide.thesis(ticker, cited, per_claim, cfg)
-            entry["reasoning"] = decide.record(final, price, dropped)
+            entry["reasoning"] = _record(final, price, dropped, read)
             log(f"  {ticker:5} no trade: what is left gives no direction ({len(dropped)} refusals)")
         journal.append(entry)
     return journal
@@ -120,6 +147,7 @@ def verify(feed: dict, chain: Chain, edgar_check: bool = True) -> list[dict]:
         if j["status"] == "error":
             check(tag, "the agent stopped on a refusal that named no claim", False, str(j.get("error")))
             continue
+        _verify_readings(tag, rec, [claims[i] for i in j["read"] if i in claims], check)
         by_model = rec.get("decider", {}).get("kind") == "model"
         if by_model:   # a model is not re-run; its recorded input and reply are checked instead
             for name, ok in decide.replay(rec, claims):
@@ -167,6 +195,24 @@ def verify(feed: dict, chain: Chain, edgar_check: bool = True) -> list[dict]:
         check(tag, "re-running the policy gives the same trade", (again["side"], again["notional"]) == (rec["side"], rec["notional"]),
               f"{again['side']} {again['notional'] / USD:.0f} USD")
     return out
+
+
+def _verify_readings(tag: str, rec: dict, read: list[dict], check) -> None:
+    """Every real post behind a claim the agent read: its text is the text it
+    hashed, the record commits to how it was read, and the reading follows
+    from the post (rules re-run; a model's recorded reply re-parsed)."""
+    from . import reader
+    from .posts_fetch import sha
+    real = [c for c in read if (c.get("post") or {}).get("real")]
+    if not real and not rec.get("readings"):
+        return
+    check(tag, "the record commits to how the agent read every real post behind the claims it read",
+          rec.get("readings", []) == readings(read))
+    for c in real:
+        check(tag, f"claim #{c['id']}: the post's text hashes to its recorded sha256", sha(c["post"]["text"]) == c["post"]["sha256"])
+        for name, ok in reader.replay(c["reading"], c["post"]["text"]):
+            check(tag, f"claim #{c['id']}: {name}", ok)
+        check(tag, f"claim #{c['id']}: the staked value is the reading's", c["value"] == c["reading"]["value"])
 
 
 def _canonical(c: dict) -> bytes:

@@ -214,11 +214,14 @@ def finish(chain: Chain, feed: dict, log=print, quote=None) -> dict:
     log(f"  trading agent: {acted} paper trades, {refused} refusals on-chain")
 
     feed["trader"] = trader.address
+    # whose claim it is: the wallet that staked it (one agent may stake under several bylines)
+    by = lambda f, s: f.get("analyst_address", "").lower() == s["address"].lower() if f.get("analyst_address") \
+        else f["analyst"] == s["analyst"]
     feed["standings"] = [{**s, "bonded": chain.bonded(s["address"]) / USD,
                           # as the contract counts: cleared means checked and true
-                          "cleared": sum(1 for f in feed["claims"] if f["analyst"] == s["analyst"] and f["verdict"] == "cleared" and f["checked"]),
-                          "cleared_unchecked": sum(1 for f in feed["claims"] if f["analyst"] == s["analyst"] and f["verdict"] == "cleared" and not f["checked"]),
-                          "slashed": sum(1 for f in feed["claims"] if f["analyst"] == s["analyst"] and f["verdict"] == "slashed")}
+                          "cleared": sum(1 for f in feed["claims"] if by(f, s) and f["verdict"] == "cleared" and f["checked"]),
+                          "cleared_unchecked": sum(1 for f in feed["claims"] if by(f, s) and f["verdict"] == "cleared" and not f["checked"]),
+                          "slashed": sum(1 for f in feed["claims"] if by(f, s) and f["verdict"] == "slashed")}
                          for s in feed["standings"]]
     feed["reader_pool"] = chain.reader_pool() / USD
     feed["readers_fund"] = chain.readers_fund()

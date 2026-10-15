@@ -1,0 +1,58 @@
+{
+ "recorded_from": "https://mastodon.social/api/v1/timelines/tag/AMD?limit=40&max_id=117045618278400000",
+ "recorded_at": "2026-10-15T16:08:17Z",
+ "statuses": [
+  {
+   "id": "117043860756236358",
+   "created_at": "2026-08-05T16:32:59.000Z",
+   "url": "https://pixelfed.social/p/sheepfreak/990655931785638844",
+   "uri": "https://pixelfed.social/p/sheepfreak/990655931785638844",
+   "content": "I spent some time testing IBM Granite 4.1 3B on my secondary PC and I think I've found the sweet spot!<br>\n<br>\nThe model was running in Q4_K_M quantization via Ollama with the Vulkan backend on Mesa drivers.<br>\n<br>\nThe model fits completely into the 4 GB VRAM of my AMD Radeon RX 570, reaching around 42-46 tokens/s.<br>\n<br>\nInstead of asking simple questions, I put it through a small \"university exam\" covering a variety of topics:<br>\n<br>\nMathematics:<br>\n• Integration by parts<br>\n• Integration by substitution<br>\n• Product rule<br>\n• Complex numbers<br>\n<br>\nPhysics:<br>\n• Why is the sky blue?<br>\n• Why are sunsets red?<br>\n• Fermi-Dirac distribution<br>\n• Density of states<br>\n<br>\nBiology:<br>\n• Why are plants green?<br>\n• Photorespiration<br>\n<br>\nProgramming:<br>\n• A simple C \"Hello, World!\" program<br>\n<br>\nMy impression so far:<br>\n<br>\nSurprisingly good at explaining mathematics, physics, biology and programming concepts.<br>\nVery fast and responsive thanks to the model fitting entirely into VRAM.<br>\nEnglish responses are noticeably stronger than German ones.<br>\n<br>\nThere are still limitations. Creative writing with unusual constraints (for example, writing an English story while omitting all articles) is difficult for this 3B model because it has to work against the language patterns it learned during training. My Gemma 4 13B running on an RX 6700 XT follows those kinds of instructions much more reliably.<br>\n<br>\nOverall, I'm genuinely impressed. For a 3B model running entirely on a nearly decade-old GPU, the combination of response quality and 42-46 tokens/s is remarkable.<br>\n<br>\nSeeing a modern language model explain mathematics, physics, biology and programming at around 42-46 tokens/s on a nearly decade-old Radeon RX 570 is honestly pretty amazing. Open-source AI keeps proving that older hardware still has plenty of life left.<br>\n<br>\n<a href=\"https://pixelfed.social/discover/tags/LocalAI?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#LocalAI</a> <a href=\"https://pixelfed.social/discover/tags/LLM?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#LLM</a> <a href=\"https://pixelfed.social/discover/tags/Granite4?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#Granite4</a> <a href=\"https://pixelfed.social/discover/tags/IBM?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#IBM</a> <a href=\"https://pixelfed.social/discover/tags/OpenSource?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#OpenSource</a> <a href=\"https://pixelfed.social/discover/tags/FOSS?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#FOSS</a> <a href=\"https://pixelfed.social/discover/tags/Linux?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#Linux</a> <a href=\"https://pixelfed.social/discover/tags/AMD?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#AMD</a> <a href=\"https://pixelfed.social/discover/tags/Vulkan?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#Vulkan</a> <a href=\"https://pixelfed.social/discover/tags/Mesa?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#Mesa</a> <a href=\"https://pixelfed.social/discover/tags/RX570?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#RX570</a> <a href=\"https://pixelfed.social/discover/tags/Ollama?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#Ollama</a> <a href=\"https://pixelfed.social/discover/tags/SelfHosted?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#SelfHosted</a> <a href=\"https://pixelfed.social/discover/tags/AI?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#AI</a> <a href=\"https://pixelfed.social/discover/tags/Programming?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#Programming</a> <a href=\"https://pixelfed.social/discover/tags/Physics?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#Physics</a> <a href=\"https://pixelfed.social/discover/tags/Mathematics?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#Mathematics</a> <a href=\"https://pixelfed.social/discover/tags/Biology?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#Biology</a> <a href=\"https://pixelfed.social/discover/tags/Upcycling?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#Upcycling</a> <a href=\"https://pixelfed.social/discover/tags/OldHardware?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#OldHardware</a> <a href=\"https://pixelfed.social/discover/tags/EdgeAI?src=hash\" class=\"u-url hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#EdgeAI</a>",
+   "spoiler_text": "",
+   "language": null,
+   "reblog": null,
+   "account": {
+    "acct": "sheepfreak@pixelfed.social"
+   }
+  },
+  {
+   "id": "117042723999487939",
+   "created_at": "2026-08-05T11:43:52.634Z",
+   "url": "https://fed.brid.gy/r/https://bsky.app/profile/did:plc:5zca2ola2zxpkw37w4f3wxtu/post/3msdh6lsbns2r",
+   "uri": "https://bsky.brid.gy/convert/ap/at://did:plc:5zca2ola2zxpkw37w4f3wxtu/app.bsky.feed.post/3msdh6lsbns2r",
+   "content": "<p>1 BMO: <a class=\"hashtag\" rel=\"nofollow noopener\" href=\"https://bsky.app/search?q=%23Equity\" target=\"_blank\">#Equity</a> <a class=\"hashtag\" rel=\"nofollow noopener\" href=\"https://bsky.app/search?q=%23markets\" target=\"_blank\">#markets</a> point to a steady open this morning despite post-earnings <a class=\"hashtag\" rel=\"nofollow noopener\" href=\"https://bsky.app/search?q=%23selloffs\" target=\"_blank\">#selloffs</a> in some big names like <a class=\"hashtag\" rel=\"nofollow noopener\" href=\"https://bsky.app/search?q=%23SpaceX\" target=\"_blank\">#SpaceX</a> and <a class=\"hashtag\" rel=\"nofollow noopener\" href=\"https://bsky.app/search?q=%23AMD\" target=\"_blank\">#AMD</a>, although both rallied sharply in yesterday's session ahead of their numbers. That helped lift the <a class=\"hashtag\" rel=\"nofollow noopener\" href=\"https://bsky.app/search?q=%23Nasdaq\" target=\"_blank\">#Nasdaq</a> by 2.6%, while the <a class=\"hashtag\" rel=\"nofollow noopener\" href=\"https://bsky.app/search?q=%23S%26P500\" target=\"_blank\">#S&amp;P500</a> jumped 1.8%. 🧵</p>",
+   "spoiler_text": "",
+   "language": "en",
+   "reblog": null,
+   "account": {
+    "acct": "dbcurren.bsky.social@bsky.brid.gy"
+   }
+  },
+  {
+   "id": "117045467203176183",
+   "created_at": "2026-08-05T23:21:34.779Z",
+   "url": "https://mastodon.social/@fllics/117045467203176183",
+   "uri": "https://mastodon.social/ap/users/115947128931969103/statuses/117045467203176183",
+   "content": "<p>Dow closes at record on Mideast optimism; SpaceX, AMD drag Nasdaq</p><p>The Dow closed at a record on signs of progress for a peace deal with Iran, while the Nasdaq saw its first decline in five sessions as SpaceX and AMD stumbled following their quarterly earnings. <a href=\"https://mastodon.social/tags/News\" class=\"mention hashtag\" rel=\"tag\">#<span>News</span></a> <a href=\"https://mastodon.social/tags/Reuters\" class=\"mention hashtag\" rel=\"tag\">#<span>Reuters</span></a> <a href=\"https://mastodon.social/tags/Newsfeed\" class=\"mention hashtag\" rel=\"tag\">#<span>Newsfeed</span></a> <a href=\"https://mastodon.social/tags/Markets\" class=\"mention hashtag\" rel=\"tag\">#<span>Markets</span></a> <a href=\"https://mastodon.social/tags/USStocks\" class=\"mention hashtag\" rel=\"tag\">#<span>USStocks</span></a> <a href=\"https://mastodon.social/tags/Nasdaq\" class=\"mention hashtag\" rel=\"tag\">#<span>Nasdaq</span></a> <a href=\"https://mastodon.social/tags/Iran\" class=\"mention hashtag\" rel=\"tag\">#<span>Iran</span></a> <a href=\"https://mastodon.social/tags/SpaceX\" class=\"mention hashtag\" rel=\"tag\">#<span>SpaceX</span></a> <a href=\"https://mastodon.social/tags/AMD\" class=\"mention hashtag\" rel=\"tag\">#<span>AMD</span></a> Read the story here: 👉 Subscribe: Keep up with the latest news from around the world: Follow Reuters on Facebook: Follow Reuters on X: Follow…</p><p><a href=\"https://fllics.com/en/video/dow-closes-at-record-on-mideast-optimism-spacex-amd-drag-nasdaq/\" target=\"_blank\" rel=\"nofollow noopener\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">fllics.com/en/video/dow-closes</span><span class=\"invisible\">-at-record-on-mideast-optimism-spacex-amd-drag-nasdaq/</span></a></p>",
+   "spoiler_text": "",
+   "language": "pt",
+   "reblog": null,
+   "account": {
+    "acct": "fllics"
+   }
+  },
+  {
+   "id": "117043474479775507",
+   "created_at": "2026-08-05T14:54:31.000Z",
+   "url": "https://masto.pt/@tugatech/117043473368606154",
+   "uri": "https://masto.pt/users/tugatech/statuses/117043473368606154",
+   "content": "<p>AMD bate recorde com 11,54 mil milhões de dólares em receitas impulsionada pela IA. A fabricante norte-americana superou as previsões dos analistas de Wall Street ao registar uma receita total de 11,54 mil milhões de dólares. 📈 </p><p>🔗&nbsp;<a href=\"https://tugatech.com.pt/t88649-amd-bate-recorde-com-1154-mil-milhoes-de-dolares-em-receitas-impulsionada-pela-ia\" rel=\"nofollow noopener\" translate=\"no\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">tugatech.com.pt/t88649-amd-bat</span><span class=\"invisible\">e-recorde-com-1154-mil-milhoes-de-dolares-em-receitas-impulsionada-pela-ia</span></a></p><p><a href=\"https://masto.pt/tags/amd\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#<span>amd</span></a> <a href=\"https://masto.pt/tags/ia\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\">#<span>ia</span></a>&nbsp;</p>",
+   "spoiler_text": "",
+   "language": "pt",
+   "reblog": null,
+   "account": {
+    "acct": "tugatech@masto.pt"
+   }
+  }
+ ]
+}
