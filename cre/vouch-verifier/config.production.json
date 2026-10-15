@@ -1,7 +1,7 @@
 {
   "chainSelectorName": "robinhood-testnet",
   "market": "0x0000000000000000000000000000000000000000",
-  "userAgent": "Vouch research prototype solagoke21@gmail.com",
+  "userAgent": "Vouch research prototype admin@vouch-feed.vercel.app",
   "sendUserAgent": false,
   "ciks": {
     "TSLA": "0001318605",

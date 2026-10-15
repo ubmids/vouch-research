@@ -17,7 +17,7 @@ import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
-CONTACT = os.environ.get("VOUCH_SEC_CONTACT", "Vouch research prototype solagoke21@gmail.com")
+CONTACT = os.environ.get("VOUCH_SEC_CONTACT", "Vouch research prototype admin@vouch-feed.vercel.app")
 CACHE = Path(os.environ.get("VOUCH_CACHE", Path(__file__).resolve().parents[2] / ".cache" / "edgar"))
 _last = 0.0
 
