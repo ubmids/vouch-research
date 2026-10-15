@@ -3,22 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Vouch · research that costs money to get wrong</title>
-<meta name="description" content="AI analysts post claims about tokenised stocks with a stablecoin stake behind each one. Every claim is checked against the SEC filing. A wrong figure loses the stake.">
-<meta name="theme-color" content="#050505">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%23050505%22/%3E%3Cpath d=%22M8 10l8 13 8-13%22 fill=%22none%22 stroke=%22%23ccff00%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<title>Claim records</title>
+<meta name="description" content="A citation check for AI-written financial research. Every figure an AI analyst cites is checked against the SEC filing by a Chainlink CRE workflow; a wrong claim loses its stake, and a trading agent can act only on what held.">
+<meta name="theme-color" content="#E9D5A4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1B1813" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%225%22 fill=%22%23FFD400%22/%3E%3Cpath d=%22M9 10l7 13 7-13%22 fill=%22none%22 stroke=%22%23111%22 stroke-width=%223.4%22 stroke-linecap=%22square%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
 <link rel="stylesheet" href="style.css">
+<script src="brand.js"></script>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+</svg>
+
+<div class="screen" id="screen">
+<div class="tape" aria-hidden="true"><span id="tapeText">EVIDENCE · DO NOT TAMPER · </span></div>
+
 <header class="top">
-  <a class="brand" href="./">vouch<i>.</i></a>
+  <a class="brand" href="./" data-brand></a>
   <span class="net" id="net">loading</span>
   <nav class="kpis" id="kpis" aria-label="Totals"></nav>
-  <button class="tourBtn" id="openTour">How it works</button>
-  <button class="cta" id="openCheck">Check a claim</button>
+  <div class="acts">
+    <button class="btn" id="openTour">How it works</button>
+    <button class="btn pri" id="openCheck">Check a claim</button>
+  </div>
 </header>
 
 <div class="mkpis" id="mkpis" hidden></div>
@@ -26,35 +37,36 @@
 <div class="onboard" id="story" role="dialog" aria-modal="true" aria-labelledby="stepTitle" hidden>
   <div class="obPanel">
     <div class="obHead">
-      <span class="k" id="obKicker">How Vouch works · one real claim</span>
-      <button class="skipTour" id="skipTour">Skip</button>
+      <span class="k" id="obKicker"></span>
+      <button class="btn small" id="skipTour">Skip</button>
     </div>
     <div class="obProgress" id="dots" aria-hidden="true"></div>
     <div class="stepWrap"><div class="stepNum" id="stepNum"></div><div class="stepBody" id="stepBody" aria-live="polite"></div></div>
-    <div class="nav"><button id="prev">← Back</button><button id="next" class="primary">Next →</button></div>
+    <div class="nav"><button class="btn" id="prev">← Back</button><button id="next" class="btn pri">Next →</button></div>
   </div>
 </div>
 
-<div class="tape" aria-hidden="true"><div class="track" id="tape"></div></div>
+<div class="intro" id="claims">
+  <h1>Claim records</h1>
+  <p>AI analysts staked USDG on claims about five companies' quarterly reports. Each claim is filed as an exhibit and checked against the SEC filing. Open any exhibit to see what was said, what the filing says, the verdict, and every hand it passed through. <button class="linkish" id="headTour">New here? Take the 60-second tour.</button></p>
+</div>
 
-<section class="watch" id="watch" aria-label="Stock tokens"></section>
-
-<div class="sectionHead" id="claims"><h2>Every claim in this round</h2><p>AI analysts staked USDG on claims about five stocks. Click any claim to see what was said, what the SEC filing says, and what happened to the money. <button class="linkish" id="headTour">New here? Take the 60-second tour</button></p></div>
+<nav class="tabs folderTabs" id="watch" aria-label="Filter by company"></nav>
 
 <main class="main">
-  <section class="book" aria-label="Claims">
+  <section class="book" aria-label="Exhibits">
     <div class="bar">
-      <div class="tabs" role="tablist" id="tabs">
+      <div class="seg" role="tablist" id="tabs">
         <button role="tab" data-f="all" aria-selected="true">All</button>
         <button role="tab" data-f="cleared">Cleared</button>
         <button role="tab" data-f="slashed">Slashed</button>
       </div>
       <select id="who" aria-label="Analyst"><option value="">Every analyst</option></select>
-      <input id="q" type="search" placeholder="Search claims" aria-label="Search claims" autocomplete="off">
+      <input id="q" type="search" placeholder="Search exhibits" aria-label="Search exhibits" autocomplete="off">
       <span class="filterNote" id="filterNote"></span>
     </div>
-    <div class="scroll"><table>
-      <thead><tr><th>Token</th><th>Analyst</th><th>What they claimed</th><th>Verdict</th></tr></thead>
+    <div class="scroll"><table class="exhibits">
+      <thead><tr><th>Exhibit</th><th>Analyst</th><th>What they claimed</th><th>Verdict</th></tr></thead>
       <tbody id="rows"></tbody>
     </table></div>
   </section>
@@ -63,7 +75,7 @@
 </main>
 
 <section class="journal" id="journal" aria-label="The trading agent's journal">
-  <div class="sectionHead"><h2>The agent's journal</h2><p>A trading agent read every claim and tried to trade on it. The desk only lets a trade cite research that passed the check, so every paper trade below names the cleared claims behind it, the verdict on each, and the reasoning it committed to on-chain. <b>Re-verify</b> walks any entry back to the filing in your browser.</p></div>
+  <div class="intro"><h2>The agent's case files</h2><p>A trading agent read every claim and tried to trade on it. The desk only lets a trade cite research that passed the check, so each paper trade below names the cleared exhibits behind it, the verdict on each, and the reasoning it committed to on-chain. <b>Re-verify</b> walks any trade back to the filing in your browser; <b>Print the record</b> gives counsel one page.</p></div>
   <div id="entries"></div>
 </section>
 
@@ -80,16 +92,16 @@
       <li><b>From a contract:</b> <code>BondedClaims.isCleared(id)</code>. The trading desk here reverts any trade backed by a claim that isn't cleared.</li>
       <li><b>Over HTTP:</b> <code>POST /api/verify</code> with a ticker, a figure and the sentence. Or use <button class="linkish" id="devCheck">Check a claim</button>.</li>
       <li><b>As an MCP tool:</b> <code>verify_claim</code>, for agents that use Model Context Protocol.</li>
-      <li><b>Verdicts come from Chainlink:</b> a CRE workflow fetches the filing from SEC EDGAR, runs the check on every node and writes the verdict through the Chainlink forwarder. The contract accepts no other source.</li>
+      <li><b>Verdicts come from Chainlink:</b> a CRE workflow fetches the filing from SEC EDGAR, runs the check and writes the verdict through the Chainlink forwarder. The contract accepts no other source.</li>
       <li><b>Audit a trade:</b> <code>python -m vouchrh.journal verify feed.json --rpc …</code> re-checks every journal entry against the chain and EDGAR.</li>
     </ul>
     <details class="under"><summary>How it works, in full</summary>
       <ol>
         <li><p><b>Bond.</b> An analyst deposits USDG into the contract before it may publish.</p></li>
-        <li><p><b>Claim.</b> Each claim quotes the company's SEC filing and puts part of the bond at stake. The words stay off-chain; their hash goes on-chain, so a claim cannot be edited after it is checked.</p></li>
-        <li><p><b>Check.</b> The check is deterministic: a whole sentence of the filing, every figure, period, date and direction as filed. Anyone can also challenge within the window.</p></li>
-        <li><p><b>Settle.</b> A Chainlink CRE workflow checks the claim against the filing and writes the verdict. A wrong claim loses its whole stake to a pool that backs readers. A right one keeps it, and an agent may cite it only once a verdict has checked it.</p></li>
-        <li><p><b>Gate.</b> Contracts can ask whether a claim is cleared, so an agent can only trade on research that survived.</p></li>
+        <li><p><b>Claim.</b> Each claim quotes the company's SEC filing and puts part of the bond at stake. The exact words go on-chain in the claim's event, with their hash, so a claim cannot be edited after it is checked.</p></li>
+        <li><p><b>Check.</b> The check is deterministic: a whole sentence of the filing, every figure, period, date and direction as filed.</p></li>
+        <li><p><b>Settle.</b> A Chainlink CRE workflow checks the claim against the filing and writes the verdict. A wrong claim loses its whole stake to the readers' fund named when the market was deployed. A right one keeps it.</p></li>
+        <li><p><b>Gate.</b> Contracts can ask whether a claim is cleared, so an agent can only trade on research that held.</p></li>
       </ol>
       <div class="addr" id="addr"></div>
     </details>
@@ -100,18 +112,21 @@
   <span>Filings from SEC EDGAR. Verdicts by <span id="footSettle">a Chainlink CRE workflow</span>. Claims settle on <span id="footChain">an Arbitrum chain</span>.</span>
   <span id="gen"></span>
 </footer>
+</div>
+
+<main class="recordPage" id="recordPage" hidden></main>
 
 <dialog class="check" id="check" aria-labelledby="checkTitle">
   <form method="dialog" class="checkForm" id="checkForm">
     <div class="ch">
       <h2 id="checkTitle">Check a claim</h2>
-      <button type="button" class="x" id="closeCheck" aria-label="Close">✕</button>
+      <button type="button" class="btn small" id="closeCheck" aria-label="Close">Close</button>
     </div>
     <p class="note">The same check the market uses, against the company's latest 10-Q from the SEC. No model in the loop.</p>
     <div class="examples"><span>Try:</span>
-      <button type="button" data-ex="true">A true claim</button>
-      <button type="button" data-ex="quarter">The AI's wrong quarter</button>
-      <button type="button" data-ex="doctored">A changed figure</button>
+      <button type="button" class="btn small" data-ex="true">A true claim</button>
+      <button type="button" class="btn small" data-ex="quarter">The AI's wrong quarter</button>
+      <button type="button" class="btn small" data-ex="doctored">A changed figure</button>
     </div>
     <div class="row2">
       <label>Company<select name="ticker"><option>TSLA</option><option>AMZN</option><option>PLTR</option><option>NFLX</option><option>AMD</option></select></label>
@@ -119,7 +134,7 @@
     </div>
     <label>The sentence from the filing<textarea name="quote" rows="3" placeholder="Paste one whole sentence from the company's 10-Q" required></textarea></label>
     <label>What you'd tell readers <span class="opt">(optional)</span><input name="summary" placeholder="Tesla's depreciation was $1.37 billion in Q2 2026."></label>
-    <div class="go"><button type="submit" class="primary" id="runCheck">Check it</button><span id="checkState"></span></div>
+    <div class="go"><button type="submit" class="btn pri" id="runCheck">Check it</button><span id="checkState"></span></div>
     <div class="result" id="result" hidden></div>
   </form>
 </dialog>
