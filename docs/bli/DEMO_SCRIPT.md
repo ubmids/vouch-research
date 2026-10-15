@@ -17,6 +17,14 @@ true for both; the captions say which one is on screen.
 | 0:45 caption | **SIMULATION** | **SDK TEST RUNTIME, NOT A CRE SIMULATION** |
 | The AI's claim | written live by Qwen if the preflight dry run reproduced it; otherwise re-posted from 24 Sep (the page labels it "replayed") | re-posted from 24 Sep, labelled "replayed" |
 
+**Video assets** (all 1920x1080, from `bash scripts/build_assets.sh`, in
+`docs/assets/video/`): `title.png` (open on it for one second), `end.png`,
+`lower-founder.png` (over the face bubble), `section-1.png` to `section-5.png`
+(a folder tab naming each part, top left, while it runs), and the caption
+labels `caption-simulation.png`, `caption-replayed.png`, `caption-sdk.png`
+(top right, for as long as that footage is on screen). The overlays are
+transparent PNGs. For one claim alone on screen use `?claim=<id>&view=claim`.
+
 **Before recording**
 
 - Round A: `bash scripts/cre_round.sh --preflight`, then `bash scripts/cre_round.sh`,
@@ -93,10 +101,10 @@ events (the explorer shows Chainlink's mock forwarder: that is expected).
 **On screen:** back to tab A, scroll to **The agent's journal**. Open the
 entry for the lead claim's stock. Walk the steps: Read, Refused (point at
 the AI's claim in the list), Kept what held, Decided, Committed. Click
-**Re-verify this trade** and let the green ticks fill in, ending with the
-on-chain checks. Then click **Download the audit record** and show the file
-open for two seconds (the claims, the verdicts, the filing hash, the steps to
-re-check).
+**Re-verify this trade** and let the ticks fill in, ending with the
+on-chain checks. Then click **Print the record of reliance** and hold on the
+page for three seconds: the case sticker, the exhibits relied on and refused,
+the chain of custody, "What this record does not prove".
 
 **Say:**
 
@@ -107,7 +115,7 @@ re-check).
 > re-run them; a model can make the call instead, with its exact reply in the
 > record. The whole reasoning, with every verdict and every refusal, is
 > hashed on-chain with the trade. Re-verify redoes all of it in the browser,
-> and the audit record is one file counsel can keep.
+> and the record of reliance is one page counsel can keep.
 
 (Round A only, once the page is deployed: add "and checks it against the
 chain", because the page reads the receipts from Robinhood Chain's RPC. On the

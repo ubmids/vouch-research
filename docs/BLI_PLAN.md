@@ -5,6 +5,22 @@ The owner-only steps are in [bli/OWNER_TODO.md](bli/OWNER_TODO.md), and how to
 run them is in [bli/CHECKLIST.md](bli/CHECKLIST.md). The design spec is
 [../design/DESIGN.md](../design/DESIGN.md).
 
+## Status, 15 Oct evening
+
+- **Design:** Exhibit is binding (design/DESIGN.md). The web feed, the claim
+  record, the printable record of reliance (`?record=<ticker>`), the README
+  cover, the gallery, the video cards (`scripts/build_assets.sh`) and the deck
+  (`scripts/build_deck.sh`) are all in it. The name stays Vouch, read from
+  `web/brand.js` and `design/assets/brand.json`.
+- **Testnet:** the round's market is deployed and its 50 claims are posted on
+  Robinhood Chain testnet (docs/bli/TESTNET_ROUND.md). Settling them with the
+  CRE CLI simulation is one command after Subomi's `cre login`, before 22 Oct.
+- **RYO:** the news checker reads 130 real public Mastodon posts; the
+  judge-visible run used Claude Haiku 4.5 as the reader (about $0.11 through
+  the relay), replies hashed into the record.
+- **Left for Claude:** settle the round and replace the pending lines; redeploy
+  prep; the 5-minute pitch; a last asset rebuild from the settled feed.
+
 ## 0. Where the entry lives
 
 The brief pointed at `~/Desktop/attestor`. That repo

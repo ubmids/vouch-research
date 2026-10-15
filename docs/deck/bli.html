@@ -1,196 +1,201 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>Vouch · BLI Legal Tech Hackathon 2</title>
+<html lang="en"><head><meta charset="utf-8"><title>__NAME__ · BLI Legal Tech Hackathon 2</title>
+<!-- The BLI deck in the Exhibit design (design/DESIGN.md). Exported to docs/bli/deck.pdf
+     by scripts/build_deck.sh (headless Chrome, 1920x1080 pages). -->
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 @page { size: 1920px 1080px; margin: 0; }
-:root { --bg:#050505; --panel:#0b0b0b; --line:#1d1d1d; --ink:#ededed; --ink2:#b4b4b4; --soft:#858585; --dim:#4d4d4d; --volt:#ccff00; --flare:#ff4d2e; }
+:root { --manila:#E9D5A4; --tab:#D9BE80; --paper:#FFFFFF; --ink:#111111; --ink2:#4A4234; --faint:#D8CDB6; --yellow:#FFD400; --tape:#111111; --ontape:#FFD400; --red:#C8102E; --blue:#1D3FA6; }
 * { box-sizing: border-box; margin: 0; }
-html, body { background: var(--bg); color: var(--ink); font-family: "Inter Tight", sans-serif; -webkit-font-smoothing: antialiased; }
-.s { width: 1920px; height: 1080px; padding: 96px 120px; position: relative; overflow: hidden; page-break-after: always; display: flex; flex-direction: column; }
-.s::after { content: attr(data-n); position: absolute; right: 120px; bottom: 64px; font: 400 18px "JetBrains Mono", monospace; color: var(--dim); }
-.mark { position: absolute; left: 120px; bottom: 64px; font: 600 22px "Inter Tight"; letter-spacing: -.02em; }
-.mark i { font-style: normal; color: var(--volt); }
-.k { font: 500 20px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); margin-bottom: 36px; }
-h1 { font-weight: 400; font-size: 118px; line-height: 1.02; letter-spacing: -.045em; max-width: 1500px; }
-h1 em, h2 em { font-style: normal; color: var(--soft); }
-h2 { font-weight: 400; font-size: 76px; line-height: 1.06; letter-spacing: -.035em; max-width: 1560px; }
-p.big { font-size: 34px; line-height: 1.45; color: var(--ink2); max-width: 1380px; margin-top: 40px; font-weight: 300; }
-.v { color: var(--volt); } .f { color: var(--flare); }
-.mono { font-family: "JetBrains Mono", monospace; }
-.cmp { margin-top: 56px; display: grid; gap: 20px; max-width: 1600px; }
-.cmp .row { display: grid; grid-template-columns: 250px 1fr; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
-.cmp .row b { font: 500 18px "JetBrains Mono"; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); padding: 28px; border-right: 1px solid var(--line); font-weight: 400; }
-.cmp .row span { padding: 26px 30px; font-size: 32px; line-height: 1.45; color: var(--ink2); }
-.cmp del { text-decoration: none; color: var(--flare); background: #ff4d2e1f; padding: 0 6px; border-radius: 4px; }
-.cmp ins { text-decoration: none; color: var(--volt); background: #ccff0014; padding: 0 6px; border-radius: 4px; }
-.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 70px; }
-.step { border: 1px solid var(--line); border-radius: 18px; padding: 34px 32px; background: var(--panel); min-height: 380px; }
-.step .n { font: 500 20px "JetBrains Mono"; color: var(--dim); }
-.step h3 { font-size: 46px; font-weight: 500; letter-spacing: -.03em; margin: 22px 0 16px; }
-.step p { font-size: 25px; line-height: 1.45; color: var(--ink2); }
-.nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 64px; }
-.num { border-top: 2px solid var(--line); padding-top: 26px; }
-.num b { display: block; font-size: 120px; font-weight: 300; letter-spacing: -.05em; line-height: 1; }
-.num > span { display: block; font-size: 26px; color: var(--soft); margin-top: 14px; line-height: 1.4; }
-.shot { margin-top: 44px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; height: 690px; }
+html, body { background: var(--manila); color: var(--ink); font-family: "Courier Prime", monospace; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.s { width: 1920px; height: 1080px; padding: 92px 120px 80px; position: relative; overflow: hidden; page-break-after: always; display: flex; flex-direction: column; }
+.s::after { content: attr(data-n); position: absolute; right: 120px; bottom: 44px; font: 800 26px "Archivo"; font-stretch: 62%; letter-spacing: .1em; color: var(--ink2); }
+.mark { position: absolute; left: 120px; bottom: 38px; font: 900 40px/1 "Archivo"; font-stretch: 62%; text-transform: uppercase; letter-spacing: .02em; }
+.tape { position: absolute; left: -40px; right: -40px; top: 34px; background: var(--tape); color: var(--ontape); font: 800 22px/1 "Archivo"; font-stretch: 62%; letter-spacing: .2em; white-space: nowrap; overflow: hidden; padding: 12px 0; transform: rotate(-1deg); }
+.k { font: 800 24px "Archivo"; font-stretch: 75%; letter-spacing: .14em; text-transform: uppercase; color: var(--ink2); margin: 24px 0 18px; }
+h1 { font: 900 132px/.95 "Archivo"; font-stretch: 62%; text-transform: uppercase; letter-spacing: .01em; max-width: 1560px; }
+h2 { font: 900 84px/.98 "Archivo"; font-stretch: 62%; text-transform: uppercase; letter-spacing: .01em; max-width: 1640px; }
+h2 em, h1 em { font-style: normal; color: var(--ink2); }
+p.big { font-size: 34px; line-height: 1.45; max-width: 1360px; margin-top: 36px; }
+.card { background: var(--paper); box-shadow: 0 2px 0 var(--faint), 0 12px 0 -6px var(--faint); }
+.ring { color: var(--red); border: 4px solid var(--red); border-radius: 999px; padding: 0 .25em; white-space: nowrap; }
+mark { background: var(--yellow); color: var(--ink); padding: 0 .1em; }
+.label { font: 800 21px "Archivo"; font-stretch: 75%; letter-spacing: .1em; text-transform: uppercase; color: var(--ink2); }
+.sticker { position: absolute; background: var(--yellow); color: var(--ink); border-radius: 10px; text-align: center; padding: 8px 20px 12px; transform: rotate(4deg); box-shadow: 3px 4px 0 rgba(0,0,0,.18); }
+.sticker small { display: block; font: 800 20px "Archivo"; font-stretch: 75%; letter-spacing: .14em; }
+.sticker b { display: block; font: 900 84px/1 "Archivo"; font-stretch: 62%; }
+.sticker span { display: block; font: 800 17px "Archivo"; font-stretch: 75%; letter-spacing: .1em; border-top: 2px solid currentColor; margin-top: 4px; padding-top: 3px; }
+.stamp { display: inline-block; color: var(--red); border: 9px solid currentColor; padding: 6px 26px 10px; transform: rotate(-8deg); text-align: center; filter: url(#ink); }
+.stamp b { display: block; font: 900 96px/1 "Archivo"; font-stretch: 62%; letter-spacing: .06em; }
+.stamp small { display: block; font: 800 24px "Archivo"; font-stretch: 75%; letter-spacing: .16em; border-top: 4px solid currentColor; margin-top: 6px; padding-top: 4px; }
+.stamp.blue { color: var(--blue); }
+.fields { display: grid; grid-template-columns: 260px 1fr; font-size: 30px; line-height: 1.4; }
+.fields b { font: 800 21px/1.9 "Archivo"; font-stretch: 75%; letter-spacing: .1em; text-transform: uppercase; color: var(--ink2); }
+.fields > * { padding: 14px 0; border-bottom: 2px solid var(--faint); }
+.ran { position: absolute; left: 120px; right: 260px; bottom: 98px; font: 400 22px/1.5 "Courier Prime"; color: var(--ink2); border-top: 3px solid var(--ink); padding-top: 12px; }
+.ran b { font: 800 19px "Archivo"; font-stretch: 75%; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); margin-right: 8px; }
+.grid { display: grid; gap: 22px; margin-top: 48px; }
+.g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); } .g5 { grid-template-columns: repeat(5, 1fr); }
+.tile { background: var(--paper); padding: 28px 30px 30px; box-shadow: 0 2px 0 var(--faint), 0 10px 0 -5px var(--faint); }
+.tile .n { font: 900 30px/1 "Archivo"; font-stretch: 62%; background: var(--yellow); display: inline-block; padding: 6px 10px; }
+.tile h3 { font: 900 50px/1 "Archivo"; font-stretch: 62%; text-transform: uppercase; margin: 18px 0 12px; }
+.tile p { font-size: 26px; line-height: 1.4; }
+.tile q { font-size: 27px; line-height: 1.45; quotes: "“" "”"; }
+.tile q i { font-style: normal; background: var(--yellow); }
+.num b { display: block; font: 900 150px/1 "Archivo"; font-stretch: 62%; }
+.num span { display: block; font-size: 26px; line-height: 1.4; margin-top: 8px; }
+.flow { margin-top: 40px; font-size: 30px; line-height: 1.8; }
+.flow b { background: var(--yellow); padding: 0 .2em; font-weight: 700; }
+ul.plain { list-style: none; padding: 0; font-size: 28px; line-height: 1.45; }
+ul.plain li { padding: 10px 0 10px 48px; position: relative; border-bottom: 2px solid var(--faint); }
+ul.plain li::before { content: "✓"; position: absolute; left: 0; top: 8px; font: 700 30px "Courier Prime"; }
+ul.plain.no li::before { content: "✗"; color: var(--red); }
+.colh { font: 900 44px "Archivo"; font-stretch: 62%; text-transform: uppercase; margin-bottom: 10px; }
+.shot { background: var(--paper); overflow: hidden; box-shadow: 0 2px 0 var(--faint), 0 12px 0 -6px var(--faint); }
 .shot img { width: 100%; display: block; }
-.two { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 60px; }
-.two h3 { font: 500 20px "JetBrains Mono"; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin-bottom: 22px; font-weight: 400; }
-.two li { font-size: 30px; line-height: 1.45; color: var(--ink2); margin-bottom: 18px; list-style: none; padding-left: 34px; position: relative; }
-.two li::before { content: ""; position: absolute; left: 0; top: 17px; width: 12px; height: 2px; background: var(--volt); }
-.two.warn li::before { background: var(--soft); }
-.close { justify-content: center; }
-.close .links { margin-top: 64px; font: 400 30px "JetBrains Mono"; color: var(--ink2); display: grid; gap: 14px; }
-</style><style>
-.steps5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; margin-top: 64px; }
-.steps5 .step { min-height: 360px; padding: 30px 28px; }
-.steps5 .step h3 { font-size: 40px; }
-.steps5 .step p { font-size: 23px; }
-.q { margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
-.q div { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); padding: 30px 32px; }
-.q b { display: block; font: 500 18px "JetBrains Mono"; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin-bottom: 14px; font-weight: 400; }
-.q span { font-size: 27px; line-height: 1.45; color: var(--ink2); }
-.q span i { font-style: normal; color: var(--ink); }
-.flowline { margin-top: 40px; font: 400 26px "JetBrains Mono"; color: var(--ink2); line-height: 1.7; }
-.flowline b { color: var(--volt); font-weight: 500; }
-.shot2 { margin-top: 36px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; height: 720px; }
-.shot2 img { width: 100%; display: block; }
-.duo { display: grid; grid-template-columns: 1.1fr 1fr; gap: 60px; align-items: start; margin-top: 30px; }
-.duo .shot2 { height: 760px; margin-top: 0; }
-.ran { margin-top: 34px; font: 400 21px/1.55 "JetBrains Mono", monospace; color: var(--soft); max-width: 1640px; }
-.ran b { color: var(--ink2); font-weight: 500; }
 </style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="ink"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter></svg>
 
 <section class="s" data-n="01" style="justify-content:center">
+  <div class="tape">EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER ·</div>
   <div class="k">BLI Legal Tech Hackathon 2 · Chainlink CRE · Robinhood Chain</div>
-  <h1>A citation check for <span class="f">AI-written</span> research.</h1>
-  <p class="big">Courts have logged 1,116 US filings with AI-fabricated content (1,600 worldwide). Research is drafted by the same models. Here, every figure is checked against the SEC filing by a Chainlink CRE workflow, a wrong claim costs its author, and a trading agent can only act on what held.</p>
-  <div class="mark">vouch<i>.</i></div>
+  <h1>A citation check for<br>AI&#8209;written research.</h1>
+  <p class="big">Courts have logged 1,116 US filings with AI-fabricated content. Research is drafted by the same models. Vouch checks every figure against the SEC filing, through a Chainlink CRE workflow.</p>
+  <div class="mark">__NAME__</div>
 </section>
 
 <section class="s" data-n="02">
-  <div class="k">Twenty seconds</div>
-  <h2>An AI got the quarter wrong. <em>It paid, and the trading agent was refused, on-chain.</em></h2>
-  <div class="cmp" style="margin-top:30px;gap:12px">
-    <div class="row"><b>The AI wrote</b><span>Depreciation for <del>Q3</del> 2026 was $1.37 billion. <em style="color:var(--soft)">(about Tesla)</em></span></div>
-    <div class="row"><b>The 10-Q says</b><span>Depreciation expense during the three and six months ended <ins>June 30, 2026</ins> was $1.37 billion and $2.71 billion, respectively.</span></div>
-    <div class="row"><b>The check</b><span>wrong quarter: the period ended in June, the claim says Q3 2026 → <del>−25 USDG</del> (test USDG)</span></div>
-    <div class="row"><b>AgentDesk</b><span>a trade citing it: <del>reverted</del>, naming the claim. The journal records why the agent traded what it did instead.</span></div>
+  <div class="k">Exhibit 6, in twenty seconds</div>
+  <h2>An AI got the quarter wrong. <em>It paid, and the trade was refused.</em></h2>
+  <div class="card" style="margin-top:40px;padding:34px 40px;width:1260px;position:relative">
+    <div class="fields">
+      <b>The AI wrote</b><span style="font-weight:700">Depreciation for <span class="ring">Q3 2026</span> was $1.37 billion.</span>
+      <b>The 10-Q says</b><span><mark>Depreciation expense during the three and six months ended June 30, 2026 was $1.37 billion</mark> and $2.71 billion, respectively.</span>
+      <b>Stake</b><span>25 test USDG to the readers' fund</span>
+      <b>Trading agent</b><span style="border:0">its order citing exhibit 6 reverted on-chain</span>
+    </div>
   </div>
-  <p class="ran" style="margin-top:20px"><b>Where it ran:</b> Robinhood Chain testnet, 24 Sep, settled by one verifier key (v1) · the same words on a local devnet, settled by the CRE workflow's own code in Chainlink's SDK test runtime (14 Oct) · a CRE CLI simulation on testnet: pending.</p>
-  <div class="mark">vouch<i>.</i></div>
+  <div class="sticker" style="left:1310px;top:300px"><small>EXHIBIT</small><b>6</b><span>TSLA</span></div>
+  <div style="position:absolute;left:1500px;top:640px"><span class="stamp"><b>SLASHED</b><small>WRONG QUARTER</small></span></div>
+  <p class="ran"><b>Where it ran</b>Robinhood Chain testnet, 24 Sep (v1, one verifier key) · the same words in a local round settled by the CRE workflow's code in Chainlink's SDK test runtime · testnet round posted 15 Oct, settling by CRE CLI simulation pending.</p>
+  <div class="mark">__NAME__</div>
 </section>
 
 <section class="s" data-n="03">
   <div class="k">The legal gap</div>
-  <h2>Research rules assume a person. <em>AI drafts research now, and cannot certify a belief.</em></h2>
-  <div class="q">
-    <div><b>Regulation AC · 17 CFR 242.501(a)(1)</b><span>a certification "attesting that all of the views expressed in the research report accurately reflect the research analyst's <i>personal views</i>". The analyst: "any <i>natural person</i>…" (242.500)</span></div>
-    <div><b>FINRA Rule 2241(c)(1)(A)</b><span>procedures "reasonably designed to ensure that <i>purported facts</i> in its research reports are <i>based on reliable information</i>"</span></div>
-    <div><b>FINRA Regulatory Notice 24-09</b><span>FINRA's rules "are intended to be <i>technology neutral</i>" and "continue to apply when member firms use Gen AI"</span></div>
-    <div><b>FINRA 2026 oversight report · AI agents</b><span>consider "how to <i>track agent actions and decisions</i>; or how to establish <i>guardrails</i>"</span></div>
+  <h2>Research rules assume a person. <em>AI drafts research now.</em></h2>
+  <div class="grid g2">
+    <div class="tile"><div class="label">Regulation AC · 17 CFR 242.501(a)(1)</div><q style="display:block;margin-top:12px">all of the views expressed … accurately reflect the research analyst's <i>personal views</i></q></div>
+    <div class="tile"><div class="label">FINRA Rule 2241(c)(1)(A)</div><q style="display:block;margin-top:12px"><i>purported facts</i> in its research reports are <i>based on reliable information</i></q></div>
+    <div class="tile"><div class="label">FINRA Regulatory Notice 24-09</div><q style="display:block;margin-top:12px">FINRA's rules are intended to be <i>technology neutral</i></q></div>
+    <div class="tile"><div class="label">FINRA 2026 oversight report · AI agents</div><q style="display:block;margin-top:12px">how to <i>track agent actions and decisions</i></q></div>
   </div>
-  <p class="ran" style="margin-top:22px"><b>Courts already know the failure:</b> 1,116 US court filings with AI-fabricated content, 1,600 worldwide (Charlotin database, reported by AFP, June 2026).</p>
-  <div class="mark">vouch<i>.</i></div>
+  <p class="ran"><b>Courts already know the failure</b>1,116 US court filings with AI-fabricated content, 1,600 worldwide (Charlotin database, reported by AFP, June 2026).</p>
+  <div class="mark">__NAME__</div>
 </section>
 
 <section class="s" data-n="04">
   <div class="k">How it works</div>
-  <h2>A record of what was said, what the filing says, and what was done about it.</h2>
-  <div class="steps5">
-    <div class="step"><div class="n">01</div><h3>Stake</h3><p>An analyst, human or AI, posts one figure, the 10-Q sentence behind it and a USDG stake. The exact words go on-chain.</p></div>
-    <div class="step"><div class="n">02</div><h3>Check</h3><p>A <span class="v">Chainlink CRE</span> workflow fetches the filing from SEC EDGAR and runs the check (on a DON, on every node). The contract has no verifier key.</p></div>
-    <div class="step"><div class="n">03</div><h3>Pay</h3><p>Wrong: the stake goes to a readers' fund fixed at deploy, in the same transaction as the verdict; each payee withdraws its share (<code>claimReaderShare</code>). Right: it comes back.</p></div>
-    <div class="step"><div class="n">04</div><h3>Gate</h3><p>A trading agent cannot cite research that failed. The trade reverts, naming the claim.</p></div>
-    <div class="step"><div class="n">05</div><h3>Journal</h3><p>Each trade keeps the claims it cites, the verdict on each and the agent's reasoning; the record's hash is on-chain.</p></div>
+  <h2>What was said, what the filing says, what was done.</h2>
+  <div class="grid g5">
+    <div class="tile"><span class="n">1</span><h3>Stake</h3><p>An analyst, human or AI, posts one figure and the 10-Q sentence behind it, with a stake.</p></div>
+    <div class="tile"><span class="n">2</span><h3>Check</h3><p>A Chainlink CRE workflow fetches the filing from SEC EDGAR and runs the check.</p></div>
+    <div class="tile"><span class="n">3</span><h3>Pay</h3><p>Wrong: the stake goes to a readers' fund fixed at deploy. Right: it comes back.</p></div>
+    <div class="tile"><span class="n">4</span><h3>Gate</h3><p>A trading agent cannot cite a claim that failed. The trade reverts.</p></div>
+    <div class="tile"><span class="n">5</span><h3>Record</h3><p>Each trade keeps its exhibits, verdicts and reasons, hashed on-chain.</p></div>
   </div>
-  <div class="mark">vouch<i>.</i></div>
+  <div class="mark">__NAME__</div>
 </section>
 
 <section class="s" data-n="05">
   <div class="k">Chainlink Runtime Environment</div>
-  <h2>The check is a Chainlink CRE workflow. <em>The contract has no verifier key.</em></h2>
-  <div class="flowline"><b>Posted</b> event → EVM log trigger → HTTP: SEC EDGAR (gzip, ~100 KB) → the check (on a DON, on every node) → identical consensus → report → <b>forwarder</b> → <b>BondedClaims.onReport</b>: owner, name, pinned workflow id, claim hash</div>
-  <div class="nums">
-    <div class="num"><b class="v">3,249</b><span>claims on five real 10-Qs: same verdict, reason and score as the Python check, on Bun and on QuickJS (the engine CRE runs)</span></div>
-    <div class="num"><b>50/50</b><span>verdicts in a local round built by the workflow's own handler in Chainlink's SDK test runtime, each matching the Python check</span></div>
-    <div class="num"><b>0</b><span>verifier keys in the contract. On a DON only signed reports land; one compiled workflow id can be pinned, forever</span></div>
+  <h2>The check is a CRE workflow. <em>The contract has no verifier key.</em></h2>
+  <div class="flow"><b>Posted</b> event → log trigger → HTTP: SEC EDGAR → the check → identical consensus → report → <b>forwarder</b> → <b>BondedClaims.onReport</b> (owner, name, pinned workflow id, claim hash)</div>
+  <div class="grid g3" style="margin-top:40px">
+    <div class="num tile"><b>3,249</b><span>claims on five real 10-Qs: the same verdict on Bun and QuickJS as the Python check</span></div>
+    <div class="num tile"><b>50</b><span>claims posted on Robinhood Chain testnet on 15 Oct, waiting for the workflow</span></div>
+    <div class="num tile"><b>0</b><span>verifier keys in the contract</span></div>
   </div>
-  <p class="ran"><b>Run:</b> WASM build (cre workflow build), the SDK test runtime, QuickJS parity. <b>Not yet:</b> the CRE CLI simulation on testnet (pending login), a DON. In simulation, Chainlink's mock forwarder takes anyone's report.</p>
-  <div class="mark">vouch<i>.</i></div>
+  <p class="ran"><b>Ran</b>cre workflow build, the SDK test runtime, QuickJS parity, the testnet posting. <b>Not yet</b>the CRE CLI simulation (needs the CRE login) and a live DON. In simulation, Chainlink's mock forwarder takes anyone's report.</p>
+  <div class="mark">__NAME__</div>
 </section>
 
 <section class="s" data-n="06">
-  <div class="k">The reasoning trail</div>
-  <h2 style="font-size:64px">Every trade keeps its reasons. <em>Re-verify redoes them in the browser.</em></h2>
-  <div class="shot2" style="height:560px"><img src="journal.png" alt="A journal entry: refused claims, cleared claims, the decision, the reasoning hash, and the re-verify checks"></div>
-  <p class="ran"><b>News Checker (RYO):</b> the same agent reads posts by market voices, finds each figure in the 10-Q and checks the story as a staked claim. A loud post with the wrong quarter moves nothing. Demo posts: 20, written fixtures by fictional accounts. <b>Decisions:</b> fixed rules by default (re-run in the browser); optionally a model behind an OpenAI-compatible endpoint, its exact reply hashed into the record (tested, not used in the demo round).</p>
-  <div class="mark">vouch<i>.</i></div>
+  <div class="k">The reasoning trail · for RYO-CHAN</div>
+  <h2>Every trade keeps its reasons. <em>Re-verify redoes them.</em></h2>
+  <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:48px;margin-top:36px;align-items:start">
+    <div class="shot" style="height:560px"><img src="journal.png" alt="A case file: refused exhibits, the exhibits relied on, the decision, the reasoning hash"></div>
+    <div style="font-size:28px;line-height:1.45">
+      <p><b>News checker.</b> The agent read 130 real public posts. Claude Haiku 4.5 judged 16 to state a checkable figure; the agent staked on the 3 a filing sentence states. All 3 held.</p>
+      <p style="margin-top:22px">Each model reply is hashed into the record. A refused claim cannot move a trade.</p>
+    </div>
+  </div>
+  <div class="mark">__NAME__</div>
 </section>
 
 <section class="s" data-n="07">
   <div class="k">For lawyers</div>
   <h2>What the record proves, <em>and what it does not.</em></h2>
-  <div class="two">
-    <div><h3>It proves</h3><ul>
-      <li>the exact words of each claim, who staked on them, when</li>
-      <li>which filing bytes the verdict was checked against, and by which workflow</li>
-      <li>that a trade cited only claims that had cleared</li>
-      <li>that its stated reasons were fixed when it was made</li></ul></div>
-    <div class="warn two" style="margin-top:0;display:block"><h3>It does not prove</h3><ul>
-      <li>that a view was honestly held (Reg AC's certification)</li>
-      <li>a reasonable basis for a rating or target (2241(c)(1)(B))</li>
+  <div class="grid g2" style="gap:60px">
+    <div><div class="colh">It proves</div><ul class="plain">
+      <li>the exact words of each claim, who staked, when</li>
+      <li>which filing bytes were checked, by which workflow</li>
+      <li>that a trade cited only claims that cleared</li>
+      <li>that its reasons were fixed when it was made</li></ul></div>
+    <div><div class="colh">It does not prove</div><ul class="plain no">
+      <li>that a view was honestly held (Reg AC)</li>
+      <li>a reasonable basis (2241(c)(1)(B))</li>
       <li>that the filing is true, or the claim complete</li>
-      <li>who is behind a wallet, or Rule 17a-4 compliance</li></ul></div>
+      <li>who is behind a wallet, or Rule 17a-4</li></ul></div>
   </div>
-  <div class="mark">vouch<i>.</i></div>
+  <div class="mark">__NAME__</div>
 </section>
 
 <section class="s" data-n="08">
   <div class="k">Who uses it</div>
   <h2>Evidence for the people who answer for research.</h2>
-  <div class="steps">
-    <div class="step"><div class="n">Compliance</div><h3>Publish only cleared</h3><p>A firm distributing AI-drafted or third-party research keeps the check's record for each fact: evidence of its 2241(c)(1)(A) procedures.</p></div>
-    <div class="step"><div class="n">Publishers</div><h3>Show the work</h3><p>A newsletter that drafts with AI shows, per claim, that the numbers were checked, with a stake behind them.</p></div>
-    <div class="step"><div class="n">Agent operators</div><h3>Guardrail and trace</h3><p>The desk is the guardrail, the journal the trace: the two things FINRA's 2026 report asks about AI agents.</p></div>
-    <div class="step"><div class="n">Examiners, courts</div><h3>Re-run it</h3><p>An independent record of what was said, what the source said and what was done, that anyone can redo.</p></div>
+  <div class="grid g4">
+    <div class="tile"><div class="label">Compliance</div><h3>Publish only cleared</h3><p>Keep the check's record for each fact: evidence of 2241(c)(1)(A) procedures.</p></div>
+    <div class="tile"><div class="label">Publishers</div><h3>Show the work</h3><p>Per claim, proof the numbers were checked, with a stake behind them.</p></div>
+    <div class="tile"><div class="label">Agent operators</div><h3>Guardrail and trace</h3><p>The desk is the guardrail; the record of reliance is the trace.</p></div>
+    <div class="tile"><div class="label">Examiners, courts</div><h3>Re-run it</h3><p>An independent record anyone can redo from the filing.</p></div>
   </div>
-  <div class="mark">vouch<i>.</i></div>
+  <div class="mark">__NAME__</div>
 </section>
 
 <section class="s" data-n="09">
   <div class="k">Proof it works</div>
   <h2>Tested end to end, on real SEC filings.</h2>
-  <div class="nums">
-    <div class="num"><b>57</b><span>Foundry tests: forwarder-only verdicts, the readers' fund payout (double claim, rounding, re-entry), forged workflow refused, money conserved through fuzzed disputes, unchecked claims refused by the desk, claims sized for CRE's log limit</span></div>
-    <div class="num"><b>87</b><span>Python and Bun tests: rounds on a real EVM, the agent's model path against a fake server, the journal re-verified and tamper-checked, the CRE handler in the SDK's test runtime, the KOL mode, the round script's failure handling</span></div>
-    <div class="num"><b class="v">87/87</b><span>journal checks hold in the local round: nothing left out, record hashes, claim words, verdict transactions, filing bytes from EDGAR, a fresh check, the agent's rules re-run</span></div>
+  <div class="grid g3">
+    <div class="num tile"><b>__FORGE__</b><span>Foundry tests: forwarder-only verdicts, the readers' fund, forged workflows refused, money conserved</span></div>
+    <div class="num tile"><b>__PYBUN__</b><span>Python and Bun tests: rounds on a real EVM, the model paths, the journal tamper-checked, real posts</span></div>
+    <div class="num tile"><b>44/44</b><span>journal checks hold in the real-post round read by Claude Haiku 4.5</span></div>
   </div>
-  <div class="mark">vouch<i>.</i></div>
+  <div class="mark">__NAME__</div>
 </section>
 
 <section class="s" data-n="10">
   <div class="k">Trust, stated plainly</div>
   <h2>What is trusted today, and what is next.</h2>
-  <div class="two">
-    <div><h3>Today</h3><ul>
-      <li>Simulation writes through Chainlink's mock forwarder: anyone can settle there. It proves the path, not the security</li>
-      <li>The filing is what SEC EDGAR serves; its hash (less the CDN's script tag) is on-chain</li>
-      <li>The check says what it cannot do: a limit versus a balance</li>
-      <li>On the test market the deployer stands in for the readers' fund; who it is in production is a legal choice</li></ul></div>
-    <div><h3>Next</h3><ul>
-      <li>A live DON, the KeystoneForwarder, a pinned workflow id (after SEC's User-Agent rule is solved)</li>
+  <div class="grid g2" style="gap:60px">
+    <div><div class="colh">Today</div><ul class="plain">
+      <li>Simulation writes through a mock forwarder: it proves the path, not the security</li>
+      <li>The filing is what SEC EDGAR serves; its hash is on-chain</li>
+      <li>The check reads sentences, not tables, and says so</li></ul></div>
+    <div><div class="colh">Next</div><ul class="plain">
+      <li>A live DON and a pinned workflow id</li>
       <li>Robinhood Chain mainnet, bonded in USDG</li>
-      <li>8-Ks and 10-Ks; one compliance team piloting cleared-only publication</li></ul></div>
+      <li>One compliance team piloting cleared-only publication</li></ul></div>
   </div>
-  <div class="mark">vouch<i>.</i></div>
+  <div class="mark">__NAME__</div>
 </section>
 
-<section class="s close" data-n="11">
-  <h1 style="font-size:92px">If it's wrong, <span class="f">it costs you.</span> <em>If you trade on it, the record shows why.</em></h1>
-  <div class="links"><span>vouch-feed.vercel.app</span><span>github.com/ubmids/vouch-research</span></div>
-  <div class="mark">vouch<i>.</i></div>
+<section class="s" data-n="11" style="justify-content:center">
+  <div class="tape">EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER ·</div>
+  <h1 style="font-size:116px">If it's wrong, it costs you. <em>If you trade on it, the record shows why.</em></h1>
+  <div class="card" style="margin-top:48px;padding:28px 36px;width:1000px;font-size:34px;line-height:1.5"><div class="label">Read the records</div><b>vouch-feed.vercel.app</b><br><span style="font-size:26px;color:var(--ink2)">github.com/ubmids/vouch-research</span></div>
+  <div class="mark">__NAME__</div>
 </section>
 
 </body></html>
