@@ -138,7 +138,7 @@ copy.
    - If fewer than about 10 real posts carry a checkable figure, we keep the
      labelled fixtures and add the real ones beside them.
 5. **Copy:** replace every "pending" line from the run folder, cut the BUIDL
-   to about 600 words, and apply the name decision.
+   to about 600 words. The name is Vouch (decided 15 Oct).
 6. **The submission assets:** a cover, 4 to 6 gallery images, the deck in the
    new design, the video's title card, lower thirds and end card, and a
    5-minute pitch version in case finalists pitch in November.
@@ -197,12 +197,12 @@ aggregated.
 | Date | Claude | Subomi |
 |---|---|---|
 | Thu 15 Oct | Plan, design directions, owner list (this commit) | Pick a design direction. Create the CRE account, then `cre login` |
-| Fri 16 | Run `cre_round.sh --preflight` once logged in. Start the design pass on the claim view (the hero) | Decide the name (Vouch or AsFiled) |
+| Fri 16 | Run `cre_round.sh --preflight` once logged in. Start the design pass on the claim view (the hero) | |
 | Sat 17 | Design pass: claims list, journal, tour, phone fixes; tests green | |
 | Sun 18 | **The CRE round** (if Subomi agrees I run it; otherwise he does). Commit `cre/runs/<run>/` and replace the pending lines | Start the lawyer or compliance quote |
 | Mon 19 | Spare day for a failed round. The record of reliance page | |
 | Tue 20 | RYO lane: the Mastodon reader, local-model reading, hashed trail, stake per story, PnL on screen | Founder lines for the BUIDL |
-| Wed 21 | Rename pass if chosen. Deck, cover, gallery images and README hero in the new design | |
+| Wed 21 | Deck, cover, gallery images and README hero in the new design | |
 | Thu 22 | Final Haiku reader run (at most $0.10). BUIDL cut to about 600 words | The quote, in hand |
 | Fri 23 | Video cards, shot list, captions, a 5-minute pitch version. Prepare the deploy | `vercel deploy --prod` |
 | Sat 24 | Full dry run of the demo script on the live page; fix what it finds | |
@@ -223,7 +223,6 @@ aggregated.
 | Too few real posts carry a figure | Keep the fixtures beside the real posts, both labelled. Never present fixtures as real |
 | Real posts name real people as wrong | Show handles shortened, with the link kept in the record. Subomi decides |
 | The design pass breaks behaviour | Change markup and styles only. Run pytest, forge and bun after each commit |
-| A late rename causes churn in the video and the deck | Decide by 16 Oct, before the assets are made |
 | No lawyer quote | The entry stands without it. LEGAL.md does the work; the BUIDL line is deleted |
 | No published criteria, and the money is discretionary | Aim at both bounties explicitly, plus legal applicability for the pool |
 | A November live pitch | Have a 5-minute version ready by 23 Oct |
@@ -235,8 +234,7 @@ aggregated.
 | By | What |
 |---|---|
 | **15 to 16 Oct** | **Create the Chainlink CRE account** (app.chain.link, 2FA), then run `~/.cre/bin/cre login` in a terminal on this Mac. This is the one blocker |
-| 16 Oct | Pick a design direction (A, B or C in `design/directions.html`) |
-| 16 Oct | Decide the name: keep Vouch, or rename to AsFiled. Search the DoraHacks BUIDL list by hand first |
+| ~~16 Oct~~ | ~~Pick a design direction~~: done 15 Oct, Exhibit (`design/directions-2.html`, E) |
 | 16 Oct | Say whether Claude may run the testnet round itself once you are logged in. It spends only test ETH from the existing test wallet |
 | 18 to 22 Oct | One lawyer, compliance officer or research publisher to read LEGAL.md and give one sentence, with name and role |
 | 20 Oct | The two founder lines in the BUIDL |

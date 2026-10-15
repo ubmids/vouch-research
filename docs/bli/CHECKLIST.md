@@ -65,7 +65,6 @@ Optional, if time allows:
   User-Agent; the gateway refuses to send one).
 - One outside reader: a compliance lawyer or a research publisher reading LEGAL.md and saying one
   sentence on camera is worth more to a lawyer panel than any feature.
-- The name: "Vouch" is taken on HackQuest. The audit recommends "AsFiled"; see OWNER_TODO.md.
 
 ## Bounty requirements, checked
 
