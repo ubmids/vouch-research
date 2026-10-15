@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vouch directions, round two</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@62..125,400..900&family=Bodoni+Moda:opsz,wght@6..96,400..900&family=Caveat:wght@600;700&family=Courier+Prime:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{
+  /* page shell */
+  --pg-bg:#ECECEC; --pg-card:#FFFFFF; --pg-ink:#111111; --pg-ink2:#4A4A4A; --pg-rule:#C9C9C9; --pg-rec:#C8102E;
+
+  /* E, Exhibit */
+  --e-bg:#E9D5A4; --e-tab:#D9BE80; --e-paper:#FFFFFF; --e-ink:#111111; --e-ink2:#4A4234; --e-rule:#111111; --e-faint:#D8CDB6;
+  --e-yellow:#FFD400; --e-onyellow:#111111; --e-red:#C8102E; --e-onred:#FFFFFF; --e-blue:#1D3FA6;
+
+  /* V, Void */
+  --v-bg:#E4EEE6; --v-paper:#F7FBF6; --v-ink:#0F2E22; --v-ink2:#3D5A4C; --v-line:#2E6B4F; --v-red:#C8102E; --v-gold:#8A6A12; --v-blue:#1B3F8F; --v-hl:#FFF3A0;
+
+  /* M, Marked up */
+  --m-bg:#2438E0; --m-onbg:#FFFFFF; --m-paper:#FFFFFF; --m-ink:#111111; --m-ink2:#4A4A4A; --m-rule:#D0D0D0;
+  --m-hl:#FFF200; --m-pink:#FF4FA8; --m-onhl:#111111; --m-pen:#D7191C; --m-green:#0A7A3E;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --pg-bg:#0C0C0C; --pg-card:#171717; --pg-ink:#EDEDED; --pg-ink2:#AFAFAF; --pg-rule:#333333; --pg-rec:#FF6B5E;
+    --e-bg:#1B1813; --e-tab:#3A3226; --e-paper:#26221B; --e-ink:#F3ECDD; --e-ink2:#C3B8A2; --e-rule:#F3ECDD; --e-faint:#4A4234;
+    --e-yellow:#FFD400; --e-onyellow:#111111; --e-red:#FF6B5E; --e-onred:#1B1813; --e-blue:#8EA6FF;
+    --v-bg:#0D1A14; --v-paper:#13241B; --v-ink:#E6F0E8; --v-ink2:#A9C2B3; --v-line:#4E9A75; --v-red:#FF7A70; --v-gold:#E0B84A; --v-blue:#8FB0FF; --v-hl:#4A4520;
+    --m-bg:#121A66; --m-onbg:#FFFFFF; --m-paper:#1C1C1F; --m-ink:#EDEDED; --m-ink2:#B0B0B0; --m-rule:#3A3A3E;
+    --m-hl:#FFF200; --m-pink:#FF4FA8; --m-onhl:#111111; --m-pen:#FF6B6B; --m-green:#5BD08C;
+  }
+}
+:root[data-theme="dark"]{
+  --pg-bg:#0C0C0C; --pg-card:#171717; --pg-ink:#EDEDED; --pg-ink2:#AFAFAF; --pg-rule:#333333; --pg-rec:#FF6B5E;
+  --e-bg:#1B1813; --e-tab:#3A3226; --e-paper:#26221B; --e-ink:#F3ECDD; --e-ink2:#C3B8A2; --e-rule:#F3ECDD; --e-faint:#4A4234;
+  --e-yellow:#FFD400; --e-onyellow:#111111; --e-red:#FF6B5E; --e-onred:#1B1813; --e-blue:#8EA6FF;
+  --v-bg:#0D1A14; --v-paper:#13241B; --v-ink:#E6F0E8; --v-ink2:#A9C2B3; --v-line:#4E9A75; --v-red:#FF7A70; --v-gold:#E0B84A; --v-blue:#8FB0FF; --v-hl:#4A4520;
+  --m-bg:#121A66; --m-onbg:#FFFFFF; --m-paper:#1C1C1F; --m-ink:#EDEDED; --m-ink2:#B0B0B0; --m-rule:#3A3A3E;
+  --m-hl:#FFF200; --m-pink:#FF4FA8; --m-onhl:#111111; --m-pen:#FF6B6B; --m-green:#5BD08C;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--pg-bg);color:var(--pg-ink);font:16px/1.55 "IBM Plex Sans",system-ui,sans-serif;overflow-x:hidden}
+.wrap{max-width:1180px;margin:0 auto;padding:40px 16px 80px}
+h1{font:600 30px/1.2 "IBM Plex Sans",sans-serif;margin:0 0 10px}
+.lede{color:var(--pg-ink2);max-width:74ch;margin:0 0 8px}
+.lede a{color:inherit}
+.themes{display:flex;gap:6px;margin:18px 0 28px;flex-wrap:wrap}
+.themes button{font:500 13px "IBM Plex Sans";padding:6px 12px;border:1px solid var(--pg-rule);background:var(--pg-card);color:var(--pg-ink);border-radius:4px;cursor:pointer}
+.themes button[aria-pressed="true"]{border-color:var(--pg-ink);font-weight:600}
+.rec{background:var(--pg-card);border-left:4px solid var(--pg-rec);padding:16px 18px;margin:0 0 44px}
+.rec b{color:var(--pg-rec)}
+.rec p{margin:6px 0 0}
+section.dir{margin:0 0 80px}
+.dirHead{border-top:2px solid var(--pg-ink);padding-top:20px;margin-bottom:18px}
+.dirHead h2{font:600 24px/1.2 "IBM Plex Sans";margin:0 0 6px}
+.dirHead h2 small{font-weight:400;font-size:15px;color:var(--pg-ink2);margin-left:6px}
+.dirHead .tag{display:inline-block;font:600 12px "IBM Plex Sans";color:var(--pg-rec);border:1.5px solid var(--pg-rec);padding:1px 8px;margin-left:8px;vertical-align:3px}
+.dirHead p{margin:0 0 6px;color:var(--pg-ink2);max-width:82ch}
+.spec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 22px}
+.spec div{background:var(--pg-card);border:1px solid var(--pg-rule);padding:12px 14px;font-size:14px}
+.spec b{display:block;font-size:12px;font-weight:600;color:var(--pg-ink2);margin-bottom:4px}
+.sw{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.sw i{width:22px;height:22px;display:block;border:1px solid var(--pg-rule)}
+.label{font:600 12px "IBM Plex Sans";color:var(--pg-ink2);margin:24px 0 8px;letter-spacing:.02em}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.scrollX{overflow-x:auto}
+svg.ic{width:14px;height:14px;vertical-align:-2px}
+.rough{filter:url(#rough)}
+
+/* ================= E, Exhibit ================= */
+.dE{--bg:var(--e-bg);--paper:var(--e-paper);--ink:var(--e-ink);--ink2:var(--e-ink2);--red:var(--e-red);--blue:var(--e-blue);--yellow:var(--e-yellow);
+  color:var(--ink);font:15px/1.55 "Courier Prime",monospace}
+.dE .folder{background:var(--bg);padding:0 0 28px;position:relative;overflow:hidden}
+.dE .tape{background:var(--red);color:var(--e-onred);font:800 13px/1 "Archivo",sans-serif;font-stretch:62%;letter-spacing:.18em;white-space:nowrap;overflow:hidden;padding:7px 0;transform:rotate(-1.2deg);margin:10px -10px 0}
+.dE .tabrow{display:flex;align-items:flex-end;gap:14px;padding:16px 24px 0;flex-wrap:wrap}
+.dE .tab{background:var(--e-tab);padding:8px 16px 8px;border-radius:8px 8px 0 0;font:800 14px "Archivo";font-stretch:75%;letter-spacing:.06em;text-transform:uppercase}
+.dE .tabrow .wm{margin-left:auto;font:900 26px/1 "Archivo";font-stretch:62%;letter-spacing:.02em;text-transform:uppercase;padding-bottom:6px}
+.dE .sheet{background:var(--paper);margin:0 24px;padding:24px 26px 28px;position:relative;box-shadow:0 1px 0 var(--e-faint),0 6px 0 -3px var(--e-faint)}
+.dE .sheetHead{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;border-bottom:3px solid var(--e-rule);padding-bottom:12px;margin-bottom:14px}
+.dE .sheetHead h3{margin:0;font:900 30px/1 "Archivo";font-stretch:62%;text-transform:uppercase;letter-spacing:.02em}
+.dE .sheetHead p{margin:4px 0 0;font-size:13px;color:var(--ink2)}
+.dE .sticker{background:var(--yellow);color:var(--e-onyellow);border-radius:6px;padding:6px 12px 8px;text-align:center;min-width:92px;transform:rotate(3deg);flex:none;box-shadow:1px 2px 0 rgba(0,0,0,.18)}
+.dE .sticker small{display:block;font:800 11px "Archivo";font-stretch:75%;letter-spacing:.12em}
+.dE .sticker b{display:block;font:900 40px/1 "Archivo";font-stretch:62%}
+.dE .sticker span{display:block;font:700 10px "Archivo";letter-spacing:.08em;border-top:1.5px solid currentColor;margin-top:3px;padding-top:2px}
+.dE dl.fields{display:grid;grid-template-columns:150px 1fr;margin:0 0 18px;border-top:1px solid var(--e-faint)}
+.dE dl.fields dt,.dE dl.fields dd{margin:0;padding:6px 0;border-bottom:1px solid var(--e-faint)}
+.dE dl.fields dt{font:800 12px/1.9 "Archivo";font-stretch:75%;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.dE dl.fields a{color:var(--blue)}
+.dE h4{margin:18px 0 6px;font:800 12px "Archivo";font-stretch:75%;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.dE .stmt{font:700 25px/1.4 "Courier Prime",monospace;margin:0}
+.dE .circ{white-space:nowrap;border:2.5px solid var(--red);border-radius:50%;padding:0 6px;margin:0 -2px;color:var(--red)}
+.dE .src{font-size:16.5px;line-height:1.65;margin:0;color:var(--ink2)}
+.dE .src mark{background:var(--yellow);color:var(--e-onyellow);padding:1px 0}
+.dE ul.boxes{list-style:none;margin:0;padding:0}
+.dE ul.boxes li{display:grid;grid-template-columns:26px 1fr;gap:6px;padding:4px 0}
+.dE .bx{display:inline-grid;place-items:center;width:18px;height:18px;border:2px solid var(--ink);font:700 14px/1 "Courier Prime"}
+.dE .bx.no{color:var(--red);border-color:var(--red)}
+.dE .stamp{position:absolute;right:28px;bottom:34px;transform:rotate(-9deg);border:5px solid var(--red);color:var(--red);padding:6px 16px 8px;text-align:center;background:transparent;pointer-events:none}
+.dE .stamp b{display:block;font:900 54px/1 "Archivo";font-stretch:62%;letter-spacing:.06em}
+.dE .stamp small{display:block;font:800 13px "Archivo";font-stretch:75%;letter-spacing:.14em;border-top:2px solid currentColor;margin-top:4px;padding-top:3px}
+.dE .stamp.blue{border-color:var(--blue);color:var(--blue)}
+.dE .money{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;font-size:14px}
+.dE .money span{border:2px solid var(--ink);padding:4px 10px}
+.dE .money b{font-family:"Archivo";font-weight:800;font-stretch:75%;letter-spacing:.06em;text-transform:uppercase;font-size:12px;margin-right:6px}
+/* list: evidence tags */
+.dE .tags{background:var(--bg);padding:18px;display:grid;gap:12px}
+.dE .tag{background:var(--paper);display:grid;grid-template-columns:70px 1fr auto;gap:14px;align-items:center;padding:12px 16px 12px 12px;position:relative;clip-path:polygon(14px 0,100% 0,100% 100%,14px 100%,0 50%)}
+.dE .tag .no{background:var(--yellow);color:var(--e-onyellow);font:900 24px/1 "Archivo";font-stretch:62%;text-align:center;padding:8px 0 6px;margin-left:10px}
+.dE .tag .no small{display:block;font:800 9px "Archivo";letter-spacing:.12em}
+.dE .tag p{margin:0;font-size:14px;line-height:1.45}
+.dE .tag p em{font-style:normal;font:800 11px "Archivo";font-stretch:75%;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);display:block}
+.dE .mini{font:900 15px/1 "Archivo";font-stretch:62%;letter-spacing:.08em;border:3px solid currentColor;padding:4px 8px;transform:rotate(-6deg);white-space:nowrap}
+.dE .mini.r{color:var(--red)} .dE .mini.g{color:var(--blue)}
+/* chain of custody */
+.dE .coc{background:var(--paper);padding:18px 18px 20px;border:3px solid var(--e-rule)}
+.dE .coc h5{margin:0 0 2px;font:900 22px/1 "Archivo";font-stretch:62%;text-transform:uppercase;letter-spacing:.03em}
+.dE .coc p.s{margin:0 0 10px;font-size:13px;color:var(--ink2)}
+.dE .coc table{width:100%;border-collapse:collapse;font-size:13px}
+.dE .coc th{font:800 10.5px "Archivo";font-stretch:75%;letter-spacing:.08em;text-transform:uppercase;text-align:left;border:1.5px solid var(--e-rule);padding:5px 6px;background:var(--yellow);color:var(--e-onyellow)}
+.dE .coc td{border:1.5px solid var(--e-rule);padding:6px;vertical-align:top}
+.dE .coc td.r{color:var(--red);font-weight:700}
+/* thumb */
+.tE{background:var(--e-bg);color:var(--e-ink)}
+.tE .tape{background:var(--e-red);color:var(--e-onred);font:800 1.9cqw/1 "Archivo";font-stretch:62%;letter-spacing:.2em;white-space:nowrap;padding:1.1cqw 0;transform:rotate(-2deg);margin:3cqw -2cqw 0;overflow:hidden}
+.tE .card{position:absolute;left:6cqw;right:24cqw;top:13cqw;bottom:7cqw;background:var(--e-paper);padding:3.4cqw 4cqw}
+.tE .card small{font:800 1.5cqw "Archivo";letter-spacing:.14em;color:var(--e-ink2);display:block;margin-bottom:1.4cqw}
+.tE .card p{margin:0;font:700 4.2cqw/1.3 "Courier Prime"}
+.tE .card .circ{white-space:nowrap;border:.45cqw solid var(--e-red);border-radius:50%;padding:0 .8cqw;color:var(--e-red)}
+.tE .stk{position:absolute;right:6cqw;top:12cqw;background:var(--e-yellow);color:var(--e-onyellow);border-radius:1cqw;padding:1cqw 2.2cqw;text-align:center;transform:rotate(4deg)}
+.tE .stk small{display:block;font:800 1.5cqw "Archivo";letter-spacing:.12em}
+.tE .stk b{display:block;font:900 8cqw/1 "Archivo";font-stretch:62%}
+.tE .st{position:absolute;right:7cqw;bottom:9cqw;transform:rotate(-10deg);border:.8cqw solid var(--e-red);color:var(--e-red);font:900 8.5cqw/1 "Archivo";font-stretch:62%;letter-spacing:.06em;padding:.6cqw 2cqw;background:color-mix(in srgb,var(--e-bg) 30%,transparent)}
+
+/* ================= V, Void ================= */
+.dV{--bg:var(--v-bg);--paper:var(--v-paper);--ink:var(--v-ink);--ink2:var(--v-ink2);--line:var(--v-line);--red:var(--v-red);--gold:var(--v-gold);--blue:var(--v-blue);
+  background:var(--bg);color:var(--ink);font:15px/1.6 "Libre Caslon Text",serif;padding:22px}
+.dV .cert{background:var(--paper);position:relative;padding:16px;overflow:hidden}
+.dV .frame{border:1.5px solid var(--line);outline:1px solid var(--line);outline-offset:-7px;padding:26px 30px 0;position:relative}
+.dV .band{height:36px;margin:0 0 18px;color:var(--line)}
+.dV .band svg{display:block;width:100%;height:36px}
+.dV .ch{text-align:center}
+.dV .ch small{display:block;font:500 12px "Space Mono",monospace;letter-spacing:.18em;color:var(--ink2);text-transform:uppercase}
+.dV .ch h3{margin:6px 0 4px;font:700 34px/1.05 "Bodoni Moda",serif;letter-spacing:.06em;text-transform:uppercase}
+.dV .ch p{margin:0 auto;max-width:56ch;font-style:italic;color:var(--ink2);font-size:14.5px}
+.dV .ch p a{color:var(--blue)}
+.dV .stmtL{margin:24px 0 6px;font:500 11.5px "Space Mono";letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+.dV .stmt{font:400 26px/1.35 "Libre Caslon Text",serif;margin:0}
+.dV .wrong{text-decoration:line-through 3px var(--red);color:var(--red)}
+.dV .src{font-size:16.5px;line-height:1.65;margin:0;color:var(--ink2)}
+.dV .src mark{background:var(--v-hl);color:var(--ink);padding:1px 0}
+.dV table.chk{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+.dV table.chk td{border-top:1px solid var(--line);padding:7px 4px}
+.dV table.chk td:last-child{text-align:right;font:700 12.5px "Space Mono";white-space:nowrap}
+.dV .ok{color:var(--line)} .dV .no{color:var(--red)}
+.dV .void{position:absolute;right:5%;top:30px;transform:rotate(-9deg);width:34%;max-width:300px;color:var(--red);opacity:.88;pointer-events:none}
+.dV .void svg{width:100%;height:auto;display:block}
+.dV .voidNote{position:absolute;left:30px;top:20px;font:700 12px "Space Mono";color:var(--red);border:2px solid var(--red);padding:4px 8px;letter-spacing:.06em;transform:rotate(4deg);background:var(--paper)}
+.dV .foot{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;margin-top:20px;padding:14px 0 18px;border-top:1px solid var(--line);flex-wrap:wrap}
+.dV .micr{font:400 14px "Space Mono",monospace;letter-spacing:.12em;overflow-wrap:anywhere}
+.dV .micr b{font-weight:700;color:var(--ink2)}
+.dV .sig{font:italic 13px "Libre Caslon Text";color:var(--ink2);text-align:right}
+.dV .sig b{display:block;font:700 13px "Bodoni Moda";font-style:normal;color:var(--ink);letter-spacing:.06em;text-transform:uppercase}
+/* stubs */
+.dV.list{padding:18px}
+.dV .stub{display:grid;grid-template-columns:86px 1fr auto;gap:14px;align-items:center;background:var(--paper);border:1.5px dashed var(--line);padding:12px 14px;margin-bottom:10px}
+.dV .stub .n{font:700 13px "Space Mono";text-align:center;border-right:1.5px dashed var(--line);padding-right:10px}
+.dV .stub .n b{display:block;font:700 26px/1 "Bodoni Moda"}
+.dV .stub p{margin:0;font-size:14.5px;line-height:1.45}
+.dV .stub p em{display:block;font:500 11px "Space Mono";font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.dV .seal{width:54px;height:54px;color:var(--gold);flex:none}
+.dV .vmini{font:700 15px "Space Mono";color:var(--red);border:2.5px solid var(--red);padding:3px 8px;transform:rotate(-8deg);letter-spacing:.14em}
+/* register */
+.dV.reg{padding:18px}
+.dV .regin{background:var(--paper);padding:20px 22px;border:1.5px solid var(--line);outline:1px solid var(--line);outline-offset:-6px;display:grid;grid-template-columns:1fr 92px;gap:16px}
+.dV .regin h5{margin:0 0 4px;font:700 22px/1.1 "Bodoni Moda";letter-spacing:.04em;text-transform:uppercase}
+.dV .regin ol{margin:8px 0 0;padding-left:22px;font-size:14px}
+.dV .regin li{margin:0 0 6px}
+.dV .regin .s{margin:0;font-style:italic;color:var(--ink2);font-size:13.5px}
+.dV .bigseal{width:92px;height:92px;color:var(--gold)}
+/* thumb */
+.tV{background:var(--v-bg);color:var(--v-ink)}
+.tV .c{position:absolute;inset:4cqw;background:var(--v-paper);border:.3cqw solid var(--v-line);outline:.2cqw solid var(--v-line);outline-offset:-1.3cqw;padding:5cqw 6cqw;display:flex;flex-direction:column;justify-content:center;text-align:left}
+.tV .c h5,.tV .c p{max-width:58%}
+.tV small{font:700 1.6cqw "Space Mono";letter-spacing:.2em;color:var(--v-ink2)}
+.tV h5{margin:1.4cqw 0;font:700 5.2cqw/1.08 "Bodoni Moda";letter-spacing:.04em;text-transform:uppercase}
+.tV p{margin:0;font:400 2.6cqw "Libre Caslon Text";color:var(--v-ink2)}
+.tV .v{position:absolute;right:8cqw;top:50%;width:30%;transform:translateY(-50%) rotate(-12deg);color:var(--v-red);opacity:.9}
+.tV .v svg{width:100%;height:auto;display:block}
+
+/* ================= M, Marked up ================= */
+.dM{--bg:var(--m-bg);--paper:var(--m-paper);--ink:var(--m-ink);--ink2:var(--m-ink2);--rule:var(--m-rule);--pen:var(--m-pen);
+  background:var(--bg);color:var(--m-onbg);padding:30px 30px 34px}
+.dM .kick{font:400 15px "Anton",sans-serif;letter-spacing:.12em;text-transform:uppercase;display:flex;gap:16px;flex-wrap:wrap;align-items:baseline}
+.dM .kick .wm{font-size:22px;letter-spacing:.04em}
+.dM .poster{font:400 72px/1.16 "Anton",sans-serif;text-transform:uppercase;margin:16px 0 22px;letter-spacing:.005em;max-width:15ch;position:relative}
+.dM .poster .x{position:relative;display:inline-block}
+.dM .poster .x::after{content:"";position:absolute;left:-4%;right:-4%;top:46%;height:.12em;background:var(--m-pen);transform:rotate(-4deg);border-radius:.1em}
+.dM .poster .pen{position:absolute;font:700 30px/1 "Caveat",cursive;color:var(--m-hl);text-transform:none;white-space:nowrap;letter-spacing:0;left:18%;top:-.46em;transform:rotate(-3deg)}
+.dM .spread{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:0;background:var(--paper);color:var(--ink)}
+.dM .filing{padding:26px 30px 26px;font:400 17px/1.7 "Tinos",serif;border-right:1px dashed var(--rule)}
+.dM .filing .hdr{font:700 12.5px/1.4 "Tinos";text-align:center;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:14px}
+.dM .filing .hdr span{display:block;font-weight:400;text-transform:none;letter-spacing:0}
+.dM .filing p{margin:0 0 12px}
+.dM .filing .dim{color:var(--ink2)}
+.dM mark.y{background:var(--m-hl);color:var(--m-onhl);padding:1px 0;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.dM mark.p{background:var(--m-pink);color:var(--m-onhl);padding:1px 0;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.dM .acc{font:400 13px "Tinos";color:var(--ink2);margin-top:14px;border-top:1px solid var(--rule);padding-top:8px}
+.dM .acc a{color:inherit}
+.dM .margin{padding:24px 20px;font:700 22px/1.2 "Caveat",cursive;color:var(--pen);display:flex;flex-direction:column;gap:18px}
+.dM .margin .n{display:block}
+.dM .verdict{border:3px solid var(--pen);border-radius:50%;padding:12px 6px;text-align:center;font:400 30px/1 "Anton";letter-spacing:.04em;text-transform:uppercase;transform:rotate(-6deg);color:var(--pen)}
+.dM .verdict small{display:block;font:700 18px "Caveat";text-transform:none;letter-spacing:0;margin-top:4px}
+.dM .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;margin-top:2px}
+.dM .facts div{background:var(--paper);color:var(--ink);padding:12px 16px;font:400 14px "Tinos"}
+.dM .facts b{display:block;font:400 13px "Anton";letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.dM .facts .t{font:700 22px "Caveat";color:var(--pen)}
+.dM .facts .t.ok{color:var(--m-green)}
+/* list */
+.dM.list{padding:18px}
+.dM .idx{background:var(--paper);color:var(--ink)}
+.dM .row{display:grid;grid-template-columns:110px 1fr 90px;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rule);align-items:center;font:400 15px/1.45 "Tinos"}
+.dM .row:last-child{border-bottom:0}
+.dM .row .who{font:400 14px "Anton";letter-spacing:.04em;text-transform:uppercase}
+.dM .row .who small{display:block;font:400 12px "Tinos";letter-spacing:0;text-transform:none;color:var(--ink2)}
+.dM .row .v{font:700 24px/1 "Caveat";text-align:center}
+.dM .row .v.ok{color:var(--m-green)} .dM .row .v.no{color:var(--pen)}
+.dM .strike{text-decoration:line-through 2.5px var(--m-pen)}
+/* record */
+.dM.rec2{padding:18px}
+.dM .memo{background:var(--paper);color:var(--ink);display:grid;grid-template-columns:minmax(0,1fr) 120px;font:400 15px/1.55 "Tinos"}
+.dM .memo .body{padding:18px 20px;border-right:1px dashed var(--rule)}
+.dM .memo h5{margin:0 0 2px;font:400 24px/1 "Anton";letter-spacing:.02em;text-transform:uppercase}
+.dM .memo .s{margin:0 0 10px;color:var(--ink2);font-size:13.5px}
+.dM .memo ol{margin:0;padding-left:20px}
+.dM .memo li{margin:0 0 6px}
+.dM .memo .notes{padding:16px 10px;font:700 19px/1.15 "Caveat";color:var(--pen);display:flex;flex-direction:column;gap:30px}
+/* thumb */
+.tM{background:var(--m-bg);color:var(--m-onbg)}
+.tM .in2{position:absolute;inset:0;padding:5cqw 6cqw;display:flex;flex-direction:column;justify-content:space-between}
+.tM small{font:400 1.9cqw "Anton";letter-spacing:.16em}
+.tM h5{margin:0;font:400 8.6cqw/.96 "Anton";text-transform:uppercase;max-width:16ch}
+.tM .x{position:relative;display:inline-block}
+.tM .x::after{content:"";position:absolute;left:-4%;right:-4%;top:46%;height:.13em;background:var(--m-pen);transform:rotate(-4deg)}
+.tM .pn{font:700 4.2cqw/1 "Caveat";color:var(--m-hl)}
+.tM .hl{display:inline;background:var(--m-hl);color:var(--m-onhl);font:400 2.4cqw/1.4 "Tinos";padding:.2cqw .8cqw}
+
+/* thumbnails shared */
+.thumb{aspect-ratio:16/9;position:relative;overflow:hidden;container-type:inline-size;max-width:560px}
+
+@media (max-width:860px){
+  .grid2,.spec{grid-template-columns:1fr}
+  .dE .sheet{margin:0 12px;padding:18px 16px 120px}
+  .dE .tabrow{padding:14px 12px 0}
+  .dE dl.fields{grid-template-columns:1fr}
+  .dE dl.fields dt{border-bottom:0;padding-bottom:0}
+  .dE .stmt{font-size:21px}
+  .dE .stamp{right:16px;bottom:22px}
+  .dE .stamp b{font-size:42px}
+  .dE .tag{grid-template-columns:60px 1fr;}
+  .dE .tag .mini{grid-column:2;justify-self:start}
+  .dV{padding:12px}
+  .dV .frame{padding:20px 16px 0}
+  .dV .ch h3{font-size:24px}
+  .dV .stmt{font-size:21px}
+  .dV .voidNote{position:static;display:inline-block;margin-bottom:8px}
+  .dV .stub{grid-template-columns:64px 1fr}
+  .dV .stub > :last-child{grid-column:2;justify-self:start}
+  .dV .regin{grid-template-columns:1fr}
+  .dM{padding:20px 16px 22px}
+  .dM .poster{font-size:44px;margin-top:22px}
+  .dM .poster .pen{font-size:21px}
+  .dM .spread{grid-template-columns:1fr}
+  .dM .filing{border-right:0;border-bottom:1px dashed var(--rule);padding:20px 16px}
+  .dM .margin{flex-direction:row;flex-wrap:wrap;align-items:center;padding:16px}
+  .dM .facts{grid-template-columns:1fr}
+  .dM .row{grid-template-columns:1fr 60px}
+  .dM .row .who{grid-column:1 / -1}
+  .dM .memo{grid-template-columns:1fr}
+  .dM .memo .body{border-right:0}
+  .dM .memo .notes{flex-direction:row;flex-wrap:wrap;gap:12px;padding:0 20px 16px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+    <pattern id="waves" width="120" height="36" patternUnits="userSpaceOnUse"><path d="M0 12.0 L3 13.5 L6 14.9 L9 16.0 L12 16.8 L15 17.0 L18 16.8 L21 16.0 L24 14.9 L27 13.5 L30 12.0 L33 10.5 L36 9.1 L39 8.0 L42 7.2 L45 7.0 L48 7.2 L51 8.0 L54 9.1 L57 10.5 L60 12.0 L63 13.5 L66 14.9 L69 16.0 L72 16.8 L75 17.0 L78 16.8 L81 16.0 L84 14.9 L87 13.5 L90 12.0 L93 10.5 L96 9.1 L99 8.0 L102 7.2 L105 7.0 L108 7.2 L111 8.0 L114 9.1 L117 10.5 L120 12.0 M0 15.6 L3 16.5 L6 16.9 L9 16.9 L12 16.4 L15 15.5 L18 14.2 L21 12.7 L24 11.1 L27 9.7 L30 8.4 L33 7.5 L36 7.1 L39 7.1 L42 7.6 L45 8.5 L48 9.8 L51 11.3 L54 12.9 L57 14.3 L60 15.6 L63 16.5 L66 16.9 L69 16.9 L72 16.4 L75 15.5 L78 14.2 L81 12.7 L84 11.1 L87 9.7 L90 8.4 L93 7.5 L96 7.1 L99 7.1 L102 7.6 L105 8.5 L108 9.8 L111 11.3 L114 12.9 L117 14.3 L120 15.6 M0 17.0 L3 16.7 L6 16.0 L9 14.8 L12 13.4 L15 11.9 L18 10.3 L21 8.9 L24 7.9 L27 7.2 L30 7.0 L33 7.3 L36 8.0 L39 9.2 L42 10.6 L45 12.1 L48 13.7 L51 15.1 L54 16.1 L57 16.8 L60 17.0 L63 16.7 L66 16.0 L69 14.8 L72 13.4 L75 11.9 L78 10.3 L81 8.9 L84 7.9 L87 7.2 L90 7.0 L93 7.3 L96 8.0 L99 9.2 L102 10.6 L105 12.1 L108 13.7 L111 15.1 L114 16.1 L117 16.8 L120 17.0 M0 15.4 L3 14.1 L6 12.6 L9 11.0 L12 9.5 L15 8.3 L18 7.4 L21 7.0 L24 7.1 L27 7.6 L30 8.6 L33 9.9 L36 11.4 L39 13.0 L42 14.5 L45 15.7 L48 16.6 L51 17.0 L54 16.9 L57 16.4 L60 15.4 L63 14.1 L66 12.6 L69 11.0 L72 9.5 L75 8.3 L78 7.4 L81 7.0 L84 7.1 L87 7.6 L90 8.6 L93 9.9 L96 11.4 L99 13.0 L102 14.5 L105 15.7 L108 16.6 L111 17.0 L114 16.9 L117 16.4 L120 15.4 M0 11.7 L3 10.2 L6 8.8 L9 7.8 L12 7.2 L15 7.0 L18 7.3 L21 8.1 L24 9.3 L27 10.7 L30 12.3 L33 13.8 L36 15.2 L39 16.2 L42 16.8 L45 17.0 L48 16.7 L51 15.9 L54 14.7 L57 13.3 L60 11.7 L63 10.2 L66 8.8 L69 7.8 L72 7.2 L75 7.0 L78 7.3 L81 8.1 L84 9.3 L87 10.7 L90 12.3 L93 13.8 L96 15.2 L99 16.2 L102 16.8 L105 17.0 L108 16.7 L111 15.9 L114 14.7 L117 13.3 L120 11.7 M0 8.2 L3 7.4 L6 7.0 L9 7.1 L12 7.7 L15 8.7 L18 10.1 L21 11.6 L24 13.1 L27 14.6 L30 15.8 L33 16.6 L36 17.0 L39 16.9 L42 16.3 L45 15.3 L48 13.9 L51 12.4 L54 10.9 L57 9.4 L60 8.2 L63 7.4 L66 7.0 L69 7.1 L72 7.7 L75 8.7 L78 10.1 L81 11.6 L84 13.1 L87 14.6 L90 15.8 L93 16.6 L96 17.0 L99 16.9 L102 16.3 L105 15.3 L108 13.9 L111 12.4 L114 10.9 L117 9.4 L120 8.2" fill="none" stroke="currentColor" stroke-width=".6"/></pattern>
+  </defs>
+  <symbol id="seal" viewBox="0 0 120 120"><path d="M115.1 60.0 L114.8 58.8 L113.7 57.6 L112.1 56.7 L109.8 55.9 L107.0 55.5 L103.6 55.4 L99.8 55.7 L95.7 56.4 L91.3 57.6 L86.7 59.2 L82.1 61.3 L77.4 63.9 L72.9 66.9 L68.5 70.2 L64.4 73.9 L60.6 77.8 L57.2 81.9 L54.2 86.1 L51.7 90.3 L49.8 94.4 L48.3 98.3 L47.3 102.0 L46.7 105.3 L46.7 108.2 L47.0 110.5 L47.6 112.4 L48.5 113.6 L49.7 114.1 L50.9 114.0 L52.2 113.2 L53.5 111.8 L54.7 109.7 L55.7 107.0 L56.4 103.7 L56.8 100.0 L56.9 95.8 L56.5 91.2 L55.8 86.4 L54.5 81.4 L52.9 76.4 L50.8 71.3 L48.3 66.4 L45.5 61.7 L42.4 57.2 L39.0 53.1 L35.4 49.4 L31.8 46.2 L28.1 43.5 L24.6 41.3 L21.1 39.6 L18.0 38.5 L15.2 37.9 L12.8 37.7 L10.9 38.0 L9.5 38.7 L8.8 39.7 L8.6 41.0 L9.2 42.4 L10.3 43.9 L12.2 45.5 L14.7 46.9 L17.7 48.3 L21.4 49.4 L25.5 50.2 L30.0 50.7 L34.9 50.9 L40.0 50.6 L45.3 50.0 L50.6 48.9 L55.9 47.4 L61.1 45.5 L66.0 43.2 L70.7 40.6 L75.0 37.8 L78.8 34.9 L82.2 31.8 L85.0 28.7 L87.3 25.7 L89.0 22.8 L90.1 20.1 L90.7 17.8 L90.8 15.9 L90.4 14.4 L89.5 13.5 L88.3 13.1 L86.8 13.4 L85.1 14.2 L83.2 15.8 L81.3 17.9 L79.5 20.7 L77.7 24.0 L76.1 27.9 L74.7 32.3 L73.7 37.0 L73.0 42.1 L72.6 47.4 L72.7 52.8 L73.2 58.3 L74.1 63.8 L75.4 69.1 L77.0 74.1 L79.0 78.9 L81.2 83.2 L83.6 87.1 L86.1 90.4 L88.6 93.2 L91.1 95.5 L93.5 97.1 L95.7 98.1 L97.6 98.5 L99.1 98.4 L100.2 97.7 L100.8 96.6 L100.8 95.1 L100.2 93.2 L99.1 91.1 L97.3 88.8 L95.0 86.5 L92.0 84.1 L88.5 81.8 L84.5 79.7 L80.0 77.7 L75.2 76.1 L70.0 74.8 L64.7 73.8 L59.2 73.3 L53.7 73.1 L48.2 73.4 L42.9 74.1 L37.9 75.1 L33.2 76.4 L29.0 78.1 L25.2 79.9 L22.0 81.9 L19.3 83.9 L17.3 86.0 L15.9 87.9 L15.1 89.7 L15.0 91.2 L15.4 92.4 L16.4 93.2 L17.9 93.5 L19.8 93.3 L22.1 92.6 L24.7 91.3 L27.4 89.4 L30.3 86.9 L33.2 83.9 L36.1 80.4 L38.8 76.3 L41.4 71.9 L43.6 67.1 L45.5 62.0 L47.1 56.7 L48.3 51.3 L49.0 45.9 L49.4 40.6 L49.3 35.5 L48.9 30.6 L48.1 26.1 L47.0 22.1 L45.6 18.6 L44.1 15.6 L42.5 13.2 L40.8 11.5 L39.2 10.4 L37.8 9.9 L36.5 10.1 L35.6 11.0 L35.0 12.4 L34.8 14.3 L35.1 16.7 L35.9 19.4 L37.2 22.5 L39.1 25.8 L41.5 29.2 L44.5 32.7 L47.9 36.1 L51.8 39.5 L56.1 42.6 L60.8 45.4 L65.7 48.0 L70.7 50.1 L75.9 51.9 L81.0 53.2 L86.1 54.1 L90.9 54.6 L95.5 54.6 L99.7 54.3 L103.4 53.6 L106.6 52.7 L109.3 51.6 L111.3 50.3 L112.6 48.9 L113.3 47.6 L113.4 46.3 L112.7 45.2 L111.5 44.4 L109.6 43.8 L107.2 43.7 L104.4 43.9 L101.1 44.7 L97.5 45.9 L93.7 47.6 L89.7 49.9 L85.7 52.6 L81.7 55.8 L77.8 59.5 L74.2 63.5 L70.8 67.8 L67.7 72.4 L65.0 77.1 L62.7 81.9 L60.9 86.7 L59.5 91.4 L58.6 95.9 L58.2 100.0 L58.1 103.8 L58.4 107.2 L59.1 110.0 L59.9 112.2 L61.0 113.8 L62.2 114.7 L63.5 115.0 L64.7 114.6 L65.7 113.5 L66.6 111.8 L67.2 109.5 L67.5 106.6 L67.4 103.2 L66.8 99.5 L65.9 95.4 L64.4 91.1 L62.5 86.6 L60.0 82.1 L57.2 77.6 L53.9 73.3 L50.3 69.1 L46.4 65.2 L42.2 61.7 L37.9 58.6 L33.6 55.9 L29.2 53.7 L25.0 51.9 L21.0 50.7 L17.3 49.9 L14.0 49.6 L11.1 49.7 L8.7 50.2 L7.0 50.9 L5.8 51.9 L5.3 53.1 L5.5 54.3 L6.4 55.6 L7.9 56.8 L10.1 57.8 L12.8 58.6 L16.1 59.1 L19.9 59.3 L24.1 59.1 L28.6 58.5 L33.4 57.4 L38.3 55.9 L43.2 53.9 L48.1 51.5 L52.9 48.8 L57.4 45.6 L61.7 42.2 L65.5 38.6 L69.0 34.8 L72.0 31.0 L74.5 27.2 L76.4 23.5 L77.9 19.9 L78.8 16.7 L79.3 13.9 L79.3 11.5 L78.8 9.6 L78.1 8.3 L77.0 7.6 L75.8 7.5 L74.4 8.2 L72.9 9.4 L71.5 11.4 L70.2 13.9 L69.1 17.1 L68.2 20.8 L67.6 24.9 L67.4 29.5 L67.5 34.3 L68.1 39.4 L69.1 44.6 L70.5 49.9 L72.4 55.1 L74.6 60.2 L77.1 65.0 L80.0 69.5 L83.1 73.6 L86.3 77.2 L89.5 80.4 L92.8 83.0 L96.0 85.1 L99.0 86.6 L101.7 87.6 L104.0 88.0 L106.0 88.0 L107.4 87.4 L108.3 86.5 L108.6 85.3 L108.2 83.8 L107.2 82.2 L105.6 80.4 L103.3 78.7 L100.5 76.9 L97.0 75.4 L93.0 74.0 L88.6 73.0 L83.8 72.2 L78.7 71.8 L73.4 71.8 L67.9 72.2 L62.5 73.1 L57.1 74.3 L51.9 75.9 L47.0 77.9 L42.4 80.1 L38.2 82.6 L34.4 85.2 L31.3 87.9 L28.6 90.7 L26.6 93.3 L25.1 95.8 L24.2 98.0 L23.9 99.9 L24.2 101.4 L24.9 102.5 L26.0 103.0 L27.6 102.9 L29.4 102.3 L31.4 101.0 L33.6 99.1 L35.8 96.6 L38.0 93.5 L40.0 89.8 L41.9 85.7 L43.6 81.1 L44.9 76.1 L45.9 70.9 L46.5 65.5 L46.7 60.0 L46.5 54.5 L45.9 49.1 L44.9 43.9 L43.6 38.9 L41.9 34.3 L40.0 30.2 L38.0 26.5 L35.8 23.4 L33.6 20.9 L31.4 19.0 L29.4 17.7 L27.6 17.1 L26.0 17.0 L24.9 17.5 L24.2 18.6 L23.9 20.1 L24.2 22.0 L25.1 24.2 L26.6 26.7 L28.6 29.3 L31.3 32.1 L34.4 34.8 L38.2 37.4 L42.4 39.9 L47.0 42.1 L51.9 44.1 L57.1 45.7 L62.5 46.9 L67.9 47.8 L73.4 48.2 L78.7 48.2 L83.8 47.8 L88.6 47.0 L93.0 46.0 L97.0 44.6 L100.5 43.1 L103.3 41.3 L105.6 39.6 L107.2 37.8 L108.2 36.2 L108.6 34.7 L108.3 33.5 L107.4 32.6 L106.0 32.0 L104.0 32.0 L101.7 32.4 L99.0 33.4 L96.0 34.9 L92.8 37.0 L89.5 39.6 L86.3 42.8 L83.1 46.4 L80.0 50.5 L77.1 55.0 L74.6 59.8 L72.4 64.9 L70.5 70.1 L69.1 75.4 L68.1 80.6 L67.5 85.7 L67.4 90.5 L67.6 95.1 L68.2 99.2 L69.1 102.9 L70.2 106.1 L71.5 108.6 L72.9 110.6 L74.4 111.8 L75.8 112.5 L77.0 112.4 L78.1 111.7 L78.8 110.4 L79.3 108.5 L79.3 106.1 L78.8 103.3 L77.9 100.1 L76.4 96.5 L74.5 92.8 L72.0 89.0 L69.0 85.2 L65.5 81.4 L61.7 77.8 L57.4 74.4 L52.9 71.2 L48.1 68.5 L43.2 66.1 L38.3 64.1 L33.4 62.6 L28.6 61.5 L24.1 60.9 L19.9 60.7 L16.1 60.9 L12.8 61.4 L10.1 62.2 L7.9 63.2 L6.4 64.4 L5.5 65.7 L5.3 66.9 L5.8 68.1 L7.0 69.1 L8.7 69.8 L11.1 70.3 L14.0 70.4 L17.3 70.1 L21.0 69.3 L25.0 68.1 L29.2 66.3 L33.6 64.1 L37.9 61.4 L42.2 58.3 L46.4 54.8 L50.3 50.9 L53.9 46.7 L57.2 42.4 L60.0 37.9 L62.5 33.4 L64.4 28.9 L65.9 24.6 L66.8 20.5 L67.4 16.8 L67.5 13.4 L67.2 10.5 L66.6 8.2 L65.7 6.5 L64.7 5.4 L63.5 5.0 L62.2 5.3 L61.0 6.2 L59.9 7.8 L59.1 10.0 L58.4 12.8 L58.1 16.2 L58.2 20.0 L58.6 24.1 L59.5 28.6 L60.9 33.3 L62.7 38.1 L65.0 42.9 L67.7 47.6 L70.8 52.2 L74.2 56.5 L77.8 60.5 L81.7 64.2 L85.7 67.4 L89.7 70.1 L93.7 72.4 L97.5 74.1 L101.1 75.3 L104.4 76.1 L107.2 76.3 L109.6 76.2 L111.5 75.6 L112.7 74.8 L113.4 73.7 L113.3 72.4 L112.6 71.1 L111.3 69.7 L109.3 68.4 L106.6 67.3 L103.4 66.4 L99.7 65.7 L95.5 65.4 L90.9 65.4 L86.1 65.9 L81.0 66.8 L75.9 68.1 L70.7 69.9 L65.7 72.0 L60.8 74.6 L56.1 77.4 L51.8 80.5 L47.9 83.9 L44.5 87.3 L41.5 90.8 L39.1 94.2 L37.2 97.5 L35.9 100.6 L35.1 103.3 L34.8 105.7 L35.0 107.6 L35.6 109.0 L36.5 109.9 L37.8 110.1 L39.2 109.6 L40.8 108.5 L42.5 106.8 L44.1 104.4 L45.6 101.4 L47.0 97.9 L48.1 93.9 L48.9 89.4 L49.3 84.5 L49.4 79.4 L49.0 74.1 L48.3 68.7 L47.1 63.3 L45.5 58.0 L43.6 52.9 L41.4 48.1 L38.8 43.7 L36.1 39.6 L33.2 36.1 L30.3 33.1 L27.4 30.6 L24.7 28.7 L22.1 27.4 L19.8 26.7 L17.9 26.5 L16.4 26.8 L15.4 27.6 L15.0 28.8 L15.1 30.3 L15.9 32.1 L17.3 34.0 L19.3 36.1 L22.0 38.1 L25.2 40.1 L29.0 41.9 L33.2 43.6 L37.9 44.9 L42.9 45.9 L48.2 46.6 L53.7 46.9 L59.2 46.7 L64.7 46.2 L70.0 45.2 L75.2 43.9 L80.0 42.3 L84.5 40.3 L88.5 38.2 L92.0 35.9 L95.0 33.5 L97.3 31.2 L99.1 28.9 L100.2 26.8 L100.8 24.9 L100.8 23.4 L100.2 22.3 L99.1 21.6 L97.6 21.5 L95.7 21.9 L93.5 22.9 L91.1 24.5 L88.6 26.8 L86.1 29.6 L83.6 32.9 L81.2 36.8 L79.0 41.1 L77.0 45.9 L75.4 50.9 L74.1 56.2 L73.2 61.7 L72.7 67.2 L72.6 72.6 L73.0 77.9 L73.7 83.0 L74.7 87.7 L76.1 92.1 L77.7 96.0 L79.5 99.3 L81.3 102.1 L83.2 104.2 L85.1 105.8 L86.8 106.6 L88.3 106.9 L89.5 106.5 L90.4 105.6 L90.8 104.1 L90.7 102.2 L90.1 99.9 L89.0 97.2 L87.3 94.3 L85.0 91.3 L82.2 88.2 L78.8 85.1 L75.0 82.2 L70.7 79.4 L66.0 76.8 L61.1 74.5 L55.9 72.6 L50.6 71.1 L45.3 70.0 L40.0 69.4 L34.9 69.1 L30.0 69.3 L25.5 69.8 L21.4 70.6 L17.7 71.7 L14.7 73.1 L12.2 74.5 L10.3 76.1 L9.2 77.6 L8.6 79.0 L8.8 80.3 L9.5 81.3 L10.9 82.0 L12.8 82.3 L15.2 82.1 L18.0 81.5 L21.1 80.4 L24.6 78.7 L28.1 76.5 L31.8 73.8 L35.4 70.6 L39.0 66.9 L42.4 62.8 L45.5 58.3 L48.3 53.6 L50.8 48.7 L52.9 43.6 L54.5 38.6 L55.8 33.6 L56.5 28.8 L56.9 24.2 L56.8 20.0 L56.4 16.3 L55.7 13.0 L54.7 10.3 L53.5 8.2 L52.2 6.8 L50.9 6.0 L49.7 5.9 L48.5 6.4 L47.6 7.6 L47.0 9.5 L46.7 11.8 L46.7 14.7 L47.3 18.0 L48.3 21.7 L49.8 25.6 L51.7 29.7 L54.2 33.9 L57.2 38.1 L60.6 42.2 L64.4 46.1 L68.5 49.8 L72.9 53.1 L77.4 56.1 L82.1 58.7 L86.7 60.8 L91.3 62.4 L95.7 63.6 L99.8 64.3 L103.6 64.6 L107.0 64.5 L109.8 64.1 L112.1 63.3 L113.7 62.4 L114.8 61.2 L115.1 60.0Z" fill="none" stroke="currentColor" stroke-width=".55"/><path d="M109.6 60.0 L109.3 58.6 L108.3 57.3 L106.7 56.1 L104.4 55.1 L101.6 54.3 L98.3 53.7 L94.5 53.5 L90.3 53.5 L85.7 53.9 L80.9 54.7 L75.9 55.9 L70.8 57.4 L65.7 59.3 L60.7 61.4 L55.8 63.9 L51.1 66.7 L46.7 69.6 L42.6 72.7 L38.9 76.0 L35.7 79.2 L33.0 82.4 L30.8 85.5 L29.1 88.4 L27.9 91.1 L27.3 93.5 L27.2 95.5 L27.5 97.1 L28.4 98.2 L29.6 98.8 L31.3 98.9 L33.2 98.4 L35.5 97.4 L37.9 95.7 L40.4 93.5 L43.1 90.7 L45.7 87.4 L48.3 83.7 L50.7 79.5 L53.0 74.9 L55.1 70.0 L56.9 64.9 L58.5 59.6 L59.7 54.2 L60.5 48.9 L61.1 43.6 L61.3 38.5 L61.1 33.6 L60.7 29.1 L60.0 24.9 L59.0 21.2 L57.8 18.0 L56.5 15.4 L55.1 13.4 L53.6 12.1 L52.1 11.3 L50.7 11.3 L49.4 11.9 L48.3 13.1 L47.4 14.9 L46.9 17.3 L46.6 20.2 L46.7 23.6 L47.1 27.4 L48.0 31.5 L49.2 35.9 L50.9 40.4 L53.0 45.1 L55.4 49.8 L58.2 54.5 L61.3 59.1 L64.7 63.4 L68.2 67.5 L72.0 71.3 L75.8 74.7 L79.6 77.7 L83.4 80.3 L87.1 82.3 L90.5 83.9 L93.7 85.1 L96.6 85.7 L99.0 85.9 L101.0 85.6 L102.5 84.9 L103.5 83.9 L103.8 82.5 L103.6 80.9 L102.8 79.1 L101.3 77.1 L99.2 75.0 L96.6 72.9 L93.4 70.9 L89.6 68.9 L85.5 67.1 L80.9 65.4 L75.9 64.1 L70.8 62.9 L65.4 62.1 L59.9 61.6 L54.4 61.4 L49.0 61.6 L43.7 62.0 L38.6 62.8 L33.9 63.8 L29.5 65.1 L25.5 66.6 L22.1 68.2 L19.2 70.0 L16.9 71.8 L15.2 73.6 L14.1 75.3 L13.7 76.9 L13.9 78.3 L14.7 79.4 L16.1 80.3 L18.0 80.8 L20.5 80.9 L23.4 80.6 L26.7 79.9 L30.4 78.8 L34.2 77.2 L38.3 75.1 L42.5 72.6 L46.7 69.7 L50.9 66.4 L54.9 62.8 L58.8 58.9 L62.5 54.8 L65.8 50.5 L68.8 46.1 L71.5 41.7 L73.7 37.4 L75.5 33.2 L76.9 29.2 L77.8 25.5 L78.3 22.2 L78.4 19.3 L78.1 16.8 L77.5 14.9 L76.5 13.6 L75.3 12.8 L73.9 12.7 L72.4 13.3 L70.7 14.4 L69.1 16.2 L67.4 18.7 L65.8 21.7 L64.4 25.2 L63.2 29.2 L62.2 33.7 L61.4 38.5 L61.0 43.6 L60.9 48.9 L61.1 54.3 L61.6 59.8 L62.4 65.2 L63.6 70.5 L65.0 75.7 L66.7 80.5 L68.7 85.0 L70.7 89.0 L72.9 92.6 L75.2 95.7 L77.5 98.2 L79.7 100.1 L81.7 101.5 L83.6 102.2 L85.2 102.3 L86.6 101.9 L87.6 100.9 L88.1 99.3 L88.3 97.3 L88.0 94.9 L87.1 92.1 L85.8 89.0 L84.0 85.6 L81.7 82.1 L78.9 78.5 L75.7 74.8 L72.0 71.2 L68.0 67.7 L63.7 64.4 L59.1 61.4 L54.4 58.5 L49.6 56.0 L44.7 53.9 L39.9 52.1 L35.2 50.8 L30.8 49.8 L26.6 49.2 L22.8 49.0 L19.4 49.1 L16.5 49.6 L14.2 50.3 L12.4 51.3 L11.3 52.5 L10.8 53.8 L10.9 55.2 L11.8 56.6 L13.2 58.0 L15.3 59.3 L18.0 60.5 L21.2 61.4 L25.0 62.2 L29.2 62.6 L33.7 62.8 L38.6 62.6 L43.7 62.1 L48.9 61.2 L54.2 60.0 L59.5 58.5 L64.7 56.6 L69.7 54.5 L74.4 52.1 L78.9 49.5 L82.9 46.8 L86.5 44.0 L89.6 41.2 L92.2 38.4 L94.3 35.7 L95.7 33.2 L96.7 30.9 L97.0 28.9 L96.9 27.3 L96.2 26.0 L95.0 25.3 L93.4 25.0 L91.4 25.2 L89.0 26.0 L86.4 27.3 L83.6 29.2 L80.6 31.6 L77.6 34.6 L74.6 38.0 L71.6 41.8 L68.8 46.1 L66.1 50.7 L63.7 55.5 L61.5 60.6 L59.6 65.8 L58.1 71.0 L56.9 76.2 L56.0 81.2 L55.6 86.0 L55.4 90.6 L55.6 94.8 L56.1 98.6 L56.9 101.9 L57.9 104.6 L59.1 106.8 L60.4 108.4 L61.7 109.3 L63.1 109.5 L64.5 109.1 L65.7 108.0 L66.8 106.3 L67.7 104.0 L68.3 101.2 L68.7 97.8 L68.7 94.0 L68.4 89.8 L67.7 85.3 L66.6 80.5 L65.1 75.6 L63.3 70.7 L61.1 65.7 L58.6 60.8 L55.8 56.0 L52.8 51.5 L49.5 47.3 L46.2 43.4 L42.8 40.0 L39.3 37.0 L36.0 34.4 L32.7 32.4 L29.7 30.9 L26.9 29.9 L24.5 29.4 L22.5 29.5 L20.9 29.9 L19.9 30.8 L19.3 32.1 L19.4 33.8 L20.0 35.7 L21.2 37.9 L23.0 40.2 L25.3 42.6 L28.3 45.0 L31.7 47.5 L35.6 49.8 L40.0 52.0 L44.7 54.0 L49.7 55.7 L54.9 57.2 L60.3 58.4 L65.7 59.3 L71.1 59.8 L76.5 60.0 L81.6 59.9 L86.4 59.5 L90.9 58.7 L95.0 57.8 L98.6 56.6 L101.7 55.2 L104.2 53.7 L106.2 52.2 L107.4 50.6 L108.1 49.1 L108.0 47.7 L107.4 46.4 L106.1 45.4 L104.2 44.6 L101.8 44.2 L98.9 44.1 L95.5 44.4 L91.8 45.1 L87.7 46.2 L83.4 47.7 L78.9 49.7 L74.4 52.0 L69.8 54.8 L65.4 57.9 L61.0 61.2 L56.9 64.9 L53.0 68.7 L49.5 72.7 L46.3 76.7 L43.6 80.7 L41.3 84.6 L39.4 88.4 L38.0 92.0 L37.1 95.2 L36.6 98.1 L36.6 100.6 L37.0 102.5 L37.8 104.0 L38.9 104.9 L40.3 105.2 L41.9 104.8 L43.6 103.9 L45.5 102.3 L47.5 100.1 L49.4 97.3 L51.2 94.0 L53.0 90.1 L54.5 85.9 L55.9 81.2 L57.0 76.2 L57.8 70.9 L58.2 65.5 L58.4 60.0 L58.2 54.5 L57.8 49.1 L57.0 43.8 L55.9 38.8 L54.5 34.1 L53.0 29.9 L51.2 26.0 L49.4 22.7 L47.5 19.9 L45.5 17.7 L43.6 16.1 L41.9 15.2 L40.3 14.8 L38.9 15.1 L37.8 16.0 L37.0 17.5 L36.6 19.4 L36.6 21.9 L37.1 24.8 L38.0 28.0 L39.4 31.6 L41.3 35.4 L43.6 39.3 L46.3 43.3 L49.5 47.3 L53.0 51.3 L56.9 55.1 L61.0 58.8 L65.4 62.1 L69.8 65.2 L74.4 68.0 L78.9 70.3 L83.4 72.3 L87.7 73.8 L91.8 74.9 L95.5 75.6 L98.9 75.9 L101.8 75.8 L104.2 75.4 L106.1 74.6 L107.4 73.6 L108.0 72.3 L108.1 70.9 L107.4 69.4 L106.2 67.8 L104.2 66.3 L101.7 64.8 L98.6 63.4 L95.0 62.2 L90.9 61.3 L86.4 60.5 L81.6 60.1 L76.5 60.0 L71.1 60.2 L65.7 60.7 L60.3 61.6 L54.9 62.8 L49.7 64.3 L44.7 66.0 L40.0 68.0 L35.6 70.2 L31.7 72.5 L28.3 75.0 L25.3 77.4 L23.0 79.8 L21.2 82.1 L20.0 84.3 L19.4 86.2 L19.3 87.9 L19.9 89.2 L20.9 90.1 L22.5 90.5 L24.5 90.6 L26.9 90.1 L29.7 89.1 L32.7 87.6 L36.0 85.6 L39.3 83.0 L42.8 80.0 L46.2 76.6 L49.5 72.7 L52.8 68.5 L55.8 64.0 L58.6 59.2 L61.1 54.3 L63.3 49.3 L65.1 44.4 L66.6 39.5 L67.7 34.7 L68.4 30.2 L68.7 26.0 L68.7 22.2 L68.3 18.8 L67.7 16.0 L66.8 13.7 L65.7 12.0 L64.5 10.9 L63.1 10.5 L61.7 10.7 L60.4 11.6 L59.1 13.2 L57.9 15.4 L56.9 18.1 L56.1 21.4 L55.6 25.2 L55.4 29.4 L55.6 34.0 L56.0 38.8 L56.9 43.8 L58.1 49.0 L59.6 54.2 L61.5 59.4 L63.7 64.5 L66.1 69.3 L68.8 73.9 L71.6 78.2 L74.6 82.0 L77.6 85.4 L80.6 88.4 L83.6 90.8 L86.4 92.7 L89.0 94.0 L91.4 94.8 L93.4 95.0 L95.0 94.7 L96.2 94.0 L96.9 92.7 L97.0 91.1 L96.7 89.1 L95.7 86.8 L94.3 84.3 L92.2 81.6 L89.6 78.8 L86.5 76.0 L82.9 73.2 L78.9 70.5 L74.4 67.9 L69.7 65.5 L64.7 63.4 L59.5 61.5 L54.2 60.0 L48.9 58.8 L43.7 57.9 L38.6 57.4 L33.7 57.2 L29.2 57.4 L25.0 57.8 L21.2 58.6 L18.0 59.5 L15.3 60.7 L13.2 62.0 L11.8 63.4 L10.9 64.8 L10.8 66.2 L11.3 67.5 L12.4 68.7 L14.2 69.7 L16.5 70.4 L19.4 70.9 L22.8 71.0 L26.6 70.8 L30.8 70.2 L35.2 69.2 L39.9 67.9 L44.7 66.1 L49.6 64.0 L54.4 61.5 L59.1 58.6 L63.7 55.6 L68.0 52.3 L72.0 48.8 L75.7 45.2 L78.9 41.5 L81.7 37.9 L84.0 34.4 L85.8 31.0 L87.1 27.9 L88.0 25.1 L88.3 22.7 L88.1 20.7 L87.6 19.1 L86.6 18.1 L85.2 17.7 L83.6 17.8 L81.7 18.5 L79.7 19.9 L77.5 21.8 L75.2 24.3 L72.9 27.4 L70.7 31.0 L68.7 35.0 L66.7 39.5 L65.0 44.3 L63.6 49.5 L62.4 54.8 L61.6 60.2 L61.1 65.7 L60.9 71.1 L61.0 76.4 L61.4 81.5 L62.2 86.3 L63.2 90.8 L64.4 94.8 L65.8 98.3 L67.4 101.3 L69.1 103.8 L70.7 105.6 L72.4 106.7 L73.9 107.3 L75.3 107.2 L76.5 106.4 L77.5 105.1 L78.1 103.2 L78.4 100.7 L78.3 97.8 L77.8 94.5 L76.9 90.8 L75.5 86.8 L73.7 82.6 L71.5 78.3 L68.8 73.9 L65.8 69.5 L62.5 65.2 L58.8 61.1 L54.9 57.2 L50.9 53.6 L46.7 50.3 L42.5 47.4 L38.3 44.9 L34.2 42.8 L30.4 41.2 L26.7 40.1 L23.4 39.4 L20.5 39.1 L18.0 39.2 L16.1 39.7 L14.7 40.6 L13.9 41.7 L13.7 43.1 L14.1 44.7 L15.2 46.4 L16.9 48.2 L19.2 50.0 L22.1 51.8 L25.5 53.4 L29.5 54.9 L33.9 56.2 L38.6 57.2 L43.7 58.0 L49.0 58.4 L54.4 58.6 L59.9 58.4 L65.4 57.9 L70.8 57.1 L75.9 55.9 L80.9 54.6 L85.5 52.9 L89.6 51.1 L93.4 49.1 L96.6 47.1 L99.2 45.0 L101.3 42.9 L102.8 40.9 L103.6 39.1 L103.8 37.5 L103.5 36.1 L102.5 35.1 L101.0 34.4 L99.0 34.1 L96.6 34.3 L93.7 34.9 L90.5 36.1 L87.1 37.7 L83.4 39.7 L79.6 42.3 L75.8 45.3 L72.0 48.7 L68.2 52.5 L64.7 56.6 L61.3 60.9 L58.2 65.5 L55.4 70.2 L53.0 74.9 L50.9 79.6 L49.2 84.1 L48.0 88.5 L47.1 92.6 L46.7 96.4 L46.6 99.8 L46.9 102.7 L47.4 105.1 L48.3 106.9 L49.4 108.1 L50.7 108.7 L52.1 108.7 L53.6 107.9 L55.1 106.6 L56.5 104.6 L57.8 102.0 L59.0 98.8 L60.0 95.1 L60.7 90.9 L61.1 86.4 L61.3 81.5 L61.1 76.4 L60.5 71.1 L59.7 65.8 L58.5 60.4 L56.9 55.1 L55.1 50.0 L53.0 45.1 L50.7 40.5 L48.3 36.3 L45.7 32.6 L43.1 29.3 L40.4 26.5 L37.9 24.3 L35.5 22.6 L33.2 21.6 L31.3 21.1 L29.6 21.2 L28.4 21.8 L27.5 22.9 L27.2 24.5 L27.3 26.5 L27.9 28.9 L29.1 31.6 L30.8 34.5 L33.0 37.6 L35.7 40.8 L38.9 44.0 L42.6 47.3 L46.7 50.4 L51.1 53.3 L55.8 56.1 L60.7 58.6 L65.7 60.7 L70.8 62.6 L75.9 64.1 L80.9 65.3 L85.7 66.1 L90.3 66.5 L94.5 66.5 L98.3 66.3 L101.6 65.7 L104.4 64.9 L106.7 63.9 L108.3 62.7 L109.3 61.4 L109.6 60.0Z" fill="none" stroke="currentColor" stroke-width=".55"/><circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="60" cy="60" r="20" fill="currentColor"/><path d="M51 60.5l6 6 13-13" fill="none" stroke="var(--paper,#fff)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="voidmark" viewBox="0 0 386 128"><g fill="currentColor"><circle cx="4.1" cy="4.1" r="3.1"/><circle cx="13.1" cy="4.1" r="3.1"/><circle cx="4.1" cy="13.1" r="3.1"/><circle cx="13.1" cy="13.1" r="3.1"/><circle cx="76.1" cy="4.1" r="3.1"/><circle cx="85.1" cy="4.1" r="3.1"/><circle cx="76.1" cy="13.1" r="3.1"/><circle cx="85.1" cy="13.1" r="3.1"/><circle cx="4.1" cy="22.1" r="3.1"/><circle cx="13.1" cy="22.1" r="3.1"/><circle cx="4.1" cy="31.1" r="3.1"/><circle cx="13.1" cy="31.1" r="3.1"/><circle cx="76.1" cy="22.1" r="3.1"/><circle cx="85.1" cy="22.1" r="3.1"/><circle cx="76.1" cy="31.1" r="3.1"/><circle cx="85.1" cy="31.1" r="3.1"/><circle cx="4.1" cy="40.1" r="3.1"/><circle cx="13.1" cy="40.1" r="3.1"/><circle cx="4.1" cy="49.1" r="3.1"/><circle cx="13.1" cy="49.1" r="3.1"/><circle cx="76.1" cy="40.1" r="3.1"/><circle cx="85.1" cy="40.1" r="3.1"/><circle cx="76.1" cy="49.1" r="3.1"/><circle cx="85.1" cy="49.1" r="3.1"/><circle cx="4.1" cy="58.1" r="3.1"/><circle cx="13.1" cy="58.1" r="3.1"/><circle cx="4.1" cy="67.1" r="3.1"/><circle cx="13.1" cy="67.1" r="3.1"/><circle cx="76.1" cy="58.1" r="3.1"/><circle cx="85.1" cy="58.1" r="3.1"/><circle cx="76.1" cy="67.1" r="3.1"/><circle cx="85.1" cy="67.1" r="3.1"/><circle cx="4.1" cy="76.1" r="3.1"/><circle cx="13.1" cy="76.1" r="3.1"/><circle cx="4.1" cy="85.1" r="3.1"/><circle cx="13.1" cy="85.1" r="3.1"/><circle cx="76.1" cy="76.1" r="3.1"/><circle cx="85.1" cy="76.1" r="3.1"/><circle cx="76.1" cy="85.1" r="3.1"/><circle cx="85.1" cy="85.1" r="3.1"/><circle cx="22.1" cy="94.1" r="3.1"/><circle cx="31.1" cy="94.1" r="3.1"/><circle cx="22.1" cy="103.1" r="3.1"/><circle cx="31.1" cy="103.1" r="3.1"/><circle cx="58.1" cy="94.1" r="3.1"/><circle cx="67.1" cy="94.1" r="3.1"/><circle cx="58.1" cy="103.1" r="3.1"/><circle cx="67.1" cy="103.1" r="3.1"/><circle cx="40.1" cy="112.1" r="3.1"/><circle cx="49.1" cy="112.1" r="3.1"/><circle cx="40.1" cy="121.1" r="3.1"/><circle cx="49.1" cy="121.1" r="3.1"/><circle cx="130.1" cy="4.1" r="3.1"/><circle cx="139.1" cy="4.1" r="3.1"/><circle cx="130.1" cy="13.1" r="3.1"/><circle cx="139.1" cy="13.1" r="3.1"/><circle cx="148.1" cy="4.1" r="3.1"/><circle cx="157.1" cy="4.1" r="3.1"/><circle cx="148.1" cy="13.1" r="3.1"/><circle cx="157.1" cy="13.1" r="3.1"/><circle cx="166.1" cy="4.1" r="3.1"/><circle cx="175.1" cy="4.1" r="3.1"/><circle cx="166.1" cy="13.1" r="3.1"/><circle cx="175.1" cy="13.1" r="3.1"/><circle cx="112.1" cy="22.1" r="3.1"/><circle cx="121.1" cy="22.1" r="3.1"/><circle cx="112.1" cy="31.1" r="3.1"/><circle cx="121.1" cy="31.1" r="3.1"/><circle cx="184.1" cy="22.1" r="3.1"/><circle cx="193.1" cy="22.1" r="3.1"/><circle cx="184.1" cy="31.1" r="3.1"/><circle cx="193.1" cy="31.1" r="3.1"/><circle cx="112.1" cy="40.1" r="3.1"/><circle cx="121.1" cy="40.1" r="3.1"/><circle cx="112.1" cy="49.1" r="3.1"/><circle cx="121.1" cy="49.1" r="3.1"/><circle cx="184.1" cy="40.1" r="3.1"/><circle cx="193.1" cy="40.1" r="3.1"/><circle cx="184.1" cy="49.1" r="3.1"/><circle cx="193.1" cy="49.1" r="3.1"/><circle cx="112.1" cy="58.1" r="3.1"/><circle cx="121.1" cy="58.1" r="3.1"/><circle cx="112.1" cy="67.1" r="3.1"/><circle cx="121.1" cy="67.1" r="3.1"/><circle cx="184.1" cy="58.1" r="3.1"/><circle cx="193.1" cy="58.1" r="3.1"/><circle cx="184.1" cy="67.1" r="3.1"/><circle cx="193.1" cy="67.1" r="3.1"/><circle cx="112.1" cy="76.1" r="3.1"/><circle cx="121.1" cy="76.1" r="3.1"/><circle cx="112.1" cy="85.1" r="3.1"/><circle cx="121.1" cy="85.1" r="3.1"/><circle cx="184.1" cy="76.1" r="3.1"/><circle cx="193.1" cy="76.1" r="3.1"/><circle cx="184.1" cy="85.1" r="3.1"/><circle cx="193.1" cy="85.1" r="3.1"/><circle cx="112.1" cy="94.1" r="3.1"/><circle cx="121.1" cy="94.1" r="3.1"/><circle cx="112.1" cy="103.1" r="3.1"/><circle cx="121.1" cy="103.1" r="3.1"/><circle cx="184.1" cy="94.1" r="3.1"/><circle cx="193.1" cy="94.1" r="3.1"/><circle cx="184.1" cy="103.1" r="3.1"/><circle cx="193.1" cy="103.1" r="3.1"/><circle cx="130.1" cy="112.1" r="3.1"/><circle cx="139.1" cy="112.1" r="3.1"/><circle cx="130.1" cy="121.1" r="3.1"/><circle cx="139.1" cy="121.1" r="3.1"/><circle cx="148.1" cy="112.1" r="3.1"/><circle cx="157.1" cy="112.1" r="3.1"/><circle cx="148.1" cy="121.1" r="3.1"/><circle cx="157.1" cy="121.1" r="3.1"/><circle cx="166.1" cy="112.1" r="3.1"/><circle cx="175.1" cy="112.1" r="3.1"/><circle cx="166.1" cy="121.1" r="3.1"/><circle cx="175.1" cy="121.1" r="3.1"/><circle cx="220.1" cy="4.1" r="3.1"/><circle cx="229.1" cy="4.1" r="3.1"/><circle cx="220.1" cy="13.1" r="3.1"/><circle cx="229.1" cy="13.1" r="3.1"/><circle cx="238.1" cy="4.1" r="3.1"/><circle cx="247.1" cy="4.1" r="3.1"/><circle cx="238.1" cy="13.1" r="3.1"/><circle cx="247.1" cy="13.1" r="3.1"/><circle cx="256.1" cy="4.1" r="3.1"/><circle cx="265.1" cy="4.1" r="3.1"/><circle cx="256.1" cy="13.1" r="3.1"/><circle cx="265.1" cy="13.1" r="3.1"/><circle cx="238.1" cy="22.1" r="3.1"/><circle cx="247.1" cy="22.1" r="3.1"/><circle cx="238.1" cy="31.1" r="3.1"/><circle cx="247.1" cy="31.1" r="3.1"/><circle cx="238.1" cy="40.1" r="3.1"/><circle cx="247.1" cy="40.1" r="3.1"/><circle cx="238.1" cy="49.1" r="3.1"/><circle cx="247.1" cy="49.1" r="3.1"/><circle cx="238.1" cy="58.1" r="3.1"/><circle cx="247.1" cy="58.1" r="3.1"/><circle cx="238.1" cy="67.1" r="3.1"/><circle cx="247.1" cy="67.1" r="3.1"/><circle cx="238.1" cy="76.1" r="3.1"/><circle cx="247.1" cy="76.1" r="3.1"/><circle cx="238.1" cy="85.1" r="3.1"/><circle cx="247.1" cy="85.1" r="3.1"/><circle cx="238.1" cy="94.1" r="3.1"/><circle cx="247.1" cy="94.1" r="3.1"/><circle cx="238.1" cy="103.1" r="3.1"/><circle cx="247.1" cy="103.1" r="3.1"/><circle cx="220.1" cy="112.1" r="3.1"/><circle cx="229.1" cy="112.1" r="3.1"/><circle cx="220.1" cy="121.1" r="3.1"/><circle cx="229.1" cy="121.1" r="3.1"/><circle cx="238.1" cy="112.1" r="3.1"/><circle cx="247.1" cy="112.1" r="3.1"/><circle cx="238.1" cy="121.1" r="3.1"/><circle cx="247.1" cy="121.1" r="3.1"/><circle cx="256.1" cy="112.1" r="3.1"/><circle cx="265.1" cy="112.1" r="3.1"/><circle cx="256.1" cy="121.1" r="3.1"/><circle cx="265.1" cy="121.1" r="3.1"/><circle cx="292.1" cy="4.1" r="3.1"/><circle cx="301.1" cy="4.1" r="3.1"/><circle cx="292.1" cy="13.1" r="3.1"/><circle cx="301.1" cy="13.1" r="3.1"/><circle cx="310.1" cy="4.1" r="3.1"/><circle cx="319.1" cy="4.1" r="3.1"/><circle cx="310.1" cy="13.1" r="3.1"/><circle cx="319.1" cy="13.1" r="3.1"/><circle cx="328.1" cy="4.1" r="3.1"/><circle cx="337.1" cy="4.1" r="3.1"/><circle cx="328.1" cy="13.1" r="3.1"/><circle cx="337.1" cy="13.1" r="3.1"/><circle cx="346.1" cy="4.1" r="3.1"/><circle cx="355.1" cy="4.1" r="3.1"/><circle cx="346.1" cy="13.1" r="3.1"/><circle cx="355.1" cy="13.1" r="3.1"/><circle cx="292.1" cy="22.1" r="3.1"/><circle cx="301.1" cy="22.1" r="3.1"/><circle cx="292.1" cy="31.1" r="3.1"/><circle cx="301.1" cy="31.1" r="3.1"/><circle cx="364.1" cy="22.1" r="3.1"/><circle cx="373.1" cy="22.1" r="3.1"/><circle cx="364.1" cy="31.1" r="3.1"/><circle cx="373.1" cy="31.1" r="3.1"/><circle cx="292.1" cy="40.1" r="3.1"/><circle cx="301.1" cy="40.1" r="3.1"/><circle cx="292.1" cy="49.1" r="3.1"/><circle cx="301.1" cy="49.1" r="3.1"/><circle cx="364.1" cy="40.1" r="3.1"/><circle cx="373.1" cy="40.1" r="3.1"/><circle cx="364.1" cy="49.1" r="3.1"/><circle cx="373.1" cy="49.1" r="3.1"/><circle cx="292.1" cy="58.1" r="3.1"/><circle cx="301.1" cy="58.1" r="3.1"/><circle cx="292.1" cy="67.1" r="3.1"/><circle cx="301.1" cy="67.1" r="3.1"/><circle cx="364.1" cy="58.1" r="3.1"/><circle cx="373.1" cy="58.1" r="3.1"/><circle cx="364.1" cy="67.1" r="3.1"/><circle cx="373.1" cy="67.1" r="3.1"/><circle cx="292.1" cy="76.1" r="3.1"/><circle cx="301.1" cy="76.1" r="3.1"/><circle cx="292.1" cy="85.1" r="3.1"/><circle cx="301.1" cy="85.1" r="3.1"/><circle cx="364.1" cy="76.1" r="3.1"/><circle cx="373.1" cy="76.1" r="3.1"/><circle cx="364.1" cy="85.1" r="3.1"/><circle cx="373.1" cy="85.1" r="3.1"/><circle cx="292.1" cy="94.1" r="3.1"/><circle cx="301.1" cy="94.1" r="3.1"/><circle cx="292.1" cy="103.1" r="3.1"/><circle cx="301.1" cy="103.1" r="3.1"/><circle cx="364.1" cy="94.1" r="3.1"/><circle cx="373.1" cy="94.1" r="3.1"/><circle cx="364.1" cy="103.1" r="3.1"/><circle cx="373.1" cy="103.1" r="3.1"/><circle cx="292.1" cy="112.1" r="3.1"/><circle cx="301.1" cy="112.1" r="3.1"/><circle cx="292.1" cy="121.1" r="3.1"/><circle cx="301.1" cy="121.1" r="3.1"/><circle cx="310.1" cy="112.1" r="3.1"/><circle cx="319.1" cy="112.1" r="3.1"/><circle cx="310.1" cy="121.1" r="3.1"/><circle cx="319.1" cy="121.1" r="3.1"/><circle cx="328.1" cy="112.1" r="3.1"/><circle cx="337.1" cy="112.1" r="3.1"/><circle cx="328.1" cy="121.1" r="3.1"/><circle cx="337.1" cy="121.1" r="3.1"/><circle cx="346.1" cy="112.1" r="3.1"/><circle cx="355.1" cy="112.1" r="3.1"/><circle cx="346.1" cy="121.1" r="3.1"/><circle cx="355.1" cy="121.1" r="3.1"/></g></symbol>
+</svg>
+
+<div class="wrap">
+  <h1>Vouch: three directions, round two</h1>
+  <p class="lede">Bolder this time, and each one taken from a real object in the world of evidence and filings: the exhibit sticker and evidence tape, the cancelled certificate, and the filing page under highlighter and red pen. The frame is loud; the data stays exact. Every hero shows the claim, the filing sentence, the verdict and the accession number one click away.</p>
+  <p class="lede">The content is real: Qwen 2.5 7B's claim "Depreciation for Q3 2026 was $1.37 billion" against Tesla's 10-Q for the quarter ended June 30, 2026 (accession 0001628280-26-049270). Round one is still at <a href="directions.html">directions.html</a>.</p>
+  <div class="themes" role="group" aria-label="Colour scheme">
+    <button data-t="" aria-pressed="true">Match system</button>
+    <button data-t="light" aria-pressed="false">Light</button>
+    <button data-t="dark" aria-pressed="false">Dark</button>
+  </div>
+
+  <div class="rec">
+    <b>Recommendation: E, Exhibit.</b>
+    <p>Every object in it maps one to one onto the product, so nothing is decoration: a claim is an exhibit with a numbered sticker, the verdict is a rubber stamp, and the record of reliance is a chain-of-custody form, which is exactly what it is. Lawyers handle these objects every week, so the panel reads it as their world, not as crypto. It is loud where it should be (yellow sticker, red tape, the stamp) and plain where it must be (the typed statement and the highlighted filing sentence). M, Marked up, is the closest to your riso and poster picks and is a strong second; it is best for the thumbnail and the video, and weaker for a page full of claims.</p>
+  </div>
+
+  <!-- ================= E ================= -->
+  <section class="dir" id="e">
+    <div class="dirHead">
+      <h2>E. Exhibit <small>the manila case file, the exhibit sticker, the rubber stamp</small><span class="tag">Recommended</span></h2>
+      <p>Each claim is filed as a numbered exhibit on a typed evidence form inside a manila folder, under a strip of red evidence tape. The statement is typed (Courier Prime), the wrong words are ringed in red pen, the filing's sentence is marked in exhibit-sticker yellow, and the verdict lands as a stamp: SLASHED in red, CLEARED in blue stamp-pad ink. Labels are a heavy condensed grotesk (Archivo at its narrowest).</p>
+    </div>
+    <div class="spec">
+      <div><b>Type</b>Archivo Condensed Black for labels, stamps and the sticker · Courier Prime for every typed field and quotation</div>
+      <div><b>Palette (follows the theme switch)</b><span class="sw"><i style="background:var(--e-bg)"></i><i style="background:var(--e-paper)"></i><i style="background:var(--e-ink)"></i><i style="background:var(--e-yellow)"></i><i style="background:var(--e-red)"></i><i style="background:var(--e-blue)"></i></span></div>
+      <div><b>Taken from</b>trial exhibit stickers, tamper-evident evidence tape, police property and chain-of-custody forms, the manila case folder, RECEIVED and VOID stamps</div>
+    </div>
+
+    <p class="label">Hero: one claim, its cited source, the verdict</p>
+    <div class="dE">
+      <div class="folder">
+        <div class="tape" aria-hidden="true">EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER ·</div>
+        <div class="tabrow"><span class="tab">TSLA · 10-Q · Q2 2026</span><span class="tab" style="opacity:.75">AMZN</span><span class="wm">Vouch</span></div>
+        <div class="sheet">
+          <div class="sheetHead">
+            <div><h3>Claim record</h3><p>Checked against the SEC filing by the Chainlink CRE workflow</p></div>
+            <div class="sticker"><small>EXHIBIT</small><b>6</b><span>TSLA</span></div>
+          </div>
+          <dl class="fields">
+            <dt>Submitted by</dt><dd>Qwen 2.5 7B (AI analyst)</dd>
+            <dt>Stake</dt><dd>25 USDG</dd>
+            <dt>Source</dt><dd>Tesla, Inc. Form 10-Q, filed 2026-07-23, acc. no. <a href="#e">0001628280-26-049270</a></dd>
+          </dl>
+          <h4>Statement as submitted</h4>
+          <p class="stmt">Depreciation for <span class="circ">Q3 2026</span> was $1.37 billion.</p>
+          <h4>Source, as filed</h4>
+          <p class="src"><mark>Depreciation expense during the three and six months ended June 30, 2026 was $1.37 billion and $2.71 billion, respectively.</mark> Depreciation expense during the three and six months ended June 30, 2025 was $1.15 billion and $2.30 billion, respectively.</p>
+          <h4>Findings</h4>
+          <ul class="boxes">
+            <li><span class="bx">✓</span><span>Sentence found in the filing, word for word</span></li>
+            <li><span class="bx">✓</span><span>Figure $1.37 billion matches</span></li>
+            <li><span class="bx no">✗</span><span>Period: filing says quarter ended June 30, 2026; claim says Q3</span></li>
+          </ul>
+          <div class="money"><span><b>Stake</b>to readers' fund</span><span><b>Trade</b>refused on-chain</span><span><b>Verdict tx</b>0xbed0273d…12892</span></div>
+          <div class="stamp rough" aria-label="Verdict: slashed, wrong quarter"><b>SLASHED</b><small>WRONG QUARTER</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <p class="label">Claims list: evidence tags</p>
+        <div class="dE"><div class="tags">
+          <div class="tag"><div class="no"><small>EXH</small>0</div><p><em>Diligent · TSLA</em>Capital expenditures amounted to $8.28 billion during the six months ended June 30, 2026…</p><span class="mini g rough">CLEARED</span></div>
+          <div class="tag"><div class="no"><small>EXH</small>6</div><p><em>Qwen 2.5 7B · AI · TSLA</em>Depreciation for <span style="color:var(--red);text-decoration:underline 2px">Q3 2026</span> was $1.37 billion.</p><span class="mini r rough">SLASHED</span></div>
+          <div class="tag"><div class="no"><small>EXH</small>11</div><p><em>Qwen 2.5 7B · AI · AMZN</em>Invested $28.7 billion in OpenAI's Series C Preferred Stock for six months ended June 30, 2026.</p><span class="mini g rough">CLEARED</span></div>
+        </div></div>
+      </div>
+      <div>
+        <p class="label">Record of reliance: chain of custody</p>
+        <div class="dE"><div class="coc scrollX">
+          <h5>Chain of custody · Exhibit 6</h5>
+          <p class="s">Every hand the claim passed through, in order</p>
+          <table>
+            <thead><tr><th>#</th><th>From</th><th>To</th><th>What happened</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Qwen 2.5 7B</td><td>BondedClaims</td><td>Posted, 25 USDG staked</td></tr>
+              <tr><td>2</td><td>BondedClaims</td><td>CRE workflow</td><td>Fetched the 10-Q from EDGAR and checked it</td></tr>
+              <tr><td>3</td><td>CRE workflow</td><td>BondedClaims</td><td class="r">Slashed: stake to readers' fund</td></tr>
+              <tr><td>4</td><td>Trading agent</td><td>AgentDesk</td><td class="r">Order citing Exh. 6 refused</td></tr>
+              <tr><td>5</td><td>AgentDesk</td><td>Journal</td><td>Reasoning hash committed with the trade</td></tr>
+            </tbody>
+          </table>
+        </div></div>
+      </div>
+    </div>
+
+    <p class="label">Thumbnail, 16:9</p>
+    <div class="thumb tE">
+      <div class="tape" aria-hidden="true">EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER · EVIDENCE · DO NOT TAMPER ·</div>
+      <div class="card"><small>AI CLAIM · CHECKED AGAINST TESLA'S 10-Q</small><p>Depreciation for <span class="circ">Q3 2026</span> was $1.37 billion.</p></div>
+      <div class="stk"><small>EXHIBIT</small><b>6</b></div>
+      <div class="st rough">SLASHED</div>
+    </div>
+  </section>
+
+  <!-- ================= V ================= -->
+  <section class="dir" id="v">
+    <div class="dirHead">
+      <h2>V. Void <small>the share certificate, the cancelled cheque, the notary seal</small></h2>
+      <p>A cleared claim earns a certificate of verification, engraved and sealed with a guilloche rosette. A wrong one is the same certificate, cancelled: a perforated VOID punched through it, like a paid cheque. Bodoni caps for the engraving, Caslon for the quoted words, and a mono MICR line along the bottom carrying the accession number and the claim id.</p>
+    </div>
+    <div class="spec">
+      <div><b>Type</b>Bodoni Moda for engraved headings · Libre Caslon Text for quotations · Space Mono for the MICR line and labels</div>
+      <div><b>Palette (follows the theme switch)</b><span class="sw"><i style="background:var(--v-bg)"></i><i style="background:var(--v-paper)"></i><i style="background:var(--v-ink)"></i><i style="background:var(--v-line)"></i><i style="background:var(--v-gold)"></i><i style="background:var(--v-red)"></i></span></div>
+      <div><b>Taken from</b>stock and bond certificates, banknote guilloche, perforation-cancelled cheques, embossed notary seals, safety-paper green</div>
+    </div>
+
+    <p class="label">Hero: one claim, its cited source, the verdict</p>
+    <div class="dV">
+      <div class="cert">
+        <div class="frame">
+          <div class="band"><svg viewBox="0 0 600 36" preserveAspectRatio="none" aria-hidden="true"><rect width="600" height="36" fill="url(#waves)"/></svg></div>
+          <span class="voidNote">CANCELLED · WRONG QUARTER</span>
+          <div class="ch">
+            <small>Vouch · Claim No. 6</small>
+            <h3>Certificate of verification</h3>
+            <p>That the statement below, posted by Qwen 2.5 7B with 25 USDG at stake, agrees with Tesla, Inc.'s Form 10-Q, accession no. <a href="#v">0001628280-26-049270</a>.</p>
+          </div>
+          <p class="stmtL">The statement</p>
+          <p class="stmt">Depreciation for <span class="wrong">Q3 2026</span> was $1.37 billion.</p>
+          <p class="stmtL">The filing, as filed</p>
+          <p class="src"><mark>Depreciation expense during the three and six months ended June 30, 2026 was $1.37 billion and $2.71 billion, respectively.</mark> Depreciation expense during the three and six months ended June 30, 2025 was $1.15 billion and $2.30 billion, respectively.</p>
+          <table class="chk">
+            <tr><td>Sentence found in the filing, word for word</td><td class="ok">AGREES</td></tr>
+            <tr><td>Figure, $1.37 billion</td><td class="ok">AGREES</td></tr>
+            <tr><td>Period: quarter ended June 30, 2026, not Q3</td><td class="no">DOES NOT AGREE</td></tr>
+          </table>
+          <div class="foot">
+            <div class="micr"><b>⑆</b>0001628280-26-049270<b>⑆</b> 006 <b>⑈</b>0xbed0273d…12892</div>
+            <div class="sig"><b>Chainlink CRE</b>workflow vouch-verifier</div>
+          </div>
+          <div class="void" aria-label="Void"><svg viewBox="0 0 386 128"><use href="#voidmark"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <p class="label">Claims list: certificate stubs</p>
+        <div class="dV list">
+          <div class="stub"><div class="n"><b>0</b>TSLA</div><p><em>Diligent</em>Capital expenditures amounted to $8.28 billion during the six months ended June 30, 2026…</p><svg class="seal" aria-label="Verified"><use href="#seal"/></svg></div>
+          <div class="stub"><div class="n"><b>6</b>TSLA</div><p><em>Qwen 2.5 7B · AI</em>Depreciation for <span class="wrong">Q3 2026</span> was $1.37 billion.</p><span class="vmini">VOID</span></div>
+          <div class="stub"><div class="n"><b>11</b>AMZN</div><p><em>Qwen 2.5 7B · AI</em>Invested $28.7 billion in OpenAI's Series C Preferred Stock for six months ended June 30, 2026.</p><svg class="seal" aria-label="Verified"><use href="#seal"/></svg></div>
+        </div>
+      </div>
+      <div>
+        <p class="label">Record of reliance: the register</p>
+        <div class="dV reg"><div class="regin">
+          <div>
+            <h5>Register of reliance</h5>
+            <p class="s">Paper trade, TSLA, long. What the agent read, refused and relied on.</p>
+            <ol>
+              <li>Read ten claims on Tesla's 10-Q for the quarter ended June 30, 2026.</li>
+              <li>Refused seven voided certificates, including No. 6.</li>
+              <li>Relied on three certified claims, each with its seal and filing hash.</li>
+              <li>Decided by written rules; the reasoning hash is on-chain.</li>
+            </ol>
+          </div>
+          <svg class="bigseal" aria-label="Seal"><use href="#seal"/></svg>
+        </div></div>
+      </div>
+    </div>
+
+    <p class="label">Thumbnail, 16:9</p>
+    <div class="thumb tV">
+      <div class="c"><small>BLI LEGAL TECH HACKATHON 2 · CHAINLINK CRE</small><h5>Certificate of verification</h5><p>for every figure an AI cites from an SEC filing</p></div>
+      <div class="v"><svg viewBox="0 0 386 128"><use href="#voidmark"/></svg></div>
+    </div>
+  </section>
+
+  <!-- ================= M ================= -->
+  <section class="dir" id="m">
+    <div class="dirHead">
+      <h2>M. Marked up <small>the filing page under highlighter and red pen, set as a poster</small></h2>
+      <p>The claim is set at poster scale in Anton on cobalt, with the wrong words struck through in red pen. Below it, the actual filing page (Tinos, the Times-metric face EDGAR renders in) carries fluorescent yellow on the cited sentence, fluoro pink on the words that decide the case, and a red-pen margin that rings the verdict. Closest to Flick and headliner; the evidence is still the filing's own type.</p>
+    </div>
+    <div class="spec">
+      <div><b>Type</b>Anton for the poster line and labels · Tinos for the filing · Caveat for red-pen notes, never for data</div>
+      <div><b>Palette (follows the theme switch)</b><span class="sw"><i style="background:var(--m-bg)"></i><i style="background:var(--m-paper)"></i><i style="background:var(--m-ink)"></i><i style="background:var(--m-hl)"></i><i style="background:var(--m-pink)"></i><i style="background:var(--m-pen)"></i></span></div>
+      <div><b>Taken from</b>an EDGAR 10-Q printout, Stabilo yellow and pink highlighters, an editor's red pen, Swiss and protest poster type</div>
+    </div>
+
+    <p class="label">Hero: one claim, its cited source, the verdict</p>
+    <div class="dM">
+      <div class="kick"><span class="wm">VOUCH</span><span>Claim 6 · Qwen 2.5 7B (AI) · 25 USDG staked</span></div>
+      <div class="poster">Depreciation for <span class="x">Q3 2026<span class="pen">June quarter!</span></span> was $1.37 billion.</div>
+      <div class="spread">
+        <div class="filing">
+          <div class="hdr">Tesla, Inc. · Form 10-Q<span>For the quarterly period ended June 30, 2026</span></div>
+          <p class="dim">Depreciation, amortization and impairment</p>
+          <p><mark class="y">Depreciation expense during the <mark class="p">three</mark> and six <mark class="p">months ended June 30, 2026</mark> was $1.37 billion and $2.71 billion, respectively.</mark> <span class="dim">Depreciation expense during the three and six months ended June 30, 2025 was $1.15 billion and $2.30 billion, respectively.</span></p>
+          <div class="acc">Accession no. <a href="#m">0001628280-26-049270</a> · filed 2026-07-23 · checked by the Chainlink CRE workflow · verdict 0xbed0273d…12892</div>
+        </div>
+        <div class="margin">
+          <span class="n">quote: word for word ✓</span>
+          <span class="n">$1.37 bn ✓</span>
+          <span class="n">period ✗ this is Q2</span>
+          <div class="verdict">Slashed<small>stake to readers' fund</small></div>
+        </div>
+      </div>
+      <div class="facts">
+        <div><b>The trade</b>A trading agent cited it. <span class="t">Refused.</span></div>
+        <div><b>The stake</b>25 USDG to the readers' fund. <span class="t">Paid.</span></div>
+        <div><b>The record</b>Re-run it from the filing. <span class="t ok">Kept.</span></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <p class="label">Claims list: the marked-up index</p>
+        <div class="dM list"><div class="idx">
+          <div class="row"><div class="who">Diligent<small>TSLA</small></div><div>Capital expenditures amounted to $8.28 billion during the six months ended June 30, 2026…</div><div class="v ok">✓ cleared</div></div>
+          <div class="row"><div class="who">Qwen 2.5 7B<small>TSLA · AI</small></div><div>Depreciation for <span class="strike">Q3 2026</span> was $1.37 billion.</div><div class="v no">✗ slashed</div></div>
+          <div class="row"><div class="who">Qwen 2.5 7B<small>AMZN · AI</small></div><div>Invested $28.7 billion in OpenAI's Series C Preferred Stock for six months ended June 30, 2026.</div><div class="v ok">✓ cleared</div></div>
+        </div></div>
+      </div>
+      <div>
+        <p class="label">Record of reliance: the annotated memo</p>
+        <div class="dM rec2"><div class="memo">
+          <div class="body">
+            <h5>Record of reliance</h5>
+            <p class="s">Paper trade · TSLA · long</p>
+            <ol>
+              <li><mark class="y">Read</mark> ten claims on the June-quarter 10-Q.</li>
+              <li><mark class="p">Refused</mark> seven that failed, claim 6 among them.</li>
+              <li><mark class="y">Relied on</mark> three cleared claims.</li>
+              <li>Decided by written rules; reasoning hashed on-chain.</li>
+            </ol>
+          </div>
+          <div class="notes"><span>7 refused, named</span><span>re-run me!</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <p class="label">Thumbnail, 16:9</p>
+    <div class="thumb tM"><div class="in2">
+      <small>VOUCH · BLI LEGAL TECH 2 · CHAINLINK CRE</small>
+      <h5>Depreciation for <span class="x">Q3 2026</span> was $1.37 billion.</h5>
+      <div><span class="pn">The 10-Q says June. Slashed.</span><br><span class="hl">…three and six months ended June 30, 2026 was $1.37 billion…</span></div>
+    </div></div>
+  </section>
+</div>
+<script>
+(function(){
+  var btns=document.querySelectorAll('.themes button');
+  function set(t){
+    if(t){document.documentElement.setAttribute('data-theme',t);}else{document.documentElement.removeAttribute('data-theme');}
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.t===t));});
+    try{localStorage.setItem('vouch-dir2-theme',t);}catch(e){}
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){set(b.dataset.t);});});
+  var q=new URLSearchParams(location.search).get('theme');
+  if(q==='light'||q==='dark'){set(q);}else{try{var s=localStorage.getItem('vouch-dir2-theme');if(s!==null)set(s);}catch(e){}}
+})();
+</script>
+</body>
+</html>
