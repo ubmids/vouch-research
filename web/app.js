@@ -121,6 +121,8 @@ function boot() {
   checkPanel();
   const qs = new URLSearchParams(location.search);
   if (qs.has("record")) {
+    // a round published before the agent kept a journal has no record: show the local round's
+    if (!(F.journal || []).length && FEED === "feed.json") { location.replace(`?record=${encodeURIComponent(qs.get("record"))}&feed=feed-local.json`); return; }
     const j = (F.journal || []).find((x) => x.ticker === qs.get("record")) || (F.journal || [])[0];
     if (j) { recordPage(j); return; }
   }
