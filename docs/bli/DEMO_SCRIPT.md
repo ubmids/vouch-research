@@ -1,173 +1,76 @@
-# Vouch, BLI demo script (2:30)
+# Vouch, the BLI video: script and shot list
 
-Hard ceiling 3:00; aim for 2:30. **The payoff is on screen by 0:20**: an AI's
-wrong claim, slashed by the check, and a trading agent refused, on-chain.
-Then why lawyers should care, then the Chainlink CRE workflow, then the journal.
+**Length: 3:30** (hard ceiling 5:00). **The hero is the record of reliance**: the
+one page a compliance officer or counsel keeps. The video opens on it, takes it
+apart, and closes on it. Everything on screen is in the Exhibit design
+(design/DESIGN.md).
 
-**Film round A.** Round B is a fallback only if the testnet round cannot run
-by 22 Oct: it does not meet the Chainlink bounty's minimum and reads as
-unfinished. **Which round you film decides two captions.** Everything said aloud below is
-true for both; the captions say which one is on screen.
+**Record after `bash scripts/after_login.sh` and `bash scripts/deploy_web.sh --go`**, so the
+live page shows the testnet round settled by the CRE workflow. If the round
+cannot be settled by 22 Oct, record the same shots from the local round
+(`?feed=feed-local.json`) and use the SDK caption instead of the simulation one
+(see "Captions").
 
-| | Round **A** (after `cre login` and `scripts/cre_round.sh`) | Round **B** (fallback, works today) |
-|---|---|---|
-| Feed | `https://vouch-feed.vercel.app/?journal` after `vercel deploy --prod` | `web/` served locally (`python3 -m http.server -d web 8000`), `http://localhost:8000/?feed=feed-local.json&journal` |
-| Caption, whole video | "Robinhood Chain testnet · Chainlink CRE CLI simulation" | "Local devnet · the CRE workflow's code in Chainlink's SDK test runtime" |
-| 0:45 terminal | `cre/runs/<run>/claim-<id>.log` (the `[USER LOG]` lines) | `bash scripts/sdk_round.sh` output, then `cre workflow build` (the WASM hash) |
-| 0:45 caption | **SIMULATION** | **SDK TEST RUNTIME, NOT A CRE SIMULATION** |
-| The AI's claim | written live by Qwen if the preflight dry run reproduced it; otherwise re-posted from 24 Sep (the page labels it "replayed") | re-posted from 24 Sep, labelled "replayed" |
+## Before recording
 
-**Video assets** (all 1920x1080, from `bash scripts/build_assets.sh`, in
-`docs/assets/video/`): `title.png` (open on it for one second), `end.png`,
-`lower-founder.png` (over the face bubble), `section-1.png` to `section-5.png`
-(a folder tab naming each part, top left, while it runs), and the caption
-labels `caption-simulation.png`, `caption-replayed.png`, `caption-sdk.png`
-(top right, for as long as that footage is on screen). The overlays are
-transparent PNGs. For one claim alone on screen use `?claim=<id>&view=claim`.
+- 1920x1080, browser full screen at 100% zoom, light theme, no bookmarks bar.
+- Tabs, in order:
+  - **A** `https://vouch-feed.vercel.app/?record=TSLA` (the record of reliance)
+  - **B** `/?claim=<hero id>&view=claim` (the AI's wrong-quarter claim; its id is in docs/bli/TESTNET_ROUND.md)
+  - **C** `docs/deck/bli.html` slide 3, or docs/bli/LEGAL.md section 2 on GitHub
+  - **D** a terminal showing `cre/runs/<run>/claim-<hero id>.log` (the `[USER LOG]` lines), and **E** the explorer tab of the hero's verdict transaction
+  - **F** `/?view=journal` (the agent's case files)
+  - **G** `/?feed=feed-kol-real.json&view=journal` (the news checker on real posts)
+- Your face in a small round corner bubble, bottom left, for the first 10 and last 10 seconds.
+- One voice, unhurried. Pause half a second on every stamp.
 
-**Before recording**
+## Overlays (all in `docs/assets/video/`, 1920x1080, from `bash scripts/build_assets.sh`)
 
-- Round A: `bash scripts/cre_round.sh --preflight`, then `bash scripts/cre_round.sh`,
-  then publish (`cd web && vercel deploy --prod`). Round B: `bash scripts/sdk_round.sh`.
-- Have three tabs ready: **A** the feed above with `?journal`, **B** (round A
-  only) the explorer tab of the lead claim's verdict transaction, **C**
-  `docs/bli/LEGAL.md` on GitHub, scrolled to section 6.
-- A terminal with the 0:45 output from the table.
-- 1920x1080, browser full screen. **Your face in a small corner bubble for the
-  first 10 seconds and the last 10** (a real person on camera). One voice, unhurried.
+| File | Use |
+|---|---|
+| `title.png` | the first second, full screen |
+| `section-1.png` to `section-6.png` | transparent; a folder tab naming the part, top left, for its first 3 seconds |
+| `lower-founder.png` | transparent; over the face bubble, 0:01 to 0:06 |
+| `caption-simulation.png` | transparent; top right, whenever testnet CRE output is on screen |
+| `caption-replayed.png` | transparent; top right, whenever the AI's claim is on screen |
+| `caption-sdk.png` | transparent; replaces the simulation caption if you record the local round |
+| `end.png` | the last 4 seconds, full screen |
 
----
+## Shot list and script
 
-## 0:00 to 0:20, the payoff first
+| # | Time | Screen | Overlay | Action | Say |
+|---|---|---|---|---|---|
+| 1 | 0:00 | `title.png` | | hold 1 s | (nothing) |
+| 2 | 0:01 | Tab A, top of the page | section-1, lower-founder, face bubble | slow scroll to "Exhibits refused" | "This is a record of reliance. An AI trading agent read ten claims about Tesla's quarterly report and wanted to trade on all of them. This page shows the three it was allowed to rely on, the seven it was refused, and why." |
+| 3 | 0:20 | Tab A, "Exhibits refused", exhibit 6 row | caption-replayed | point at the red ring and the SLASHED stamp | "Exhibit six. An AI analyst wrote that Tesla's depreciation for Q3 was 1.37 billion dollars." |
+| 4 | 0:30 | Tab B, the claim record | section-2, caption-replayed | point: statement, then the yellow sentence, then the third finding, then the stamp | "Here is the sentence it cited, from Tesla's own 10-Q. The figure is right. The quarter is not: that sentence covers the three months ended June 30. Ringed in red, the words it got wrong. The check slashed it, and its stake went to the readers' fund." |
+| 5 | 0:55 | Tab B, scroll to the chain of custody | | point down the table | "And this is every hand the claim passed through: posted, checked against the filing from SEC EDGAR, slashed, and refused when the agent tried to rely on it." |
+| 6 | 1:10 | Tab C, the four rules | section-3 | point at Reg AC, then 2241 | "Why this matters to lawyers. Regulation AC has a natural person certify the views in research. FINRA Rule 2241 requires that the facts in it are based on reliable information. AI now drafts research, and it can't certify a belief. What a firm can do is show that every number was checked, against what, and by a process it doesn't control." |
+| 7 | 1:40 | Tab D, then Tab E | section-4, caption-simulation | the `[USER LOG]` lines, then the explorer's Checked and Slashed events | "That process is a Chainlink CRE workflow. Here it runs in the CRE CLI simulation on Robinhood Chain testnet: it fetches the filing, runs the check, and writes the verdict through Chainlink's forwarder, with the hash of the filing it read. The contract takes verdicts from nowhere else." |
+| 8 | 2:10 | Tab F, the TSLA case file | section-5 | click **Re-verify this trade**, let the ticks fill | "Every trade keeps its reasons. Re-verify redoes all of it in your browser: every hash, every verdict, every refusal, and the agent's own rules." |
+| 9 | 2:30 | Tab G, the tally, then one real post's record | | open the TSLA case file, then click the exhibit | "The same agent reads real public posts. Claude Haiku read a hundred and thirty about these five companies; the agent staked only on figures a sentence of the filing states, and every model reply is hashed into the record." |
+| 10 | 2:55 | Tab F, click **Print the record of reliance**, then the print dialog's preview | section-6 | scroll to "What this record does not prove" | "Back to the record. It proves what was said, against which filing, and what was done because of it. It does not prove anyone's honest belief, or that the filing is true. That stays the firm's job. This gives it the evidence." |
+| 11 | 3:20 | Tab A, top of the page, face bubble | | hold | "Vouch. If it's wrong, it costs you. If you trade on it, the record shows why." |
+| 12 | 3:26 | `end.png` | | hold 4 s | (nothing) |
 
-**On screen:** tab A. It opens on the AI's claim in the inspector: the claim
-says Q3, the filing's sentence says June, **Slashed**, and "It was refused"
-in the trading-agent box. Point at each as you say it. Caption for this
-segment: **"AI claim: Qwen 2.5's own words from 24 Sep, replayed"** (the page
-labels it "replayed" too).
+## Captions
 
-**Say:**
-
-> An AI analyst wrote that Tesla's depreciation for Q3 was 1.37 billion
-> dollars. Tesla's own filing says that quarter ended in June. Vouch's check,
-> a Chainlink CRE workflow, caught it against the SEC filing, and the AI's
-> stake went to the readers' fund. The trading agent that tried to act on it?
-> Refused, on-chain.
-
-## 0:20 to 0:45, why a lawyer should care
-
-**On screen:** tab C, section 2 (the Reg AC and FINRA 2241 quotes), then
-section 3 (the table).
-
-**Say:**
-
-> You've seen lawyers sanctioned for AI-invented case citations: over a
-> thousand US filings so far. Research has the same problem.
-> Research rules were written for people. Regulation AC has a natural person
-> certify their personal views. FINRA Rule 2241 says the facts in research
-> must be based on reliable information. AI now drafts research, and it can't
-> certify a belief. What a firm can do is show every number was checked
-> against the filing, by a process it doesn't control. That record is Vouch.
-
-## 0:45 to 1:15, the check is a Chainlink CRE workflow
-
-**On screen:** the terminal output from the table, with the caption from the
-table (**SIMULATION**, or **SDK TEST RUNTIME, NOT A CRE SIMULATION**) for the
-whole segment. Round A: the `[USER LOG]` lines (claim, "verdict: SLASH (wrong
-quarter …)", "verdict for claim … written: 0x…"), then tab B, the verdict
-transaction on the Robinhood Chain explorer with the `Checked` and `Slashed`
-events (the explorer shows Chainlink's mock forwarder: that is expected).
-
-**Say (round A):**
-
-> This is the check as a Chainlink Runtime Environment workflow, in the CRE
-> CLI simulation: one node runs the exact workflow, fetches the filing from SEC
-> EDGAR, and writes the verdict through Chainlink's test forwarder, with the
-> hash of the filing it read. On a live network, the forwarder only accepts
-> reports the nodes signed, and the contract checks the workflow's owner, name
-> and pinned id.
-
-**Say (round B):**
-
-> This is the check as a Chainlink Runtime Environment workflow. Here its own
-> code runs in Chainlink's SDK test runtime, on a local chain: it fetches the
-> filing, runs the check, and builds the report the contract takes. The CLI
-> simulation on testnet is the next step. On a live network, the forwarder
-> only accepts reports the nodes signed, and the contract checks the
-> workflow's owner, name and pinned id.
-
-## 1:15 to 1:55, the agent's reasoning trail
-
-**On screen:** back to tab A, scroll to **The agent's journal**. Open the
-entry for the lead claim's stock. Walk the steps: Read, Refused (point at
-the AI's claim in the list), Kept what held, Decided, Committed. Click
-**Re-verify this trade** and let the ticks fill in, ending with the
-on-chain checks. Then click **Print the record of reliance** and hold on the
-page for three seconds: the case sticker, the exhibits relied on and refused,
-the chain of custody, "What this record does not prove".
-
-**Say:**
-
-> The trading agent read every claim about this stock. It tried to trade on
-> all of them, and the desk refused it each time it cited one that failed,
-> naming the claim. What's left are claims that held. Its rules turn those
-> into a position. In this round they're fixed, written rules, so anyone can
-> re-run them; a model can make the call instead, with its exact reply in the
-> record. The whole reasoning, with every verdict and every refusal, is
-> hashed on-chain with the trade. Re-verify redoes all of it in the browser,
-> and the record of reliance is one page counsel can keep.
-
-(Round A only, once the page is deployed: add "and checks it against the
-chain", because the page reads the receipts from Robinhood Chain's RPC. On the
-local round B the page says the on-chain links need the command line; show
-`python -m vouchrh.journal verify` instead if you want that shot.)
-
-## 1:55 to 2:15, what it proves, and what it doesn't
-
-**On screen:** tab C, section 6, both lists.
-
-**Say:**
-
-> We're careful about what this proves. It proves exactly what was said,
-> against which filing, what the check found, and what was done because of it.
-> It doesn't prove anyone's honest belief, or that the filing itself is true.
-> That's still the firm's job. Vouch gives the compliance officer the evidence.
-
-## 2:15 to 2:30, close
-
-**On screen:** the top of the live feed (the KPIs: claims, true, wrong,
-agent trades and refusals), then the end card of the tour: "That's Vouch."
-
-**Say:**
-
-> Vouch. Every claim checked against the SEC filing. Every trade with its
-> receipts. If it's wrong, it costs you. If you trade on it, the record shows why.
-
-Cut.
-
----
+- **SIMULATION** (`caption-simulation.png`): on shot 7, and on any screen showing
+  testnet verdicts. Never say "a live network", "every node agreed" or "no admin
+  key" over simulation footage: in simulation anyone can call the mock forwarder.
+- **REPLAYED** (`caption-replayed.png`): on shots 3 and 4. The page labels the
+  claim "replayed" too.
+- **SDK test runtime** (`caption-sdk.png`): only if recording the local round;
+  then shot 7 shows `bash scripts/sdk_round.sh` output and the script says "the
+  workflow's own code in Chainlink's SDK test runtime", never "simulated on testnet".
 
 ## Things to get right
 
-- **The first sentence is the claim, not an introduction.** No "Hi, I'm…"
-  before 0:20; the face bubble is enough.
-- Say **"Chainlink"** and **"CRE workflow"** out loud; show the CLI output.
-  That is the Chainlink bounty's required evidence (CLI simulation).
-- Say **"reasoning trail"** and click **Re-verify**. That is the RYO bounty's
-  wording.
-- Name **Regulation AC** and **FINRA Rule 2241**, once each, correctly. Don't say Vouch
-  makes a firm "compliant"; say it is evidence for the firm's procedures.
-- Never say "every node", "the network agreed" or "no admin key" over a
-  simulation: on a simulation market anyone can call the mock forwarder.
-- Round B is not a CRE CLI simulation and does not meet the Chainlink bounty's
-  minimum on its own; say "SDK test runtime", never "simulated on testnet".
-  Never show a local-devnet screen and call it testnet.
-- Show only what the code does: the readers' fund on the test market is the
-  deployer standing in; don't name a real fund. The round is run with the
-  default rules, so say "rules". Say "a model can make the decision instead"
-  only as a capability, and say a model decided only if the round was run with
-  `VOUCH_DECIDER=model` and the journal entry shows "Decided by a model".
-- Optional, for the RYO judges (10 s, cut from 1:55 if needed):
-  `?feed=feed-kol.json`, one wrong post refused. Say: "The same agent works as a
-  news checker on posts by market voices. These twenty are written fixtures;
-  a loud post with the wrong quarter moves nothing."
+- The first words are about the record, not an introduction.
+- Say **Chainlink**, **CRE workflow**, **reasoning trail**, **Regulation AC** and
+  **FINRA Rule 2241** aloud, once each. Never say Vouch makes a firm "compliant".
+- Every stamp you point at is on screen long enough to read (one second).
+- Upload to YouTube (public or unlisted). Paste the link into
+  `docs/bli/BUIDL.template.md` and run `python3 scripts/round_docs.py`.
+- For the RYO and Chainlink bounty pages, cut 60-second clips from shots 8 to 9
+  and shot 7 respectively.

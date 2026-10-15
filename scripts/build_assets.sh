@@ -5,6 +5,7 @@
 #
 #   bash scripts/build_assets.sh            # gallery from feed.json if it has a journal, else feed-local.json
 #   FEED=feed-kol-real.json bash scripts/build_assets.sh
+#   VIDEO_ONLY=1 bash scripts/build_assets.sh     # cover, thumbnail and video cards only
 #
 # Needs Google Chrome and Python 3. Uses the network only for Google Fonts.
 set -euo pipefail
@@ -57,7 +58,7 @@ shot "$OUT/video/end.png" 1920,1080 "$(card mode=end)"
 echo "video overlays (transparent)"
 shot "$OUT/video/lower-founder.png" 1920,1080 "$(card "mode=lower&who=$(enc 'Subomi Olagoke')&role=$(enc 'Builder of {name}')")" transparent
 i=0
-for t in "The payoff" "Why a lawyer should care" "The check is a Chainlink CRE workflow" "The agent's reasoning trail" "What it proves, and what it doesn't"; do
+for t in "The record of reliance" "Exhibit 6" "Why a lawyer should care" "The check is a Chainlink CRE workflow" "The reasoning trail" "What it proves, and what it doesn't"; do
   i=$((i + 1))
   shot "$OUT/video/section-$i.png" 1920,1080 "$(card "mode=section&n=$(enc "Part $i")&title=$(enc "$t")")" transparent
 done
@@ -65,6 +66,7 @@ shot "$OUT/video/caption-simulation.png" 1920,1080 "$(card "mode=caption&title=S
 shot "$OUT/video/caption-replayed.png" 1920,1080 "$(card "mode=caption&title=Replayed&sub=$(enc "Qwen 2.5's own words from 24 Sep, posted again word for word")")" transparent
 shot "$OUT/video/caption-sdk.png" 1920,1080 "$(card "mode=caption&title=$(enc 'SDK test runtime')&sub=$(enc 'Not a CRE simulation: the workflow code in the SDK test runtime, local devnet')")" transparent
 
+if [ -n "${VIDEO_ONLY:-}" ]; then echo "done (VIDEO_ONLY: gallery skipped)"; exit 0; fi
 echo "gallery, from web/$FEED ($CHAIN)"
 PORT=$(python3 -c 'import socket;s=socket.socket();s.bind(("127.0.0.1",0));print(s.getsockname()[1])')
 python3 -m http.server "$PORT" --bind 127.0.0.1 --directory web >/dev/null 2>&1 &
