@@ -54,8 +54,8 @@
  {
   "id": "cre",
   "shot": "terminal",
-  "text": "That process is a Chainlink CRE workflow. Here its own code ran in Chainlink's SDK test runtime, on a local devnet. For each claim it reads the filing, runs the check, and builds the verdict, with a hash of the filing it read.",
-  "tts": "That process is a Chainlink C R E workflow. Here its own code ran in Chainlink's S D K test runtime, on a local dev net. For each claim it reads the filing, runs the check, and builds the verdict, with a hash of the filing it read."
+  "text": "That process is a Chainlink CRE workflow. I ran it through the CRE command line simulation against Robinhood Chain testnet. For each claim it reads the filing, runs the check, and writes the verdict on chain, with a hash of the filing it read.",
+  "tts": "That process is a Chainlink C R E workflow. I ran it through the C R E command line simulation against Robinhood Chain testnet. For each claim it reads the filing, runs the check, and writes the verdict on chain, with a hash of the filing it read."
  },
  {
   "id": "journal1",

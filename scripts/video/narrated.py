@@ -8,8 +8,10 @@ Voice lines are in scripts/video/lines.json ("text" is the caption, "tts" what
 the voice is sent when it must be spelled out). Audio is cached in VOICE_DIR,
 so a rebuild costs no characters. Recordings and segments go to WORK and are
 deleted at the end. Outputs: OUT/vouch-narrated.{mp4,srt} and the script.
-Records the local round (feed-local.json), so the CRE part carries the SDK
-test runtime caption, never the simulation one (docs/bli/DEMO_SCRIPT.md).
+The browser shots record the local round (feed-local.json). The CRE shot is
+the real CRE CLI run: Tesla's claims from cre/runs/<CRE_RUN>/claim-*.log, the
+testnet round of 15 to 20 Oct settled by `cre workflow simulate --broadcast` on
+Robinhood Chain testnet, under the SIMULATION caption (docs/bli/DEMO_SCRIPT.md).
 """
 import json
 import os
@@ -33,6 +35,7 @@ OUT = pathlib.Path(os.environ.get("OUT", HOME / "Desktop/hackathons/vouch-video"
 WORK = pathlib.Path(os.environ.get("WORK", OUT / "work/build"))
 ASSETS = ROOT / "docs/assets/video"
 FEED = "feed-local.json"
+CRE_RUN = "20261015T163010Z-posted"   # the testnet round settled through the CRE CLI
 W, H, FPS = 1920, 1080, 30
 GAP, BREAK, LEAD, END_HOLD, IN = 0.4, 0.6, 0.6, 3.0, 0.25
 
@@ -176,23 +179,53 @@ def serve_web():
     return srv, f"http://127.0.0.1:{srv.server_address[1]}/"
 
 
-def terminal_page(feed):
-    """The workflow's own log lines for Tesla's ten claims, as the round recorded them."""
-    F = json.loads((ROOT / "web" / feed).read_text())
+def terminal_page(run):
+    """The CRE CLI's own output for Tesla's ten claims, taken from the round's
+    claim-<id>.log files: the `cre workflow simulate` call per claim, then the
+    workflow's [USER LOG] lines and the simulation result. Anything that looks
+    like a key is dropped (the logs hold none; this is the second lock)."""
+    import re
+    R = ROOT / "cre/runs" / run
+    F = json.loads((R / "feed.json").read_text())
+    posts = dict(l.split()[:2] for l in (R / "feed.posts.txt").read_text().splitlines() if l.strip())
+    # a bare 64-hex string (no 0x: not a tx or a filing hash) or a key-ish word drops the line
+    secret = re.compile(r"(?i)private|secret|api[_-]?key|CRE_ETH|(?<![0-9a-fx])[0-9a-f]{64}")
     esc = lambda s: str(s).replace("&", "&amp;").replace("<", "&lt;")
+    short = lambda h: f"{h[:10]}…{h[-4:]}"
     rows = []
-    for c in sorted(F["claims"], key=lambda c: int(c["id"])):
-        if c["ticker"] != "TSLA":
-            continue
-        slash = c["verdict"] == "slashed"
-        for k, lg in enumerate(c.get("workflow_log", [])):
-            if "written: 0x000" in lg:
-                continue  # the SDK runtime's EVM write is a mock; the report went through the forwarder instead
-            cls = "s" if (slash and k == 1) else ("c" if k == 1 else "")
-            hl = " hl" if c["id"] in (6, "6") else ""
-            rows.append(f'<div class="ln {cls}{hl}" data-claim="{c["id"]}">{esc(lg)}</div>')
-        rows.append(f'<div class="ln dim">  forwarder → BondedClaims · verdict tx {esc(c["tx_judge"][:12])}…{esc(c["tx_judge"][-6:])}</div>')
-    note = esc(F.get("sdk_runtime", ""))
+    tsla = sorted((c for c in F["claims"] if c["ticker"] == "TSLA"), key=lambda c: int(c["id"]))
+    for n, c in enumerate(tsla):
+        cid = str(c["id"])
+        hl = " hl" if cid == "6" else ""
+        tx = posts[cid]
+        flags = ("--target staging-settings --non-interactive -e .env --trigger-index 0 "
+                 f"--evm-tx-hash {short(tx)} --evm-event-index 0 --wasm vouch-verifier.wasm --config .config.run.json --broadcast"
+                 if n == 0 else f"… --evm-tx-hash {short(tx)} --broadcast")
+        rows.append(f'<div class="ln cmd{hl}" data-claim="{cid}">$ cre workflow simulate ./vouch-verifier {esc(flags)}</div>')
+        log = (R / f"claim-{cid}.log").read_text().splitlines()
+        keep = []
+        for k, lg in enumerate(log):
+            if "[USER LOG]" in lg:
+                keep.append(lg.split("Z ", 1)[-1] if lg[:4].isdigit() else lg)
+            elif "Workflow Simulation Result" in lg and k + 1 < len(log):
+                keep.append("✓ result " + log[k + 1].strip())
+            elif n == 0 and ("Simulator Initialized" in lg or "Running trigger" in lg):
+                keep.append(lg.split("Z ", 1)[-1].strip() if lg[:4].isdigit() else lg.strip())
+        for lg in keep:
+            if secret.search(lg):
+                continue
+            if "verdict: SLASH" in lg:
+                cls = "s"
+            elif "verdict: CLEAR" in lg:
+                cls = "c"
+            else:
+                cls = "dim" if not lg.startswith("[USER LOG]") else ""
+            rows.append(f'<div class="ln {cls}{hl}" data-claim="{cid}">{esc(lg)}</div>')
+    written = sum(1 for c in F["claims"] if c.get("tx_judge"))
+    clear = sum(1 for c in F["claims"] if c.get("verdict") == "cleared")
+    side = (f"One <b>cre workflow simulate --broadcast</b> per claim, one local node, through Chainlink's mock forwarder, "
+            f"writing to Robinhood Chain testnet. All {len(F['claims'])} claims: {written} verdicts written, "
+            f"{clear} cleared, {written - clear} slashed.<br><br>Lines from cre/runs/{esc(run)}/claim-*.log.")
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Archivo:wght@800&display=swap" rel="stylesheet">
 <style>
@@ -202,22 +235,20 @@ html,body{{margin:0;background:#e8d5a3;}}
 .dot{{width:13px;height:13px;border-radius:50%;background:#5a564a}}
 .bar span{{margin-left:16px}}
 .body{{padding:22px 28px;font:400 18px/1.45 'Courier Prime',monospace;color:#e9e4d6;height:860px;overflow:hidden}}
-.cmd{{color:#ffd400;font-weight:700}}
+.cmd{{color:#ffd400;font-weight:700;margin-top:10px}}
 .ln{{white-space:pre-wrap;word-break:break-all;opacity:0;transition:opacity .25s}}
 .ln.on{{opacity:1}}
 .ln.s{{color:#ff5c6c;font-weight:700}} .ln.c{{color:#9fd0ff;font-weight:700}} .dim{{color:#8d8670}}
 .ln.hl.on{{background:rgba(255,212,0,.13)}}
-.side{{position:absolute;left:1440px;top:300px;width:420px;font:400 17px/1.45 'Courier Prime',monospace;color:#1d1b16}}
+.side{{position:absolute;left:1440px;top:330px;width:420px;font:400 17px/1.45 'Courier Prime',monospace;color:#1d1b16}}
 .side h3{{font:800 30px/1.05 Archivo,sans-serif;text-transform:uppercase;margin:0 0 12px}}
 </style></head><body>
-<div class="win"><div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span>cre/vouch-verifier · workflow.ts in the CRE SDK test runtime · round of 14 Oct, local devnet</span></div>
-<div class="body" id="b"><div class="cmd">$ bash scripts/sdk_round.sh</div>
-<div class="dim">== 2. the workflow's handler, in the CRE SDK test runtime, builds a report per claim</div>
-{''.join(rows)}</div></div>
-<div class="side"><h3>Workflow log, Tesla's ten claims</h3>{note}<br><br>Lines as recorded in web/{esc(feed)}.</div>
+<div class="win"><div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span>cre/ · CRE CLI simulation · Robinhood Chain testnet · round of 15 to 20 Oct</span></div>
+<div class="body" id="b">{''.join(rows)}</div></div>
+<div class="side"><h3>CRE CLI simulation, Tesla's ten claims</h3>{side}</div>
 <script>const B=document.getElementById('b');
 window.__reveal=(ms)=>{{const ls=[...document.querySelectorAll('.ln')];ls.forEach((l,i)=>setTimeout(()=>{{l.classList.add('on');const r=l.getBoundingClientRect(),br=B.getBoundingClientRect();if(r.bottom>br.bottom-10)B.scrollTop+=r.bottom-br.bottom+40;}},i*ms/ls.length));}};
-window.__focus=(ms)=>{{const e=document.querySelector('.ln.hl');const y=e.offsetTop-B.offsetTop-260;const y0=B.scrollTop,t0=performance.now();const st=(n)=>{{const k=Math.min(1,(n-t0)/ms);B.scrollTop=y0+(y-y0)*(k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2);if(k<1)requestAnimationFrame(st);}};requestAnimationFrame(st);}};</script>
+window.__focus=(ms)=>{{const e=document.querySelector('.ln.hl');const y=e.offsetTop-B.offsetTop-200;const y0=B.scrollTop,t0=performance.now();const st=(n)=>{{const k=Math.min(1,(n-t0)/ms);B.scrollTop=y0+(y-y0)*(k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2);if(k<1)requestAnimationFrame(st);}};requestAnimationFrame(st);}};</script>
 </body></html>"""
 
 
@@ -234,7 +265,7 @@ def record_all(plan):
     from playwright.sync_api import sync_playwright
     srv, base = serve_web()
     term = WORK / "terminal.html"
-    term.write_text(terminal_page(FEED))
+    term.write_text(terminal_page(CRE_RUN))
     deck = deck_page()
     clips = {}
     with sync_playwright() as p:
@@ -287,10 +318,12 @@ def record_all(plan):
                 sh_.at(15.0); sh_.js("__point('track agent actions', 'q,i', 0.5, 0.8)")
             elif n == "terminal":
                 sh_ = Shot(b, term.as_uri(), n); sh_.ready()
-                sh_.page.evaluate("__reveal(6500)")
-                sh_.at(7.0); sh_.page.evaluate("__focus(900)")
-                sh_.at(8.4); sh_.js("__point('verdict: SLASH (wrong quarter', '.ln.hl', 0.2, 0.5)")
-                sh_.at(12.5); sh_.js("__point('filing keccak256', '.ln.hl', 0.75, 0.8)")
+                sh_.page.evaluate("__reveal(8000)")
+                sh_.at(9.0); sh_.page.evaluate("__focus(900)")
+                sh_.at(10.2); sh_.js("__point('claim #6 TSLA', '.ln.hl', 0.35, 0.6)")
+                sh_.at(11.8); sh_.js("__point('verdict: SLASH (wrong quarter', '.ln.hl', 0.3, 0.3)")
+                sh_.at(13.6); sh_.js("__point('verdict for claim #6 written', '.ln.hl', 0.3, 0.6)")
+                sh_.at(15.6); sh_.js("__point('filing keccak256', '.ln.hl', 0.86, 0.3)")
             elif n == "journal":
                 sh_ = Shot(b, base + f"?view=journal&feed={FEED}", n); sh_.ready()
                 sh_.at(0.8); sh_.scroll_to("READ.", "b,strong,div,p", 230, 1200)
@@ -378,14 +411,14 @@ def main():
 
     clips = record_all(plan)
     rep = caption_small(ASSETS / "caption-replayed.png", "replayed")
-    sdk = caption_small(ASSETS / "caption-sdk.png", "sdk")
+    sim = caption_small(ASSETS / "caption-simulation.png", "simulation")
     margin = (W - 430 - 24, 112)
     sec = lambda i: (ASSETS / f"section-{i}.png", 0.3, 3.6, (0, 0))
     over = {
         "record": [sec(1)],
         "claim": [sec(2)],
         "deck": [sec(3)],
-        "terminal": [sec(4), (sdk, 0, None, margin)],
+        "terminal": [sec(4), (sim, 0, None, margin)],
         "journal": [sec(5)],
         "limits": [sec(6)],
     }
@@ -434,7 +467,9 @@ def main():
         srt.append(f"{k}\n{srt_time(l['start'])} --> {srt_time(l['start'] + l['dur'])}\n{l['text']}\n")
     (OUT / "vouch-narrated.srt").write_text("\n".join(srt))
     script = ["# Vouch, the narrated video: final script", "",
-              f"Voice: ElevenLabs (Subomi's approved voice). Length {total:.1f}s. Recorded on the local round (web/{FEED}).", ""]
+              f"Voice: ElevenLabs (Subomi's approved voice). Length {total:.1f}s. Browser shots recorded on the local round (web/{FEED}); "
+              f"the terminal shot is the real CRE CLI output (`cre workflow simulate --broadcast`, Robinhood Chain testnet, round of 15 to 20 Oct) "
+              f"from cre/runs/{CRE_RUN}/claim-*.log, under the SIMULATION caption.", ""]
     for name, ids in SESSIONS:
         script.append(f"**{name}**")
         script.append("")
