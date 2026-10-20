@@ -1,0 +1,14 @@
+{
+  "chainSelectorName": "robinhood-testnet",
+  "market": "0x3234bd274FF76aB2eB3487eC91cD14cbAc3E1a33",
+  "userAgent": "Vouch research prototype (SEC contact, from agent/vouchrh/edgar.py)",
+  "sendUserAgent": true,
+  "ciks": {
+    "TSLA": "0001318605",
+    "AMZN": "0001018724",
+    "PLTR": "0001321655",
+    "NFLX": "0001065280",
+    "AMD": "0000002488"
+  },
+  "gasLimit": "1000000"
+}

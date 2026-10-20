@@ -1,0 +1,99 @@
+
+TSLA #0
+  ✓ every claim the agent read is either cited or refused (none quietly left out)
+  ✓ refusal of claim #2 reverted on-chain
+  ✓ claim #2 failed the check (or was never checked)
+  ✓ refusal of claim #3 reverted on-chain
+  ✓ claim #3 failed the check (or was never checked)
+  ✓ refusal of claim #4 reverted on-chain
+  ✓ claim #4 failed the check (or was never checked)
+  ✓ refusal of claim #6 reverted on-chain
+  ✓ claim #6 failed the check (or was never checked)
+  ✓ refusal of claim #7 reverted on-chain
+  ✓ claim #7 failed the check (or was never checked)
+  ✓ refusal of claim #8 reverted on-chain
+  ✓ claim #8 failed the check (or was never checked)
+  ✓ refusal of claim #9 reverted on-chain
+  ✓ claim #9 failed the check (or was never checked)
+  ✓ reasoning record hashes to what the desk stored
+  ✓ the desk's citations are the record's evidence
+  ✓ the desk's ticker, side and notional are the record's
+  ✓ the trade's transaction opened this entry
+  ✓ claim #0 words hash to the on-chain hash
+  ✓ claim #0 is cleared on-chain
+  ✓ claim #0 verdict transaction cleared it
+  ✓ claim #0 verdict evidence is the filing EDGAR serves
+  ✓ claim #0 re-checked against the filing: holds
+  ✓ claim #1 words hash to the on-chain hash
+  ✓ claim #1 is cleared on-chain
+  ✓ claim #1 verdict transaction cleared it
+  ✓ claim #1 verdict evidence is the filing EDGAR serves
+  ✓ claim #1 re-checked against the filing: holds
+  ✓ claim #5 words hash to the on-chain hash
+  ✓ claim #5 is cleared on-chain
+  ✓ claim #5 verdict transaction cleared it
+  ✓ claim #5 verdict evidence is the filing EDGAR serves
+  ✓ claim #5 re-checked against the filing: holds
+  ✓ re-running the policy gives the same trade
+
+AMZN #-
+  ✓ every claim the agent read is either cited or refused (none quietly left out)
+  ✓ re-running the policy gives no trade too
+
+PLTR #-
+  ✓ every claim the agent read is either cited or refused (none quietly left out)
+  ✓ re-running the policy gives no trade too
+
+NFLX #1
+  ✓ every claim the agent read is either cited or refused (none quietly left out)
+  ✓ refusal of claim #32 reverted on-chain
+  ✓ claim #32 failed the check (or was never checked)
+  ✓ refusal of claim #33 reverted on-chain
+  ✓ claim #33 failed the check (or was never checked)
+  ✓ refusal of claim #34 reverted on-chain
+  ✓ claim #34 failed the check (or was never checked)
+  ✓ refusal of claim #37 reverted on-chain
+  ✓ claim #37 failed the check (or was never checked)
+  ✓ refusal of claim #38 reverted on-chain
+  ✓ claim #38 failed the check (or was never checked)
+  ✓ refusal of claim #39 reverted on-chain
+  ✓ claim #39 failed the check (or was never checked)
+  ✓ reasoning record hashes to what the desk stored
+  ✓ the desk's citations are the record's evidence
+  ✓ the desk's ticker, side and notional are the record's
+  ✓ the trade's transaction opened this entry
+  ✓ claim #30 words hash to the on-chain hash
+  ✓ claim #30 is cleared on-chain
+  ✓ claim #30 verdict transaction cleared it
+  ✓ claim #30 verdict evidence is the filing EDGAR serves
+  ✓ claim #30 re-checked against the filing: holds
+  ✓ claim #31 words hash to the on-chain hash
+  ✓ claim #31 is cleared on-chain
+  ✓ claim #31 verdict transaction cleared it
+  ✓ claim #31 verdict evidence is the filing EDGAR serves
+  ✓ claim #31 re-checked against the filing: holds
+  ✓ claim #35 words hash to the on-chain hash
+  ✓ claim #35 is cleared on-chain
+  ✓ claim #35 verdict transaction cleared it
+  ✓ claim #35 verdict evidence is the filing EDGAR serves
+  ✓ claim #35 re-checked against the filing: holds
+  ✓ claim #36 words hash to the on-chain hash
+  ✓ claim #36 is cleared on-chain
+  ✓ claim #36 verdict transaction cleared it
+  ✓ claim #36 verdict evidence is the filing EDGAR serves
+  ✓ claim #36 re-checked against the filing: holds
+  ✓ re-running the policy gives the same trade
+
+AMD #-
+  ✓ every claim the agent read is either cited or refused (none quietly left out)
+  ✓ refusal of claim #41 reverted on-chain
+  ✓ claim #41 failed the check (or was never checked)
+  ✓ refusal of claim #42 reverted on-chain
+  ✓ claim #42 failed the check (or was never checked)
+  ✓ refusal of claim #43 reverted on-chain
+  ✓ claim #43 failed the check (or was never checked)
+  ✓ refusal of claim #44 reverted on-chain
+  ✓ claim #44 failed the check (or was never checked)
+  ✓ re-running the policy gives no trade too
+
+87 of 87 checks hold

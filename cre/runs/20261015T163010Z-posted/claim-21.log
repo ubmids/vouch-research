@@ -1,0 +1,28 @@
+Initializing...
+Loading settings...
+Checking RPC connectivity...
+  Reading pre-built WASM binary...
+✓ Loaded WASM binary from ../../cre/runs/20261015T163010Z-posted/vouch-verifier.wasm
+✓ Simulation limits enabled
+  HTTP: req=120kb resp=250kb timeout=10s | ConfHTTP: req=125kb resp=500kb timeout=1m30s | Consensus obs=25kb | ChainWrite evm_report=50kb evm_gas=10000000 solana_report=265b solana_cu=300000 | WASM binary=100mb compressed=20mb
+  Binary hash: 077ae634fa6419380c91bba594a9205db996434c427a92005492e9b829fb73eb
+  Config hash: 470cc57cb26ff7a1496d09261fd165c141cca537feafd95f570da8008918468d
+Fetching transaction receipt for 0xe4017282c18c17b7f6bb4647e09b6e5c2a220f2ac6b727c049432e5c289415ce...
+2026-10-20T22:06:02Z [SIMULATION] Simulator Initialized
+
+2026-10-20T22:06:02Z [SIMULATION] Running trigger trigger=evm:ChainSelector:2032988798112970440@1.0.0
+2026-10-20T22:06:02Z [USER LOG] claim #21 PLTR $5.6 billion by Qwen 2.5 7B, citing 0001321655-26-000041
+2026-10-20T22:06:17Z [USER LOG] verdict: CLEAR (quote verified and value grounded); filing keccak256 0x55877ced6f78249633baa56efbc1610285f9ccb036c286f4751fc74a2b92bc2a
+2026-10-20T22:06:20Z [USER LOG] verdict for claim #21 written: 0xfd3f04d9dc12e8e4a6bbc9b61aed2a77fd601ec6316f5092d11305d29197f456
+
+✓ Workflow Simulation Result:
+"#21 cleared 0xfd3f04d9dc12e8e4a6bbc9b61aed2a77fd601ec6316f5092d11305d29197f456"
+
+2026-10-20T22:06:20Z [SIMULATION] Execution finished signal received
+2026-10-20T22:06:20Z [SIMULATION] Skipping WorkflowEngineV2
+
+╭──────────────────────────────────────────────────────╮
+│ Simulation complete! Ready to deploy your workflow?  │
+│                                                      │
+│ Run cre account access to request deployment access. │
+╰──────────────────────────────────────────────────────╯

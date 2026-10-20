@@ -81,7 +81,7 @@ owner, name and pinned id. The TypeScript check matches the Python one on 3,249
 claims, on Bun and on QuickJS.
 
 > **What ran, and what is trusted**
-> - On Robinhood Chain testnet the round's market is deployed and its 50 claims are posted (market 0x3234bd27…3E1a33); the CRE CLI simulation that settles them runs once the CRE login is done.
+> - On Robinhood Chain testnet the CRE workflow, in the CRE CLI simulation, wrote 50 of 50 verdicts (18 cleared, 32 slashed; market 0x3234bd27…3E1a33); the journal check: 87 of 87 checks hold.
 > - The same claims settled end to end on a local chain by the workflow's own
 >   code in Chainlink's SDK test runtime; the real-post rounds the same way.
 > - Tests: 57 Foundry, 76 Python and 24 Bun, all passing.

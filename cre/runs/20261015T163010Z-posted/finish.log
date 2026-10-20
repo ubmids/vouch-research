@@ -1,0 +1,7 @@
+  TSLA  LONG     100 USD paper on claims [0, 1, 5] after 7 refusals  tx 0xbf9fa24c93
+  AMZN  no trade: what is left gives no direction (0 refusals)
+  PLTR  no trade: what is left gives no direction (0 refusals)
+  NFLX  LONG     200 USD paper on claims [30, 31, 35, 36] after 6 refusals  tx 0x420ffb77ee
+  AMD   no trade: what is left gives no direction (4 refusals)
+  trading agent: 2 paper trades, 17 refusals on-chain
+-> /Users/subomi/Desktop/hackathons/fix-20261014/vouch-research/cre/runs/20261015T163010Z-posted/feed.json  (50 claims, reader pool 800.0 tUSDG)

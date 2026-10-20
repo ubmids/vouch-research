@@ -1,13 +1,14 @@
 {
  "chain_id": 46630,
  "contracts": {
-  "usdg": "0x993FE01a767D0a9Da09b8C3FA2d04529f43861dB",
-  "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
-  "desk": "0x6170c08ACF845C48032c9fAc118E62101cf29745"
+  "usdg": "0xD1c5756B52914bA790E613198D69458C972FA90F",
+  "market": "0x3234bd274FF76aB2eB3487eC91cD14cbAc3E1a33",
+  "desk": "0x59Cd19438CDAe1eDBa5F3045aF3a01B1D33b4039",
+  "forwarder": "0x0b93082D9b3C7C97fAcd250082899BAcf3af3885"
  },
- "generated": 1790271918,
- "trader": "0x29BC85932D3Db1dD9dA48599e800cc0E00307d46",
- "reader_pool": 400.0,
+ "generated": 1792082279,
+ "settled_by": "the Chainlink CRE workflow (CRE CLI simulation, one local node, through Chainlink's mock forwarder)",
+ "from_block": 135968698,
  "standings": [
   {
    "analyst": "Diligent",
@@ -15,6 +16,7 @@
    "address": "0x1618A08FA335DBe562526033D839E90E0D2e400b",
    "bonded": 500.0,
    "cleared": 10,
+   "cleared_unchecked": 0,
    "slashed": 0
   },
   {
@@ -23,6 +25,7 @@
    "address": "0x86f1C3F69Dd007F918364E2861CF389B35f33ea8",
    "bonded": 450.0,
    "cleared": 8,
+   "cleared_unchecked": 0,
    "slashed": 2
   },
   {
@@ -31,6 +34,7 @@
    "address": "0x82d77bf44e3501499fE1Cc65f19609389c9653B9",
    "bonded": 250.0,
    "cleared": 0,
+   "cleared_unchecked": 0,
    "slashed": 10
   },
   {
@@ -39,6 +43,7 @@
    "address": "0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94",
    "bonded": 250.0,
    "cleared": 0,
+   "cleared_unchecked": 0,
    "slashed": 10
   },
   {
@@ -47,6 +52,7 @@
    "address": "0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477",
    "bonded": 250.0,
    "cleared": 0,
+   "cleared_unchecked": 0,
    "slashed": 10
   }
  ],
@@ -66,16 +72,25 @@
    "filed": "2026-07-23",
    "stake": 25.0,
    "analyst_address": "0x1618A08FA335DBe562526033D839E90E0D2e400b",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "0bfa471e0b9fc1c6fb1d7f3093123a24c2557c9943cb9b37b631558303c12680",
-   "tx_judge": "f3e6e780550591ed02970fd83c3b17a5c326c8b061ffbdadb27c10bbd7251b7d",
+   "tx_post": "0xf8463c0905da50316e5c7d393333d2baba64b7718284f44d3dee68ffdb5412f3",
+   "verdict": "cleared",
+   "tx_judge": "0x6d5ebd01500658129b917d54460b44f9ee1f482e54b4f1f9a248c46dc31339db",
+   "evidence": "0x2e3b768ea327c060cf6a58ea7f819257e2a034eeee83dc6554f67a2f030ebee9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "89570cf5c72da8b6178df4daf79199ffcdca62cff41a3790fe7b5c860cd8772e"
+    "tx": "0xbf9fa24c93047003fbbd957da941b3e137691faa6959c50d61d6456a8145a217",
+    "entry": 0,
+    "side": "long",
+    "signal": 0,
+    "ticker": "TSLA"
    }
   },
   {
@@ -93,16 +108,33 @@
    "filed": "2026-07-23",
    "stake": 25.0,
    "analyst_address": "0x86f1C3F69Dd007F918364E2861CF389B35f33ea8",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "7a5b589098731f8e4f581c3069b59211c2be0306e43446f83f8731628e9a5f89",
-   "tx_judge": "a85b629dc884c0255abe5c083cad5ac6cf528d28ecbf5727f717b6a2f33ab7e1",
+   "tx_post": "0x951f5f8a5717d38047dac9bc256265347f29e8b22a90d39f4de74a9dfd6cb20a",
+   "replayed_from": {
+    "round": "the published testnet round of 24 September 2026",
+    "claim": 1,
+    "hash": "0x892bd633f33dd74d028efb64035c06989e0ea026085d2432da45037fa3bb7e2a",
+    "tx_post": "0x7a5b589098731f8e4f581c3069b59211c2be0306e43446f83f8731628e9a5f89",
+    "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
+    "chain_id": 46630
+   },
+   "verdict": "cleared",
+   "tx_judge": "0xa3aab8ed6060f98b7632fe6928b920fee6f970aacdaad61762e5611daa73ec18",
+   "evidence": "0x2e3b768ea327c060cf6a58ea7f819257e2a034eeee83dc6554f67a2f030ebee9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "6c8b82fe12176ad0d50cff5c5df4faabc9b2356876b9d032a01e019288c38c9f"
+    "tx": "0xbf9fa24c93047003fbbd957da941b3e137691faa6959c50d61d6456a8145a217",
+    "entry": 0,
+    "side": "long",
+    "signal": 1,
+    "ticker": "TSLA"
    }
   },
   {
@@ -120,16 +152,22 @@
    "filed": "2026-07-23",
    "stake": 25.0,
    "analyst_address": "0x82d77bf44e3501499fE1Cc65f19609389c9653B9",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "fc51a86923cb43c2d7f17912027837e04339d0920e3b3aa649fbf274ee78a5b4",
-   "tx_judge": "af89f67bdbe0abc2b022e75e0daa09d20cc99b947eac5fe5c22e341fe10c3b06",
+   "tx_post": "0x53ece1962745f6b97996da10372a695fbb5ddafa32f8bc4fa9824a9a8e61e0b2",
+   "verdict": "slashed",
+   "tx_judge": "0xaa3ebe084f41343857602f05454bd3be887f40423f49962ad9c37a0c321e6091",
+   "evidence": "0x2e3b768ea327c060cf6a58ea7f819257e2a034eeee83dc6554f67a2f030ebee9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "62a49da15eaab89d22922bd9b4fdced02dde1ffe8ffe24d96ca158b25ed0e874"
+    "tx": "0xe88c4294ed3b3af745d0695b00737fae63fda25977b167f1f5b0ac0c77bbce46",
+    "ticker": "TSLA"
    }
   },
   {
@@ -147,16 +185,22 @@
    "filed": "2026-07-23",
    "stake": 25.0,
    "analyst_address": "0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.995,
-   "tx_post": "791ce8841c06f64a0ef97389096825fc4adf21da058f6e95b7b4fc50ef89a37b",
-   "tx_judge": "e47fd755e02ee0ca2a4e27c5095ef94d0d4b37d259c17ef3cca95b633c7fa6a0",
+   "tx_post": "0xa18c6285825b47f87e4bfa3e36fb5184b1455631d37b51cc5e56805573bad115",
+   "verdict": "slashed",
+   "tx_judge": "0x1555512cc06d85453135272e8770e89ae366a609bebac7ec7d2679e317ca61ef",
+   "evidence": "0x2e3b768ea327c060cf6a58ea7f819257e2a034eeee83dc6554f67a2f030ebee9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "95f5e4a363b8d98c8dab02e202798b414de731f24a80ce0f235ba0bf9492f36a"
+    "tx": "0x23a811c5772d04e803ca301b69a0a9be96e2fcc238ea10f843616ec52f98cdcc",
+    "ticker": "TSLA"
    }
   },
   {
@@ -174,16 +218,22 @@
    "filed": "2026-07-23",
    "stake": 25.0,
    "analyst_address": "0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3113,
-   "tx_post": "155af7df5a61fdd04b5b378142c8ec9802b94e049575214278675efb1b85b594",
-   "tx_judge": "c684ab3f28547657cf5c73bc7cd86c5418f1d7154e7b328edefc64efb299074f",
+   "tx_post": "0x942d3faaf5bd52c036d463f590140c256863ed80589d9e978368e4de3eb5598e",
+   "verdict": "slashed",
+   "tx_judge": "0x14a0fd2897396804162bca7c17db05f6c4f1933a18f0340f0a4c56589b9d341f",
+   "evidence": "0x2e3b768ea327c060cf6a58ea7f819257e2a034eeee83dc6554f67a2f030ebee9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "c97e5a828f0e52252f300befb505a50435c1b826e26469021ddf68a3dc7dbaa7"
+    "tx": "0x09043730f37d6e7c561b00f42d741a894dbc42c21a2f37d507fbfb873e86a439",
+    "ticker": "TSLA"
    }
   },
   {
@@ -201,16 +251,25 @@
    "filed": "2026-07-23",
    "stake": 25.0,
    "analyst_address": "0x1618A08FA335DBe562526033D839E90E0D2e400b",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "06d6c077b174ffbd79dba19c039f704e46584f960de8de54697f25be6490f6b3",
-   "tx_judge": "6cb2ef0a2b792c9994d5bdc1b42d738f1042c51d1a7e14b65b27275ccc162b09",
+   "tx_post": "0xd30a602afb95f0903cfb7c24b2263749cdc60436768d9e9d96ef04f8a79dcc48",
+   "verdict": "cleared",
+   "tx_judge": "0x1ea6ccce67de820c752f5e7071c5dcd8ad224013b2ffbc5ae6981181f6015f45",
+   "evidence": "0x2e3b768ea327c060cf6a58ea7f819257e2a034eeee83dc6554f67a2f030ebee9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "1c7d3bb2361aa5db763a4b019cecdec619734d87ebe7d66df5b0fbc577ea90a9"
+    "tx": "0xbf9fa24c93047003fbbd957da941b3e137691faa6959c50d61d6456a8145a217",
+    "entry": 0,
+    "side": "long",
+    "signal": 0,
+    "ticker": "TSLA"
    }
   },
   {
@@ -228,16 +287,30 @@
    "filed": "2026-07-23",
    "stake": 25.0,
    "analyst_address": "0x86f1C3F69Dd007F918364E2861CF389B35f33ea8",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "wrong quarter: the period ended in June, the claim says Q3 2026",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "df2733d75b40dd886b0b1fa4e3fbf2c74e572beb921aa2f84d1a86291126603d",
-   "tx_judge": "bed0273dfe767314c80bdad33187044bfcda94f68b6853ef9c1e2b33a1912892",
+   "tx_post": "0x40969fdd3e7b8d72fcfd17ea241b484e9792027bd40d68ba501d07b17c3df8e8",
+   "replayed_from": {
+    "round": "the published testnet round of 24 September 2026",
+    "claim": 6,
+    "hash": "0x1329a86bab51269935367960286f0b670253ab08778f09402eedcfca9bec1604",
+    "tx_post": "0xdf2733d75b40dd886b0b1fa4e3fbf2c74e572beb921aa2f84d1a86291126603d",
+    "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
+    "chain_id": 46630
+   },
+   "verdict": "slashed",
+   "tx_judge": "0xd6eadfbb695aad6adca8e7c4c85473ee8d24dac5048d349899d5753cfff7a596",
+   "evidence": "0x2e3b768ea327c060cf6a58ea7f819257e2a034eeee83dc6554f67a2f030ebee9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "885779d54f221e655c1c2242fef7361383d11eaaf123cd6aea2f7fbd5b9698d9"
+    "tx": "0xc171fe8610ef0655387ad905d22780cfe4b2cb539e5bfe6adea30b2f3ca1ed96",
+    "ticker": "TSLA"
    }
   },
   {
@@ -255,16 +328,22 @@
    "filed": "2026-07-23",
    "stake": 25.0,
    "analyst_address": "0x82d77bf44e3501499fE1Cc65f19609389c9653B9",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "1fd6eb7eec9fc49f38c055776d03a93b2646008a63e5c1cefbb0461beb3f95fc",
-   "tx_judge": "448d919377c90100804856e85b26a56a703aa717fcc7c460488d618cbf87e8ef",
+   "tx_post": "0x9ff084199ebdc7b70c6690ae39a34bc3154a87ec2b2244ad835322ef2f482b4e",
+   "verdict": "slashed",
+   "tx_judge": "0xf4b6bd192b78d2a0ea5ad3ab203eea97060e47ae375309e33234ed3e7c3d325a",
+   "evidence": "0x2e3b768ea327c060cf6a58ea7f819257e2a034eeee83dc6554f67a2f030ebee9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "f10c11b4e02b6ff1fa4a51c8b1e36714701a19496d9da6acd2e58621e0d2fe7c"
+    "tx": "0xbf3524f77e40d736b041e6623ac15a6bdbfaff4df4ce1bfb7ac5737c5ce49b87",
+    "ticker": "TSLA"
    }
   },
   {
@@ -282,16 +361,22 @@
    "filed": "2026-07-23",
    "stake": 25.0,
    "analyst_address": "0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9919,
-   "tx_post": "383347762c6f146559da55ba71fbebbef5edfefa0507f344a192558e739950ba",
-   "tx_judge": "417931dd2b64cff6d69973244563901c1744faa4c390993c0dcd157a38c7c5f3",
+   "tx_post": "0xf1e6d1b02cc5f17f84c8a44de8d54f4c0995a6aef15ab042214e046b27a239b2",
+   "verdict": "slashed",
+   "tx_judge": "0xb00c88368ffacf3a607eaa5209ac24fcf04c279a9c5a1a07380791a9540b9295",
+   "evidence": "0x2e3b768ea327c060cf6a58ea7f819257e2a034eeee83dc6554f67a2f030ebee9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "aaed61dcdb3ae74fa8b20d8e5f49f5e13241be052d016c34d5558a05390a1730"
+    "tx": "0x3387179217accff73e855a539fab5dcac1082b5a7a2d6e5deece4a919384d0f6",
+    "ticker": "TSLA"
    }
   },
   {
@@ -309,16 +394,22 @@
    "filed": "2026-07-23",
    "stake": 25.0,
    "analyst_address": "0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.2812,
-   "tx_post": "f7471080e2b1da07380ec475091bd85b6012be3215e3e9386e28070eb50ec6c8",
-   "tx_judge": "f55a0207420a419503b06b611b51a082d35d5d52672e232e1c0ce7f2f3076678",
+   "tx_post": "0xecfe083a71d740b60e18536e6bcfb95ae50a4b903c6a6a55ede7a03317110653",
+   "verdict": "slashed",
+   "tx_judge": "0x370ce016b6b3aed38e450d5227efba496cb648adbc5597a4bb3208f6b27a2352",
+   "evidence": "0x2e3b768ea327c060cf6a58ea7f819257e2a034eeee83dc6554f67a2f030ebee9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "5e68627f99fe391acffa07449931c84c17cd6374f923450d8f153ecbbc206017"
+    "tx": "0x01c12b08e95af2631b6400a4f3f6dcb01289569b9ebc788fee27e940f6e37a68",
+    "ticker": "TSLA"
    }
   },
   {
@@ -336,17 +427,18 @@
    "filed": "2026-07-31",
    "stake": 25.0,
    "analyst_address": "0x1618A08FA335DBe562526033D839E90E0D2e400b",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "cc716a00d7f7d47778ace8a907def7b383a601df1d9cfd383060a2ce52599ca2",
-   "tx_judge": "3f4ad186af9583a31991d90cb8937cc9496d6528c73c12174632401ca39d469d",
-   "desk": {
-    "acted": true,
-    "error": null,
-    "tx": "b34358ba0a7f199bead244f86935438718fca2597fc045f1ee6f816fb536b31c"
-   }
+   "tx_post": "0x8af6912691154f137bcc88ed5f3b56d34c23dd222847e17f883578c9bddb8af8",
+   "verdict": "cleared",
+   "tx_judge": "0x04f35b281758c1118172c1d5a9408dca3c693de6bde15cb4aaf00024615b0fbb",
+   "evidence": "0x4079f8b241e7425a4c5d9b9fa3bc79570209490ff18fa44d8158cffb56e186e0",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 11,
@@ -363,17 +455,26 @@
    "filed": "2026-07-31",
    "stake": 25.0,
    "analyst_address": "0x86f1C3F69Dd007F918364E2861CF389B35f33ea8",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "4384c8b59321acd857229b1a9c7269f66d5cc04e468c18dcc0c2b12efaee0fc7",
-   "tx_judge": "3b1911d3aff73651f610351c7144f9db919f2295a9e75eb5fc620f28f4106e33",
-   "desk": {
-    "acted": true,
-    "error": null,
-    "tx": "053d41aa3e1e43aecd04fb5cce161161fd9935643b029c0b47e5436c4c84b052"
-   }
+   "tx_post": "0x0d0be4224c7cd5de17f5afa0394eda4d7ddf6c2587f5a6f21aa47d5c378939b7",
+   "replayed_from": {
+    "round": "the published testnet round of 24 September 2026",
+    "claim": 11,
+    "hash": "0xdf4bc1b8e57c4b57a9bbbc9477082965dc66466b641a2863ed796fbc4afa53e0",
+    "tx_post": "0x4384c8b59321acd857229b1a9c7269f66d5cc04e468c18dcc0c2b12efaee0fc7",
+    "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
+    "chain_id": 46630
+   },
+   "verdict": "cleared",
+   "tx_judge": "0xc33dec8ada8d1e943ad7373383ce2d2561b6f60c0659a23f4716d1591b268a2b",
+   "evidence": "0x4079f8b241e7425a4c5d9b9fa3bc79570209490ff18fa44d8158cffb56e186e0",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 12,
@@ -390,17 +491,18 @@
    "filed": "2026-07-31",
    "stake": 25.0,
    "analyst_address": "0x82d77bf44e3501499fE1Cc65f19609389c9653B9",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "826ab276ec75066f81701addc11ee3c06ff9900b028c753645ccc7c97060f5f2",
-   "tx_judge": "b716c0b01700ca12af64e7e17800a3fdab007efad797709301f7ee160e67ae80",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "bc75856eeec83f1907d8168cb9d59c73c34ed3aef50cc71d214be4a154b7c1be"
-   }
+   "tx_post": "0xf73a1b31af9d47ed6ece7693abc6c3d4da7fb5e9a4c5b09aa29c299b114bd983",
+   "verdict": "slashed",
+   "tx_judge": "0xfd45684cc498a6c4ecbc4b3eafe813ae9d934787ab32ad7bee3e9651262b0fc0",
+   "evidence": "0x4079f8b241e7425a4c5d9b9fa3bc79570209490ff18fa44d8158cffb56e186e0",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 13,
@@ -417,17 +519,18 @@
    "filed": "2026-07-31",
    "stake": 25.0,
    "analyst_address": "0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9932,
-   "tx_post": "925e570f03379521dedf889ecc685d332acf2592fa57a72522632efd5440feda",
-   "tx_judge": "aeb4b44c147d3aebed533c5d61e728c1612e4d9814b402e0f91178d1c329425f",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "2e7247989ba477849d0d59c4f32684b4fdc7a7caebe6d7132716733f2c00bb44"
-   }
+   "tx_post": "0xbdcd62ed760a097cefa652a76378b1fd36bafb8cb037ec95b90f46bbb932d6b4",
+   "verdict": "slashed",
+   "tx_judge": "0x03d6869873abac831df8f0417ab599977ac8d12c27a313bc62eb8079bf520557",
+   "evidence": "0x4079f8b241e7425a4c5d9b9fa3bc79570209490ff18fa44d8158cffb56e186e0",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 14,
@@ -444,17 +547,18 @@
    "filed": "2026-07-31",
    "stake": 25.0,
    "analyst_address": "0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3232,
-   "tx_post": "68cfaea7fa585d1199c0adf29a5f01d3e006fd94590f89a8d695025d8fdea5a7",
-   "tx_judge": "8313336a548f95753c5101ef8c63e37a673e205cdc22bfcd71507247b6019e2c",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "8c02f5209f0f8e7342c56db89ede3ff7476aa0b2fae77d2a1d10d2920d704c37"
-   }
+   "tx_post": "0xd1e72482884c740805a200fb927c0afe959ca1a3052e53522b4aab8fead4543a",
+   "verdict": "slashed",
+   "tx_judge": "0xc0722e40509cd0299da82a90a8343ec5c4cf9a64d12acc88f1ac82613efab0a2",
+   "evidence": "0x4079f8b241e7425a4c5d9b9fa3bc79570209490ff18fa44d8158cffb56e186e0",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 15,
@@ -471,17 +575,18 @@
    "filed": "2026-07-31",
    "stake": 25.0,
    "analyst_address": "0x1618A08FA335DBe562526033D839E90E0D2e400b",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "03db7127e8b454b2656f9a6809e4e74769bde7c4dbb2f7e35cef9ce10f1c0248",
-   "tx_judge": "8b404e9b1a10b63385dfebb3bdd99e3c058740c8a59594140b33067fb0e2fa18",
-   "desk": {
-    "acted": true,
-    "error": null,
-    "tx": "af7c3b6444d19ac2c83116947a19984cdf38f50045366cef15ee3debb29d27a5"
-   }
+   "tx_post": "0xb30299066ff19ea334f8df516fd04d430921f89c6e89f38a4eb2992a05b5f70b",
+   "verdict": "cleared",
+   "tx_judge": "0x106a8ff6f19582a1d01940cd2bdc6f164c105dd1076959c270170a968d38e1de",
+   "evidence": "0x4079f8b241e7425a4c5d9b9fa3bc79570209490ff18fa44d8158cffb56e186e0",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 16,
@@ -498,17 +603,26 @@
    "filed": "2026-07-31",
    "stake": 25.0,
    "analyst_address": "0x86f1C3F69Dd007F918364E2861CF389B35f33ea8",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "e3658cf6856f890348a577409d3f5b1f525bfc62eb3319adc88eff691d64d7b1",
-   "tx_judge": "c162acfd334a1d839947415dad371b82d4487de800cb2d1dbc73d1d3d1c92226",
-   "desk": {
-    "acted": true,
-    "error": null,
-    "tx": "0f6d22130819d67cf6d05b61488713340aba974159e33b4cdf57d28c4580819d"
-   }
+   "tx_post": "0x00eb31932037a0bc0d691fecdb17e4e510fa271241985bbb981694130d4c1201",
+   "replayed_from": {
+    "round": "the published testnet round of 24 September 2026",
+    "claim": 16,
+    "hash": "0xcddb1cc24af20276f7f3f2133002b9c23616432ca5226fc36fd1bc94485ec5e4",
+    "tx_post": "0xe3658cf6856f890348a577409d3f5b1f525bfc62eb3319adc88eff691d64d7b1",
+    "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
+    "chain_id": 46630
+   },
+   "verdict": "cleared",
+   "tx_judge": "0x0730aad4015fcc37f435a64172446897adc4b16e8ade83365f8c1e18a3038411",
+   "evidence": "0x4079f8b241e7425a4c5d9b9fa3bc79570209490ff18fa44d8158cffb56e186e0",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 17,
@@ -525,17 +639,18 @@
    "filed": "2026-07-31",
    "stake": 25.0,
    "analyst_address": "0x82d77bf44e3501499fE1Cc65f19609389c9653B9",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "266fbb87620f95db2f7b0c1efc66b4528f31b3cf57fe66412628a2fe108580be",
-   "tx_judge": "edec37801b5e8863490016f889c7dce686f422cd29028bfdf1b6cc201dbb8731",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "31163322a152618de6c6d2bd8df25e82b20a26183010ca3d14166687f5f1e49c"
-   }
+   "tx_post": "0x7d2aaeec8cac9236f0387fa257710e8445582e8c59313d31d56d425b9bbdbe0a",
+   "verdict": "slashed",
+   "tx_judge": "0xd7a572b380f4b62ba63a8e7cada138fbaf5d163630dba350e86864afd0bb5df2",
+   "evidence": "0x4079f8b241e7425a4c5d9b9fa3bc79570209490ff18fa44d8158cffb56e186e0",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 18,
@@ -552,17 +667,18 @@
    "filed": "2026-07-31",
    "stake": 25.0,
    "analyst_address": "0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9954,
-   "tx_post": "2e2a62ccc7784c4e182df5e1ed69c26fd779e2f4024e50a9ef2433c2335fd2a5",
-   "tx_judge": "2e4b0d38d990657b62076d2bde4917c7c32f09efdcc066d9af04b5e60f612d74",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "7a0586279176fb7de54766a50a91095ef6e4a6adc0bc94edc6cf3b1c37fdb341"
-   }
+   "tx_post": "0x7f629c37fdcb20794ae3a4fd928a1dbb372104d7a48a28d30f98addae917c4ad",
+   "verdict": "slashed",
+   "tx_judge": "0x99e76e73733dcecaa6126656c3ee7868a0960b9382880ed79effa5c00a46deac",
+   "evidence": "0x4079f8b241e7425a4c5d9b9fa3bc79570209490ff18fa44d8158cffb56e186e0",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 19,
@@ -579,17 +695,18 @@
    "filed": "2026-07-31",
    "stake": 25.0,
    "analyst_address": "0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3552,
-   "tx_post": "20ad1d7bf2752ce51470a72e561001946810dc05f36570fad5ee4ca9adcd625a",
-   "tx_judge": "a3530e85728865c876f8c8fa4f7e5dc61da424089b6bb9745126b4b1c3a4dcb8",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "621ae4aaa21bff2ae43b29d8edb56497d803bf4ff51dd9f8678d04c811df5bba"
-   }
+   "tx_post": "0x505b125647dc1aa5496d040af64b57b9a017e94d0206163cc7810fd387cd3253",
+   "verdict": "slashed",
+   "tx_judge": "0x8beac3d39092ae30f894a76a597775afae4f80612b9c70ebd57dac2e2c6c7588",
+   "evidence": "0x4079f8b241e7425a4c5d9b9fa3bc79570209490ff18fa44d8158cffb56e186e0",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 20,
@@ -606,17 +723,18 @@
    "filed": "2026-08-04",
    "stake": 25.0,
    "analyst_address": "0x1618A08FA335DBe562526033D839E90E0D2e400b",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "8f3e1062f3361a20cb9ed24633f69041b13848532db8249ab71ef876b732466b",
-   "tx_judge": "5650b239730f0d0e0cbe3f062b3c669374bda63d08712c01d17e88e57962d678",
-   "desk": {
-    "acted": true,
-    "error": null,
-    "tx": "e39e0863e2b45043c5d6c139d0fd418c7a5dcc302864b552737ded3fa124cec8"
-   }
+   "tx_post": "0x938620a7da2e7d1bfb409681e1e7e6a5796ceff135cd5b3b6baefca03289c2f2",
+   "verdict": "cleared",
+   "tx_judge": "0x600e05a195a7d3964579adc1923d9fb1872399382ee03af4ba0536d584c08aba",
+   "evidence": "0x55877ced6f78249633baa56efbc1610285f9ccb036c286f4751fc74a2b92bc2a",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 21,
@@ -633,17 +751,26 @@
    "filed": "2026-08-04",
    "stake": 25.0,
    "analyst_address": "0x86f1C3F69Dd007F918364E2861CF389B35f33ea8",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "a95e57f27371be8564689c97479a6275e60f12a4001d34a9d6dfb7438e743560",
-   "tx_judge": "47d903b51d9032bf78c56a3a91010123c0aa9e82231610239ce692830a423aa3",
-   "desk": {
-    "acted": true,
-    "error": null,
-    "tx": "5e07ea16941e9630999136fe91252e2b54ed53714cd6e2f0c409cc0a31df2f21"
-   }
+   "tx_post": "0xe4017282c18c17b7f6bb4647e09b6e5c2a220f2ac6b727c049432e5c289415ce",
+   "replayed_from": {
+    "round": "the published testnet round of 24 September 2026",
+    "claim": 21,
+    "hash": "0x226f2a026d6a6e60d474494cd8d4efc3132f48271f2eee03cf62b68cd96dbbc0",
+    "tx_post": "0xa95e57f27371be8564689c97479a6275e60f12a4001d34a9d6dfb7438e743560",
+    "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
+    "chain_id": 46630
+   },
+   "verdict": "cleared",
+   "tx_judge": "0xfd3f04d9dc12e8e4a6bbc9b61aed2a77fd601ec6316f5092d11305d29197f456",
+   "evidence": "0x55877ced6f78249633baa56efbc1610285f9ccb036c286f4751fc74a2b92bc2a",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 22,
@@ -660,17 +787,18 @@
    "filed": "2026-08-04",
    "stake": 25.0,
    "analyst_address": "0x82d77bf44e3501499fE1Cc65f19609389c9653B9",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "abda8cbf940ffe6fd771bf621d2c605130c1ce46fb8c6576f821bd550e18b31a",
-   "tx_judge": "27ec96c56607ba98aa362039a6968ef1cddc0daacaa66f0d344934d51c4b277a",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "32c384735f5f47d54e594ca0afc3ac7d47fe200653fe10da29886d3acf3ff33f"
-   }
+   "tx_post": "0x976d302f02d7263ad1f151870cd5e2268c96f6dc1d688239b94d31c592787947",
+   "verdict": "slashed",
+   "tx_judge": "0x086ec2c4efac53b9b19a4ebfcb51328993c94a66c3b39a2e63906e999ec42791",
+   "evidence": "0x55877ced6f78249633baa56efbc1610285f9ccb036c286f4751fc74a2b92bc2a",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 23,
@@ -687,17 +815,18 @@
    "filed": "2026-08-04",
    "stake": 25.0,
    "analyst_address": "0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.996,
-   "tx_post": "150d0c7d424302f4a34dea272161d437c4d82acda84f3f4e4d56876b24ff00bc",
-   "tx_judge": "34614942a6b1af9e2088b6df2c50ee4bbafc1226264ba0341f555d782c88a24a",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "042b05f4d5bd7a015a29b8fca7260dd5ffa5d0af7f4f749eac43ceb09f78fc8d"
-   }
+   "tx_post": "0x1e88521a11d1539cde1add205e45c3ce4518685c87fbb8c97ce76f025a28e411",
+   "verdict": "slashed",
+   "tx_judge": "0x04aa9bb0bbceb5ae0773dae2d073bf7e90bf5d69908adedcc0961e7871ded026",
+   "evidence": "0x55877ced6f78249633baa56efbc1610285f9ccb036c286f4751fc74a2b92bc2a",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 24,
@@ -714,17 +843,18 @@
    "filed": "2026-08-04",
    "stake": 25.0,
    "analyst_address": "0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.5404,
-   "tx_post": "4c19f3d4cb31f53b098ea17c15ce59099bb826e6a090bb436bba639cc43bc8a7",
-   "tx_judge": "9461e6684e169a565b89a6416ed285d6230aa1a2927c3018137d930c7487cdc0",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "00dd711863e44423a00d4658b9e739a9f8435b98236e0e52f32ff6a632e5adf7"
-   }
+   "tx_post": "0xbc053530fd3e3412f991858afc47e761f54bf0b91b89388b6d9bb7f36af87c23",
+   "verdict": "slashed",
+   "tx_judge": "0xdb43c01378603f5a717d83be022a4925ba43e5b25e9c429b8b59c03f21f8ae1d",
+   "evidence": "0x55877ced6f78249633baa56efbc1610285f9ccb036c286f4751fc74a2b92bc2a",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 25,
@@ -741,17 +871,18 @@
    "filed": "2026-08-04",
    "stake": 25.0,
    "analyst_address": "0x1618A08FA335DBe562526033D839E90E0D2e400b",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "d3906cb9398938493d2fbe8bc4ca8ddf64c8431bcf590425adaf34ee306f3e1f",
-   "tx_judge": "dc96c91400d5a4f4fece1208f883c229fcf1906c0ff0a2ab0fb20d1b79918a05",
-   "desk": {
-    "acted": true,
-    "error": null,
-    "tx": "4b1d9c34ee20b08cbdc05d69cb040f3207c3bb874c17661d93ea11999ef1f5c6"
-   }
+   "tx_post": "0x83d1f5bcf82978185577b41d2dbffe7f167e639990029e22dbdb1a443b36b789",
+   "verdict": "cleared",
+   "tx_judge": "0x577f4b1c661ccbd6bf54a6be8c68b1d5aa92504d5f9bc4ab36e8340bbeb1d96b",
+   "evidence": "0x55877ced6f78249633baa56efbc1610285f9ccb036c286f4751fc74a2b92bc2a",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 26,
@@ -768,17 +899,26 @@
    "filed": "2026-08-04",
    "stake": 25.0,
    "analyst_address": "0x86f1C3F69Dd007F918364E2861CF389B35f33ea8",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "4d9056728f981f849c506020d3a61b9f65711d2d2c0ee44c9bb4e36e66be74bb",
-   "tx_judge": "bb2b7a4c366e9ab56d294fcf850ddf8b98d74f22c9b78a7224008d6b233f73a7",
-   "desk": {
-    "acted": true,
-    "error": null,
-    "tx": "d9c580e6e6761e3401c610689450d35a6dab41534378cac3ebb7fc4c0a9dab2a"
-   }
+   "tx_post": "0x23ab5dbdda0c67fff25cf160894fb9a665df05f26c8dce53f8131c56c2d88a1a",
+   "replayed_from": {
+    "round": "the published testnet round of 24 September 2026",
+    "claim": 26,
+    "hash": "0xd2213a29a83762a565f98408b06898e3025523d625a51ac8f6c03b8cc9655b83",
+    "tx_post": "0x4d9056728f981f849c506020d3a61b9f65711d2d2c0ee44c9bb4e36e66be74bb",
+    "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
+    "chain_id": 46630
+   },
+   "verdict": "cleared",
+   "tx_judge": "0x76b7f3c56ef2b3aab26d656e51804eb743d34f5104b2fb7602f2dc619cabb6a8",
+   "evidence": "0x55877ced6f78249633baa56efbc1610285f9ccb036c286f4751fc74a2b92bc2a",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 27,
@@ -795,17 +935,18 @@
    "filed": "2026-08-04",
    "stake": 25.0,
    "analyst_address": "0x82d77bf44e3501499fE1Cc65f19609389c9653B9",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "6509af38ed85b87a0d4e512cef6c7292a4188be2d7f794029a1d31d5b978e577",
-   "tx_judge": "e77da0cae21746fdf3d3fbacd1edbb770dd0afc41d602efed5e6b1645362329f",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "a5ea65852cc8f9480b1fbeed2a530e086ccf2d59e02abcfcedb8c00d4a4118e7"
-   }
+   "tx_post": "0x01ed95f4e565e4c3312a6f715c99370703c54719b101bc256fb03282010691fa",
+   "verdict": "slashed",
+   "tx_judge": "0x287e65cc999bb47415f92e707efbf4e03cfb26e71262022b3cc0c34cde29bf97",
+   "evidence": "0x55877ced6f78249633baa56efbc1610285f9ccb036c286f4751fc74a2b92bc2a",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 28,
@@ -822,17 +963,18 @@
    "filed": "2026-08-04",
    "stake": 25.0,
    "analyst_address": "0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9955,
-   "tx_post": "3db23e816abae308d5289a91b2c35272e36e9f5c561387c034fa76a25dbccf15",
-   "tx_judge": "eb768f7bb4f41b62fb6d8893064e180410968f46fd83460d0cd559e8e7550b55",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "99069472de6cafd4689b394a8307b6bfc8834a726c3a013fdf0208d54815b52d"
-   }
+   "tx_post": "0x60741d2e3991d172432fb310a5f414311380397fdf388cf13e30e4dac5ee5ad8",
+   "verdict": "slashed",
+   "tx_judge": "0x6a9a227a0fc6f9660041625ad8b47d01b71d8f30027491a9015a1fdbaee447e5",
+   "evidence": "0x55877ced6f78249633baa56efbc1610285f9ccb036c286f4751fc74a2b92bc2a",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 29,
@@ -849,17 +991,18 @@
    "filed": "2026-08-04",
    "stake": 25.0,
    "analyst_address": "0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3776,
-   "tx_post": "6693daf6aa8743c155f9a895f60272d5089817b14db5f94d79cfb8b9da8ec95a",
-   "tx_judge": "4ebf12e9b17f2d15663a695c3b76d21dbb907805847857491305ecf957a57d26",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "a1d6bc5ab2755dd442722fb613374dca71e809f3621dea04d173e3e04f306815"
-   }
+   "tx_post": "0xca56069f4ea18eeb9e2e76e784979763b9de534e920ec4e245f64a7110e06162",
+   "verdict": "slashed",
+   "tx_judge": "0xdcbd159b9e3496ec53a9126887264e09c91ea827837a8ec6b08fb18d3f4cf283",
+   "evidence": "0x55877ced6f78249633baa56efbc1610285f9ccb036c286f4751fc74a2b92bc2a",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 30,
@@ -876,16 +1019,25 @@
    "filed": "2026-07-17",
    "stake": 25.0,
    "analyst_address": "0x1618A08FA335DBe562526033D839E90E0D2e400b",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "0da069c5cacaacb9d6cf48913083000ecd5d91b12821b143e94e5eb856f71b2f",
-   "tx_judge": "90e91a184f0d1acc3d7c298420ef980e4a08d85f59a0152e24d9065bc90d489e",
+   "tx_post": "0x8c6c7c14af4b3dba33bcddef67dd5de82ee7c6ecd5ffebd2246153ce9ac3600c",
+   "verdict": "cleared",
+   "tx_judge": "0xd77e92638fb56f34d89a5ec273cf53df6fd45842b199ae5e3c4808bd31a306a6",
+   "evidence": "0x962dcaff6f70e2874e94c62481005511cfe3a99a35205e5c2dde1ee43e7ab4a9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "e3e2453d9c780a78401079e5878670d84f2d5e2912909357dda7f2ab7ec09021"
+    "tx": "0x420ffb77eeeb4fb635ad9d5c7e22a3ddcb465bd1011373b1a81463d0a76ca47c",
+    "entry": 1,
+    "side": "long",
+    "signal": 0,
+    "ticker": "NFLX"
    }
   },
   {
@@ -903,16 +1055,33 @@
    "filed": "2026-07-17",
    "stake": 25.0,
    "analyst_address": "0x86f1C3F69Dd007F918364E2861CF389B35f33ea8",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "a97845c553fbc65d26472945cba6fcd332247678a54c72f3e9b42938a5b64965",
-   "tx_judge": "5022e6a7edb6c9bb36d64783b16abf31b34e23cb565a723c629db64362480923",
+   "tx_post": "0x2d72e4b7aa102ac0d4ab9e573a577dd9ace464382bf53cdf3ea39ca708dffc18",
+   "replayed_from": {
+    "round": "the published testnet round of 24 September 2026",
+    "claim": 31,
+    "hash": "0xcb6030132cac9838c8ffca47cc46b8297efed9718626181aa1ac89a65ff8e8bb",
+    "tx_post": "0xa97845c553fbc65d26472945cba6fcd332247678a54c72f3e9b42938a5b64965",
+    "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
+    "chain_id": 46630
+   },
+   "verdict": "cleared",
+   "tx_judge": "0x3e0a42c668ed81e1d50bc21bfd0557d6353f6bbc19b82d5fb462a9b660a3b15c",
+   "evidence": "0x962dcaff6f70e2874e94c62481005511cfe3a99a35205e5c2dde1ee43e7ab4a9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "93c1dea7a0a1376c9319ea82b7955fb16df76eee56c87a959e3b9521c4ffe9dc"
+    "tx": "0x420ffb77eeeb4fb635ad9d5c7e22a3ddcb465bd1011373b1a81463d0a76ca47c",
+    "entry": 1,
+    "side": "long",
+    "signal": 1,
+    "ticker": "NFLX"
    }
   },
   {
@@ -930,16 +1099,22 @@
    "filed": "2026-07-17",
    "stake": 25.0,
    "analyst_address": "0x82d77bf44e3501499fE1Cc65f19609389c9653B9",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "924327c1c865f23ff6d3adf23fb8fc0882e0f896d6e1461e2761e5fd0fc10689",
-   "tx_judge": "86fa1e9fdc93ccdd0c846e6fb0fd494aff2c9e7fdbcf783b3798138ba61b65cf",
+   "tx_post": "0x1d72a71a5f271d7af4ada903280ef47e321a9300d3763c6eaf211487f6abba96",
+   "verdict": "slashed",
+   "tx_judge": "0x99bbc84b7d75ee4f36e2697a6a3bf106bbb811dc6c59f5796fd4beeac6ffb101",
+   "evidence": "0x962dcaff6f70e2874e94c62481005511cfe3a99a35205e5c2dde1ee43e7ab4a9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "90d2ee8bb9a6154dd2ab229890a981f06bac77fb77d9a0b18c1a8d0e431f3feb"
+    "tx": "0xe5af5fcfef787a6c19982cad4c7b19abfda226999c74ec5117039aca71bf2290",
+    "ticker": "NFLX"
    }
   },
   {
@@ -957,16 +1132,22 @@
    "filed": "2026-07-17",
    "stake": 25.0,
    "analyst_address": "0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9954,
-   "tx_post": "4f72eeb45189b514b12d893ea66b6977c07583ec0061b87bf5577dec02cc854e",
-   "tx_judge": "577a62b617f27d9ffe4d6c0929a41c208e9cfa0f0b6785f42cabc6cf8d386bc3",
+   "tx_post": "0xc6491f5df2de86dcfe94b8660ac4ddc2481f32ed9e81e3418eadd3eac3fc0e7d",
+   "verdict": "slashed",
+   "tx_judge": "0xfb880a0c6df3f85a0896f50f9843edb197141d96ce8039c9d9aa3db59c41ee8b",
+   "evidence": "0x962dcaff6f70e2874e94c62481005511cfe3a99a35205e5c2dde1ee43e7ab4a9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "e715e5dbcb8f87c1966d61f306453c5222736aa6df0b0d702123ad06c5340f65"
+    "tx": "0xb256582e04a2c147207da7a43ac20f18916b5798c7578f4041619aee1b7ae996",
+    "ticker": "NFLX"
    }
   },
   {
@@ -984,16 +1165,22 @@
    "filed": "2026-07-17",
    "stake": 25.0,
    "analyst_address": "0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.243,
-   "tx_post": "0ca84073f9f56ddf19033050a240b39049d2ff564eaa14b3a6e0050ce2fbcb53",
-   "tx_judge": "999b011494451f0afab9213ac4583c614146b54bb14f447536f68740da5fa792",
+   "tx_post": "0xb622fe590320ae6692a9a334d4ab0cebdfe22d087bde51808eced9f241908e57",
+   "verdict": "slashed",
+   "tx_judge": "0xc856ea50366c29cecaa786f92eb4d97cede9856307bd46fb19dcd7bb3f673278",
+   "evidence": "0x962dcaff6f70e2874e94c62481005511cfe3a99a35205e5c2dde1ee43e7ab4a9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "474e0ada8e0380aa7d801d2f615b7ce4cda8e92b479fec026758150117a97921"
+    "tx": "0x7f79cd71283facb278f4dddc86cbd38bd3e6fc9a2b1bacd44c11c7189d77dda7",
+    "ticker": "NFLX"
    }
   },
   {
@@ -1011,16 +1198,25 @@
    "filed": "2026-07-17",
    "stake": 25.0,
    "analyst_address": "0x1618A08FA335DBe562526033D839E90E0D2e400b",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "0c929dc19d19810dbb2d4bbce81e610bf2e2f77fac89e47e2b0160da6dea82ae",
-   "tx_judge": "76767a877b597d17699568385882d7dad7d4a69375106bc302e89ea2c2e6f649",
+   "tx_post": "0xa606efaa71bcefdf8d495650f3fbcb5087bfb693adeede0542b63e9013f542f8",
+   "verdict": "cleared",
+   "tx_judge": "0xdf9f117b3e80399e68e06190452011b19fdbf0154ce9d7093164d81e16e07931",
+   "evidence": "0x962dcaff6f70e2874e94c62481005511cfe3a99a35205e5c2dde1ee43e7ab4a9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "d783a3d99c00311f046d983744ffdb968a631d80f92da537facf4f19f2b9662a"
+    "tx": "0x420ffb77eeeb4fb635ad9d5c7e22a3ddcb465bd1011373b1a81463d0a76ca47c",
+    "entry": 1,
+    "side": "long",
+    "signal": 0,
+    "ticker": "NFLX"
    }
   },
   {
@@ -1038,16 +1234,33 @@
    "filed": "2026-07-17",
    "stake": 25.0,
    "analyst_address": "0x86f1C3F69Dd007F918364E2861CF389B35f33ea8",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "49d5b3e4220d4f8b394ac25078fb755eaebf96e5c9bcf08a9122a0cc6b081c01",
-   "tx_judge": "2bfa2eaecbd5f904d8d14a827aaef6adcf32f3f64e11b90c08461acde65b2fa2",
+   "tx_post": "0xd4875d1a0e6d920dde5486377ac95fb892da53531c927c4b715043541d07e44f",
+   "replayed_from": {
+    "round": "the published testnet round of 24 September 2026",
+    "claim": 36,
+    "hash": "0xa03f90ec22f437a7aefff9e11b2f7d3b148f4d3ac0c4a8bf26f52eb84a529123",
+    "tx_post": "0x49d5b3e4220d4f8b394ac25078fb755eaebf96e5c9bcf08a9122a0cc6b081c01",
+    "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
+    "chain_id": 46630
+   },
+   "verdict": "cleared",
+   "tx_judge": "0x6e99d1882da435fb9c5988763efb0e5aa8d7b4ddee0ed3699c207e11283b1d95",
+   "evidence": "0x962dcaff6f70e2874e94c62481005511cfe3a99a35205e5c2dde1ee43e7ab4a9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": true,
     "error": null,
-    "tx": "0b56c26d9ff6150886507065d883151e063c8809a70be847e4f9f4e17330baff"
+    "tx": "0x420ffb77eeeb4fb635ad9d5c7e22a3ddcb465bd1011373b1a81463d0a76ca47c",
+    "entry": 1,
+    "side": "long",
+    "signal": 1,
+    "ticker": "NFLX"
    }
   },
   {
@@ -1065,16 +1278,22 @@
    "filed": "2026-07-17",
    "stake": 25.0,
    "analyst_address": "0x82d77bf44e3501499fE1Cc65f19609389c9653B9",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "04e8a63bfd9cbddb9246ba3f0021fbf69101e96015c11d298e3494c1477944ef",
-   "tx_judge": "39c5f6425baa74c425f17115d71360cd5a5f2ab33289820702960949224fdc98",
+   "tx_post": "0x46632f3d87940ef814b49df2d03eaf9611494c8fb6e59ca1ca79672c87c2b80d",
+   "verdict": "slashed",
+   "tx_judge": "0x258a7ec5d35ce4aed957302f2d24eea85274f7ac94befd187fabecdd62b2aed7",
+   "evidence": "0x962dcaff6f70e2874e94c62481005511cfe3a99a35205e5c2dde1ee43e7ab4a9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "95f6979f35f1ba2c1bdfbe78c10217fd0efa38a278ab211bdc8a104887bcf6c1"
+    "tx": "0x50e3d98680f0863e62ba59ce056b3122e128b60205202f826aef1c0a42b52236",
+    "ticker": "NFLX"
    }
   },
   {
@@ -1092,16 +1311,22 @@
    "filed": "2026-07-17",
    "stake": 25.0,
    "analyst_address": "0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9971,
-   "tx_post": "630f5afc67d65c13afc253f3b8b5e3eca2a880153cf05d1e03d0d7206da8aaae",
-   "tx_judge": "6a9f1abbb47cf5373bc26962f9271786f34e0bf411811a0c5a64a337573b1ec6",
+   "tx_post": "0x8cad53f3405d151a6699833787dc0ca76e690e2dbc8ab6e9adeca3f232afbb5c",
+   "verdict": "slashed",
+   "tx_judge": "0xebf4bd1db27826d2e8ed8ed90e29ea57b38fcba279404abb0fefbcd595d4af2b",
+   "evidence": "0x962dcaff6f70e2874e94c62481005511cfe3a99a35205e5c2dde1ee43e7ab4a9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "a6cd17f78d9a291be5bc267b034053ffea9afd2a105a1bfe63af2417b37a863b"
+    "tx": "0xd87d7f1daacbce7318c7bf8ec0a6f734b1d9973b8bc1bfcec5b8cfbaf17159bd",
+    "ticker": "NFLX"
    }
   },
   {
@@ -1119,16 +1344,22 @@
    "filed": "2026-07-17",
    "stake": 25.0,
    "analyst_address": "0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.4396,
-   "tx_post": "721c1c80b8f5b24812c1aba6bccc0e399abc5cb7c1c9d9bc88c5de558f05a2b0",
-   "tx_judge": "05ec6432bf339cbca9d1c93902437307e5e3ee8979737d323de93085cb96dc66",
+   "tx_post": "0xc24d3ed6b47a77e5d87f3a3d6a53220eb4ee3adda1d4fc31b9f774bdaa57ea37",
+   "verdict": "slashed",
+   "tx_judge": "0x33d65497f245dd3d0ba327f51df3618c7125d05f9b91238519ede9251497a87b",
+   "evidence": "0x962dcaff6f70e2874e94c62481005511cfe3a99a35205e5c2dde1ee43e7ab4a9",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "37de43e9aeb924744162d97bdac1f56d2a91e89e0dd06ea23b754af477373d3c"
+    "tx": "0x258c7f65f5cd4095139fdf48d88165e4c722af6a6ed8e4d91111731d3112e610",
+    "ticker": "NFLX"
    }
   },
   {
@@ -1146,17 +1377,18 @@
    "filed": "2026-08-05",
    "stake": 25.0,
    "analyst_address": "0x1618A08FA335DBe562526033D839E90E0D2e400b",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "0f634a0902e3cfa100a2a8d5b9a95a1ed27c0bc7e7b34959ec8b8ea390d394a4",
-   "tx_judge": "cde7d2ca14588dcd336b8a721c2498898811eec3ad6c6e30c511736ffeab426b",
-   "desk": {
-    "acted": true,
-    "error": null,
-    "tx": "dbf29df56c919c4d7c906fdf6e7fd43af292955283fd7d8b944f9e79a6dd113a"
-   }
+   "tx_post": "0xfbffc9cef89c422e2543bfa9bd9b0a52c03c406de323dceb1f7a1d0e68cb2b5e",
+   "verdict": "cleared",
+   "tx_judge": "0xd5d11360eb9c2241410355302a9fa548d3f1bb0a2c9307c61c702c5a130c6533",
+   "evidence": "0x767e0466e8dbf498fbeaabc1ad6eaf231350def41cff394ed1795b1c1aa565ca",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 41,
@@ -1173,16 +1405,30 @@
    "filed": "2026-08-05",
    "stake": 25.0,
    "analyst_address": "0x86f1C3F69Dd007F918364E2861CF389B35f33ea8",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "wrong quarter: the period ended in June, the claim says Q3 2026",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "7388f0459dfa256c7747a5cd2b5fc4dfe17733568b736317482b49d484308c91",
-   "tx_judge": "e840258bbb9bc9f0d581d168e18b4e01c289757c0753d0bd13b53e9343cf05b5",
+   "tx_post": "0xe66611530554f9e6d60ec8ceaf976798119af2d9694eca1e1e83c9357b28c086",
+   "replayed_from": {
+    "round": "the published testnet round of 24 September 2026",
+    "claim": 41,
+    "hash": "0xc3d8c299bec2230ac26d24d23c70b626b2050e87bbb6df4e7a7d3fc80c3e5c53",
+    "tx_post": "0x7388f0459dfa256c7747a5cd2b5fc4dfe17733568b736317482b49d484308c91",
+    "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
+    "chain_id": 46630
+   },
+   "verdict": "slashed",
+   "tx_judge": "0x4ec1885f1a5ff4caadbbe7505db6091e9a8f06695659dedd35c9ae20f2bd392f",
+   "evidence": "0x767e0466e8dbf498fbeaabc1ad6eaf231350def41cff394ed1795b1c1aa565ca",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "bcc3d2bac94d8f90977ec10c37d5bb133a6b9160ade8dca459ce9a82090e8057"
+    "tx": "0xea0bfa6308bee643b62470e77a52aeb0e8dea37a36fd2730bf194796f5229b1f",
+    "ticker": "AMD"
    }
   },
   {
@@ -1200,16 +1446,22 @@
    "filed": "2026-08-05",
    "stake": 25.0,
    "analyst_address": "0x82d77bf44e3501499fE1Cc65f19609389c9653B9",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "69c7ff334cf6a404b7e94674e71b78d2eae13909f9984b403a7c79fbe0a45ed2",
-   "tx_judge": "2da1628b1b735c716fa66827c4a7df57144b5819e57e002d36f4dda6b8d2686c",
+   "tx_post": "0xed5e809f4bbdcd508e1a78a5fcd800b757ea43472cfa4cc289b78a2591b6fc03",
+   "verdict": "slashed",
+   "tx_judge": "0x95f03383e9716aa2bf6de3cd8344228a88d1fd2c7a440092cf03c00e2051bc63",
+   "evidence": "0x767e0466e8dbf498fbeaabc1ad6eaf231350def41cff394ed1795b1c1aa565ca",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "787c974905580fe9a78baf6bd4763302a1cf15e43696af3b102eaaac28c041ef"
+    "tx": "0x08336c6590271ee15f733d60e7fdfe5ee1bf0cb45ffc97364d4f44f763feb456",
+    "ticker": "AMD"
    }
   },
   {
@@ -1227,16 +1479,22 @@
    "filed": "2026-08-05",
    "stake": 25.0,
    "analyst_address": "0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9933,
-   "tx_post": "12a9d944f4345ded355768482ce47a8d07ca865be7154f5892cf2e41b75f5432",
-   "tx_judge": "dcf8267b4094cde38d9e6dec7d695d7ef850238cfa096775e57e4cabeeabe900",
+   "tx_post": "0x27dad3d2067008072759d165a4216cea159bb7981fc1c4654880f42a646e5d8f",
+   "verdict": "slashed",
+   "tx_judge": "0x3ae2b8432bc17f0f4f9c5af1d65b54e9f1e5d7e82bde9cb84aac91966e4674ab",
+   "evidence": "0x767e0466e8dbf498fbeaabc1ad6eaf231350def41cff394ed1795b1c1aa565ca",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "17c866f81f240596cc2ad113c7dc84d3ef8038c24a4895d8314266df8ce35ad7"
+    "tx": "0xe4e15036e1908dbcc95d46ffb766002f0e0eaaa7f3cd6edbb83c9969410f48e8",
+    "ticker": "AMD"
    }
   },
   {
@@ -1254,16 +1512,22 @@
    "filed": "2026-08-05",
    "stake": 25.0,
    "analyst_address": "0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.2465,
-   "tx_post": "3dcd8d48d982b1c15cfbacd4d846ebc6086045e86cdf5149f4a6dc9ec3e4fd8b",
-   "tx_judge": "e0b5065721e964a08199b895e956da588be760c805981a6166d1dc946f671ddc",
+   "tx_post": "0xbd87fcd8d599bba0066e769f243ab857fb05d0272248235ad10cc586c71a6685",
+   "verdict": "slashed",
+   "tx_judge": "0x3d4468dfb4d65b0b40e5e091b770f0f543348283b945e09b6931cf2c34b6aa78",
+   "evidence": "0x767e0466e8dbf498fbeaabc1ad6eaf231350def41cff394ed1795b1c1aa565ca",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
    "desk": {
     "acted": false,
     "error": "NotCleared",
-    "tx": "919c101d4640d2e62bdd359e620a293f52c7513811b4c84653ba198885135079"
+    "tx": "0x88e07228a146a4f1a67a6eb60eb55ecf19651136f32d6a9fe27155f8c35179ac",
+    "ticker": "AMD"
    }
   },
   {
@@ -1281,17 +1545,18 @@
    "filed": "2026-08-05",
    "stake": 25.0,
    "analyst_address": "0x1618A08FA335DBe562526033D839E90E0D2e400b",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "f544eabe273c48af293c41e655ebfe33b34590ee0509daf6d9deb28bbd686c7e",
-   "tx_judge": "594d0af97de25d3e79d093c333a3edf193c8321516841a0bba2ab4a4ecb51b24",
-   "desk": {
-    "acted": true,
-    "error": null,
-    "tx": "632f365084f4d42bd23c98269f47c63251abf49a55a23118e13cdeef4bf47cf7"
-   }
+   "tx_post": "0xf9fa23615b7fa68d66db1cc5f9137009729e4d93abc46fdb55e013535f34c64c",
+   "verdict": "cleared",
+   "tx_judge": "0x92aa87aff060651f027a0bc9729d00cc3395e5b7dec6556715631546beaf73c9",
+   "evidence": "0x767e0466e8dbf498fbeaabc1ad6eaf231350def41cff394ed1795b1c1aa565ca",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 46,
@@ -1308,17 +1573,26 @@
    "filed": "2026-08-05",
    "stake": 25.0,
    "analyst_address": "0x86f1C3F69Dd007F918364E2861CF389B35f33ea8",
-   "verdict": "cleared",
+   "local_verdict": "cleared",
    "reason": "quote verified and value grounded",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "40561b9b1aedf8a1bb4775451bedb92d768eec399d1a219f356a90a2b7613699",
-   "tx_judge": "a995e18b3560d45b25f1411aeaea8d2016fd9332b42cb2c3c7c8b51d8891b37d",
-   "desk": {
-    "acted": true,
-    "error": null,
-    "tx": "5a457ddf6b62ddd85d46ae9c188c75178d06ec334db80874c5765167b60a1f34"
-   }
+   "tx_post": "0x938e2eceecb7330d6c9b914b58941d129ee77531b3f8403b2ffc42be8df6ae8b",
+   "replayed_from": {
+    "round": "the published testnet round of 24 September 2026",
+    "claim": 46,
+    "hash": "0x703f1d9dbd56e58afee12ce65130e39bee3ebdc261ae814149584a8d63b5b93b",
+    "tx_post": "0x40561b9b1aedf8a1bb4775451bedb92d768eec399d1a219f356a90a2b7613699",
+    "market": "0x285AcbD8919fdAd7fa39753347656711eC51d426",
+    "chain_id": 46630
+   },
+   "verdict": "cleared",
+   "tx_judge": "0x88e15c26039a091cf030da78a57ed738dadcc2cfc07ffae61bd2660f8264095f",
+   "evidence": "0x767e0466e8dbf498fbeaabc1ad6eaf231350def41cff394ed1795b1c1aa565ca",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 47,
@@ -1335,17 +1609,18 @@
    "filed": "2026-08-05",
    "stake": 25.0,
    "analyst_address": "0x82d77bf44e3501499fE1Cc65f19609389c9653B9",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "claimed value not grounded in the cited quote",
    "match": "exact",
    "score": 1.0,
-   "tx_post": "f2925d298dcf06dc5e73da85fd356f2e4961fae647b0ef83595890507d96a628",
-   "tx_judge": "df993aadd704454025d81fd5245252126faf589934c8ed9f6950fd74f56b15c3",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "a0d97ed6f5f86f680da2f44a89acd6c9879b83ec64a19f52c5c151fc3bde1151"
-   }
+   "tx_post": "0xa0cb9119cf0a4ed16ec527b6197dae6d6c1129fdf10b2e9420cd3b760cc5b7b4",
+   "verdict": "slashed",
+   "tx_judge": "0x685a17f408be24f95cd784082e6acaac3255044b3f7a50ec7a7dffb97615d639",
+   "evidence": "0x767e0466e8dbf498fbeaabc1ad6eaf231350def41cff394ed1795b1c1aa565ca",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 48,
@@ -1362,17 +1637,18 @@
    "filed": "2026-08-05",
    "stake": 25.0,
    "analyst_address": "0x412223bfd2d0283CD1e0C81315e3B1E993B9DF94",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "figures-differ",
    "score": 0.9911,
-   "tx_post": "e69a43bdd1d6089a19f865bdb6e862731bd535d6d90a3a6b261450c474edd12f",
-   "tx_judge": "ad876577cc4d7cc21aaa8f75cd095d4f81dc7b2f3c8bee517125ce93cc6f460c",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "2f182afd3b8ddd287e6230923309068b894355a19889b7fe6e97976951d252d6"
-   }
+   "tx_post": "0xe5ff0666acaa43ab09fce3bba4ac43b1b78bb14648ad0b2333bf14c1704d9d77",
+   "verdict": "slashed",
+   "tx_judge": "0x57afed66e019ab7564f90c66e0da30e204536e127762455eccdecf444b141506",
+   "evidence": "0x767e0466e8dbf498fbeaabc1ad6eaf231350def41cff394ed1795b1c1aa565ca",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
   },
   {
    "id": 49,
@@ -1389,17 +1665,955 @@
    "filed": "2026-08-05",
    "stake": 25.0,
    "analyst_address": "0x638f7d0422754B0ed8B8e434d71Ec2Aa3F00E477",
-   "verdict": "slashed",
+   "local_verdict": "slashed",
    "reason": "supporting quote not found in source document",
    "match": "none",
    "score": 0.3699,
-   "tx_post": "4181b40d3657981dc205053908835fd766582a040b6057212adf6e9d096bee48",
-   "tx_judge": "84b2159bd5ca3d2c8b2674ab67f481f19dc968c9bdbf0646b5ce920c722675c6",
-   "desk": {
-    "acted": false,
-    "error": "NotCleared",
-    "tx": "2ed160881c9876ef7f9a62f68e2689707b11cf57263585f8550182f6eebf7785"
+   "tx_post": "0xd40a73cf7e37ae437e319642d9b8e5db58866a55f588ad45b780d70476c73e58",
+   "verdict": "slashed",
+   "tx_judge": "0x086d75bea2e7e9aa92a2559c8c76e25c5f948b55fe4af6a757f395849e8a7fd9",
+   "evidence": "0x767e0466e8dbf498fbeaabc1ad6eaf231350def41cff394ed1795b1c1aa565ca",
+   "workflow_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+   "checked": true,
+   "agrees": true,
+   "desk": null
+  }
+ ],
+ "trade_size": 100000000,
+ "fund_wei": null,
+ "journal": [
+  {
+   "ticker": "TSLA",
+   "read": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "status": "opened",
+   "attempts": [
+    {
+     "cited": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ],
+     "side": "long",
+     "claim": 2,
+     "error": "NotCleared",
+     "tx": "0xe88c4294ed3b3af745d0695b00737fae63fda25977b167f1f5b0ac0c77bbce46",
+     "verdict": "slashed",
+     "reason": "claimed value not grounded in the cited quote",
+     "side_before": "long"
+    },
+    {
+     "cited": [
+      0,
+      1,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ],
+     "side": "long",
+     "claim": 3,
+     "error": "NotCleared",
+     "tx": "0x23a811c5772d04e803ca301b69a0a9be96e2fcc238ea10f843616ec52f98cdcc",
+     "verdict": "slashed",
+     "reason": "supporting quote not found in source document",
+     "side_before": "long"
+    },
+    {
+     "cited": [
+      0,
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ],
+     "side": "long",
+     "claim": 4,
+     "error": "NotCleared",
+     "tx": "0x09043730f37d6e7c561b00f42d741a894dbc42c21a2f37d507fbfb873e86a439",
+     "verdict": "slashed",
+     "reason": "supporting quote not found in source document",
+     "side_before": "long"
+    },
+    {
+     "cited": [
+      0,
+      1,
+      5,
+      6,
+      7,
+      8,
+      9
+     ],
+     "side": "long",
+     "claim": 6,
+     "error": "NotCleared",
+     "tx": "0xc171fe8610ef0655387ad905d22780cfe4b2cb539e5bfe6adea30b2f3ca1ed96",
+     "verdict": "slashed",
+     "reason": "wrong quarter: the period ended in June, the claim says Q3 2026",
+     "side_before": "long"
+    },
+    {
+     "cited": [
+      0,
+      1,
+      5,
+      7,
+      8,
+      9
+     ],
+     "side": "long",
+     "claim": 7,
+     "error": "NotCleared",
+     "tx": "0xbf3524f77e40d736b041e6623ac15a6bdbfaff4df4ce1bfb7ac5737c5ce49b87",
+     "verdict": "slashed",
+     "reason": "claimed value not grounded in the cited quote",
+     "side_before": "long"
+    },
+    {
+     "cited": [
+      0,
+      1,
+      5,
+      8,
+      9
+     ],
+     "side": "long",
+     "claim": 8,
+     "error": "NotCleared",
+     "tx": "0x3387179217accff73e855a539fab5dcac1082b5a7a2d6e5deece4a919384d0f6",
+     "verdict": "slashed",
+     "reason": "supporting quote not found in source document",
+     "side_before": "long"
+    },
+    {
+     "cited": [
+      0,
+      1,
+      5,
+      9
+     ],
+     "side": "long",
+     "claim": 9,
+     "error": "NotCleared",
+     "tx": "0x01c12b08e95af2631b6400a4f3f6dcb01289569b9ebc788fee27e940f6e37a68",
+     "verdict": "slashed",
+     "reason": "supporting quote not found in source document",
+     "side_before": "long"
+    }
+   ],
+   "entry": 0,
+   "tx": "0xbf9fa24c93047003fbbd957da941b3e137691faa6959c50d61d6456a8145a217",
+   "side": "long",
+   "notional": 100000000,
+   "reasoning": {
+    "policy": "vouch-desk-policy/1",
+    "rule": "signal per claim = change x polarity; long if the net signal is above zero, short if below, no trade at zero; size = per-claim notional x claims that carry a signal",
+    "ticker": "TSLA",
+    "side": "long",
+    "net_signal": 1,
+    "per_claim": 100000000,
+    "notional": 100000000,
+    "evidence": [
+     {
+      "claim": 0,
+      "hash": "0xaa0bf8de29fc16d9884697c9fc7b3cb004da4c702867988e8c582f1b2f37730f",
+      "analyst": "Diligent",
+      "value": "$8.28 billion",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like",
+      "verdict_tx": "0x6d5ebd01500658129b917d54460b44f9ee1f482e54b4f1f9a248c46dc31339db"
+     },
+     {
+      "claim": 1,
+      "hash": "0x892bd633f33dd74d028efb64035c06989e0ea026085d2432da45037fa3bb7e2a",
+      "analyst": "Qwen 2.5 7B",
+      "value": "$8.63 billion",
+      "signal": 1,
+      "why": "cash flows provided by operating up (the summary says it went up): bullish",
+      "verdict_tx": "0xa3aab8ed6060f98b7632fe6928b920fee6f970aacdaad61762e5611daa73ec18"
+     },
+     {
+      "claim": 5,
+      "hash": "0x49a9cdebe1cb04dbaddb77267a7b6338475a81c6e71bb58c3ceec1eac85c908b",
+      "analyst": "Diligent",
+      "value": "$1.37 billion",
+      "signal": 0,
+      "why": "no signal: expense, no change stated",
+      "verdict_tx": "0x1ea6ccce67de820c752f5e7071c5dcd8ad224013b2ffbc5ae6981181f6015f45"
+     }
+    ],
+    "dropped": [
+     {
+      "claim": 2,
+      "error": "NotCleared",
+      "tx": "0xe88c4294ed3b3af745d0695b00737fae63fda25977b167f1f5b0ac0c77bbce46",
+      "verdict": "slashed",
+      "reason": "claimed value not grounded in the cited quote",
+      "side_before": "long"
+     },
+     {
+      "claim": 3,
+      "error": "NotCleared",
+      "tx": "0x23a811c5772d04e803ca301b69a0a9be96e2fcc238ea10f843616ec52f98cdcc",
+      "verdict": "slashed",
+      "reason": "supporting quote not found in source document",
+      "side_before": "long"
+     },
+     {
+      "claim": 4,
+      "error": "NotCleared",
+      "tx": "0x09043730f37d6e7c561b00f42d741a894dbc42c21a2f37d507fbfb873e86a439",
+      "verdict": "slashed",
+      "reason": "supporting quote not found in source document",
+      "side_before": "long"
+     },
+     {
+      "claim": 6,
+      "error": "NotCleared",
+      "tx": "0xc171fe8610ef0655387ad905d22780cfe4b2cb539e5bfe6adea30b2f3ca1ed96",
+      "verdict": "slashed",
+      "reason": "wrong quarter: the period ended in June, the claim says Q3 2026",
+      "side_before": "long"
+     },
+     {
+      "claim": 7,
+      "error": "NotCleared",
+      "tx": "0xbf3524f77e40d736b041e6623ac15a6bdbfaff4df4ce1bfb7ac5737c5ce49b87",
+      "verdict": "slashed",
+      "reason": "claimed value not grounded in the cited quote",
+      "side_before": "long"
+     },
+     {
+      "claim": 8,
+      "error": "NotCleared",
+      "tx": "0x3387179217accff73e855a539fab5dcac1082b5a7a2d6e5deece4a919384d0f6",
+      "verdict": "slashed",
+      "reason": "supporting quote not found in source document",
+      "side_before": "long"
+     },
+     {
+      "claim": 9,
+      "error": "NotCleared",
+      "tx": "0x01c12b08e95af2631b6400a4f3f6dcb01289569b9ebc788fee27e940f6e37a68",
+      "verdict": "slashed",
+      "reason": "supporting quote not found in source document",
+      "side_before": "long"
+     }
+    ],
+    "price": {
+     "ticker": "TSLA",
+     "price": "373.71",
+     "currency": "USD",
+     "at": 1792526400,
+     "source": "Yahoo Finance chart API, regularMarketPrice (unattested)"
+    }
+   },
+   "reasoning_hash": "0x33871c50ec4dabaf8ecac1b24710eaa1241bef5d2c733a97f958ad3bbb02ed36"
+  },
+  {
+   "ticker": "AMZN",
+   "read": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "status": "no trade",
+   "attempts": [],
+   "reasoning": {
+    "policy": "vouch-desk-policy/1",
+    "rule": "signal per claim = change x polarity; long if the net signal is above zero, short if below, no trade at zero; size = per-claim notional x claims that carry a signal",
+    "ticker": "AMZN",
+    "side": null,
+    "net_signal": 0,
+    "per_claim": 100000000,
+    "notional": 0,
+    "evidence": [
+     {
+      "claim": 10,
+      "hash": "0x51cc49af5d95739a73d3ec987c78e54aa887eec3047b26a6a5d8ab359683d62d",
+      "analyst": "Diligent",
+      "value": "$28.7 billion",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     },
+     {
+      "claim": 11,
+      "hash": "0xdf4bc1b8e57c4b57a9bbbc9477082965dc66466b641a2863ed796fbc4afa53e0",
+      "analyst": "Qwen 2.5 7B",
+      "value": "$28.7 billion",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     },
+     {
+      "claim": 12,
+      "hash": "0xefe653f9470ab4436a9b1705f260c46d75216623c4dc2238686563786d094f26",
+      "analyst": "Misreader",
+      "value": "$640 million",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     },
+     {
+      "claim": 13,
+      "hash": "0x595e528675d180e2a5aa34b480e8103cdeb9e6e970122bb41f33fd130824713c",
+      "analyst": "Embellisher",
+      "value": "$38.7 billion",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     },
+     {
+      "claim": 14,
+      "hash": "0x879881c949c2636c2684cf47a815978124e51ff611ddd79a82614c898b637374",
+      "analyst": "Fabricator",
+      "value": "$38.7 billion",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     },
+     {
+      "claim": 15,
+      "hash": "0x51a077ee5501b1942c846a565e09bc6504398ff13ae4f621f4ee8cb38f579ace",
+      "analyst": "Diligent",
+      "value": "$21.3 billion",
+      "signal": 0,
+      "why": "no signal: costs, no change stated"
+     },
+     {
+      "claim": 16,
+      "hash": "0xcddb1cc24af20276f7f3f2133002b9c23616432ca5226fc36fd1bc94485ec5e4",
+      "analyst": "Qwen 2.5 7B",
+      "value": "$21.3 billion",
+      "signal": 0,
+      "why": "no signal: costs, no change stated"
+     },
+     {
+      "claim": 17,
+      "hash": "0xc0b925939cd1b5886e28d4bcc3995202bf5fea498947cc3553f1c9b71b1c366d",
+      "analyst": "Misreader",
+      "value": "$640 million",
+      "signal": 0,
+      "why": "no signal: costs, no change stated"
+     },
+     {
+      "claim": 18,
+      "hash": "0x1ff28b4c37729aba4c66f2f12902c08b0ffd0d9172a2f9fe59dc98b798889ae5",
+      "analyst": "Embellisher",
+      "value": "$28.3 billion",
+      "signal": 0,
+      "why": "no signal: costs, no change stated"
+     },
+     {
+      "claim": 19,
+      "hash": "0x5e778ceafc39ff459e5f84c174e35b732fdde981e4d169bc658cd19afca24266",
+      "analyst": "Fabricator",
+      "value": "$21.0 billion",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     }
+    ],
+    "dropped": [],
+    "price": {
+     "ticker": "AMZN",
+     "price": "262.63",
+     "currency": "USD",
+     "at": 1792526401,
+     "source": "Yahoo Finance chart API, regularMarketPrice (unattested)"
+    }
+   }
+  },
+  {
+   "ticker": "PLTR",
+   "read": [
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29
+   ],
+   "status": "no trade",
+   "attempts": [],
+   "reasoning": {
+    "policy": "vouch-desk-policy/1",
+    "rule": "signal per claim = change x polarity; long if the net signal is above zero, short if below, no trade at zero; size = per-claim notional x claims that carry a signal",
+    "ticker": "PLTR",
+    "side": null,
+    "net_signal": 0,
+    "per_claim": 100000000,
+    "notional": 0,
+    "evidence": [
+     {
+      "claim": 20,
+      "hash": "0x3cc074b5bc25deb10ad99f947718d3e3c4a09453fe16ed40cdaa3665a149c7cf",
+      "analyst": "Diligent",
+      "value": "$50 million",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     },
+     {
+      "claim": 21,
+      "hash": "0x226f2a026d6a6e60d474494cd8d4efc3132f48271f2eee03cf62b68cd96dbbc0",
+      "analyst": "Qwen 2.5 7B",
+      "value": "$5.6 billion",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     },
+     {
+      "claim": 22,
+      "hash": "0x86f6f97b26788d5536bf388dceef926e6dd2126ed430815e290f33a8ee1757d5",
+      "analyst": "Misreader",
+      "value": "$1.5 billion",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     },
+     {
+      "claim": 23,
+      "hash": "0xd7a66506b093af2a177836419ea9d93c2fbafe545c5eba640aaf9d8cb4107caf",
+      "analyst": "Embellisher",
+      "value": "$70 million",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     },
+     {
+      "claim": 24,
+      "hash": "0x89d67e5ab11129e3b25fcbc533830d44b756c3b8b8acc41c2accee1a0514f7e4",
+      "analyst": "Fabricator",
+      "value": "$51 million",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     },
+     {
+      "claim": 25,
+      "hash": "0xda68263ca645cae2f9314519bb3024d289dc0960a6914ec4b494d0e0531885a8",
+      "analyst": "Diligent",
+      "value": "$916 million",
+      "signal": 0,
+      "why": "no signal: expense, no change stated"
+     },
+     {
+      "claim": 26,
+      "hash": "0xd2213a29a83762a565f98408b06898e3025523d625a51ac8f6c03b8cc9655b83",
+      "analyst": "Qwen 2.5 7B",
+      "value": "$361 million",
+      "signal": 0,
+      "why": "no signal: expense, no change stated"
+     },
+     {
+      "claim": 27,
+      "hash": "0x1d98ed182871edbc2a78fba2bc4e191e3ecb376425abe825eff3996867c39278",
+      "analyst": "Misreader",
+      "value": "$1.5 billion",
+      "signal": 0,
+      "why": "no signal: expense, no change stated"
+     },
+     {
+      "claim": 28,
+      "hash": "0xcb2a274ba20f9e3176ccec149e7f1cec405f08c79f4f38985021006928a37ecb",
+      "analyst": "Embellisher",
+      "value": "$917 million",
+      "signal": 0,
+      "why": "no signal: expense, no change stated"
+     },
+     {
+      "claim": 29,
+      "hash": "0x377d6ef474cb537178a55b64f009f573090e4fcb62925cf75a1eb6ef665cab21",
+      "analyst": "Fabricator",
+      "value": "$913 million",
+      "signal": 0,
+      "why": "no signal: neither revenue-like nor cost-like"
+     }
+    ],
+    "dropped": [],
+    "price": {
+     "ticker": "PLTR",
+     "price": "192.60",
+     "currency": "USD",
+     "at": 1792526401,
+     "source": "Yahoo Finance chart API, regularMarketPrice (unattested)"
+    }
+   }
+  },
+  {
+   "ticker": "NFLX",
+   "read": [
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39
+   ],
+   "status": "opened",
+   "attempts": [
+    {
+     "cited": [
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
+     ],
+     "side": "long",
+     "claim": 32,
+     "error": "NotCleared",
+     "tx": "0xe5af5fcfef787a6c19982cad4c7b19abfda226999c74ec5117039aca71bf2290",
+     "verdict": "slashed",
+     "reason": "claimed value not grounded in the cited quote",
+     "side_before": "long"
+    },
+    {
+     "cited": [
+      30,
+      31,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
+     ],
+     "side": "long",
+     "claim": 33,
+     "error": "NotCleared",
+     "tx": "0xb256582e04a2c147207da7a43ac20f18916b5798c7578f4041619aee1b7ae996",
+     "verdict": "slashed",
+     "reason": "supporting quote not found in source document",
+     "side_before": "long"
+    },
+    {
+     "cited": [
+      30,
+      31,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
+     ],
+     "side": "long",
+     "claim": 34,
+     "error": "NotCleared",
+     "tx": "0x7f79cd71283facb278f4dddc86cbd38bd3e6fc9a2b1bacd44c11c7189d77dda7",
+     "verdict": "slashed",
+     "reason": "supporting quote not found in source document",
+     "side_before": "long"
+    },
+    {
+     "cited": [
+      30,
+      31,
+      35,
+      36,
+      37,
+      38,
+      39
+     ],
+     "side": "long",
+     "claim": 37,
+     "error": "NotCleared",
+     "tx": "0x50e3d98680f0863e62ba59ce056b3122e128b60205202f826aef1c0a42b52236",
+     "verdict": "slashed",
+     "reason": "claimed value not grounded in the cited quote",
+     "side_before": "long"
+    },
+    {
+     "cited": [
+      30,
+      31,
+      35,
+      36,
+      38,
+      39
+     ],
+     "side": "long",
+     "claim": 38,
+     "error": "NotCleared",
+     "tx": "0xd87d7f1daacbce7318c7bf8ec0a6f734b1d9973b8bc1bfcec5b8cfbaf17159bd",
+     "verdict": "slashed",
+     "reason": "supporting quote not found in source document",
+     "side_before": "long"
+    },
+    {
+     "cited": [
+      30,
+      31,
+      35,
+      36,
+      39
+     ],
+     "side": "long",
+     "claim": 39,
+     "error": "NotCleared",
+     "tx": "0x258c7f65f5cd4095139fdf48d88165e4c722af6a6ed8e4d91111731d3112e610",
+     "verdict": "slashed",
+     "reason": "supporting quote not found in source document",
+     "side_before": "long"
+    }
+   ],
+   "entry": 1,
+   "tx": "0x420ffb77eeeb4fb635ad9d5c7e22a3ddcb465bd1011373b1a81463d0a76ca47c",
+   "side": "long",
+   "notional": 200000000,
+   "reasoning": {
+    "policy": "vouch-desk-policy/1",
+    "rule": "signal per claim = change x polarity; long if the net signal is above zero, short if below, no trade at zero; size = per-claim notional x claims that carry a signal",
+    "ticker": "NFLX",
+    "side": "long",
+    "net_signal": 2,
+    "per_claim": 100000000,
+    "notional": 200000000,
+    "evidence": [
+     {
+      "claim": 30,
+      "hash": "0xd62f261d49c822942348098ae82a4151401483cfb0f9d9fd077729e6ecb454cb",
+      "analyst": "Diligent",
+      "value": "$5.1 billion",
+      "signal": 0,
+      "why": "no signal: revenues, no change stated",
+      "verdict_tx": "0xd77e92638fb56f34d89a5ec273cf53df6fd45842b199ae5e3c4808bd31a306a6"
+     },
+     {
+      "claim": 31,
+      "hash": "0xcb6030132cac9838c8ffca47cc46b8297efed9718626181aa1ac89a65ff8e8bb",
+      "analyst": "Qwen 2.5 7B",
+      "value": "$5.1 billion",
+      "signal": 1,
+      "why": "revenues up (the summary says it went up): bullish",
+      "verdict_tx": "0x3e0a42c668ed81e1d50bc21bfd0557d6353f6bbc19b82d5fb462a9b660a3b15c"
+     },
+     {
+      "claim": 35,
+      "hash": "0x84cfda4aaa4b7b808159337ced202eb94a9d87c34cb483b43b51d2e5aa19729b",
+      "analyst": "Diligent",
+      "value": "$9 million",
+      "signal": 0,
+      "why": "no signal: liability, no change stated",
+      "verdict_tx": "0xdf9f117b3e80399e68e06190452011b19fdbf0154ce9d7093164d81e16e07931"
+     },
+     {
+      "claim": 36,
+      "hash": "0xa03f90ec22f437a7aefff9e11b2f7d3b148f4d3ac0c4a8bf26f52eb84a529123",
+      "analyst": "Qwen 2.5 7B",
+      "value": "$17 million",
+      "signal": 1,
+      "why": "losses down (the summary says it went down): bullish",
+      "verdict_tx": "0x6e99d1882da435fb9c5988763efb0e5aa8d7b4ddee0ed3699c207e11283b1d95"
+     }
+    ],
+    "dropped": [
+     {
+      "claim": 32,
+      "error": "NotCleared",
+      "tx": "0xe5af5fcfef787a6c19982cad4c7b19abfda226999c74ec5117039aca71bf2290",
+      "verdict": "slashed",
+      "reason": "claimed value not grounded in the cited quote",
+      "side_before": "long"
+     },
+     {
+      "claim": 33,
+      "error": "NotCleared",
+      "tx": "0xb256582e04a2c147207da7a43ac20f18916b5798c7578f4041619aee1b7ae996",
+      "verdict": "slashed",
+      "reason": "supporting quote not found in source document",
+      "side_before": "long"
+     },
+     {
+      "claim": 34,
+      "error": "NotCleared",
+      "tx": "0x7f79cd71283facb278f4dddc86cbd38bd3e6fc9a2b1bacd44c11c7189d77dda7",
+      "verdict": "slashed",
+      "reason": "supporting quote not found in source document",
+      "side_before": "long"
+     },
+     {
+      "claim": 37,
+      "error": "NotCleared",
+      "tx": "0x50e3d98680f0863e62ba59ce056b3122e128b60205202f826aef1c0a42b52236",
+      "verdict": "slashed",
+      "reason": "claimed value not grounded in the cited quote",
+      "side_before": "long"
+     },
+     {
+      "claim": 38,
+      "error": "NotCleared",
+      "tx": "0xd87d7f1daacbce7318c7bf8ec0a6f734b1d9973b8bc1bfcec5b8cfbaf17159bd",
+      "verdict": "slashed",
+      "reason": "supporting quote not found in source document",
+      "side_before": "long"
+     },
+     {
+      "claim": 39,
+      "error": "NotCleared",
+      "tx": "0x258c7f65f5cd4095139fdf48d88165e4c722af6a6ed8e4d91111731d3112e610",
+      "verdict": "slashed",
+      "reason": "supporting quote not found in source document",
+      "side_before": "long"
+     }
+    ],
+    "price": {
+     "ticker": "NFLX",
+     "price": "68.69",
+     "currency": "USD",
+     "at": 1792526400,
+     "source": "Yahoo Finance chart API, regularMarketPrice (unattested)"
+    }
+   },
+   "reasoning_hash": "0xbc0f97cbe66cb52f0ce1a79cee2137868352e9795ae2b4879513062dc70a52a3"
+  },
+  {
+   "ticker": "AMD",
+   "read": [
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49
+   ],
+   "status": "no trade",
+   "attempts": [
+    {
+     "cited": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+     ],
+     "side": "short",
+     "claim": 41,
+     "error": "NotCleared",
+     "tx": "0xea0bfa6308bee643b62470e77a52aeb0e8dea37a36fd2730bf194796f5229b1f",
+     "verdict": "slashed",
+     "reason": "wrong quarter: the period ended in June, the claim says Q3 2026",
+     "side_before": "short"
+    },
+    {
+     "cited": [
+      40,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+     ],
+     "side": "short",
+     "claim": 42,
+     "error": "NotCleared",
+     "tx": "0x08336c6590271ee15f733d60e7fdfe5ee1bf0cb45ffc97364d4f44f763feb456",
+     "verdict": "slashed",
+     "reason": "claimed value not grounded in the cited quote",
+     "side_before": "short"
+    },
+    {
+     "cited": [
+      40,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+     ],
+     "side": "short",
+     "claim": 43,
+     "error": "NotCleared",
+     "tx": "0xe4e15036e1908dbcc95d46ffb766002f0e0eaaa7f3cd6edbb83c9969410f48e8",
+     "verdict": "slashed",
+     "reason": "supporting quote not found in source document",
+     "side_before": "short"
+    },
+    {
+     "cited": [
+      40,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+     ],
+     "side": "short",
+     "claim": 44,
+     "error": "NotCleared",
+     "tx": "0x88e07228a146a4f1a67a6eb60eb55ecf19651136f32d6a9fe27155f8c35179ac",
+     "verdict": "slashed",
+     "reason": "supporting quote not found in source document",
+     "side_before": "short"
+    }
+   ],
+   "reasoning": {
+    "policy": "vouch-desk-policy/1",
+    "rule": "signal per claim = change x polarity; long if the net signal is above zero, short if below, no trade at zero; size = per-claim notional x claims that carry a signal",
+    "ticker": "AMD",
+    "side": null,
+    "net_signal": 0,
+    "per_claim": 100000000,
+    "notional": 0,
+    "evidence": [
+     {
+      "claim": 40,
+      "hash": "0x72a748c3cbd61377be54cfee2ca6591224995ca5ebf8822b4662433ef93d5a17",
+      "analyst": "Diligent",
+      "value": "$544 million",
+      "signal": 0,
+      "why": "no signal: expense, no change stated"
+     },
+     {
+      "claim": 45,
+      "hash": "0x6ace4de3d4c38c147789e389a9dca6dd50f022c23d612b717978f1a93d032a5e",
+      "analyst": "Diligent",
+      "value": "$37 million",
+      "signal": 0,
+      "why": "no signal: expense, no change stated"
+     },
+     {
+      "claim": 46,
+      "hash": "0x703f1d9dbd56e58afee12ce65130e39bee3ebdc261ae814149584a8d63b5b93b",
+      "analyst": "Qwen 2.5 7B",
+      "value": "$1,095 million",
+      "signal": 1,
+      "why": "amortization down (the summary says it went down): bullish"
+     },
+     {
+      "claim": 47,
+      "hash": "0x824e9f9275ea8111c0dca7ade35adefbf753fe90915c56414107b7b73f87a332",
+      "analyst": "Misreader",
+      "value": "$222 million",
+      "signal": 0,
+      "why": "no signal: expense, no change stated"
+     },
+     {
+      "claim": 48,
+      "hash": "0x471befc8eb5f59b9f9a4cbe995bfe718f1ceaf44f1399ab4b7d6a397052accdb",
+      "analyst": "Embellisher",
+      "value": "$39 million",
+      "signal": 0,
+      "why": "no signal: expense, no change stated"
+     },
+     {
+      "claim": 49,
+      "hash": "0x6b0999ce166a449742d247ccecdee8d6c8925fce12b24eb7fdcc9d9e76ee25d0",
+      "analyst": "Fabricator",
+      "value": "$39 million",
+      "signal": -1,
+      "why": "expense up (the filing's sentence says it went up): bearish"
+     }
+    ],
+    "dropped": [
+     {
+      "claim": 41,
+      "error": "NotCleared",
+      "tx": "0xea0bfa6308bee643b62470e77a52aeb0e8dea37a36fd2730bf194796f5229b1f",
+      "verdict": "slashed",
+      "reason": "wrong quarter: the period ended in June, the claim says Q3 2026",
+      "side_before": "short"
+     },
+     {
+      "claim": 42,
+      "error": "NotCleared",
+      "tx": "0x08336c6590271ee15f733d60e7fdfe5ee1bf0cb45ffc97364d4f44f763feb456",
+      "verdict": "slashed",
+      "reason": "claimed value not grounded in the cited quote",
+      "side_before": "short"
+     },
+     {
+      "claim": 43,
+      "error": "NotCleared",
+      "tx": "0xe4e15036e1908dbcc95d46ffb766002f0e0eaaa7f3cd6edbb83c9969410f48e8",
+      "verdict": "slashed",
+      "reason": "supporting quote not found in source document",
+      "side_before": "short"
+     },
+     {
+      "claim": 44,
+      "error": "NotCleared",
+      "tx": "0x88e07228a146a4f1a67a6eb60eb55ecf19651136f32d6a9fe27155f8c35179ac",
+      "verdict": "slashed",
+      "reason": "supporting quote not found in source document",
+      "side_before": "short"
+     }
+    ],
+    "price": {
+     "ticker": "AMD",
+     "price": "534.74",
+     "currency": "USD",
+     "at": 1792526401,
+     "source": "Yahoo Finance chart API, regularMarketPrice (unattested)"
+    }
    }
   }
- ]
+ ],
+ "trader": "0x29BC85932D3Db1dD9dA48599e800cc0E00307d46",
+ "reader_pool": 800.0,
+ "readers_fund": {
+  "payees": [
+   {
+    "address": "0x950d00BA837cD285e6d8a0F3f02d69434a775808",
+    "shares": 1,
+    "due": 800.0,
+    "paid": 0.0
+   }
+  ],
+  "total_shares": 1,
+  "paid": 0.0,
+  "stand_in": true
+ }
 }

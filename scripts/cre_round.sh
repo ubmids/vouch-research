@@ -216,10 +216,10 @@ EOF
 umask 077
 printf 'CRE_ETH_PRIVATE_KEY=%s\n' "$(sed 's/^0x//' "$KEYFILE")" > cre/.env
 trap 'rm -f "$ROOT/cre/.env" "$ROOT/cre/.config.run.json"' EXIT
-simulate() {   # claim tx, log file, extra flags...
+simulate() {   # claim tx, log file, extra flags... (--wasm is relative: the CLI caps it at 97 characters)
   local tx=$1 log=$2; shift 2
   (cd cre && cre workflow simulate ./vouch-verifier --target staging-settings --non-interactive -e "$ROOT/cre/.env" \
-    --trigger-index 0 --evm-tx-hash "$tx" --evm-event-index 0 --wasm "$RUN/vouch-verifier.wasm" \
+    --trigger-index 0 --evm-tx-hash "$tx" --evm-event-index 0 --wasm "../../${RUN#"$ROOT"/}/vouch-verifier.wasm" \
     --config "$ROOT/cre/.config.run.json" "$@") \
     < /dev/null > "$log" 2>&1
 }

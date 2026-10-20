@@ -1,0 +1,28 @@
+Initializing...
+Loading settings...
+Checking RPC connectivity...
+  Reading pre-built WASM binary...
+✓ Loaded WASM binary from ../../cre/runs/20261015T163010Z-posted/vouch-verifier.wasm
+✓ Simulation limits enabled
+  HTTP: req=120kb resp=250kb timeout=10s | ConfHTTP: req=125kb resp=500kb timeout=1m30s | Consensus obs=25kb | ChainWrite evm_report=50kb evm_gas=10000000 solana_report=265b solana_cu=300000 | WASM binary=100mb compressed=20mb
+  Binary hash: 077ae634fa6419380c91bba594a9205db996434c427a92005492e9b829fb73eb
+  Config hash: 470cc57cb26ff7a1496d09261fd165c141cca537feafd95f570da8008918468d
+Fetching transaction receipt for 0x53ece1962745f6b97996da10372a695fbb5ddafa32f8bc4fa9824a9a8e61e0b2...
+2026-10-20T22:00:03Z [SIMULATION] Simulator Initialized
+
+2026-10-20T22:00:03Z [SIMULATION] Running trigger trigger=evm:ChainSelector:2032988798112970440@1.0.0
+2026-10-20T22:00:03Z [USER LOG] claim #2 TSLA $4.05 billion by Misreader, citing 0001628280-26-049270
+2026-10-20T22:00:15Z [USER LOG] verdict: SLASH (claimed value not grounded in the cited quote); filing keccak256 0x2e3b768ea327c060cf6a58ea7f819257e2a034eeee83dc6554f67a2f030ebee9
+2026-10-20T22:00:18Z [USER LOG] verdict for claim #2 written: 0xaa3ebe084f41343857602f05454bd3be887f40423f49962ad9c37a0c321e6091
+
+✓ Workflow Simulation Result:
+"#2 slashed 0xaa3ebe084f41343857602f05454bd3be887f40423f49962ad9c37a0c321e6091"
+
+2026-10-20T22:00:18Z [SIMULATION] Execution finished signal received
+2026-10-20T22:00:18Z [SIMULATION] Skipping WorkflowEngineV2
+
+╭──────────────────────────────────────────────────────╮
+│ Simulation complete! Ready to deploy your workflow?  │
+│                                                      │
+│ Run cre account access to request deployment access. │
+╰──────────────────────────────────────────────────────╯
