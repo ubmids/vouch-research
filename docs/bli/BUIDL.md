@@ -116,6 +116,6 @@ and the legal framing (docs/bli/WHATS_NEW.md).
 - Repository: https://github.com/ubmids/vouch-research
 - Live feed: https://vouch-feed.vercel.app · one claim: `/?claim=6&view=claim` · a record of reliance: `/?record=TSLA&feed=feed-local.json`
 - For lawyers: docs/bli/LEGAL.md · Architecture: docs/bli/ARCHITECTURE.md · CRE workflow: cre/README.md
-- Demo video: [OWNER: the YouTube link]
+- Demo video: https://youtu.be/T5eoagMMhjs
 - Deck: docs/bli/deck.pdf
 - Court figures: AFP, June 2026, on Damien Charlotin's AI Hallucination Cases database
