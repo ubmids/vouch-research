@@ -1,8 +1,7 @@
 # Vouch at BLI Legal Tech Hackathon 2: the plan to 30 October
 
 Written 15 Oct 2026. The aim is first place, or failing that both bounties.
-The owner-only steps are in [bli/OWNER_TODO.md](bli/OWNER_TODO.md), and how to
-run them is in [bli/CHECKLIST.md](bli/CHECKLIST.md). The design spec is
+How to run the owner-only steps is in [bli/CHECKLIST.md](bli/CHECKLIST.md). The design spec is
 [../design/DESIGN.md](../design/DESIGN.md).
 
 ## Status, 15 Oct evening

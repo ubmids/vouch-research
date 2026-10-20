@@ -7,8 +7,8 @@ wallet or a camera is Subomi's; the rest is done on the `first-place` branch.
 ## Needs Subomi, in order
 
 Everything runs on **this Mac**, in the repo checkout (`git pull` on the
-`first-place` branch first). No other machine is needed. The dated list of
-owner-only tasks is [OWNER_TODO.md](OWNER_TODO.md); this is the how.
+`first-place` branch first). No other machine is needed.
+
 
 Already set up on the Mac (14 Oct): Foundry (`~/.foundry/bin`), the CRE CLI
 v1.38.0 (`~/.cre/bin`, from Chainlink's official installer), and the Python
