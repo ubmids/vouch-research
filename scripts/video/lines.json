@@ -1,0 +1,86 @@
+[
+ {
+  "id": "intro",
+  "shot": "title",
+  "text": "Hey, I'm Subomi. This is Vouch, my entry for the BLI Legal Tech hackathon.",
+  "tts": "Hey, I'm Subomi. This is Vouch, my entry for the B L I Legal Tech hackathon."
+ },
+ {
+  "id": "problem1",
+  "shot": "record_top",
+  "text": "So, here's the problem. AI writes more and more of the research people trade on, and it gets numbers wrong in a really convincing way. Right figure, wrong quarter."
+ },
+ {
+  "id": "what",
+  "shot": "record_top",
+  "text": "That's what Vouch is for. Every claim, human or AI, gets checked against the company's SEC filing. A wrong claim costs its author a stake, and a trading agent can only act on the claims that held."
+ },
+ {
+  "id": "record",
+  "shot": "record_scroll",
+  "text": "So this is a record of reliance. A trading agent read ten claims about Tesla's quarterly report and tried to trade on all of them. Three passed the check. Seven were refused."
+ },
+ {
+  "id": "exh6",
+  "shot": "record_exh6",
+  "text": "Exhibit six. An AI analyst, Qwen 2.5 7B, wrote that Tesla's depreciation for Q3 was $1.37 billion.",
+  "tts": "Exhibit six. An AI analyst, Kwen two point five, seven B, wrote that Tesla's depreciation for Q three was one point three seven billion dollars. Its own words, replayed from an earlier round.",
+  "cut_at": 11.35,
+  "note": "the voice continues 'Its own words, replayed from an earlier round.'; cut at cut_at, the REPLAYED caption card says it instead"
+ },
+ {
+  "id": "claim1",
+  "shot": "claim_top",
+  "text": "The sentence it cited really is in Tesla's 10-Q, and the figure is right. But that sentence covers the three months ended June 30th. That's Q2. The claim says Q3.",
+  "tts": "The sentence it cited really is in Tesla's ten Q, and the figure is right. But that sentence covers the three months ended June thirtieth. That's Q two. The claim says Q three."
+ },
+ {
+  "id": "claim2",
+  "shot": "claim_findings",
+  "text": "So the check slashed it. Its 25 USDG stake, test tokens on a local devnet, went to the readers' fund.",
+  "tts": "So the check slashed it. Its twenty five U S D G stake, test tokens on a local dev net, went to the readers' fund."
+ },
+ {
+  "id": "custody",
+  "shot": "claim_custody",
+  "text": "And here's the chain of custody. Posted, checked against the filing from SEC EDGAR, slashed, then refused when the agent tried to cite it."
+ },
+ {
+  "id": "legal",
+  "shot": "deck_rules",
+  "text": "Why does this matter to lawyers? Regulation AC has a natural person certify the views in research. FINRA Rule 2241 wants its facts based on reliable information. A model can't certify a belief. But a firm can show every number was checked, against what, by a process it doesn't control.",
+  "tts": "Why does this matter to lawyers? Regulation A C has a natural person certify the views in research. FINRA Rule twenty two forty one wants its facts based on reliable information. A model can't certify a belief. But a firm can show every number was checked, against what, by a process it doesn't control."
+ },
+ {
+  "id": "cre",
+  "shot": "terminal",
+  "text": "That process is a Chainlink CRE workflow. Here its own code ran in Chainlink's SDK test runtime, on a local devnet. For each claim it reads the filing, runs the check, and builds the verdict, with a hash of the filing it read.",
+  "tts": "That process is a Chainlink C R E workflow. Here its own code ran in Chainlink's S D K test runtime, on a local dev net. For each claim it reads the filing, runs the check, and builds the verdict, with a hash of the filing it read."
+ },
+ {
+  "id": "journal1",
+  "shot": "journal_top",
+  "text": "Every trade keeps its reasons. Here's the agent's case file for Tesla: what it read, what it was refused, what it kept, and its rule. That reasoning trail is hashed into the trade."
+ },
+ {
+  "id": "journal2",
+  "shot": "journal_verify",
+  "text": "And re-verify redoes all of it in the browser. Every hash, every verdict, every refusal."
+ },
+ {
+  "id": "kol",
+  "shot": "kol",
+  "text": "The agent reads real posts too. Claude Haiku read a hundred and thirty public Mastodon posts. Sixteen stated a figure the 10-Q could confirm, and the agent staked only on the three a filing sentence actually states.",
+  "tts": "The agent reads real posts too. Claude Haiku read a hundred and thirty public Mastodon posts. Sixteen stated a figure the ten Q could confirm, and the agent staked only on the three a filing sentence actually states."
+ },
+ {
+  "id": "limits",
+  "shot": "record_bottom",
+  "text": "Back to the record. It shows what was said, against which filing, and what was done because of it. It doesn't prove honest belief, or that the filing is true. That stays the firm's job."
+ },
+ {
+  "id": "close",
+  "shot": "end",
+  "text": "So that's Vouch. If a claim is wrong, whoever made it pays. If you trade on it, the record shows why. Thanks for watching."
+ }
+]
