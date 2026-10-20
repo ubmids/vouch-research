@@ -7,7 +7,7 @@ its evidence). Submit by **30 October 2026** (DoraHacks closes 1 November,
 
 **Track:** All BUIDLs (LegalTech and RegTech)
 **Bounties to select:** RYO-CHAN "Autonomous Agents" · Chainlink "Best workflow with CRE"
-**Contact for the form:** [OWNER: a Discord, WhatsApp or WeChat handle]
+**Contact for the form:** Discord subomi_
 
 ---
 
